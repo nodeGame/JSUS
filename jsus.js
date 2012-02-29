@@ -36,7 +36,7 @@
 	 * 		5. DOM
 	 * 		6. RANDOM
 	 * 
-	 * See the their README files for help.
+	 * Extra help is supplied inside each library file.
 	 * 
 	 */
 	var JSUS = exports.JSUS = {};

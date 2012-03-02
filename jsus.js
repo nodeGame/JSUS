@@ -41,8 +41,30 @@
 	 */
 	var JSUS = exports.JSUS = {};
 	
+	// Reference to all the extensions
 	JSUS._classes = {};
 	
+	/**
+	 * Reference to standard out, by default console.log
+	 * 
+	 * Overridde to redirect the starndard output of all JSUS functions.
+	 */
+	JSUS.log = function (txt) {
+		console.log(txt);
+	};
+	
+	/**
+	 * Extends JSUS with additional methods and or properties taken 
+	 * from the object passed as first parameter. 
+	 * 
+	 * The first parameter can be an object literal or a function.
+	 * A reference of the original extending object is stored in 
+	 * JSUS._classes
+	 * 
+	 * If a second parameter is passed, that will be the target of the
+	 * extension.
+	 * 
+	 */
 	JSUS.extend = function (additional, target) {		
 		if ('object' !== typeof additional && 'function' !== typeof additional) {
 			return target;
@@ -85,17 +107,42 @@
 		
 	    return target;
 	  };
+	  
+	  // if node
+	  if ('object' === typeof module && 'function' === typeof require) {
+		  require('./lib/obj');
+		  require('./lib/array');
+		  require('./lib/time');
+		  require('./lib/eval');
+		  require('./lib/dom');
+		  require('./lib/random');
+	  }
+	  // end node
+	  
+	  /**
+	   * Returns a copy of one / all the objects that have extended the
+	   * current instance of JSUS.
+	   * 
+	   * The first parameter is a string representation of the name of 
+	   * the requested extending object. If no parameter is passed a copy 
+	   * of all the extending objects is returned.
+	   * 
+	   * 
+	   */
+	  JSUS.get = function (className) {
+		  if ('undefined' === typeof JSUS.clone) {
+			  JSUS.log('JSUS.clone not found. Cannot continue.');
+			  return false;
+		  }
+		  if ('undefined' === typeof className) return JSUS.clone(JSUS._classes);
+		  if ('undefined' === typeof JSUS._classes[className]) {
+			  JSUS.log('Could not find class ' + className);
+			  return false;
+		  }
+		  return JSUS.clone(JSUS._classes[className]);
+	  };
 
-    // if node
-	if ('object' === typeof module && 'function' === typeof require) {
-	    require('./lib/obj');
-		require('./lib/array');
-	    require('./lib/time');
-	    require('./lib/eval');
-	    require('./lib/dom');
-	    require('./lib/random');
-	}
-	// end node
+
 	
 })('undefined' !== typeof module && 'undefined' !== typeof module.exports ? module.exports: window);
 

@@ -1,8 +1,8 @@
 var util = require('util');
     should = require('should'),
-    JSUS = require('JSUS').JSUS;
+    JSUS = require('./../jsus').JSUS;
     
-describe('array: ', function(){
+describe('ARRAY: ', function(){
     
     // removeElement
     describe('remove an element from an array', function(){
@@ -27,5 +27,73 @@ describe('array: ', function(){
            JSUS.in_array('element5', test_arr).should.equal(false); 
         });
     });
+
+    
+    describe('#latinSquare()', function() {
+    	var S = JSUS.randomInt(3,10); // start
+		var L = JSUS.randomInt(3,S); // limit
+		var ls = null 
+    	
+    	before(function(){
+    		ls = JSUS.latinSquare(S,L);
+    	});
+		
+		it('The size of the latin square should be correct', function() {
+            ls.length.should.equal(L); 
+        });
+	
+		it('The row of the latin square should have correct length', function() {	
+			for (var z = 0; z < L; z++) {
+				ls[z].length.should.equal((S));
+			}
+	    });
+		
+		it('Symbol "i" should appear once and only once each row', function(){
+			for (var i = 0; i < L; i++) {
+				var elements = [];
+				for (var j = 0; j < S; j++) {
+					for (var z = 0; z < S; z++) {
+						if (z == j) continue;
+						ls[i][j].should.not.be.equal(ls[i][z]);
+					}
+				}
+			}
+		});
+		
+		it('Symbol "i" should appear at most once in each column', function(){
+			for (var j = 0; j < S; j++) {
+				for (var i=0; i < L; i++) {
+					for (var z = 0; z < L; z++) {
+						if (z == j) continue;
+						ls[i][j].should.not.be.equal(ls[i][z]);
+					}
+				}
+			}
+		});
+    });
+    
+
+    
+    describe('#latinSquareNoSelf()', function() {
+    	var S = JSUS.randomInt(3,10); // start
+		var L = JSUS.randomInt(3,(S-1)); // limit
+		var ls = null 
+    	
+    	before(function(){
+    		ls = JSUS.latinSquareNoSelf(S,L);
+    	});
+		
+	    it('Column "j" should not contain "j" as index', function(){
+	    	for (var j = 0; j < S; j++) {
+				for (var i=0; i < L; i++) {
+					ls[i][j].should.not.be.equal(j);
+				}
+			}
+		});
+		
+		
+    });
     
 });
+
+

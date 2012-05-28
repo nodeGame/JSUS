@@ -27,11 +27,17 @@ var obj_falsy = {
 	c: 3,
 };
 
+// Based on the properties of the objects above
+function checkClone(c, o1, o2) {
+	c.a = 'foo';
+	c.a.should.not.be.equal(o1.a);
+	c.a.should.not.be.equal(o2.a);
+};
 
-describe('OBJ: ', function(){
+
+describe('OBJ: ', function() {
     
-    // removeElement
-    describe('#clone()', function(){
+    describe('#clone()', function() {
         
     	var copy_simple 	= JSUS.clone(obj_simple);
     	var copy_complex 	= JSUS.clone(obj_complex);
@@ -80,6 +86,132 @@ describe('OBJ: ', function(){
 	    
         
     });
+    
+    // Merging in SIMPLE
+    ///////////////////////////////////////////////////////
+    
+    describe('#merge() COMPLEX obj in SIMPLE', function() {
+    	
+    	var simple_complex = JSUS.merge(obj_simple, obj_complex);
+    	
+    	// Merge complex in simple
+	    it('should merge the second in the first object', function(){
+	    	simple_complex.should.eql(obj_complex); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_complex, obj_simple, obj_complex);
+	    });	
+    });
+    
+    describe('#merge() obj with NULL in SIMPLE', function() {
+    	
+    	var simple_null = JSUS.merge(obj_simple, obj_with_null);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	simple_null.should.eql(obj_with_null); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_null, obj_simple, obj_with_null);
+	    });
+    	
+    });
+    
+    describe('#merge() obj with FALSY values in SIMPLE', function() {
+    	
+    	var simple_falsy = JSUS.merge(obj_simple, obj_falsy);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	simple_falsy.should.eql(obj_falsy); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_falsy, obj_simple, obj_falsy);
+	    });
+    	
+    });
+    
+    // Merging SIMPLE into other objects
+    ///////////////////////////////////////////////////////
+
+    describe('#merge() SIMPLE in COMPLEX obj', function() {
+    	
+    	var complex_simple = JSUS.merge(obj_complex, obj_simple);
+    	
+    	// Merge complex in simple
+	    it('should merge the second in the first object', function(){
+	    	complex_simple.should.eql(obj_simple); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(complex_simple, obj_complex, obj_simple);
+	    });	
+    });
+    
+    describe('#merge() SIMPLE in obj with NULL', function() {
+    	
+    	var null_simple = JSUS.merge(obj_with_null, obj_simple);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	null_simple.should.eql(obj_simple); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(null_simple, obj_with_null, obj_simple);
+	    });
+    	
+    });
+    
+    describe('#merge() SIMPLE in obj with FALSY values ', function() {
+    	
+    	var falsy_simple = JSUS.merge(obj_falsy, obj_simple);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	falsy_simple.should.eql(obj_simple); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(falsy_simple, obj_falsy, obj_simple);
+	    });
+    	
+    });
+    
+    // Merging mixed objects
+    ///////////////////////////////////////////////////////
+
+    describe('#merge() COMPLEX obj in obj with NULL', function() {
+    	
+    	var null_complex = JSUS.merge(obj_with_null, obj_complex);
+    	
+    	// Merge complex in simple
+	    it('should merge the second in the first object', function(){
+	    	null_complex.should.eql(obj_complex); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(null_complex, obj_with_null, obj_complex);
+	    });	
+    }); 
+    
+    describe('#merge() COMPLEX obj in obj with FALSY values', function() {
+    	
+    	var falsy_complex = JSUS.merge(obj_falsy, obj_complex);
+    	
+    	// Merge complex in simple
+	    it('should merge the second in the first object', function(){
+	    	falsy_complex.should.eql(obj_complex); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(falsy_complex, obj_falsy, obj_complex);
+	    });	
+    }); 
+    
     
 });
 

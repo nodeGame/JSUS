@@ -213,6 +213,46 @@ describe('OBJ: ', function() {
     }); 
     
     
+    describe('#mergeOnKey()', function() {
+      
+    	var merge_in = {
+    			a: {max: 10, 
+    				min: 1,
+    				value: 3,
+    			},
+    			b: {max: 100, 
+    				min: 0,
+    				value: 90,
+    			},
+    			c: {max: 1, 
+    				min: -1,
+    			},
+    	};
+    	
+    	var merge_out = {
+    			a: 10,
+    			b: 5,
+    			c: 0,
+    			d: 1000,
+    	};
+    	
+    	var o = JSUS.mergeOnKey(merge_in, merge_out, 'value');
+    	
+    	it('should merge the second in the first object in the key value', function(){	
+    		o.d.should.exist;
+ 	    	o.c.value.should.exist;
+ 	    	o.a.value.should.be.eql(merge_out.a);
+ 	    	o.b.value.should.be.eql(merge_out.b);
+ 	    	o.c.value.should.be.eql(merge_out.c);
+ 	    	o.d.value.should.be.eql(merge_out.d);
+    	});
+    	
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(o, merge_in, merge_out);
+	    });	
+    });
+    
 });
+
 
 

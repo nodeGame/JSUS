@@ -116,6 +116,7 @@
         require('./lib/eval');
         require('./lib/dom');
         require('./lib/random');
+        require('./lib/parse');
     }
     // end node
       

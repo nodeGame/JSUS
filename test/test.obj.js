@@ -227,6 +227,15 @@ describe('OBJ: ', function() {
     			c: {max: 1, 
     				min: -1,
     			},
+    			d: {
+    				max: 0,
+    				min: 100,
+    				value: {
+    					a: 1,
+    					b: 2,
+    				},
+    			},
+    			e: {},
     	};
     	
     	var merge_out = {
@@ -234,22 +243,43 @@ describe('OBJ: ', function() {
     			b: 5,
     			c: 0,
     			d: 1000,
+    			e: 2,
+    			f: 100,
     	};
     	
     	var o = JSUS.mergeOnKey(merge_in, merge_out, 'value');
     	
     	it('should merge the second in the first object in the key value', function(){	
-    		o.d.should.exist;
+    		o.f.should.exist;
  	    	o.c.value.should.exist;
  	    	o.a.value.should.be.eql(merge_out.a);
  	    	o.b.value.should.be.eql(merge_out.b);
  	    	o.c.value.should.be.eql(merge_out.c);
  	    	o.d.value.should.be.eql(merge_out.d);
+ 	    	o.e.value.should.be.eql(merge_out.e);
+ 	    	o.f.value.should.be.eql(merge_out.f);
+    	});
+    	
+    	it('should not overwrite other properties', function(){	
+    		o.a.max.should.exist;
+ 	    	o.a.min.should.exist;
+ 	    	o.a.max.should.be.eql(merge_in.a.max);
     	});
     	
 	    it('modification to the merged object should affect any of the merging ones', function(){
 	    	checkClone(o, merge_in, merge_out);
 	    });	
+    });
+    
+    
+    describe('#getAllKeys()', function() {
+
+    	var keys = JSUS.getAllKeys(obj_complex);
+    	
+    	it('should merge the second in the first object in the key value', function(){	
+    		console.log(keys);
+    	});
+    		
     });
     
 });

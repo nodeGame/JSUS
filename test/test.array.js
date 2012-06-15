@@ -94,6 +94,31 @@ describe('ARRAY: ', function(){
 		
     });
     
+    
+    describe('#isArray()', function() {
+    	var tests = [    	           
+    	             {},
+    	             null,
+    	             false,
+    	             undefined,
+    	             0,
+    	             1,
+    	             'a',
+    	             'ciao',
+    	];
+    	
+	    it('should distinguish between array and not array', function() {
+	    	JSUS.isArray([]).should.be.true;
+	    	JSUS.isArray(tests).should.be.true;
+	    	
+	    	JSUS.each(tests, function(e) {
+	    		JSUS.isArray(e).should.not.be.true;
+			});
+		});
+		
+		
+    });
+    
 });
 
 

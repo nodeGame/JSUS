@@ -9,6 +9,7 @@ var obj_simple = {
 	c: 3,
 };
 
+// If update, update also getAllKeys test
 var obj_complex = {
 	a: 1,
 	b: obj_simple,
@@ -272,14 +273,21 @@ describe('OBJ: ', function() {
     });
     
     
-    describe('#getAllKeys()', function() {
-
-    	var keys = JSUS.getAllKeys(obj_complex);
+    describe('#keys()', function() {
     	
-    	it('should merge the second in the first object in the key value', function(){	
-    		console.log(keys);
+    	it('should returns all the first level keys', function(){	
+    		JSUS.keys(obj_complex).should.be.eql(['a','b','c']);
     	});
-    		
+    	
+    	it('should returns all the first level keys with negative number', function(){	
+    		JSUS.keys(obj_complex, -1).should.be.eql(['a','b','c']);
+    	});
+    	
+    	it('should returns all the first and second level keys with the nested option enabled', function(){	
+    		JSUS.keys(obj_complex, 1).should.be.eql([ 'a', 'b', 'a', 'b', 'c', 'c' ]);
+    	});	
+    	
+    	
     });
     
 });

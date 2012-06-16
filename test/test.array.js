@@ -119,6 +119,53 @@ describe('ARRAY: ', function(){
 		
     });
     
+    
+    describe('#seq()', function() {
+    	
+	    it('should reproduce the sequence 0:5', function() {
+	    	JSUS.seq(0,5).should.be.eql([0,1,2,3,4,5]);
+	    });
+	    
+	    it('should reproduce the sequence 5:0', function() {
+	    	JSUS.seq(5,0).should.be.eql([5,4,3,2,1,0]);
+	    });
+		
+	    it('should reproduce the sequence -5:0', function() {
+	    	JSUS.seq(-5,0).should.be.eql([-5,-4,-3,-2,-1,0]);
+	    });
+	    
+	    it('should reproduce the sequence 0:-5', function() {
+	    	JSUS.seq(0,-5).should.be.eql([0,-1,-2,-3,-4,-5]);
+	    });
+	    
+	    it('should reproduce the sequence -2:-2', function() {
+	    	JSUS.seq(-2,2).should.be.eql([-2,-1,0,1,2]);
+	    });
+	    
+	    it('should reproduce return a single number array when start = end', function() {
+	    	JSUS.seq(2,2).should.be.eql([2]);
+	    });
+	    
+	    it('should reproduce the sequence 0:5 with increment 2', function() {
+	    	JSUS.seq(0,5,2).should.be.eql([0,2,4]);
+	    });
+	    
+	    it('should reproduce the sequence 5:0 with increment 2', function() {
+	    	JSUS.seq(5,0,2).should.be.eql([5,3,1]);
+	    });
+	    
+	    it('should return false if parameters are missing or wrong', function() {
+	    	JSUS.seq(-2).should.be.false;
+	    	JSUS.seq('a',0).should.be.false;
+	    	JSUS.seq().should.be.false;
+	    	JSUS.seq(null, 0).should.be.false;
+	    	JSUS.seq(undefined, 2).should.be.false;
+	    	JSUS.seq(Infinity, 5).should.be.false;
+	    	JSUS.seq(5,0,0).should.be.false;
+	    });
+		
+    });
+    
 });
 
 

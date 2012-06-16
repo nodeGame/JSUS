@@ -11,7 +11,8 @@
   "dependencies": {},
   "devDependencies": {
       "mocha": ">= 0.3.0",
-      "should": ">= 0.5.1"
+      "should": ">= 0.5.1",
+      "yuidocjs": ">= 0.3.0"
     },
   "engines": { "node":  ">=0.4.0" },
   "main": "jsus.js",

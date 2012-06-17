@@ -4,4 +4,5 @@ _*
 .project
 *~
 npm-debug.log
-
+yuidoc.js
+/docs/*

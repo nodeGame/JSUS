@@ -163,6 +163,16 @@ describe('ARRAY: ', function(){
 	    	JSUS.seq(Infinity, 5).should.be.false;
 	    	JSUS.seq(5,0,0).should.be.false;
 	    });
+	    
+	    it('should reproduce the sequence 5:0 with and executing the callback on each increment', function() {
+	    	var func = function(e){
+	    		if (e < 10) {
+	    			e = '0' + e;
+	    		}
+	    		return 'R_' + e;
+	    	}
+	    	JSUS.seq(1,4,1,func).should.be.eql(['R_01','R_02','R_03','R_04']);
+	    });
 		
     });
     

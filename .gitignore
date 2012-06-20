@@ -6,3 +6,4 @@ _*
 npm-debug.log
 yuidoc.js
 /docs/*
+/node_modules/*

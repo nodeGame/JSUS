@@ -170,7 +170,7 @@ describe('ARRAY: ', function(){
 	    			e = '0' + e;
 	    		}
 	    		return 'R_' + e;
-	    	}
+	    	};
 	    	JSUS.seq(1,4,1,func).should.be.eql(['R_01','R_02','R_03','R_04']);
 	    });
 		

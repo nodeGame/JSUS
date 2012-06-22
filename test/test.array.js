@@ -176,6 +176,29 @@ describe('ARRAY: ', function(){
 		
     });
     
+    
+    describe('#map()', function() {
+    	var func = function(e, i,t) {
+    		if (i) e = e + i;
+    		if (e > 5) return e;
+    	};
+    	var array = JSUS.seq(1,10);
+    	
+		
+	    it('should return [6,7,8,9,10]', function(){
+	    	JSUS.map(array, func).should.eql([6,7,8,9,10]);
+		});
+
+	    it('should return [6,7,8,9,10,11]', function(){
+	    	JSUS.map(array, func, 1).should.eql([6,7,8,9,10,11]);
+		});
+	    
+//	    it('should return undefined if no parameter is passed', function(){
+//	    	should.strictEqual(undefined, JSUS.map());
+//		});
+		
+    });
+    
 });
 
 

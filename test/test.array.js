@@ -199,6 +199,26 @@ describe('ARRAY: ', function(){
 		
     });
     
+    describe('#rep()', function() {
+    	
+    	var array = JSUS.seq(1,5);
+    	
+		
+	    it('should replicate an array twice', function(){
+	    	JSUS.rep(array, 2).should.eql([1,2,3,4,5,1,2,3,4,5]);
+		});
+
+	    it('should return the same array', function(){
+	    	JSUS.rep(array, 1).should.be.eql(array);
+	    	JSUS.rep(array).should.be.eql(array);
+		});
+	    
+	    it('should replicate an array three times', function(){
+	    	JSUS.rep(array, 3).should.eql([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]);
+		});
+		
+    });
+    
 });
 
 

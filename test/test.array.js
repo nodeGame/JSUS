@@ -2,10 +2,35 @@ var util = require('util');
     should = require('should'),
     JSUS = require('./../jsus').JSUS;
     
+var obj_simple = {
+		a: 1,
+		b: 2,
+		c: 3,
+	};
+
+	// If update, update also getAllKeys test
+	var obj_complex = {
+		a: 1,
+		b: obj_simple,
+		c: 3,
+	};
+
+	var obj_with_null = {
+		a: 1,
+		b: null,
+		c: 3,
+	};
+
+	var obj_falsy = {
+		a: 0,
+		b: false,
+		c: 3,
+	};
+    
 describe('ARRAY: ', function(){
     
     // removeElement
-    describe('remove an element from an array', function(){
+    describe('#removeElement()', function(){
         var test_arr = ['element1', 'element2', 'element3', 'element4'];
         
         it('should return element3 when removing it from the array', function(){
@@ -17,15 +42,16 @@ describe('ARRAY: ', function(){
     });
     
     // in_array
-    describe('check if object is within array', function(){
+    describe('#in_array()', function(){
         var test_arr = ['element1', 'element2', 'element3', 'element4'];
         
         it('should return TRUE when looking for element1', function(){
-           JSUS.in_array('element2', test_arr).should.equal(true); 
+           JSUS.in_array('element2', test_arr).should.be.true; 
         });
         it('should return FALSE when looking for element5', function(){
-           JSUS.in_array('element5', test_arr).should.equal(false); 
+           JSUS.in_array('element5', test_arr).should.be.false; 
         });
+        
     });
 
     
@@ -217,6 +243,32 @@ describe('ARRAY: ', function(){
 	    	JSUS.rep(array, 3).should.eql([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]);
 		});
 		
+    });
+    
+    describe('#distinct()', function() {
+    	
+	    it('should eliminate duplicated strings', function(){
+	    	var array = ["a", "a", "b", "b", "c"];	
+	    	JSUS.distinct(array).should.eql(["a","b","c"]);
+		});
+	    
+	    it('should eliminate duplicated numbers', function(){
+	    	var array = [1,2,3,1,2,3,4,5,1,8];	
+	    	JSUS.distinct(array).should.eql([1,2,3,4,5,8]);
+		});
+		
+	    it('should eliminate duplicated special values', function(){
+	    	var array = [null,null,{},{},0,0, undefined,Infinity,Infinity, undefined];	
+	    	JSUS.distinct(array).should.be.eql([null,{},0,undefined,Infinity]);
+		});
+	    
+	    it('should eliminate duplicated special values (NaN)', function(){
+	    	var array = [NaN, NaN];	
+	    	var distinct = JSUS.distinct(array);
+	    	distinct.length.should.be.eql(1);
+	    	distinct[0].should.be.NaN;   	
+		});
+	    
     });
     
 });

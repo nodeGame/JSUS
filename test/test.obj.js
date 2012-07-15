@@ -287,8 +287,75 @@ describe('OBJ: ', function() {
     		JSUS.keys(obj_complex, 1).should.be.eql([ 'a', 'b', 'a', 'b', 'c', 'c' ]);
     	});	
     	
+    });
+    
+    describe('#equals()', function() {
+    	
+    	it('should say that 1 and 1 are equal', function(){	
+    		JSUS.equals(1, 1).should.be.true;
+    	});
+    	
+    	it('should say that 1 and \'1\' are NOT equal', function(){	
+    		JSUS.equals(1, '1').should.be.false;
+    		JSUS.equals('1', 1).should.be.false;
+    	});
+    	
+    	it('should say that "a" and "a" are equal', function(){	
+    		JSUS.equals('a', 'a').should.be.true;
+    		JSUS.equals("a", "a").should.be.true;
+    	});
+    	
+    	it('should say that "a" and "b" are NOT equal', function(){	
+    		JSUS.equals('a', 'b').should.be.false;
+    		JSUS.equals('b', 'a').should.be.false;
+    		JSUS.equals("a", "b").should.be.false;
+    		JSUS.equals("b", "a").should.be.false;
+    	});
+    	
+    	it('should say that "blah blah!" and "blah blah!" are equal', function(){	
+    		JSUS.equals('blah blah!', 'blah blah!').should.be.true;
+    		JSUS.equals("blah blah!", "blah blah!").should.be.true;
+    	});
+    	
+    	it('should say that undefined and undefined are equal', function(){	
+    		JSUS.equals(undefined, undefined).should.be.true;
+    	});
+    	
+    	it('should say that null and null are equal', function(){	
+    		JSUS.equals(null, null).should.be.true;
+    	});
+    	
+    	it('should say that 0 and 0 are equal', function(){	
+    		JSUS.equals(0, 0).should.be.true;
+    	});
+    	
+    	it('should say that NaN and NaN are equal', function(){	
+    		JSUS.equals(NaN, NaN).should.be.true;
+    	});
+    	
+    	it('should say that Infinity and Infinity are equal', function(){	
+    		JSUS.equals(Infinity, Infinity).should.be.true;
+    	});
+    	
+    	it('should say that two simple objects are equal', function(){	
+    		JSUS.equals(obj_simple, obj_simple).should.be.true;
+    	});
+    	
+    	it('should say that two complex objects are equal', function(){	
+    		JSUS.equals(obj_complex, obj_complex).should.be.true;
+    	});
+    	
+    	it('should say that two falsy objects are equal', function(){	
+    		JSUS.equals(obj_falsy, obj_falsy).should.be.true;
+    	});
+    	
+    	it('should say that two objects with nulls are equal', function(){	
+    		JSUS.equals(obj_with_null, obj_with_null).should.be.true;
+    	});    	
     	
     });
+    
+    
     
 });
 

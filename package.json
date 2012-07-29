@@ -8,13 +8,16 @@
     { "type": "MIT" }
   ],
   "directories": { "lib": "./lib"},
-  "dependencies": {},
+  "dependencies": {
+    "commander": "1.0.0",
+    "smoosh": "0.3.2"
+  },
   "devDependencies": {
-      "mocha": ">= 0.3.0",
-      "should": ">= 0.5.1",
-      "yuidocjs": ">= 0.3.0",
-			"docker": ">= 0.1.1"
-    },
+    "mocha": ">= 0.3.0",
+    "should": ">= 0.5.1",
+    "yuidocjs": ">= 0.3.0",
+    "docker": ">= 0.1.1"
+  },
   "engines": { "node":  ">=0.4.0" },
   "main": "jsus.js",
   "repository": {

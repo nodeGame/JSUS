@@ -2,6 +2,37 @@
 
 Collection of general purpose javascript functions. JSUS helps!
 
+
+## Build
+
+Create your customized build of JSUS.js 
+
+
+	Usage: make.jsus.js [options] [command]
+
+  	Commands:
+
+		build [options] 
+		Creates a custom build of JSUS.js
+
+	Options:
+
+	-h, --help     output usage information
+	-V, --version  output the version number
+
+  	Usage: build [options]
+
+	Options:
+
+	-h, --help           output usage information
+	-o, --output <file>
+
+
+```javascript
+	node make.jsus.js build // Full build, about 16Kb minified
+	node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
+```
+
 ## License
 
 Copyright (C) 2012 Stefano Balietti

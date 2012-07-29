@@ -40,10 +40,10 @@ function buildIt(options) {
 		}
 	}
 	
-	var files = [];
+	var files = [rootDir + 'jsus.js'];
 
 	if (options.length === 1) {
-		files = J.obj2Array(jsus_libs);
+		files = files.concat(J.obj2Array(jsus_libs));
 	}
 	else { 
 		var selected = options;

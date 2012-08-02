@@ -9,7 +9,7 @@ JSUS is designed to be modular and easy to extend.
 Just use: 
 
 ```javascript
-        JSUS.extend(myClass);
+JSUS.extend(myClass);
 ```
 
 to extend the functionalities of JSUS. All the methods of myClass 
@@ -30,7 +30,7 @@ no reference of myClass is stored.
 To get a copy of one of the registered JSUS libraries do:
 
 ```javascript
-   var myClass = JSUS.require('myClass');
+var myClass = JSUS.require('myClass');
 ```
 
 ### JSUS come shipped in with a default set of libraries:

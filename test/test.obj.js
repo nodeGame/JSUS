@@ -356,6 +356,33 @@ describe('OBJ: ', function() {
     });
     
     
+    describe('#hasOwnNestedProperty()', function() {
+    	
+    	it('should return TRUE for complex_obj', function(){	
+    		JSUS.hasOwnNestedProperty('b.a', obj_complex).should.be.true;
+    	});
+    	
+    	it('should return FALSE for simple_obj', function(){	
+    		JSUS.hasOwnNestedProperty('b.a', obj_simple).should.be.false;
+    	});
+    });
+    
+    
+    describe('#join()', function() {
+    	
+    	var a = {b:2, c:3, f:5};
+		var b = {a:10, b:2, c:100, d:4};
+
+    	it('should return TRUE for complex_obj', function(){
+    		JSUS.join(a,b).should.be.eql({b:2, c:100, f:5})
+    	});
+    });
+    
+    describe('#implode()', function() {
+    	it('should return TRUE for complex_obj', function(){
+    		JSUS.implode(obj_complex).should.be.eql([{a:1}, {b: obj_simple}, {c:3}]);
+    	});
+    });
     
 });
 

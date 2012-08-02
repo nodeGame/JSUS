@@ -26,6 +26,10 @@
  * and mySecondClass will receive all the methods of myClass. In this case,
  * no reference of myClass is stored.
  * 
+ * To get a copy of one of the registered JSUS libraries do:
+ * 
+ *  	var myClass = JSUS.require('myClass');
+ * 
  * ### JSUS come shipped in with a default set of libraries:
  * 
  * 1. OBJ
@@ -36,12 +40,24 @@
  * 6. RANDOM
  * 7. PARSE
  * 
- * Extra help is supplied inside each library file.
+ * ### Documentation
  * 
+ * Automatic documentation for all libraries can be generated with the command
+ * 
+ * ```javascript
+ * node bin/make.js doc
+ * ```
+ *  
+ * ### Build
+ * 
+ * Create your customized build of JSUS.js using the make file in the bin directory
+ * 
+ * ```javascript
+ * node make.jsus.js build // Full build, about 16Kb minified
+ * node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
+ * ```
  */
 
-// ## JSUS starts
-// Export the main function
 (function (exports) {
     
     var JSUS = exports.JSUS = {};
@@ -78,6 +94,9 @@ JSUS.log = function (txt) {
  * 
  * @param {object} additional Text to output
  * @param {object|function} target The object to extend
+ * @return {object|function} target The extended object
+ * 
+ * 	@see JSUS.get
  * 
  */
 JSUS.extend = function (additional, target) {        
@@ -123,20 +142,8 @@ JSUS.extend = function (additional, target) {
     return target;
 };
   
-// if node
-if ('object' === typeof module && 'function' === typeof require) {
-    require('./lib/obj');
-    require('./lib/array');
-    require('./lib/time');
-    require('./lib/eval');
-    require('./lib/dom');
-    require('./lib/random');
-    require('./lib/parse');
-}
-// end node
-  
 /**
- * ## JSUS.get
+ * ## JSUS.require
  * 
  * Returns a copy of one / all the objects that have extended the
  * current instance of JSUS.
@@ -145,9 +152,11 @@ if ('object' === typeof module && 'function' === typeof require) {
  * the requested extending object. If no parameter is passed a copy 
  * of all the extending objects is returned.
  * 
+ * @param {string} className The name of the requested JSUS library
+ * @return {function|boolean} The copy of the JSUS library, or FALSE if the library does not exist
  * 
  */
-JSUS.get = function (className) {
+JSUS.require = JSUS.get = function (className) {
     if ('undefined' === typeof JSUS.clone) {
         JSUS.log('JSUS.clone not found. Cannot continue.');
         return false;
@@ -160,7 +169,18 @@ JSUS.get = function (className) {
     return JSUS.clone(JSUS._classes[className]);
 };
 
-
+// ## Node.JS includes
+// if node
+if ('object' === typeof module && 'function' === typeof require) {
+    require('./lib/obj');
+    require('./lib/array');
+    require('./lib/time');
+    require('./lib/eval');
+    require('./lib/dom');
+    require('./lib/random');
+    require('./lib/parse');
+}
+// end node
     
 })('undefined' !== typeof module && 'undefined' !== typeof module.exports ? module.exports: window);
 

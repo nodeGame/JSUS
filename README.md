@@ -2,6 +2,46 @@
 
 Collection of general purpose javascript functions. JSUS helps!
 
+## Usage
+
+JSUS is designed to be modular and easy to extend. 
+
+Just use: 
+
+```javascript
+        JSUS.extend(myClass);
+```
+
+to extend the functionalities of JSUS. All the methods of myClass 
+are immediately added to JSUS, and a reference to myClass is stored
+in `JSUS._classes`.
+
+`MyClass` can be either of type Object or Function.
+
+JSUS can also extend other objects. Just pass a second parameter:
+
+```javascript
+JSUS.extend(myClass, mySecondClass);
+```
+
+and `mySecondClass` will receive all the methods of myClass. In this case,
+no reference of myClass is stored.
+
+To get a copy of one of the registered JSUS libraries do:
+
+```javascript
+   var myClass = JSUS.require('myClass');
+```
+
+### JSUS come shipped in with a default set of libraries:
+
+1. OBJ
+2. ARRAY
+3. TIME
+4. EVAL
+5. DOM
+6. RANDOM
+7. PARSE
 
 ## Build
 
@@ -12,6 +52,16 @@ Create your customized build of JSUS.js using the make file in the bin directory
 	node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
 ```
 
+## API Documentation
+
+Create html API documentation using the make file in the bin directory  
+
+```javascript
+  node make.jsus.js doc // Full build, about 16Kb minified
+```
+
+## Make help
+
 Make help:
 
 	Usage: make.jsus.js [options] [command]
@@ -20,6 +70,9 @@ Make help:
 
 		build [options] 
 		Creates a custom build of JSUS.js
+ 
+    doc 
+    Build documentation files
 
 	Options:
 

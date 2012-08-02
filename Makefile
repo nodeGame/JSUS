@@ -1,10 +1,8 @@
-# doc: 
-#	@./node_modules/.bin/yuidoc . -c yuidoc.js
-
 doc:
 	@./node_modules/.bin/docker lib/ -o docs -s true
 
-
+build:
+	@./bin/make.jsus.js
 
 test:
 	@./node_modules/.bin/mocha

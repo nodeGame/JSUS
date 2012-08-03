@@ -325,6 +325,18 @@ describe('OBJ: ', function() {
     		JSUS.equals(null, null).should.be.true;
     	});
     	
+    	it('should say that false and false are equal', function(){	
+    		JSUS.equals(false, false).should.be.true;
+    	});
+    	
+    	it('should say that true and true are equal', function(){	
+    		JSUS.equals(true, true).should.be.true;
+    	});
+    	
+    	it('should say that false and true are NOT equal', function(){	
+    		JSUS.equals(false, true).should.be.false;
+    	});
+    	
     	it('should say that 0 and 0 are equal', function(){	
     		JSUS.equals(0, 0).should.be.true;
     	});

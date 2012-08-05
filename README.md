@@ -57,7 +57,7 @@ node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
 Create html API documentation using the make file in the bin directory  
 
 ```javascript
-node make.jsus.js doc // Full build, about 16Kb minified
+node make.jsus.js doc
 ```
 
 ## Make help

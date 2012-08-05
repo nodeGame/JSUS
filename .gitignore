@@ -1,0 +1,9 @@
+\#*\#
+.settings
+_*
+.project
+*~
+npm-debug.log
+yuidoc.js
+/node_modules/*
+/build/*

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>random.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'var/www/JSUS/lib/random.js', defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#random">RANDOM</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.random">RANDOM.random</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.randomint">RANDOM.randomInt</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random">
+  <h1>
+    <a href="#random" class="pilcrow">&#182;</a>
+    RANDOM
+  </h1>
+</div>
+
+
+<p>Copyright(c) 2012 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of static functions related to the generation of 
+pseudo-random numbers</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+    
+<span class="kd">function</span> <span class="nx">RANDOM</span><span class="p">(){};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.random">
+  <h2>
+    <a href="#random.random" class="pilcrow">&#182;</a>
+    RANDOM.random
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Generates a pseudo-random floating point number between 
+(a,b), both a and b exclusive.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>a</span>
+      <span class="dox_type">number</span>
+      <span>The lower limit </span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>b</span>
+      <span class="dox_type">number</span>
+      <span>The upper limit</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span></span>
+      <span class="dox_type">number</span>
+      <span>A random floating point number in (a,b)</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">a</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">a</span><span class="p">;</span>
+  <span class="nx">b</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">b</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">b</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">b</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
+    <span class="nx">b</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">a</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.randomint">
+  <h2>
+    <a href="#random.randomint" class="pilcrow">&#182;</a>
+    RANDOM.randomInt
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Generates a pseudo-random integer between 
+(a,b] a exclusive, b inclusive.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>a</span>
+      <span class="dox_type">number</span>
+      <span>The lower limit </span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>b</span>
+      <span class="dox_type">number</span>
+      <span>The upper limit</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span></span>
+      <span class="dox_type">number</span>
+      <span>A random integer in (a,b]</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">RANDOM.random</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">randomInt</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+<span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
+    
+<span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -21,15 +21,6 @@
       <div class="heading h1">
         <a href="#jsus--javascript-utils.">JSUS: JavaScript UtilS.</a>
       </div>
-      <div class="heading h3">
-        <a href="#collection-of-general-purpose-javascript-functions.-jsus-helps-">Collection of general purpose javascript functions. JSUS helps!</a>
-      </div>
-      <div class="heading h3">
-        <a href="#jsus-come-shipped-in-with-a-default-set-of-libraries-">JSUS come shipped in with a default set of libraries:</a>
-      </div>
-      <div class="heading h3">
-        <a href="#documentation">Documentation</a>
-      </div>
       <div class="heading h2">
         <a href="#jsus._classes">JSUS._classes</a>
       </div>
@@ -40,7 +31,7 @@
         <a href="#jsus.extend">JSUS.extend</a>
       </div>
       <div class="heading h2">
-        <a href="#jsus.get">JSUS.get</a>
+        <a href="#jsus.require">JSUS.require</a>
       </div>
       <div class="heading h2">
         <a href="#node.js-includes">Node.JS includes</a>
@@ -65,14 +56,7 @@
 <p>Copyright(c) 2012 Stefano Balietti
 MIT Licensed</p>
   </div>
-  <div class="body">
-<div class="pilwrap" id="collection-of-general-purpose-javascript-functions.-jsus-helps-">
-  <h3>
-    <a href="#collection-of-general-purpose-javascript-functions.-jsus-helps-" class="pilcrow">&#182;</a>
-    Collection of general purpose javascript functions. JSUS helps!
-  </h3>
-</div>
-
+  <div class="body"><p>Collection of general purpose javascript functions. JSUS helps!</p>
 
 <p>JSUS is designed to be modular and easy to extend. </p>
 
@@ -101,14 +85,15 @@ in JSUS._classes.</p>
 <p>and mySecondClass will receive all the methods of myClass. In this case,
 no reference of myClass is stored.</p>
 
+<p>To get a copy of one of the registered JSUS libraries</p>
 
-<div class="pilwrap" id="jsus-come-shipped-in-with-a-default-set-of-libraries-">
-  <h3>
-    <a href="#jsus-come-shipped-in-with-a-default-set-of-libraries-" class="pilcrow">&#182;</a>
-    JSUS come shipped in with a default set of libraries:
-  </h3>
-</div>
 
+<div class="highlight"><pre><code> <span class="n">var</span> <span class="n">myClass</span> <span class="o">=</span> <span class="n">JSUS</span><span class="o">.</span><span class="nb">require</span><span class="p">(</span><span class="s">&#39;myClass&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<p>JSUS come shipped in with a default set of libraries</p>
 
 <ol>
 <li>OBJ</li>
@@ -120,19 +105,23 @@ no reference of myClass is stored.</p>
 <li>PARSE</li>
 </ol>
 
-
-<div class="pilwrap" id="documentation">
-  <h3>
-    <a href="#documentation" class="pilcrow">&#182;</a>
-    Documentation
-  </h3>
-</div>
-
+<p>Documentation</p>
 
 <p>Automatic documentation for all libraries can be generated with the command</p>
 
 
 <div class="highlight"><pre><code><span class="nx">node</span> <span class="nx">bin</span><span class="o">/</span><span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">doc</span>
+</code></pre></div>
+
+
+
+<p>Build</p>
+
+<p>Create your customized build of JSUS.js using the make file in the bin directory</p>
+
+
+<div class="highlight"><pre><code><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">jsus</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="c1">// Full build, about 16Kb minified</span>
+<span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">jsus</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="nx">OBJ</span> <span class="nx">ARRAY</span> <span class="o">-</span><span class="nx">o</span> <span class="nx">jsus</span><span class="o">-</span><span class="nx">oa</span><span class="p">.</span><span class="nx">js</span> <span class="c1">// about 8Kb minified</span>
 </code></pre></div>
 
 
@@ -306,10 +295,10 @@ TODO: this is true also for {}</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="jsus.get">
+<div class="pilwrap" id="jsus.require">
   <h2>
-    <a href="#jsus.get" class="pilcrow">&#182;</a>
-    JSUS.get
+    <a href="#jsus.require" class="pilcrow">&#182;</a>
+    JSUS.require
   </h2>
 </div>
 
@@ -338,7 +327,7 @@ of all the extending objects is returned.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">require</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;JSUS.clone not found. Cannot continue.&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>

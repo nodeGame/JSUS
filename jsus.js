@@ -3,7 +3,7 @@
  * Copyright(c) 2012 Stefano Balietti
  * MIT Licensed
  * 
- * ### Collection of general purpose javascript functions. JSUS helps!
+ * Collection of general purpose javascript functions. JSUS helps!
  * 
  * 
  * JSUS is designed to be modular and easy to extend. 
@@ -26,11 +26,11 @@
  * and mySecondClass will receive all the methods of myClass. In this case,
  * no reference of myClass is stored.
  * 
- * To get a copy of one of the registered JSUS libraries do:
+ * To get a copy of one of the registered JSUS libraries
  * 
  *  	var myClass = JSUS.require('myClass');
  * 
- * ### JSUS come shipped in with a default set of libraries:
+ * JSUS come shipped in with a default set of libraries
  * 
  * 1. OBJ
  * 2. ARRAY
@@ -40,7 +40,7 @@
  * 6. RANDOM
  * 7. PARSE
  * 
- * ### Documentation
+ * Documentation
  * 
  * Automatic documentation for all libraries can be generated with the command
  * 
@@ -48,7 +48,7 @@
  * node bin/make.js doc
  * ```
  *  
- * ### Build
+ * Build
  * 
  * Create your customized build of JSUS.js using the make file in the bin directory
  * 

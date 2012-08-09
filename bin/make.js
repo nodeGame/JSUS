@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// # JSUS make script
+ 
+
 /**
  * Module dependencies.
  */
@@ -13,17 +16,24 @@ var program = require('commander'),
 
 
 
-var build = require('./build.jsus.js').build;
+var build = require('./build.js').build;
+
+function list(val) {
+	return val.split(',');
+}
 
 program
-	.version(version)
+	.version(version);
   
 program  
-	.command('build')
+	.command('build [options]')
 	.description('Creates a custom build of JSUS.js')
+	.option('-l, --lib <items>', 'choose libraries to include', list)
+	.option('-A, --analyse', 'analyse build')
+	.option('-a, --all', 'full build of JSUS')
 	.option('-o, --output <file>')
-	.action(function(){
-		build(arguments);
+	.action(function(env, options){
+		build(options);
 	});
    
 program

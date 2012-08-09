@@ -1,3 +1,9 @@
+// # JSUS build script
+ 
+// Export build
+module.exports.build = buildIt;
+
+// Dependencies
 var	smoosh = require('smoosh'),
 	fs = require('fs'),
     path = require('path'),
@@ -6,16 +12,10 @@ var	smoosh = require('smoosh'),
     version = pkg.version;
 
 
-module.exports.build = buildIt;
 
 function buildIt(options) {
-	
-//	console.log('oo')
-//	console.log()
-//	console.log('oo')
-//dde
-	
-	var out = options[options.length-1].output || "jsus";
+		
+	var out = options.output || "jsus";
 	
 	if (path.extname(out) === '.js') {
 		out = path.basename(out, '.js');
@@ -39,24 +39,30 @@ function buildIt(options) {
 	
 	var files = [rootDir + 'jsus.js'];
 
-	if (options.length === 1) {
+	console.log('  - JSUS core');
+	
+	if (options.all) {
 		files = files.concat(J.obj2Array(jsus_libs));
+		console.log('  - JSUS lib: all available libs included');
 	}
 	else { 
-		var selected = options;
+		var selected = options.lib;
 		for (var i in selected) {
 			if (selected.hasOwnProperty(i)) {
 				if (!('string' === typeof selected[i])) continue;
-//				console.log(selected[i])
 				var name = selected[i].toLowerCase();
 				if (jsus_libs[name]) {
 					files.push(jsus_libs[name]);
+					console.log('  - JSUS lib: ' + selected[i]);
+				}
+				else {
+					console.log('  - ERR: JSUS lib not found: ' + name);
 				}
 			}
 		}
 	}
 	
-
+	console.log("\n");
 	
 	// Configurations for file smooshing.
 	var config = {
@@ -79,14 +85,17 @@ function buildIt(options) {
 	var run_it = function(){
 	    // Smooshing callback chain
 	    // More information on how it behaves can be found in the smoosh Readme https://github.com/fat/smoosh
-	    smoosh
-	        .config(config) // hand over configurations made above
-	        // .clean() // removes all files out of the nodegame folder
-	        .run() // runs jshint on full build
-	        .build() // builds both uncompressed and compressed files
-	        .analyze(); // analyzes everything
-	
-	    console.log('JSUS build created');
+	    var smooshed = smoosh
+	    	.config(config) // hand over configurations made above
+	    	// .clean() // removes all files out of the nodegame folder
+	    	.build(); // builds both uncompressed and compressed files
+	        
+    	if (options.analyse) {
+    		smooshed.run() // runs jshint on full build
+    		smooshed.analyze(); // analyzes everything
+    	}
+
+        console.log('JSUS build created');
 	}
 	
 	run_it();

@@ -48,8 +48,8 @@ var myClass = JSUS.require('myClass');
 Create your customized build of JSUS.js using the make file in the bin directory
 
 ```javascript
-node make.jsus.js build // Full build, about 16Kb minified
-node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
+node make.js build -a // Full build, about 20Kb minified
+node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
 ```
 
 ## API Documentation
@@ -57,7 +57,7 @@ node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
 Create html API documentation using the make file in the bin directory  
 
 ```javascript
-node make.jsus.js doc
+node make.js doc
 ```
 
 ## Make help
@@ -66,7 +66,7 @@ node make.jsus.js doc
 
   	Commands:
 
-		build [options] 
+		build [options] [options]
 		Creates a custom build of JSUS.js
  
     doc 
@@ -77,12 +77,16 @@ node make.jsus.js doc
 	-h, --help     output usage information
 	-V, --version  output the version number
 
-  	Usage: build [options]
 
-	Options:
+  Usage: build [options] [options]
 
-	-h, --help           output usage information
-	-o, --output <file>
+  Options:
+
+    -h, --help           output usage information
+    -l, --lib <items>    choose libraries to include
+    -A, --analyse        analyse build
+    -a, --all            full build of JSUS
+    -o, --output <file>  
 
 
 ## License

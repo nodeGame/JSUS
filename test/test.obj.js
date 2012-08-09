@@ -28,6 +28,11 @@ var obj_falsy = {
 	c: 3,
 };
 
+var array_simple = [1,2,3];
+var array_complex = [1,array_simple, 3];
+var array_with_null = [1,null,3];
+var array_falsy = [1,false,3];
+
 // Based on the properties of the objects above
 function checkClone(c, o1, o2) {
 	c.a = 'foo';
@@ -38,7 +43,57 @@ function checkClone(c, o1, o2) {
 
 describe('OBJ: ', function() {
     
-    describe('#clone()', function() {
+describe('#clone() arrays', function() {
+        
+    	var copy_simple 	= JSUS.clone(array_simple);
+    	var copy_complex 	= JSUS.clone(array_complex);
+    	var copy_with_null	= JSUS.clone(array_with_null);
+    	var copy_falsy		= JSUS.clone(array_falsy);
+    	
+    	// SIMPLE
+        it('should return the copy of a simple object', function(){
+        	copy_simple.should.eql(array_simple); 
+        });
+        
+        it('modification to the copy of a simple object should not affect the original one', function(){
+        	copy_simple[0] = 'foo';
+        	copy_simple[0].should.not.be.equal(array_simple[0]);
+        });
+        
+        // COMPLEX
+        it('should return the copy of a complex object', function(){
+           copy_complex.should.eql(array_complex); 
+        });
+        
+        it('modification to the copy of a complex object should not affect the original one', function(){
+        	copy_complex[0] = 'foo';
+        	copy_complex[0].should.not.be.equal(array_complex[0]);
+        });
+        
+        // NULL
+        it('should return the copy of an object with NULL values', function(){
+            copy_with_null.should.eql(array_with_null); 
+        });
+         
+	    it('modification to the copy of an object with NULL values should not affect the original one', function(){
+	    	copy_with_null[0] = 'foo';
+	     	copy_with_null[0].should.not.be.equal(array_with_null[0]);
+	    });
+        
+	    // FALSY
+	    it('should return the copy of an object with FALSY values', function(){
+	    	copy_falsy.should.eql(array_falsy); 
+        });
+         
+	    it('modification to the copy of an object with FALSY values should not affect the original one', function(){
+	    	copy_falsy[0] = 'foo';
+	    	copy_falsy[0].should.not.be.equal(array_falsy[0]);
+	    });
+	    
+        
+    });
+	
+    describe('#clone() objects', function() {
         
     	var copy_simple 	= JSUS.clone(obj_simple);
     	var copy_complex 	= JSUS.clone(obj_complex);

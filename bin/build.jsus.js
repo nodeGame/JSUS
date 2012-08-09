@@ -23,12 +23,9 @@ function buildIt(options) {
 
 	console.log('Building JSUS v.' + version + ' with:');
 	
-	// Defining variables
-	
-	var re = new RegExp('node_modules.+');
-	
+	// Defining variables	
 	var rootDir = __dirname + '/../';
-	var libDir = rootDir + 'lib/'
+	var libDir = rootDir + 'lib/';
 	var distDir =  rootDir + 'build/';
 	
 	var jsus_libs = {};
@@ -60,8 +57,6 @@ function buildIt(options) {
 	}
 	
 
-	
-	console.log('Adding ' + files.length + ' files');
 	
 	// Configurations for file smooshing.
 	var config = {

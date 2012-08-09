@@ -53,8 +53,8 @@
  * Create your customized build of JSUS.js using the make file in the bin directory
  * 
  * ```javascript
- * node make.jsus.js build // Full build, about 16Kb minified
- * node make.jsus.js build OBJ ARRAY -o jsus-oa.js // about 8Kb minified
+ * node make.js build // Full build, about 20Kb minified
+ * node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
  * ```
  */
 

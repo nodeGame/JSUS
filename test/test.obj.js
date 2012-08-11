@@ -451,6 +451,27 @@ describe('#clone() arrays', function() {
     	});
     });
     
+    describe('#deleteNestedKey()', function() {
+    	var copy_complex;
+    	beforeEach(function(){
+    		copy_complex = JSUS.clone(obj_complex);
+    	})
+    	it('should return TRUE for complex_obj', function() {
+    		JSUS.deleteNestedKey('b.c', copy_complex).should.be.true;
+    	});
+    	it('should delete nested property from complex object', function() {
+    		JSUS.deleteNestedKey('b.c', copy_complex);
+    		copy_complex.should.be.eql({a:1, b:{a:1, b:2}, c:3});
+    	});
+    	it('should delete first-level property from complex object', function() {
+    		JSUS.deleteNestedKey('b', copy_complex);
+    		copy_complex.should.be.eql({a:1, c:3});
+    	});    	
+    	it('should return FALSE when nested property does not exist', function() {
+    		JSUS.deleteNestedKey('b.c.a.g', copy_complex).should.be.false;
+    	});
+    });
+    
 });
 
 

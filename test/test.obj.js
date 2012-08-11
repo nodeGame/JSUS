@@ -477,21 +477,41 @@ describe('#clone() arrays', function() {
     	beforeEach(function(){
     		copy_complex = JSUS.clone(obj_complex);
     	})
-    	it('should delete nested property from complex object', function() {
+    	it('should set nested property from complex object', function() {
     		JSUS.setNestedValue('b.c', 'foo', copy_complex);
     		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: 'foo'}, c:3});
     	});
-    	it('should delete first-level property from complex object', function() {
+    	it('should set first-level property from complex object', function() {
     		JSUS.setNestedValue('b', 'foo', copy_complex);
     		copy_complex.should.be.eql({a:1, b: 'foo', c:3});
     	});    	
-    	it('should create a new property when nested property does not exist', function() {
+    	it('should create a new property when nested property does not exist #1', function() {
     		JSUS.setNestedValue('b.c.a', 'foo', copy_complex);
     		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: {a: 'foo'}}, c:3});
     	});
-    	it('should create a new property when nested property does not exist', function() {
+    	it('should create a new property when nested property does not exist #2', function() {
     		JSUS.setNestedValue('b.c.a.g', 'foo', copy_complex);
     		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: {a: {g: 'foo'}}}, c:3});
+    	});
+    	it('should create a new object when none is passed', function() {
+    		JSUS.setNestedValue('b.c.a.g', 'foo').should.be.eql({b:{c: {a: {g: 'foo'}}}});
+    	});
+    });
+    
+    describe('#getNestedValue()', function() {
+    	var copy_complex;
+    	beforeEach(function(){
+    		copy_complex = JSUS.clone(obj_complex);
+    	})
+    	it('should get nested property from complex object', function() {
+    		JSUS.getNestedValue('b.c', copy_complex).should.be.eql(3);
+    	});
+    	it('should get first-level property from complex object', function() {
+    		JSUS.getNestedValue('b', copy_complex).should.be.eql({a:1, b: 2, c:3});
+    	});    	
+    	it('should return undefined when a nested property does not exist', function() {
+    		(JSUS.getNestedValue('b.c.a', copy_complex) === undefined).should.be.true;
+    		(JSUS.getNestedValue('b.c.a.g.h.', copy_complex) === undefined).should.be.true;
     	});
     });
     

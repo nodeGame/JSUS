@@ -472,6 +472,29 @@ describe('#clone() arrays', function() {
     	});
     });
     
+    describe('#setNestedValue()', function() {
+    	var copy_complex;
+    	beforeEach(function(){
+    		copy_complex = JSUS.clone(obj_complex);
+    	})
+    	it('should delete nested property from complex object', function() {
+    		JSUS.setNestedValue('b.c', 'foo', copy_complex);
+    		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: 'foo'}, c:3});
+    	});
+    	it('should delete first-level property from complex object', function() {
+    		JSUS.setNestedValue('b', 'foo', copy_complex);
+    		copy_complex.should.be.eql({a:1, b: 'foo', c:3});
+    	});    	
+    	it('should create a new property when nested property does not exist', function() {
+    		JSUS.setNestedValue('b.c.a', 'foo', copy_complex);
+    		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: {a: 'foo'}}, c:3});
+    	});
+    	it('should create a new property when nested property does not exist', function() {
+    		JSUS.setNestedValue('b.c.a.g', 'foo', copy_complex);
+    		copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: {a: {g: 'foo'}}}, c:3});
+    	});
+    });
+    
 });
 
 

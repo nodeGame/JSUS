@@ -511,7 +511,20 @@ describe('#clone() arrays', function() {
     	});    	
     	it('should return undefined when a nested property does not exist', function() {
     		(JSUS.getNestedValue('b.c.a', copy_complex) === undefined).should.be.true;
-    		(JSUS.getNestedValue('b.c.a.g.h.', copy_complex) === undefined).should.be.true;
+    		(JSUS.getNestedValue('b.c.a.g.h', copy_complex) === undefined).should.be.true;
+    	});
+    });
+    
+    describe('#subboj()', function() {
+    	it('should return a subset of first-level properties of a complex object', function() {
+    		JSUS.subobj(obj_complex, ['a','b']).should.be.eql({a:1, b:{a:1, b:2, c: 3}});
+    	});
+    	it('should return a subset of nested properties of a complex object', function() {
+    		JSUS.subobj(obj_complex,['b.c']).should.be.eql({b: {c: 3}});
+    	});    	
+    	it('should return an empty object when no selected property exists', function() {
+    		JSUS.subobj(obj_complex, ['b.c.a']).should.be.eql({});
+    		JSUS.subobj(obj_complex, ['aa']).should.be.eql({})
     	});
     });
     

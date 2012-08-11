@@ -528,6 +528,19 @@ describe('#clone() arrays', function() {
     	});
     });
     
+    describe('#skim()', function() {
+    	it('should remove first-level properties from a complex object', function() {
+    		JSUS.skim(obj_complex, ['a','b']).should.be.eql({c: 3});
+    	});
+    	it('should remove nested properties from a complex object', function() {
+    		JSUS.skim(obj_complex,['b.c','c']).should.be.eql({a:1, b:{a:1, b:2}});
+    	});    	
+    	it('should return a copy of the object when no selected property exists', function() {
+    		JSUS.skim(obj_complex, ['b.c.a']).should.be.eql(obj_complex);
+    		JSUS.skim(obj_complex, ['aa']).should.be.eql(obj_complex)
+    	});
+    });
+    
 });
 
 

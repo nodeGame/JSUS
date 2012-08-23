@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/nodeGame/JSUS.png)](http://travis-ci.org/nodeGame/JSUS)
 # JSUS: JavaScript UtilS. 
 
 Collection of general purpose javascript functions. JSUS helps!

@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = '../', thisFile = 'var/www/JSUS/lib/obj.js', defaultSidebar = true;
+    var relativeDir = '../', thisFile = 'lib/obj.js', defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
 </head>
@@ -61,10 +61,16 @@
         <a href="#obj.subobj">OBJ.subobj</a>
       </div>
       <div class="heading h2">
+        <a href="#obj.skim">OBJ.skim</a>
+      </div>
+      <div class="heading h2">
         <a href="#obj.setnestedvalue">OBJ.setNestedValue</a>
       </div>
       <div class="heading h2">
         <a href="#obj.getnestedvalue">OBJ.getNestedValue</a>
+      </div>
+      <div class="heading h2">
+        <a href="#obj.deletenestedkey">OBJ.deleteNestedKey</a>
       </div>
       <div class="heading h2">
         <a href="#obj.hasownnestedproperty">OBJ.hasOwnNestedProperty</a>
@@ -576,7 +582,12 @@ them into an array</p>
 </div>
 
   </div>
-  <div class="body"><p>Creates a perfect copy of the object passed as parameter.</p>
+  <div class="body"><p>Creates a perfect copy of the object passed as parameter</p>
+
+<p>Recursively scans all the properties of the object to clone.
+Properties of the prototype chain are copied as well.</p>
+
+<p>Primitive types and special values are returned as they are.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -595,15 +606,16 @@ them into an array</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;boolean&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">NaN</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
    
   <span class="kd">var</span> <span class="nx">clone</span> <span class="o">=</span> <span class="p">{};</span>
   <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-  </pre></div>
+    <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -613,8 +625,35 @@ them into an array</p>
 </div>
 <p>It is not NULL and it is an object</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>  <span class="o">?</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-                              <span class="o">:</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>is an array</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+      <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>is an object</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="p">}</span> 
     
       <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
         <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
@@ -754,7 +793,7 @@ between obj1 and obj2, the values from obj2 are taken. </p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Checking before starting the algorithm</p>
         </td>
@@ -771,7 +810,7 @@ between obj1 and obj2, the values from obj2 are taken. </p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
@@ -781,7 +820,7 @@ between obj1 and obj2, the values from obj2 are taken. </p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>If we are merging an object into <br />
 a non-object, we need to cast the 
@@ -875,10 +914,12 @@ contains just the values for one of the properties (e.g. value). </p>
 
   </div>
   <div class="body"><p>Creates a copy of an object containing only the properties 
-passed as second parameter.</p>
+passed as second parameter</p>
 
 <p>The parameter select can be an array of strings, or the name 
-of a property. Nested properties can be specified too. </p>
+of a property. </p>
+
+<p>Use '.' (dot) to point to a nested property.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -910,12 +951,65 @@ of a property. Nested properties can be specified too. </p>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">select</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">select</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">hasOwnNestedProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">o</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">out</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span>
+          <span class="nx">OBJ</span><span class="p">.</span><span class="nx">setNestedValue</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">o</span><span class="p">),</span> <span class="nx">out</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
 <span class="p">};</span>
   </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.skim">
+  <h2>
+    <a href="#obj.skim" class="pilcrow">&#182;</a>
+    OBJ.skim
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Creates a copy of an object where a set of selected properties
+have been removed</p>
+
+<p>The parameter <code>remove</code> can be an array of strings, or the name 
+of a property. </p>
+
+<p>Use '.' (dot) to point to a nested property.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>o</span>
+      <span class="dox_type">object</span>
+      <span>The object to dissect</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>select</span>
+      <span class="dox_type">string</span>
+      <span class="dox_type">array</span>
+      <span>The selection of properties to remove</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span></span>
+      <span class="dox_type">object</span>
+      <span>out The subobject with the properties from the parent one </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">OBJ</span><span class="p">.</span><span class="nx">skim</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">remove</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">remove</span><span class="p">)</span> <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">remove</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">))</span> <span class="nx">remove</span> <span class="o">=</span> <span class="p">[</span><span class="nx">remove</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">remove</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span><span class="p">(</span><span class="nx">remove</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">out</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+<span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -932,9 +1026,10 @@ of a property. Nested properties can be specified too. </p>
   <div class="body"><p>Sets the value of a nested property of an object,
 and returns it.</p>
 
-<p>If the object is not passed a new one is created.</p>
+<p>If the object is not passed a new one is created.
+If the nested property is not existing, a new one is created.</p>
 
-<p>If the nested property is not existing, a new one is created.</p>
+<p>Use '.' (dot) to point to a nested property.</p>
 
 <p>The original object is modified.</p>
   </div>
@@ -957,6 +1052,14 @@ and returns it.</p>
       <span class="dox_type">boolean</span>
       <span>obj The modified object, or FALSE if error occurred</span>
     </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.getNestedValue</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.deleteNestedKey</span>
+    </div>
   </div>
 </div>
         </td>
@@ -965,7 +1068,7 @@ and returns it.</p>
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot set value of undefined property&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="nx">obj</span> <span class="o">=</span> <span class="nx">obj</span> <span class="o">||</span> <span class="p">{};</span>
+  <span class="nx">obj</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="o">?</span> <span class="nx">obj</span> <span class="o">:</span> <span class="p">{};</span>
     <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">obj</span><span class="p">[</span><span class="nx">str</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
@@ -991,7 +1094,7 @@ and returns it.</p>
   <div class="body"><p>Returns the value of a property of an object, as defined
 by a path string. </p>
 
-<p>Use '.' to point to a nested property.</p>
+<p>Use '.' (dot) to point to a nested property.</p>
 
 <p>Returns undefined if the nested property does not exist.</p>
 
@@ -1022,6 +1125,14 @@ by a path string. </p>
       <span class="dox_type">mixed</span>
       <span>The extracted value</span>
     </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.setNestedValue</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.deleteNestedKey</span>
+    </div>
   </div>
 </div>
         </td>
@@ -1033,6 +1144,75 @@ by a path string. </p>
     <span class="p">}</span>
     <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
     <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span> 
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.deletenestedkey">
+  <h2>
+    <a href="#obj.deletenestedkey" class="pilcrow">&#182;</a>
+    OBJ.deleteNestedKey
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Deletes a property from an object, as defined by a path string </p>
+
+<p>Use '.' (dot) to point to a nested property.</p>
+
+<p>The original object is modified.</p>
+
+<p>E.g.</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="o">:</span><span class="p">{</span><span class="nx">a</span><span class="o">:</span><span class="mi">2</span><span class="p">}</span> <span class="p">};</span>
+<span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span><span class="p">(</span><span class="s1">&#39;b.a&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span> <span class="c1">// { a:1, b: {} }</span>
+</code></pre></div>
+
+
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>str</span>
+      <span class="dox_type">string</span>
+      <span>The path string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>obj</span>
+      <span class="dox_type">object</span>
+      <span>The object from which deleting a property</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>TRUE,</span>
+      <span class="dox_type">boolean</span>
+      <span>if the property was existing, and then deleted</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.setNestedValue</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.getNestedValue</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">str</span><span class="p">];</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span> 
 <span class="p">};</span></pre></div>
         </td>
       </tr>

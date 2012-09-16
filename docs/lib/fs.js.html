@@ -90,7 +90,7 @@ MIT Licensed</p>
 <p>Npm does not install a dependency if the same module
 is available in a parent folder. This method returns
 the full path of the root directory of the specified
-module.</p>
+module as installed by npm.</p>
 
 <p>Trailing slash is added.</p>
   </div>
@@ -101,6 +101,11 @@ module.</p>
       <span class="dox_type">string</span>
       <span>The name of the module</span>
     </div>
+    <div class="dox_tag_detail">
+      <span>basedir</span>
+      <span class="dox_type">string</span>
+      <span>Optional The basedir from which starting searching</span>
+    </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
       <span></span>
@@ -110,10 +115,10 @@ module.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">resolveModuleDir</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">module</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">resolveModuleDir</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">basedir</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">module</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
-  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">resolve</span><span class="p">.</span><span class="nx">sync</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">resolve</span><span class="p">.</span><span class="nx">sync</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="p">{</span><span class="nx">basedir</span><span class="o">:</span> <span class="nx">basedir</span> <span class="o">||</span> <span class="nx">__dirname</span><span class="p">});</span>
   <span class="kd">var</span> <span class="nx">stop</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
   <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">stop</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
 <span class="p">};</span></pre></div>

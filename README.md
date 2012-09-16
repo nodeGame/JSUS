@@ -42,6 +42,7 @@ var myClass = JSUS.require('myClass');
 5. DOM
 6. RANDOM
 7. PARSE
+8. FS
 
 ## Build
 

@@ -179,7 +179,7 @@ JSUS.require = JSUS.get = function (className) {
 JSUS.isNodeJS = function () {
 	return 'undefined' !== typeof module 
 			&& 'undefined' !== typeof module.exports
-			&& 'function' !== typeof require;
+			&& 'function' === typeof require;
 };
 
 // ## Node.JS includes

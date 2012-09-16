@@ -3,7 +3,7 @@ var util = require('util');
     JSUS = require('./../jsus').JSUS;
     
 var a = 0;
-var b = 1000;
+var b = 10000;
 var v = [];
     
 describe('RANDOM: ', function(){
@@ -34,28 +34,33 @@ describe('RANDOM: ', function(){
 		
 	});
     
-	describe('#randomInt()', function(){
+	describe('#randomInt()', function() {
+		var found_b = false;
+		var found_a = false;
+		
 		before(function(){
 			v = [];
 			for (var i = a; i < b; i++) {
-				v.push(JSUS.randomInt(a,b));
+				var n = JSUS.randomInt(a,b);
+				if (n === b) found_b = true;
+				if (n === a) found_a = true;
+				v.push(n);
 			}
 		});
 	
-		it('should be within (a,b]. Notice: It can fails when it checks for b', function() {
-			var found_b = false;
-			var found_a = false;
+		it('should be within (a,b].', function() {
 			for (var i=0; i< v.length; i++) {	
-				if (v[i] === b) found_b = true;
-				if (v[i] === a) found_a = true;
 				v[i].should.be.within(a,(b+1));
-			}
-	
-			found_b.should.be.true;
+			}			
+		});
+		
+		it('should be within (a,b]. a should never be found', function() {
 			found_a.should.be.false;
-			
-			
-		});		
+		});
+
+		it('should be within (a,b]. b should never be found (can fail)', function() {
+			found_b.should.be.true;
+		});
 		
 	});
     

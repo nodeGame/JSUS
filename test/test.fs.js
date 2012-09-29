@@ -88,7 +88,7 @@ describe('FS: ', function(){
 					files.length.should.be.eql(4);
 				});
 			};
-			JSUS.copyFromDir(randomDir, copyDir, null, func);
+			JSUS.copyFromDir(randomDir, copyDir, undefined, func);
 		});	
 		
 	});

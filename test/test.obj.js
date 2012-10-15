@@ -16,6 +16,12 @@ var obj_complex = {
 	c: 3,
 };
 
+var obj_with_array = {
+		a: 1,
+		b: [1, 2],
+		c: 3,
+	};
+
 var obj_with_null = {
 	a: 1,
 	b: null,
@@ -171,6 +177,21 @@ describe('#clone() arrays', function() {
          
 	    it('modification to the merged object should affect any of the merging ones', function(){
 	    	checkClone(simple_null, obj_simple, obj_with_null);
+	    });
+    	
+    });
+    
+    describe('#merge() obj with array in SIMPLE', function() {
+    	
+    	var simple_array = JSUS.merge(obj_simple, obj_with_array);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	simple_array.should.eql(obj_with_array); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_array, obj_simple, obj_with_array);
 	    });
     	
     });

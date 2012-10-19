@@ -182,21 +182,6 @@ JSUS.isNodeJS = function () {
 			&& 'function' === typeof require;
 };
 
-/**
- * ## JSUS.getFuncName
- * 
- * Extract the function name from its constructor
- * 
- * @param {function} func The function from which extracting the name
- * @return {string|boolean} The name of the function, or FALSE if an error occurs
- */
-JSUS.getFuncName = function (func) {
-	if ('function' !== typeof func) return false;
-	var name = func.constructor.toString();
-	name = name.substr('function '.length);
-	return name.substr(0, name.indexOf('('));
-}
-
 // ## Node.JS includes
 // if node
 if (JSUS.isNodeJS()) {

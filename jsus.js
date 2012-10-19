@@ -194,7 +194,7 @@ JSUS.getFuncName = function (func) {
 	if ('function' !== typeof func) return false;
 	var name = func.constructor.toString();
 	name = name.substr('function '.length);
-	return name.substr(0, myName.indexOf('('));
+	return name.substr(0, name.indexOf('('));
 }
 
 // ## Node.JS includes

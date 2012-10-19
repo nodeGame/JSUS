@@ -1,7 +1,7 @@
 {
   "name": "JSUS",
   "description": "JavaScript UtilS. Collection of general purpose functions. JSUS helps!",
-  "version": "0.5.4",
+  "version": "0.5.3",
   "keywords": [ "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
   "author": "Stefano Balietti <futur.dorko@gmail.com>",
   "licenses": [

@@ -278,17 +278,17 @@ describe('OBJ: ', function() {
     	var simple_func = JSUS.merge(obj_simple, obj_func);
     	
     	// Merge null in simple
-////	    it('should merge the second in the first object', function(){
-////	    	simple_func.should.eql(obj_func); 
-////        });
-//         
-////	    it('modification to the merged object should affect any of the merging ones', function(){
-////	    	checkClone(simple_func, obj_simple, obj_func);
-////	    });
-////	    
-////	    it('merged functions should return the same value', function(){
-////	    	simple_func.b(1,1).should.be.eql(obj_func.b(1,1));
-////	    });
+//	    it('should merge the second in the first object', function(){
+//	    	simple_func.should.eql(obj_func); 
+//        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_func, obj_simple, obj_func);
+	    });
+	    
+	    it('merged functions should return the same value', function(){
+	    	simple_func.b(1,1).should.be.eql(obj_func.b(1,1));
+	    });
     	
     });
     

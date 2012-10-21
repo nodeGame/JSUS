@@ -34,10 +34,19 @@ var obj_falsy = {
 	c: 3,
 };
 
+var obj_func = {
+		a: 0,
+		b: function (arg1, arg2) {
+			return arg1 + arg2;
+		},
+		c: 3,
+	};
+
 var array_simple = [1,2,3];
-var array_complex = [1,array_simple, 3];
+var array_complex = [1, array_simple, 3];
 var array_with_null = [1,null,3];
 var array_falsy = [1,false,3];
+var array_func = [1, obj_func.b, 3];
 
 // Based on the properties of the objects above
 function checkClone(c, o1, o2) {
@@ -49,12 +58,13 @@ function checkClone(c, o1, o2) {
 
 describe('OBJ: ', function() {
     
-describe('#clone() arrays', function() {
+	describe('#clone() arrays', function() {
         
     	var copy_simple 	= JSUS.clone(array_simple);
     	var copy_complex 	= JSUS.clone(array_complex);
     	var copy_with_null	= JSUS.clone(array_with_null);
     	var copy_falsy		= JSUS.clone(array_falsy);
+    	var copy_func		= JSUS.clone(array_func);
     	
     	// SIMPLE
         it('should return the copy of a simple object', function(){
@@ -96,6 +106,20 @@ describe('#clone() arrays', function() {
 	    	copy_falsy[0].should.not.be.equal(array_falsy[0]);
 	    });
 	    
+	    // FUNC
+	    it('should return the copy of an object containing functions', function(){
+	    	copy_func.should.eql(array_func);
+        });
+	    
+	    it('cloned functions should return the same value', function(){
+	    	copy_func[1](1,1).should.be.eql(array_func[1](1,1));
+        });
+         
+	    it('modification to the copy of an object containing functions should not affect the original one', function(){
+	    	copy_func[1] = 'foo';
+	    	copy_func[1].should.not.be.equal(array_func[1]);
+	    });
+	    
         
     });
 	
@@ -105,6 +129,7 @@ describe('#clone() arrays', function() {
     	var copy_complex 	= JSUS.clone(obj_complex);
     	var copy_with_null	= JSUS.clone(obj_with_null);
     	var copy_falsy		= JSUS.clone(obj_falsy);
+    	var copy_func		= JSUS.clone(obj_func)
     	
     	// SIMPLE
         it('should return the copy of a simple object', function(){
@@ -146,8 +171,45 @@ describe('#clone() arrays', function() {
 	    	copy_falsy.a.should.not.be.equal(obj_falsy.a);
 	    });
 	    
+	    // FUNC
+	    it('should return the copy of an object containing functions', function(){
+	    	copy_func.should.eql(obj_func);
+        });
+	    
+	    it('cloned functions should return the same value', function(){
+	    	copy_func.b(1,1).should.be.eql(obj_func.b(1,1));
+        });
+         
+	    it('modification to the copy of an object containing functions should not affect the original one', function(){
+	    	copy_func.b = 'foo';
+	    	copy_func.b.should.not.be.equal(obj_func.b);
+	    });
         
     });
+    
+    describe('#clone() functions', function() {
+    	
+    	var clone_func = JSUS.clone(obj_func.b);
+    	console.log(clone_func.toString())
+    	
+	    // FUNC
+	    it('should return the copy of an object containing functions', function(){
+	    	clone_func.should.be.eql(obj_func.b);
+	    });
+	    
+	    it('cloned functions should return the same value', function(){
+	    	clone_func(1,1).should.be.eql(obj_func.b(1,1));
+	    });
+	     
+	    it('modification to the copy of an object containing functions should not affect the original one', function(){
+	    	clone_func = function(a,b) {return a-b;};
+	    	clone_func.should.not.be.equal(obj_func.b);
+	    });
+	    
+	    
+	});
+
+
     
     // Merging in SIMPLE
     ///////////////////////////////////////////////////////
@@ -207,6 +269,25 @@ describe('#clone() arrays', function() {
          
 	    it('modification to the merged object should affect any of the merging ones', function(){
 	    	checkClone(simple_falsy, obj_simple, obj_falsy);
+	    });
+    	
+    });
+    
+    describe('#merge() obj with functions values in SIMPLE', function() {
+    	
+    	var simple_func = JSUS.merge(obj_simple, obj_func);
+    	
+    	// Merge null in simple
+	    it('should merge the second in the first object', function(){
+	    	simple_func.should.eql(obj_func); 
+        });
+         
+	    it('modification to the merged object should affect any of the merging ones', function(){
+	    	checkClone(simple_func, obj_simple, obj_func);
+	    });
+	    
+	    it('merged functions should return the same value', function(){
+	    	simple_func.b(1,1).should.be.eql(obj_func.b(1,1));
 	    });
     	
     });

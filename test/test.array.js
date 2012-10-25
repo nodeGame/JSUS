@@ -271,6 +271,31 @@ describe('ARRAY: ', function(){
 	    
     });
     
+    
+    describe('#stretch()', function() {
+    	
+    	var array = [1,2,3];
+    	
+		
+	    it('should repeat each element of the array twice', function(){
+	    	JSUS.stretch(array, 2).should.eql([1,1,2,2,3,3]);
+		});
+
+	    it('should return the same array', function(){
+	    	JSUS.stretch(array, 1).should.be.eql(array);
+	    	JSUS.stretch(array).should.be.eql(array);
+		});
+	    
+	    it('should repeat each element of the array a custom number of times', function(){
+	    	JSUS.stretch(array, [1,2,3]).should.eql([1,2,2,3,3,3]);
+		});
+	    
+	    it('should repeat each element of the array a custom number of times (recycling)', function(){
+	    	JSUS.stretch(array, [2,1]).should.eql([1,1,2,3,3]);
+		});
+		
+    });
+    
 });
 
 

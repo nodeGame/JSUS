@@ -190,7 +190,8 @@ describe('OBJ: ', function() {
     describe('#clone() functions', function() {
     	
     	var clone_func = JSUS.clone(obj_func.b);
-    	
+//    	console.log(clone_func.toString())
+
 	    // FUNC
 //	    it('should return the copy of an object containing functions', function(){
 //	    	clone_func.should.be.eql(obj_func.b);

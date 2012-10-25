@@ -666,10 +666,65 @@ describe('OBJ: ', function() {
         
 	    it('modification to the properties of one object should affect the other one', function(){
 	    	obj_simple.b.a = 'foo';
-	    	obj_simple.should.be.equal(obj_simple);
-	    	obj_simple.b = 'foo';
-	    	obj_simple.should.be.equal(obj_simple);
+	    	obj_simple.should.eql(obj_complex);
 	    });
+	    
+    });
+    
+    describe('#mixout() complex object in simple', function() {
+    	var obj_simple = {
+    			a: 1,
+    			b: 2,
+    			c: 3,
+    		};
+
+		// If update, update also getAllKeys test
+		var obj_complex = {
+			a: 1,
+			b: {a: 1, b: 2},
+			c: 3,
+			d: 'foo',
+		};
+    	
+    	JSUS.mixout(obj_complex, obj_simple);
+    	
+    	// Merge complex in simple
+	    it('should not merge overlapping properties of the second in the first object', function(){
+	    	obj_complex.should.not.eql(obj_simple); 
+	    	obj_complex.b.should.eql({a: 1, b: 2});
+        });
+
+    	JSUS.mixout(obj_simple, obj_complex);
+
+	    // Merge complex in simple
+	    it('should merge non-overlapping properties of the second in the first object', function(){ 
+	    	obj_simple.d.should.eql(obj_complex.d);
+        });
+	    
+    });
+    
+    describe('#mixcommon() complex object in simple', function() {
+    	var obj_simple = {
+    			a: 1,
+    			b: 2,
+    			c: 3,
+    		};
+
+		// If update, update also getAllKeys test
+		var obj_complex = {
+			a: 1,
+			b: {a: 1, b: 2},
+			c: 3,
+			d: 'foo',
+		};
+    	
+    	JSUS.mixcommon(obj_simple, obj_complex);
+    	
+    	// Merge complex in simple
+	    it('should merge overlapping properties of the second in the first object', function(){
+	    	obj_complex.should.not.eql(obj_simple); 
+	    	obj_simple.b.should.eql(obj_complex.b);
+        });
 	    
     });
     

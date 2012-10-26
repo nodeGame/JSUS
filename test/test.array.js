@@ -296,6 +296,16 @@ describe('ARRAY: ', function(){
 		
     });
     
+    describe('#transpose()', function() {
+    	
+    	var array = [ [1,2,3], [4,5,6] ];
+    	var t = [ [1,4], [2,5], [3,6] ];
+		
+	    it('should transpose a 2D matrix', function(){
+	    	JSUS.transpose(array).should.eql(t);
+		});		
+    });
+    
 });
 
 

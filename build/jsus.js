@@ -276,6 +276,63 @@ JSUS.extend(PARSE);
     
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
+ * # SUPPORT
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Tests browsers ECMAScript 5 compatibility
+ * 
+ * For more information see http://kangax.github.com/es5-compat-table/
+ * 
+ */
+
+(function (JSUS) {
+    
+function COMPATIBILITY() {};
+
+/**
+ * ## SUPPORT.getDate
+ * 
+ * Returns report
+ */
+COMPATIBILITY.compatibility = function() {
+
+	var support = {};
+	
+	try {
+		Object.defineProperty({}, "a", {enumerable: false, value: 1})
+		support.defineProperty = true;
+	}
+	catch(e) {
+		support.defineProperty = false;	
+	}
+	
+	try {
+		eval('({ get x(){ return 1 } }).x === 1')
+		support.setter = true;
+	}
+	catch(err) {
+		support.setter = false;
+	}
+	  
+	try {
+		var value;
+		eval('({ set x(v){ value = v; } }).x = 1');
+		support.getter = true;
+	}
+	catch(err) {
+		support.getter = false;
+	}	  
+
+	return support;
+};
+
+
+JSUS.extend(COMPATIBILITY);
+    
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
  * # OBJ
  *  
  * Copyright(c) 2012 Stefano Balietti
@@ -289,6 +346,13 @@ JSUS.extend(PARSE);
 
     
 function OBJ(){};
+
+var compatibility = null;
+
+if ('undefined' !== typeof JSUS.compatibility) {
+	compatibility = JSUS.compatibility();
+}
+
 
 /**
  * ## OBJ.equals
@@ -611,12 +675,27 @@ OBJ.clone = function (obj) {
 	    	clone[i] = value;
 	    }
 	    else {
-	    	Object.defineProperty(clone, i, {
-	    		value: value,
-         		writable: true,
-         		configurable: true,
-         	});
-
+	    	// we know if object.defineProperty is available
+	    	if (compatibility && compatibility.defineProperty) {
+		    	Object.defineProperty(clone, i, {
+		    		value: value,
+	         		writable: true,
+	         		configurable: true
+	         	});
+	    	}
+	    	else {
+	    		// or we try...
+	    		try {
+	    			Object.defineProperty(clone, i, {
+			    		value: value,
+		         		writable: true,
+		         		configurable: true
+		         	});
+	    		}
+		    	catch(e) {
+		    		clone[i] = value;
+		    	}
+	    	}
 	    }
     }
     return clone;
@@ -1150,15 +1229,20 @@ DOM.writeln = function (root, text, rc) {
 };
 
 /**
- * ### DOM.format_string
+ * ### DOM.sprintf
  * 
- * Splits a string into a series of _span_ elements
+ * Builds up a decorated HTML text element
  * 
- * This methods permits to highlight special parts of a string by enclosing 
- * them in _span_ elements to which it is possible to associate a css class 
- * or id. Alternatively, it also possible to add in-line style. E.g.:
+ * Performs string substitution from an args object where the first 
+ * character of the key bears the following semantic: 
+ *  
+ * 	- '@': variable substitution with escaping 
+ * 	- '!': variable substitution without variable escaping
+ *  - '%': wraps a portion of string into a _span_ element to which is possible 
+ *  		to associate a css class or id. Alternatively, it also possible to 
+ *  		add in-line style. E.g.:
  * 
- * 	format_string('%sImportant!%s An error has occurred: %prefile not found%pre', {
+ * 	sprintf('%sImportant!%s An error has occurred: %pre@err%pre', {
  * 		'%pre': {
  * 			style: 'font-size: 12px; font-family: courier;'
  * 		},
@@ -1166,14 +1250,16 @@ DOM.writeln = function (root, text, rc) {
  * 			id: 'myId',
  * 			'class': 'myClass',
  * 		},
+ * 		'@err': 'file not found',
  * 	}, document.body);
+ * 
  * 
  * @param {string} string A text to transform
  * @param {object} args Optional. An object containing the spans to apply to the string
  * @param {Element} root Optional. An HTML element to which append the string. Defaults, a new _span_ element
  * 
  */
-DOM.format_string = function (string, args, root) {
+DOM.sprintf = function (string, args, root) {
 	
 	var text, textNode, span, idx_start, idx_finish, idx_replace, idxs, spans = {};
 	
@@ -1186,49 +1272,78 @@ DOM.format_string = function (string, args, root) {
 	// Transform arguments before inserting them.
 	for (var key in args) {
 		if (args.hasOwnProperty(key)) {
-			span = W.getElement('span', null, args[key]);
-
-			idx_start = string.indexOf(key);
-			idx_replace = idx_start + key.length;
-			idx_finish = string.indexOf(key, idx_replace);
-
-			if ('undefined' === typeof idx_start || 'undefined' === typeof !idx_finish) {
-				JSUS.log('Error. Could not find key: ' + key);
-				return false;
-			}
 			
-			text = document.createTextNode(string.substring(idx_replace, idx_finish));
-			span.appendChild(text);
-
-			spans[idx_start] = {
-				span: span,
-				finish: idx_finish,
-				marker_length: key.length,
-			}
+			// pattern not found
+			if (idx_start === -1) continue;
 			
+			switch(key[0]) {
+			
+			case '%': // span
+				
+				idx_start = string.indexOf(key);
+				idx_replace = idx_start + key.length;
+				idx_finish = string.indexOf(key, idx_replace);
+				
+				if (idx_finish === -1) {
+					JSUS.log('Error. Could not find closing key: ' + key);
+					continue;
+				}
+				
+				spans[idx_start] = key;
+				
+				break;
+			
+			case '@': // replace and sanitize
+				string = string.replace(key, escape(args[key]));
+				break;
+				
+			case '!': // replace and not sanitize
+				string = string.replace(key, args[key]);
+				break;
+				
+			default:
+				JSUS.log('Identifier not in [!,@,%]: ' + key[0]);
+		
+			}
 		}
-	  
 	}
 	
-	idxs = JSUS.keys(spans).sort(function(a,b){return a-b});
+	// No span to creates
+	if (!JSUS.size(spans)) {
+		return document.createTextNode(string);
+	}
 	
+	// Re-assamble the string
 	
-	idx_start = -1;
+	idxs = JSUS.keys(spans).sort(function(a,b){return a-b;});
+	idx_finish = 0;
 	for (var i = 0; i < idxs.length; i++) {
 		
+		// add span
+		key = spans[idxs[i]];
+		idx_start = string.indexOf(key);
+		
 		// add fragments of string
-		if (idx_start !== idxs[i]-1) {
-			root.appendChild(document.createTextNode(string.substring(idx_start, idxs[i])));
+		if (idx_finish !== idx_start-1) {
+			root.appendChild(document.createTextNode(string.substring(idx_finish, idx_start)));
 		}
 		
-		// add span
-		root.appendChild(spans[idxs[i]].span);
-		idx_start = spans[idxs[i]].finish + spans[idxs[i]].marker_length;
+		idx_replace = idx_start + key.length;
+		idx_finish = string.indexOf(key, idx_replace);
+		
+		span = W.getElement('span', null, args[key]);
+
+		text = string.substring(idx_replace, idx_finish);
+		
+		span.appendChild(document.createTextNode(text));
+		
+		root.appendChild(span);
+		idx_finish = idx_finish + key.length;
 	}
 	
 	// add the final part of the string
-	if (idx_start !== string.length) {
-		root.appendChild(document.createTextNode(string.substring(idx_start)));
+	if (idx_finish !== string.length) {
+		root.appendChild(document.createTextNode(string.substring(idx_finish)));
 	}
 	
 	return root;
@@ -1701,7 +1816,7 @@ DOM.addCSS = function (root, css, id, attributes) {
     
     attributes = JSUS.merge(attributes, {rel : 'stylesheet',
                                         type: 'text/css',
-                                        href: css,
+                                        href: css
     });
     
     return this.addElement('link', root, id, attributes);
@@ -1719,7 +1834,7 @@ DOM.addJS = function (root, js, id, attributes) {
     
     attributes = JSUS.merge(attributes, {charset : 'utf-8',
                                         type: 'text/javascript',
-                                        src: js,
+                                        src: js
     });
     
     return this.addElement('script', root, id, attributes);

@@ -43,6 +43,7 @@ var myClass = JSUS.require('myClass');
 6. RANDOM
 7. PARSE
 8. FS
+9. COMPATIBILITY
 
 ## Build
 

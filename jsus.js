@@ -136,6 +136,7 @@ JSUS.isNodeJS = function () {
 // ## Node.JS includes
 // if node
 if (JSUS.isNodeJS()) {
+    require('./lib/compatibility');
     require('./lib/obj');
     require('./lib/array');
     require('./lib/time');

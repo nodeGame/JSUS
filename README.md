@@ -1,5 +1,7 @@
 # JSUS: JavaScript UtilS. 
 
+[![Build Status](https://travis-ci.org/nodeGame/JSUS.png?branch=master)](https://travis-ci.org/nodeGame/JSUS)
+
 Collection of general purpose javascript functions. JSUS helps!
 
 ## Usage

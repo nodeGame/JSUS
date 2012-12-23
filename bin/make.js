@@ -55,8 +55,13 @@ program
 	.description('Build documentation files')
 	.action(function(){
 		console.log('Building documentation for JSUS v.' + version);
-		// http://nodejs.org/api.html#_child_processes
-		var dockerDir = J.resolveModuleDir('docker');
+		try {
+			var dockerDir = J.resolveModuleDir('docker');
+		}
+		catch(e) {
+			console.log('module Docker not found. Cannot build doc. Do \'npm install docker\' to fix it.');
+			return false;
+		}
 		var command = dockerDir + 'docker -i ' + rootDir + ' jsus.js lib/ -s true -o ' + rootDir + 'docs/';
 		var child = exec(command, function (error, stdout, stderr) {
 			util.print(stdout);

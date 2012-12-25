@@ -1675,7 +1675,7 @@ OBJ.mixin = function (obj1, obj2) {
 };
 
 /**
- * ## OBJ.mixin
+ * ## OBJ.mixout
  * 
  * Copies only non-overlapping properties from obj2 to obj1
  * 

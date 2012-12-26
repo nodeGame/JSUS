@@ -2,6 +2,24 @@ var util = require('util');
     should = require('should'),
     JSUS = require('./../jsus').JSUS;
     
+ 
+var str_null, str_und, str_func, str_obj, str_obj_special;    
+    
+
+var f = function(a,b) { console.log(a+b); };
+
+var o = {
+		a: "a",
+		b: "b"
+};
+
+var os = {
+		a: "a",
+		b: null,
+		c: undefined,
+		d: function(a,b) { console.log(a+b); }
+};
+
 describe('PARSE: ', function(){
     
     // removeElement
@@ -24,8 +42,67 @@ describe('PARSE: ', function(){
    
     });
     
-   
+    describe('#stringify()', function(){
+    
+        
+        it('should stringify null', function(){
+           str_null = JSUS.stringify(null);
+           str_null.should.be.eql('"' + JSUS.stringify_prefix + "null" + '"');
+        });
+
+        it('should stringify undefined', function(){
+            str_und = JSUS.stringify(undefined);
+            str_und.should.be.eql('"' + JSUS.stringify_prefix + "undefined" + '"');
+        });
+        
+        it('should stringify function', function(){
+        	str_func = JSUS.stringify(f);
+        	str_func.should.be.eql('"' + JSUS.stringify_prefix + "function (a,b) { console.log(a+b); }" + '"');
+        });
+
+        it('should stringify a normal object (without prefix)', function(){
+        	str_obj = JSUS.stringify(o);
+        	str_obj.should.be.eql('{"a":"a","b":"b"}');
+        });
+
+        it('should stringify an object with special values (with prefix)', function(){        	
+        	str_obj_special = JSUS.stringify(os);
+        	
+        	var str = '{"a":"a","b":"' + 
+					JSUS.stringify_prefix + 'null","c":"' + 
+					JSUS.stringify_prefix + 'undefined","d":"' + 
+					JSUS.stringify_prefix + 'function (a,b) { console.log(a+b); }"}';
+        	
+        	str_obj_special.should.be.eql(str);
+        });
+    });
     
 });
 
+describe('#parse()', function(){
+    
+    
+    it('should parse a stringified null value', function(){
+       (null === JSUS.parse(str_null)).should.be.true;
+    });
 
+    it('should parse a stringified undefined value', function(){
+    	('undefined' === typeof JSUS.parse(str_und)).should.be.true;
+    });
+    
+    it('should parse a stringified function', function(){
+    	var a = JSUS.parse(str_func);
+    	a.toString().should.be.eql(f.toString());
+    });
+
+    it('should parse a stringified normal object (without prefix)', function(){
+    	JSUS.parse(str_obj).should.be.eql(o);
+    });
+
+    it('should parse a stringified object with special values (with prefix)', function(){
+    	var a = JSUS.parse(str_obj_special);
+    	JSUS.equals(a, os).should.be.true;
+    	
+    });
+
+});

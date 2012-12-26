@@ -2,7 +2,12 @@ var util = require('util');
     should = require('should'),
     JSUS = require('./../jsus').JSUS;
     
-    
+
+var f = function(a,b) { console.log(a + b); };    
+var fcopy = function(a,b) { console.log(a + b); };
+
+var f2 = function(a,b) { console.log(); };
+
 var obj_simple = {
 	a: 1,
 	b: 2,
@@ -522,6 +527,13 @@ describe('OBJ: ', function() {
     		JSUS.equals(obj_with_null, obj_with_null).should.be.true;
     	});    	
     	
+    	it('should say that two functions are equal', function(){	
+    		JSUS.equals(f, fcopy).should.be.true;
+    	});    	
+    	
+    	it('should say that two functions are NOT equal', function(){	
+    		JSUS.equals(f, f2).should.be.false;
+    	});
     });
     
     

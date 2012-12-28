@@ -10,7 +10,8 @@ var f = function(a,b) { console.log(a+b); };
 
 var o = {
 		a: "a",
-		b: "b"
+		b: "b",
+		c: 10
 };
 
 var os = {
@@ -62,7 +63,7 @@ describe('PARSE: ', function(){
 
         it('should stringify a normal object (without prefix)', function(){
         	str_obj = JSUS.stringify(o);
-        	str_obj.should.be.eql('{"a":"a","b":"b"}');
+        	str_obj.should.be.eql('{"a":"a","b":"b","c":10}');
         });
 
         it('should stringify an object with special values (with prefix)', function(){        	

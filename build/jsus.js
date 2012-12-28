@@ -1228,26 +1228,29 @@ if ('undefined' !== typeof JSUS.compatibility) {
  * 
  */
 OBJ.equals = function (o1, o2) {	
-	if ('undefined' === typeof o1 || 'undefined' === typeof o2) {
+	var type1 = typeof o1, type2 = typeof o2;
+	
+	if (type1 !== type2) return false;
+	
+	if ('undefined' === type1 || 'undefined' === type2) {
 		return (o1 === o2);
 	}
 	if (o1 === null || o2 === null) {
 		return (o1 === o2);
 	}
-	if (('number' === typeof o1 && isNaN(o1)) && ('number' === typeof o2 && isNaN(o2)) ) {
+	if (('number' === type1 && isNaN(o1)) && ('number' === type2 && isNaN(o2)) ) {
 		return (isNaN(o1) && isNaN(o2));
 	}
 	
     // Check whether arguments are not objects
 	var primitives = {number: '', string: '', boolean: ''}
-    if (typeof o1 in primitives) {
-        if (typeof o2 in primitives) {
-            return (o1 === o2);
-        }
-        return false;
-    } else if (typeof o2 in {number: '', string: '', boolean: ''}) {
-        return false;
-    }
+    if (type1 in primitives) {
+    	return o1 === o2;
+    } 
+	
+	if ('function' === type1) {
+		return o1.toString() === o2.toString();
+	}
 
     for (var p in o1) {
         if (o1.hasOwnProperty(p)) {
@@ -2083,6 +2086,17 @@ JSUS.extend(RANDOM);
 function PARSE(){};
 
 /**
+ * ## PARSE.stringify_prefix
+ * 
+ * Prefix used by PARSE.stringify and PARSE.parse
+ * to decode strings with special meaning
+ * 
+ * @see PARSE.stringify
+ * @see PARSE.parse
+ */
+PARSE.stringify_prefix = '!?_';
+
+/**
  * ## PARSE.getQueryString
  * 
  * Parses the current querystring and returns it full or a specific variable.
@@ -2141,6 +2155,115 @@ PARSE.tokenize = function (str, separators, modifiers) {
 	var regex = new RegExp(pattern);
 	return str.split(regex, modifiers.limit);
 };
+
+/**
+ * ## PARSE.stringify
+ * 
+ * Stringifies objects, functions, primitive, undefined or null values
+ * 
+ * Makes uses `JSON.stringify` with a special reviver function, that 
+ * strinfifies also functions, undefined, and null values.
+ * 
+ * A special prefix is prepended to avoid name collisions.
+ * 
+ * @param {mixed} o The value to stringify
+ * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
+ * 
+ * @return {string} The stringified result
+ * 
+ * @see JSON.stringify
+ * @see PARSE.stringify_prefix
+ */
+PARSE.stringify = function(o, spaces) {
+	return JSON.stringify(o, function(key, value){
+		var type = typeof value;
+		
+		if ('function' === type) {
+			return PARSE.stringify_prefix + value.toString()
+		}
+		
+		if ('undefined' === type) {
+			return PARSE.stringify_prefix + 'undefined';
+		}
+		
+		if (value === null) {
+			return PARSE.stringify_prefix + 'null';
+		}
+		
+		return value;
+		
+	}, spaces);
+};
+
+/**
+ * ## PARSE.stringify
+ * 
+ * Decodes strings in objects and other values
+ * 
+ * Uses `JSON.parse` and then looks  for special strings 
+ * encoded by `PARSE.stringify`
+ * 
+ * @param {string} str The string to decode
+ * @return {mixed} The decoded value 
+ * 
+ * @see JSON.parse
+ * @see PARSE.stringify_prefix
+ */
+PARSE.parse = function(str) {
+	
+	var marker_func = PARSE.stringify_prefix + 'function',
+		marker_null = PARSE.stringify_prefix + 'null',
+		marker_und	= PARSE.stringify_prefix + 'undefined';
+	
+	var len_prefix 	= PARSE.stringify_prefix.length,
+		len_func 	= marker_func.length,
+		len_null 	= marker_null.length,
+		len_und 	= marker_und.length;	
+	
+	var o = JSON.parse(str);
+	return walker(o);
+	
+	function walker(o) {
+		var tmp;
+		
+		if ('object' !== typeof o) {
+			return reviver(o);
+		}
+		
+		for (var i in o) {
+			if (o.hasOwnProperty(i)) {
+				if ('object' === typeof o[i]) {
+					walker(o[i]);
+				}
+				else {
+					o[i] = reviver(o[i]);
+				}
+			}
+		}
+		
+		return o;
+	}
+	
+	function reviver(value) {
+		var type = typeof value;
+		
+		if (type === 'string') {
+			if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
+				return value;
+			}
+			else if (value.substring(0, len_func) === marker_func) {
+				return eval('('+value.substring(len_prefix)+')');
+			}
+			else if (value.substring(0, len_null) === marker_null) {
+				return null;
+			}
+			else if (value.substring(0, len_und) === marker_und) {
+				return undefined;
+			}
+		}	
+	};
+}
+
 
 JSUS.extend(PARSE);
     

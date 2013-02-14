@@ -740,6 +740,22 @@ describe('OBJ: ', function() {
 	    
     });
     
+    
+    describe('#melt()', function() {
+    
+    	
+	    it('should merge properties and values together, recycling the values', function(){
+	    	var o = JSUS.melt(['a','b','c'], [1,2]);
+	    	o.should.eql({ a: 1, b: 2, c: 1 });
+        });
+	    it('should merge properties and values together, ignoring extra values', function(){
+	    	var o = JSUS.melt(['a','b','c'], [1,2,3,4]);
+	    	o.should.eql({ a: 1, b: 2, c: 3 });
+        });
+	    
+    });
+    
+    
 });
 
 

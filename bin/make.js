@@ -21,8 +21,9 @@ var pkg = require('../package.json'),
 
 var build = require('./build.js').build;
 
-var rootDir = path.resolve(__dirname, '..') + '/';
-var buildDir = rootDir + 'build/';
+var rootDir = path.resolve(__dirname, '..') + '/',
+	buildDir = rootDir + 'build/',
+	libDir = rootDir + 'lib/';
 
 function list(val) {
 	return val.split(',');
@@ -75,31 +76,12 @@ program
 
 
 program  
-	.command('sync <path> [options]')
+	.command('sync <path>')
 	.description('Sync the lib folder with the specified target directory (must exists)')
-	.option('-a, --all', 'sync /lib and /conf folders (default)')
-	.option('-l, --lib', 'sync the /lib folder')
-	.option('-c, --conf', 'sync the /conf folder')
-	.action(function(path, options) {
+	.action(function(path) {
 	
-		if ('undefined' === typeof options) {
-			options = {};
-			options.all = true;
-		}
-		
-		if (options.all) {
-			copyDirTo(confDir, path + '/conf/');	
-			copyDirTo(libDir, path + '/lib/');	
-		}
-	
-		else if (options.conf) {
-			copyDirTo(confDir, path);	
-		}
-		
-		else if (options.lib) {
-			copyDirTo(libDir, path);		
-		}
-		
+		copyDirTo(libDir, path);	
+				
 		console.log('Done.');
 	
 });

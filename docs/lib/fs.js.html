@@ -36,6 +36,9 @@
       <div class="heading h2">
         <a href="#fs.copyfile">FS.copyFile</a>
       </div>
+      <div class="heading h2">
+        <a href="#wrench">wrench</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -69,7 +72,8 @@ MIT Licensed</p>
 
 <span class="kd">var</span> <span class="nx">resolve</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;resolve&#39;</span><span class="p">),</span>
   <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
-  <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+  <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+  <span class="nx">wrench</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;wrench&#39;</span><span class="p">);</span>
 
 <span class="kd">function</span> <span class="nx">FS</span><span class="p">(){};</span></pre></div>
         </td>
@@ -428,7 +432,32 @@ are found, an error will be occurr.</p>
       <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
     <span class="p">});</span>
     <span class="k">return</span> <span class="nx">fdr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">fdw</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="wrench">
+  <h2>
+    <a href="#wrench" class="pilcrow">&#182;</a>
+    wrench
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>FS exposes the properties of the great package wrench for
+ performing recursive operations on directories</p>
+
+<p>@see <a href='https://github.com/ryanmcgrath/wrench-js'>https://github.com/ryanmcgrath/wrench-js</a></p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">w</span> <span class="k">in</span> <span class="nx">wrench</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">wrench</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">w</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">FS</span><span class="p">[</span><span class="nx">w</span><span class="p">]</span> <span class="o">=</span> <span class="nx">wrench</span><span class="p">[</span><span class="nx">w</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">FS</span><span class="p">);</span>
 

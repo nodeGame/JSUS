@@ -48,7 +48,7 @@ program
 	.option('-o, --output <file>')
 	.action(function(env, options){
 		build(options);
-	});
+});
    
 program
 	.command('doc')
@@ -71,8 +71,38 @@ program
 			}
 		});
 
-	});
+});
 
+
+program  
+	.command('sync <path> [options]')
+	.description('Sync the lib folder with the specified target directory (must exists)')
+	.option('-a, --all', 'sync /lib and /conf folders (default)')
+	.option('-l, --lib', 'sync the /lib folder')
+	.option('-c, --conf', 'sync the /conf folder')
+	.action(function(path, options) {
 	
+		if ('undefined' === typeof options) {
+			options = {};
+			options.all = true;
+		}
+		
+		if (options.all) {
+			copyDirTo(confDir, path + '/conf/');	
+			copyDirTo(libDir, path + '/lib/');	
+		}
+	
+		else if (options.conf) {
+			copyDirTo(confDir, path);	
+		}
+		
+		else if (options.lib) {
+			copyDirTo(libDir, path);		
+		}
+		
+		console.log('Done.');
+	
+});
+
 // Parsing options
 program.parse(process.argv);

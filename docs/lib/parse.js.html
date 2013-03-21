@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>parse.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'lib/parse.js', defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#parse">PARSE</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.stringify_prefix">PARSE.stringify_prefix</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.getquerystring">PARSE.getQueryString</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.tokenize">PARSE.tokenize</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.stringify">PARSE.stringify</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.parse">PARSE.parse</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse">
+  <h1>
+    <a href="#parse" class="pilcrow">&#182;</a>
+    PARSE
+  </h1>
+</div>
+
+
+<p>Copyright(c) 2012 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of static functions related to parsing strings</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+    
+<span class="kd">function</span> <span class="nx">PARSE</span><span class="p">(){};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.stringify_prefix">
+  <h2>
+    <a href="#parse.stringify_prefix" class="pilcrow">&#182;</a>
+    PARSE.stringify_prefix
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Prefix used by PARSE.stringify and PARSE.parse
+to decode strings with special meaning</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.stringify</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.parse
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">=</span> <span class="s1">&#39;!?_&#39;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.getquerystring">
+  <h2>
+    <a href="#parse.getquerystring" class="pilcrow">&#182;</a>
+    PARSE.getQueryString
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Parses the current querystring and returns it full or a specific variable.
+Return false if the requested variable is not found.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">variable</span>
+      <span class="dox_type">string</span>
+      <span>Optional. If set, returns only the value associated
+  with this variable</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span class="dox_type">boolean</span>
+      <span>The querystring, or a part of it, or FALSE</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">PARSE</span><span class="p">.</span><span class="nx">getQueryString</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">variable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">variable</span><span class="p">)</span> <span class="k">return</span> <span class="nx">query</span><span class="p">;</span>
+    
+    <span class="kd">var</span> <span class="nx">vars</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">vars</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">pair</span> <span class="o">=</span> <span class="nx">vars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">variable</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">unescape</span><span class="p">(</span><span class="nx">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.tokenize">
+  <h2>
+    <a href="#parse.tokenize" class="pilcrow">&#182;</a>
+    PARSE.tokenize
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Splits a string in tokens that users can specified as input parameter.
+Additional options can be specified with the modifiers parameter</p>
+
+<ul>
+<li>limit: An integer that specifies the number of splits, 
+items after the split limit will not be included in the array</li>
+</ul>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">str</span>
+      <span class="dox_type">string</span>
+      <span>The string to split</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">separators</span>
+      <span class="dox_type">array</span>
+      <span>Array containing the separators words</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">modifiers</span>
+      <span class="dox_type">object</span>
+      <span>Optional. Configuration options for the tokenizing</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>Tokens in which the string was split</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">PARSE</span><span class="p">.</span><span class="nx">tokenize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">separators</span><span class="p">,</span> <span class="nx">modifiers</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">str</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">separators</span> <span class="o">||</span> <span class="o">!</span><span class="nx">separators</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="p">[</span><span class="nx">str</span><span class="p">];</span>
+  <span class="nx">modifiers</span> <span class="o">=</span> <span class="nx">modifiers</span> <span class="o">||</span> <span class="p">{};</span>
+  
+  <span class="kd">var</span> <span class="nx">pattern</span> <span class="o">=</span> <span class="s1">&#39;[&#39;</span><span class="p">;</span>
+  
+  <span class="nx">JSUS</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">separators</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">s</span> <span class="o">===</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;\\s&#39;</span><span class="p">;</span>
+    
+    <span class="nx">pattern</span> <span class="o">+=</span> <span class="nx">s</span><span class="p">;</span>
+  <span class="p">});</span>
+  
+  <span class="nx">pattern</span> <span class="o">+=</span> <span class="s1">&#39;]+&#39;</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">pattern</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span> <span class="nx">modifiers</span><span class="p">.</span><span class="nx">limit</span><span class="p">);</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.stringify">
+  <h2>
+    <a href="#parse.stringify" class="pilcrow">&#182;</a>
+    PARSE.stringify
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Stringifies objects, functions, primitive, undefined or null values</p>
+
+<p>Makes uses <code>JSON.stringify</code> with a special reviver function, that 
+strinfifies also functions, undefined, and null values.</p>
+
+<p>A special prefix is prepended to avoid name collisions.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">o</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to stringify</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">spaces</span>
+      <span class="dox_type">number</span>
+      <span>Optional the number of indentation spaces. Defaults, 0</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>The stringified result</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSON.stringify</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.stringify_prefix
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">spaces</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="s1">&#39;undefined&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="s1">&#39;null&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+    
+  <span class="p">},</span> <span class="nx">spaces</span><span class="p">);</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.parse">
+  <h2>
+    <a href="#parse.parse" class="pilcrow">&#182;</a>
+    PARSE.parse
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Decodes strings in objects and other values</p>
+
+<p>Uses <code>JSON.parse</code> and then looks  for special strings 
+encoded by <code>PARSE.stringify</code></p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">str</span>
+      <span class="dox_type">string</span>
+      <span>The string to decode</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">mixed</span>
+      <span>The decoded value </span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSON.parse</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.stringify_prefix
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">PARSE</span><span class="p">.</span><span class="nx">parse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="kd">var</span> <span class="nx">marker_func</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="s1">&#39;function&#39;</span><span class="p">,</span>
+    <span class="nx">marker_null</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span>
+    <span class="nx">marker_und</span>  <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span> <span class="o">+</span> <span class="s1">&#39;undefined&#39;</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">len_prefix</span>  <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+    <span class="nx">len_func</span>  <span class="o">=</span> <span class="nx">marker_func</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+    <span class="nx">len_null</span>  <span class="o">=</span> <span class="nx">marker_null</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+    <span class="nx">len_und</span>   <span class="o">=</span> <span class="nx">marker_und</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>  
+  
+  <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+  
+  <span class="kd">function</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">tmp</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+          <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nx">o</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">len_prefix</span><span class="p">)</span> <span class="o">!==</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">len_func</span><span class="p">)</span> <span class="o">===</span> <span class="nx">marker_func</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="o">+</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">len_prefix</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">len_null</span><span class="p">)</span> <span class="o">===</span> <span class="nx">marker_null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">len_und</span><span class="p">)</span> <span class="o">===</span> <span class="nx">marker_und</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span> 
+    
+    <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+
+<span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">PARSE</span><span class="p">);</span>
+    
+<span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

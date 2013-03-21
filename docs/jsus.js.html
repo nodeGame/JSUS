@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jsus.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = '', thisFile = 'jsus.js', defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#jsus--javascript-utils.">JSUS: JavaScript UtilS.</a>
+      </div>
+      <div class="heading h2">
+        <a href="#jsus._classes">JSUS._classes</a>
+      </div>
+      <div class="heading h2">
+        <a href="#jsus.log">JSUS.log</a>
+      </div>
+      <div class="heading h2">
+        <a href="#jsus.extend">JSUS.extend</a>
+      </div>
+      <div class="heading h2">
+        <a href="#jsus.require">JSUS.require</a>
+      </div>
+      <div class="heading h2">
+        <a href="#jsus.isnodejs">JSUS.isNodeJS</a>
+      </div>
+      <div class="heading h2">
+        <a href="#node.js-includes">Node.JS includes</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="jsus--javascript-utils.">
+  <h1>
+    <a href="#jsus--javascript-utils." class="pilcrow">&#182;</a>
+    JSUS: JavaScript UtilS.
+  </h1>
+</div>
+
+
+<p>Copyright(c) 2012 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of general purpose javascript functions. JSUS helps!</p>
+
+<p>See README.md for extra help.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">exports</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="kd">var</span> <span class="nx">JSUS</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span> <span class="o">=</span> <span class="p">{};</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="jsus._classes">
+  <h2>
+    <a href="#jsus._classes" class="pilcrow">&#182;</a>
+    JSUS._classes
+  </h2>
+</div>
+
+
+<p>Reference to all the extensions</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span> <span class="o">=</span> <span class="p">{};</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="jsus.log">
+  <h2>
+    <a href="#jsus.log" class="pilcrow">&#182;</a>
+    JSUS.log
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Reference to standard out, by default <code>console.log</code>
+Override to redirect the standard output of all JSUS functions.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">txt</span>
+      <span class="dox_type">string</span>
+      <span>Text to output</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">txt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">txt</span><span class="p">);</span>
+<span class="p">};</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="jsus.extend">
+  <h2>
+    <a href="#jsus.extend" class="pilcrow">&#182;</a>
+    JSUS.extend
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Extends JSUS with additional methods and or properties taken 
+from the object passed as first parameter. </p>
+
+<p>The first parameter can be an object literal or a function.
+A reference of the original extending object is stored in 
+JSUS._classes</p>
+
+<p>If a second parameter is passed, that will be the target of the
+extension.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">additional</span>
+      <span class="dox_type">object</span>
+      <span>Text to output</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">target</span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">function</span>
+      <span>The object to extend</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">function</span>
+      <span>target The extended object
+
+@see JSUS.get</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">additional</span><span class="p">,</span> <span class="nx">target</span><span class="p">)</span> <span class="p">{</span>        
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">additional</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">additional</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">target</span><span class="p">;</span>
+    <span class="p">}</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>If we are extending JSUS, store a reference
+of the additional object into the hidden
+JSUS._classes object;</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">additional</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">additional</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+            <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="s1">&#39;function &#39;</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+            <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">name</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">));</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>! must be object</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">else</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">additional</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">||</span> <span class="nx">additional</span><span class="p">.</span><span class="nx">__proto__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_classes</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">additional</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">additional</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">additional</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">prop</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">target</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">target</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">additional</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">additional</span><span class="p">[</span><span class="nx">prop</span><span class="p">],</span> <span class="nx">target</span><span class="p">[</span><span class="nx">prop</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>additional is a class (Function)
+TODO: this is true also for {}</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">additional</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">additional</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="nx">target</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">||</span> <span class="nx">target</span><span class="p">);</span>
+    <span class="p">};</span>
+    
+    <span class="k">return</span> <span class="nx">target</span><span class="p">;</span>
+<span class="p">};</span>
+  </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="jsus.require">
+  <h2>
+    <a href="#jsus.require" class="pilcrow">&#182;</a>
+    JSUS.require
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns a copy of one / all the objects that have extended the
+current instance of JSUS.</p>
+
+<p>The first parameter is a string representation of the name of 
+the requested extending object. If no parameter is passed a copy 
+of all the extending objects is returned.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">className</span>
+      <span class="dox_type">string</span>
+      <span>The name of the requested JSUS library</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">function</span>
+      <span class="dox_type">boolean</span>
+      <span>The copy of the JSUS library, or FALSE if the library does not exist</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">require</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;JSUS.clone not found. Cannot continue.&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">className</span><span class="p">)</span> <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span><span class="p">[</span><span class="nx">className</span><span class="p">])</span> <span class="p">{</span>
+        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Could not find class &#39;</span> <span class="o">+</span> <span class="nx">className</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span><span class="p">[</span><span class="nx">className</span><span class="p">]);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>return new JSUS._classes<a href="">className</a>;</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="jsus.isnodejs">
+  <h2>
+    <a href="#jsus.isnodejs" class="pilcrow">&#182;</a>
+    JSUS.isNodeJS
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns TRUE when executed inside Node.JS environment</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>TRUE when executed inside Node.JS environment</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNodeJS</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">module</span> 
+      <span class="o">&amp;&amp;</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span>
+      <span class="o">&amp;&amp;</span> <span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">require</span><span class="p">;</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="node.js-includes">
+  <h2>
+    <a href="#node.js-includes" class="pilcrow">&#182;</a>
+    Node.JS includes
+  </h2>
+</div>
+
+
+<p>if node</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNodeJS</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/compatibility&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/obj&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/array&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/time&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/eval&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/dom&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/random&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/parse&#39;</span><span class="p">);</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/fs&#39;</span><span class="p">);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>end node</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    
+<span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">module</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">?</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="o">:</span> <span class="nb">window</span><span class="p">);</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

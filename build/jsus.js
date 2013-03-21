@@ -290,6 +290,9 @@ FS.cleanDir = function (dir, ext, cb) {
  * It is possible to specify an extension as second parameter (e.g. '.js').
  * In such case, only file with that extension will be copied.
  * 
+ * Warning! If an extension filter is not specified, and if subdirectories
+ * are found, an error will be occurr.
+ * 
  * @param {string} dirIn The source directory
  * @param {string} dirOut The destination directory
  * @param {string} ext Optional. If set, only files with this extension will be copied
@@ -1114,9 +1117,6 @@ ARRAY.transpose = function (array) {
 	} 
 	return t;
 };
-
-
-
 
 JSUS.extend(ARRAY);
     
@@ -2038,6 +2038,44 @@ OBJ.melt = function(keys, values) {
 	return o;
 };
 
+/**
+ * ## OBJ.uniqueKey
+ * 
+ * Creates a random unique key name for a collection
+ * 
+ * User can specify a tentative unique key name, and if already
+ * existing an incremental index will be added as suffix to it. 
+ * 
+ * Notice: the method does not actually creates the key
+ * in the object, but it just returns the name.
+ * 
+ * 
+ * @param {object} obj The collection for which a unique key name will be created
+ * @param {string} name Optional. A tentative key name. Defaults, a 10-digit random number
+ * @param {number} stop Optional. The number of tries before giving up searching
+ * 	for a unique key name. Defaults, 1000000.
+ * 
+ * @return {string|undefined} The unique key name, or undefined if it was not found
+ */
+OBJ.uniqueKey = function(obj, name, stop) {
+	if (!obj) {
+		JSUS.log('Cannot find unique name in undefined object', 'ERR');
+		return;
+	}
+	name = name || '' + Math.floor(Math.random()*10000000000);
+	stop = stop || 1000000;
+	var duplicateCounter = 1;
+	while (obj[name]) {
+		name = name + '' + duplicateCounter;
+		duplicateCounter++;
+		if (duplicateCounter > stop) {
+			return;
+		}
+	}
+	return name;
+}
+
+
 JSUS.extend(OBJ);
     
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
@@ -2224,7 +2262,7 @@ PARSE.stringify = function(o, spaces) {
 };
 
 /**
- * ## PARSE.stringify
+ * ## PARSE.parse
  * 
  * Decodes strings in objects and other values
  * 

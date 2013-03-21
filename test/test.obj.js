@@ -741,9 +741,7 @@ describe('OBJ: ', function() {
     });
     
     
-    describe('#melt()', function() {
-    
-    	
+    describe('#melt()', function() {  	
 	    it('should merge properties and values together, recycling the values', function(){
 	    	var o = JSUS.melt(['a','b','c'], [1,2]);
 	    	o.should.eql({ a: 1, b: 2, c: 1 });
@@ -755,7 +753,30 @@ describe('OBJ: ', function() {
 	    
     });
     
-    
+    describe('#uniqueKey()', function() {  	
+	    it('should find a random unique key for the obj', function(){
+	    	var key = JSUS.uniqueKey({ a: 1, b: 2, c: 1 });
+	    	key.should.not.eql('a');
+	    	key.should.not.eql('b');
+	    	key.should.not.eql('c');
+	    	(key === undefined).should.be.false;
+	    	
+        });
+	    it('should accept the proposed key for the obj', function(){
+	    	var key = JSUS.uniqueKey({ a: 1, b: 2, c: 1 }, 'f');
+	    	key.should.eql('f');
+        });
+	    it('should increment by 1 the proposed key for the obj', function(){
+	    	var key = JSUS.uniqueKey({ a: 1, b: 2, c: 1 }, 'c');
+	    	key.should.eql('c1');
+        });
+	    it('should return undefined if the limit of tries has been reached', function(){
+	    	var key = JSUS.uniqueKey({ a: 1, a1: 2, a2: 1 }, 'a', 2);
+	    	(key === undefined).should.be.true;
+        });
+
+	    
+    });
 });
 
 

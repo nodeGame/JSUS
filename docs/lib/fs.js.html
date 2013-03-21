@@ -25,6 +25,9 @@
         <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
       </div>
       <div class="heading h2">
+        <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
+      </div>
+      <div class="heading h2">
         <a href="#fs.deleteifexists">FS.deleteIfExists</a>
       </div>
       <div class="heading h2">
@@ -61,6 +64,22 @@ MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions related to file system operations.</p>
   </div>
+  <div class="details">
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href="http://nodejs.org/api/fs.html">http://nodejs.org/api/fs.html</a>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href="https://github.com/ryanmcgrath/wrench-js">https://github.com/ryanmcgrath/wrench-js</a>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">https://github.com/substack/node-resolve
+
+</a>
+    </div>
+  </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
@@ -75,7 +94,26 @@ MIT Licensed</p>
   <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
   <span class="nx">wrench</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;wrench&#39;</span><span class="p">);</span>
 
+
 <span class="kd">function</span> <span class="nx">FS</span><span class="p">(){};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="fs.resolvemoduledir">
+  <h2>
+    <a href="#fs.resolvemoduledir" class="pilcrow">&#182;</a>
+    FS.resolveModuleDir
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Backward-compatible version of fs.existsSync</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">)</span> <span class="o">?</span> <span class="nx">path</span><span class="p">.</span><span class="nx">existsSync</span> <span class="o">:</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -115,6 +153,12 @@ module as installed by npm.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>The path of the root directory of the module</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">https://github.com/substack/node-resolve
+
+</a>
     </div>
   </div>
 </div>
@@ -165,17 +209,8 @@ module as installed by npm.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">deleteIfExists</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">path</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
-</div>
-<!-- console.log(file); -->
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="kd">var</span> <span class="nx">stats</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">lstatSync</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">stats</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="p">{</span>
@@ -345,6 +380,22 @@ are found, an error will be occurr.</p>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">dirOut</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a destination directory&#39;</span><span class="p">);</span>
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">dirOut</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">dirOut</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="nx">dirIn</span><span class="p">,</span> <span class="nx">dirOut</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">dir</span> <span class="o">=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; does not exist&#39;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">stats</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">lstatSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">stats</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; is not a directory&#39;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
   <span class="p">}</span>
   
   <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span><span class="p">(</span><span class="nx">dirIn</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>

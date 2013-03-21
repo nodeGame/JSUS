@@ -80,7 +80,7 @@ program
 	.description('Sync the lib folder with the specified target directory (must exists)')
 	.action(function(path) {
 	
-		copyDirTo(libDir, path);	
+		J.copyFromDir(libDir, path);	
 				
 		console.log('Done.');
 	

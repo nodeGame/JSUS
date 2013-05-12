@@ -24,8 +24,6 @@ describe('FS: ', function(){
 
 	describe('#deleteIfExists()', function(){
 		
-		
-		
 		before(function(){
 			fsTestDir = __dirname + '/tmp_jsus_fs_test/';
 			if (!JSUS.existsSync(fsTestDir)) {

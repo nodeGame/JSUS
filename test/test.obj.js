@@ -788,9 +788,36 @@ describe('OBJ: ', function() {
 	    	var b = { a:10, b:2, c:100, d:4 };
 	    	JSUS.augment(a, b, ['b', 'c', 'd']);
 	    	a.should.eql({ a: 1, b: [2, 2], c: [3, 100], d: [4]});
-        });
-	    
+        }); 
     });
+    
+    describe('#obj2Array()', function() {  	
+	    it('should unfold an object completely', function(){
+	    	var o = { a:1, b:2, c:3 };
+	    	var a = JSUS.obj2Array(o);
+	    	a.should.eql([1,2,3]);
+        });
+	    it('should unfold an object only until the limit', function(){
+	    	var o = { a:1, b:2, c:{ d: 1} };
+	    	var a = JSUS.obj2Array(o,1);
+	    	console.log(a)
+	    	a.should.eql([1,2,{d:1}]);
+        }); 
+    });
+    
+    describe('#obj2KeyedArray()', function() {  	
+	    it('should unfold an object completely', function(){
+	    	var o = { a:1, b:2, c:3 };
+	    	var a = JSUS.obj2KeyedArray(o);
+	    	a.should.eql(['a', 1, 'b', 2, 'c', 3]);
+        });
+	    it('should unfold an object only until the limit', function(){
+	    	var o = { a:1, b:2, c:{ d: 1} };
+	    	var a = JSUS.obj2KeyedArray(o,1);
+	    	a.should.eql(['a', 1, 'b', 2, 'c', {d: 1}]);
+        }); 
+    });
+    
 });
 
 

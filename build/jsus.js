@@ -2161,7 +2161,7 @@ OBJ.augment = function(obj1, obj2, keys) {
 			obj1[k] = [obj1[k]];
 		}
 		if ('undefined' !== obj2[k]) {
-			if (typeof obj1[k]) obj1[k] = []; 
+			if (!obj1[k]) obj1[k] = []; 
 			obj1[k].push(obj2[k]);
 		}
 	}

@@ -2157,11 +2157,11 @@ OBJ.augment = function(obj1, obj2, keys) {
 	
 	for (i = 0 ; i < keys.length; i++) {
 		k = keys[i];
-		if (obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
+		if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
 			obj1[k] = [obj1[k]];
 		}
-		if (obj2[k]) {
-			if (!obj1[k]) obj1[k] = []; 
+		if ('undefined' !== obj2[k]) {
+			if (typeof obj1[k]) obj1[k] = []; 
 			obj1[k].push(obj2[k]);
 		}
 	}

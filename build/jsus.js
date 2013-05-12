@@ -159,6 +159,10 @@ if (JSUS.isNodeJS()) {
  * 
  * Collection of static functions related to file system operations.
  * 
+ * @see http://nodejs.org/api/fs.html
+ * @see https://github.com/ryanmcgrath/wrench-js
+ * @see https://github.com/substack/node-resolve
+ * 
  */
 
 
@@ -171,9 +175,22 @@ if (!JSUS.isNodeJS()){
 
 var resolve = require('resolve'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	wrench = require('wrench');
+
 
 function FS(){};
+
+
+
+/**
+ * ## FS.resolveModuleDir
+ *
+ * Backward-compatible version of fs.existsSync
+ * 
+ */
+FS.existsSync = ('undefined' === typeof fs.existsSync) ? path.existsSync : fs.existsSync;
+
 
 /**
  * ## FS.resolveModuleDir
@@ -190,6 +207,8 @@ function FS(){};
  * @param {string} module The name of the module
  * @param {string} basedir Optional The basedir from which starting searching
  * @return {string} The path of the root directory of the module
+ * 
+ * @see https://github.com/substack/node-resolve
  * 
  */
 FS.resolveModuleDir = function (module, basedir) {
@@ -213,8 +232,7 @@ FS.resolveModuleDir = function (module, basedir) {
  * @see FS.cleanDir
  */
 FS.deleteIfExists = function (file) {
-	if (!path.existsSync(file)) {
-		// <!-- console.log(file); -->
+	if (!FS.existsSync(file)) {
 		return false;
 	}
 	var stats = fs.lstatSync(file);
@@ -312,6 +330,22 @@ FS.copyFromDir = function (dirIn, dirOut, ext, cb) {
 		return false;
 	}
 	
+	dirOut = path.resolve(dirOut) + '/';
+	var i, dir, dirs = [dirIn, dirOut];
+	for (i=0; i < 2; i++) {
+		dir = dirs[i];
+		if (!FS.existsSync(dir)) {
+			console.log(dir + ' does not exist');
+			return false;
+		}
+		
+		var stats = fs.lstatSync(dir);
+		if (!stats.isDirectory()) {
+			console.log(dir + ' is not a directory');
+			return false;
+		}
+	}
+	
 	fs.readdir(dirIn, function(err, files){
 		if (err) {
 			JSUS.log(err);
@@ -354,6 +388,22 @@ var copyFile = function (srcFile, destFile, cb) {
     });
     return fdr.pipe(fdw);
 };
+
+
+/**
+ *  ## wrench
+ * 
+ *  FS exposes the properties of the great package wrench for
+ *  performing recursive operations on directories
+ *  
+ *  @see https://github.com/ryanmcgrath/wrench-js
+ *  
+ */
+for (var w in wrench) {
+	if (wrench.hasOwnProperty(w)) {
+		FS[w] = wrench[w];
+	}
+}
 
 JSUS.extend(FS);
 

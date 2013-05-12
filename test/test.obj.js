@@ -773,8 +773,22 @@ describe('OBJ: ', function() {
 	    it('should return undefined if the limit of tries has been reached', function(){
 	    	var key = JSUS.uniqueKey({ a: 1, a1: 2, a2: 1 }, 'a', 2);
 	    	(key === undefined).should.be.true;
+        }); 
+    });
+    
+    describe('#augment()', function() {  	
+	    it('should augment the properties of obj1 with obj2', function(){
+	    	var a = { a:1, b:2, c:3 };
+	    	var b = { a:10, b:2, c:100, d:4 };
+	    	JSUS.augment(a, b);
+	    	a.should.eql({ a: [1, 10], b: [2, 2], c: [3, 100]});
         });
-
+	    it('should augment the properties of obj1 with obj2 on the specified keys only', function(){
+	    	var a = { a:1, b:2, c:3 };
+	    	var b = { a:10, b:2, c:100, d:4 };
+	    	JSUS.augment(a, b, ['b', 'c', 'd']);
+	    	a.should.eql({ a: 1, b: [2, 2], c: [3, 100], d: [4]});
+        });
 	    
     });
 });

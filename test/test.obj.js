@@ -800,7 +800,6 @@ describe('OBJ: ', function() {
 	    it('should unfold an object only until the limit', function(){
 	    	var o = { a:1, b:2, c:{ d: 1} };
 	    	var a = JSUS.obj2Array(o,1);
-	    	console.log(a)
 	    	a.should.eql([1,2,{d:1}]);
         }); 
     });

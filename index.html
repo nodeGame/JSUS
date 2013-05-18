@@ -1,43 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>JSUS by nodeGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <title>JSUS by nodeGame</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
+    <header>
+      <div class="inner">
         <h1>JSUS</h1>
-        <p>JavaScript UtilS. Collection of general purpose functions. JSUS helps!</p>
+        <h2>JavaScript UtilS. Collection of general purpose functions. JSUS helps!</h2>
+        <a href="https://github.com/nodeGame/JSUS" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-        <p class="view"><a href="https://github.com/nodeGame/JSUS">View the Project on GitHub <small>nodeGame/JSUS</small></a></p>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>JSUS: JavaScript UtilS.</h1>
 
-
-        <ul>
-          <li><a href="https://github.com/nodeGame/JSUS/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nodeGame/JSUS/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nodeGame/JSUS">View On <strong>GitHub</strong></a></li>
-        </ul>
-        <br>
-        <h2>Documentation</h2>
-        <p>
-          <dl>
-            <dt><a href="./docs/jsus.js.html">API</a></dt>
-            <dt><a href="https://github.com/nodeGame/JSUS/wiki">WIKI</a></dt>
-          </dl> 
-        </p>
-          
-      </header>
-      <section>
-        <h1>JSUS: JavaScript UtilS.</h1>
+<p><a href="https://travis-ci.org/nodeGame/JSUS"><img src="https://travis-ci.org/nodeGame/JSUS.png?branch=master" alt="Build Status"></a></p>
 
 <p>Collection of general purpose javascript functions. JSUS helps!</p>
 
@@ -79,20 +72,21 @@ no reference of myClass is stored.</p>
 <li>DOM</li>
 <li>RANDOM</li>
 <li>PARSE</li>
-<li>FS</li>
+<li>FS (+wrench)</li>
+<li>COMPATIBILITY</li>
 </ol><h2>Build</h2>
 
 <p>Create your customized build of JSUS.js using the make file in the bin directory</p>
 
-<div class="highlight"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">jsus</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="c1">// Full build, about 16Kb minified</span>
-<span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">jsus</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="nx">OBJ</span> <span class="nx">ARRAY</span> <span class="o">-</span><span class="nx">o</span> <span class="nx">jsus</span><span class="o">-</span><span class="nx">oa</span><span class="p">.</span><span class="nx">js</span> <span class="c1">// about 8Kb minified</span>
+<div class="highlight"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="o">-</span><span class="nx">a</span> <span class="c1">// Full build, about 20Kb minified</span>
+<span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="o">-</span><span class="nx">l</span> <span class="nx">obj</span><span class="p">,</span><span class="nx">array</span> <span class="o">-</span><span class="nx">o</span> <span class="nx">jsus</span><span class="o">-</span><span class="nx">oa</span><span class="p">.</span><span class="nx">js</span> <span class="c1">// about 12Kb minified</span>
 </pre></div>
 
 <h2>API Documentation</h2>
 
 <p>Create html API documentation using the make file in the bin directory  </p>
 
-<div class="highlight"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">jsus</span><span class="p">.</span><span class="nx">js</span> <span class="nx">doc</span>
+<div class="highlight"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">doc</span>
 </pre></div>
 
 <h2>Make help</h2>
@@ -101,7 +95,7 @@ no reference of myClass is stored.</p>
 
 Commands:
 
-    build [options] 
+    build [options] [options]
     Creates a custom build of JSUS.js
 
 doc 
@@ -111,13 +105,17 @@ Options:
 
 -h, --help     output usage information
 -V, --version  output the version number
+</code></pre>
 
-Usage: build [options]
+<p>Usage: build [options] [options]</p>
 
-Options:
+<p>Options:</p>
 
--h, --help           output usage information
--o, --output &lt;file&gt;
+<pre><code>-h, --help           output usage information
+-l, --lib &lt;items&gt;    choose libraries to include
+-A, --analyse        analyse build
+-a, --all            full build of JSUS
+-o, --output &lt;file&gt;  
 </code></pre>
 
 <h2>License</h2>
@@ -129,26 +127,35 @@ Options:
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/nodeGame">nodeGame</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/nodeGame/JSUS/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/nodeGame/JSUS/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/nodeGame/JSUS"></a> is maintained by <a href="https://github.com/nodeGame">nodeGame</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-	<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-34089835-2']);
-  _gaq.push(['_trackPageview']);
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-34089835-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-    
   </body>
 </html>

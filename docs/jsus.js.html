@@ -61,74 +61,7 @@ MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of general purpose javascript functions. JSUS helps!</p>
 
-<p>JSUS is designed to be modular and easy to extend. </p>
-
-<p>Just use: </p>
-
-
-<div class="highlight"><pre><code>    <span class="n">JSUS</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">myClass</span><span class="p">);</span>
-</code></pre></div>
-
-
-
-<p>to extend the functionalities of JSUS. All the methods of myClass 
-are immediately added to JSUS, and a reference to myClass is stored
-in JSUS._classes.</p>
-
-<p>MyClass can be either of type Object or Function.</p>
-
-<p>JSUS can also extend other objects. Just pass a second parameter:</p>
-
-
-<div class="highlight"><pre><code>    <span class="n">JSUS</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">myClass</span><span class="p">,</span> <span class="n">mySecondClass</span><span class="p">);</span>
-</code></pre></div>
-
-
-
-<p>and mySecondClass will receive all the methods of myClass. In this case,
-no reference of myClass is stored.</p>
-
-<p>To get a copy of one of the registered JSUS libraries</p>
-
-
-<div class="highlight"><pre><code> <span class="n">var</span> <span class="n">myClass</span> <span class="o">=</span> <span class="n">JSUS</span><span class="o">.</span><span class="nb">require</span><span class="p">(</span><span class="s">&#39;myClass&#39;</span><span class="p">);</span>
-</code></pre></div>
-
-
-
-<p>JSUS come shipped in with a default set of libraries</p>
-
-<ol>
-<li>OBJ</li>
-<li>ARRAY</li>
-<li>TIME</li>
-<li>EVAL</li>
-<li>DOM</li>
-<li>RANDOM</li>
-<li>PARSE</li>
-<li>FS</li>
-</ol>
-
-<p>Documentation</p>
-
-<p>Automatic documentation for all libraries can be generated with the command</p>
-
-
-<div class="highlight"><pre><code><span class="nx">node</span> <span class="nx">bin</span><span class="o">/</span><span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">doc</span>
-</code></pre></div>
-
-
-
-<p>Build</p>
-
-<p>Create your customized build of JSUS.js using the make file in the bin directory</p>
-
-
-<div class="highlight"><pre><code><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="c1">// Full build, about 20Kb minified</span>
-<span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="o">-</span><span class="nx">l</span> <span class="nx">obj</span><span class="p">,</span><span class="nx">array</span> <span class="o">-</span><span class="nx">o</span> <span class="nx">jsus</span><span class="o">-</span><span class="nx">oa</span><span class="p">.</span><span class="nx">js</span> <span class="c1">// about 12Kb minified</span>
-</code></pre></div>
-
-
+<p>See README.md for extra help.</p>
   </div>
 </div>
         </td>
@@ -171,7 +104,7 @@ Override to redirect the standard output of all JSUS functions.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>txt</span>
+      <span class="dox_tag_name">txt</span>
       <span class="dox_type">string</span>
       <span>Text to output</span>
     </div>
@@ -208,22 +141,24 @@ extension.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>additional</span>
+      <span class="dox_tag_name">additional</span>
       <span class="dox_type">object</span>
       <span>Text to output</span>
     </div>
     <div class="dox_tag_detail">
-      <span>target</span>
+      <span class="dox_tag_name">target</span>
       <span class="dox_type">object</span>
       <span class="dox_type">function</span>
       <span>The object to extend</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
       <span class="dox_type">function</span>
-      <span>target The extended object</span>
+      <span>target The extended object
+
+@see JSUS.get</span>
     </div>
   </div>
 </div>
@@ -245,7 +180,7 @@ of the additional object into the hidden
 JSUS._classes object;</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span>
+        <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">additional</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">additional</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
             <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="s1">&#39;function &#39;</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
@@ -317,13 +252,13 @@ of all the extending objects is returned.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>className</span>
+      <span class="dox_tag_name">className</span>
       <span class="dox_type">string</span>
       <span>The name of the requested JSUS library</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">function</span>
       <span class="dox_type">boolean</span>
       <span>The copy of the JSUS library, or FALSE if the library does not exist</span>
@@ -341,8 +276,17 @@ of all the extending objects is returned.</p>
         <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Could not find class &#39;</span> <span class="o">+</span> <span class="nx">className</span><span class="p">);</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span><span class="p">[</span><span class="nx">className</span><span class="p">]);</span>
-<span class="p">};</span></pre></div>
+    <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">_classes</span><span class="p">[</span><span class="nx">className</span><span class="p">]);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>return new JSUS._classes<a href="">className</a>;</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -361,7 +305,7 @@ of all the extending objects is returned.</p>
   <div class="details">
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE when executed inside Node.JS environment</span>
     </div>
@@ -388,6 +332,7 @@ of all the extending objects is returned.</p>
 <p>if node</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNodeJS</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/compatibility&#39;</span><span class="p">);</span>
     <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/obj&#39;</span><span class="p">);</span>
     <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/array&#39;</span><span class="p">);</span>
     <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib/time&#39;</span><span class="p">);</span>
@@ -402,7 +347,7 @@ of all the extending objects is returned.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>end node</p>
         </td>

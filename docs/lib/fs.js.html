@@ -25,6 +25,9 @@
         <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
       </div>
       <div class="heading h2">
+        <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
+      </div>
+      <div class="heading h2">
         <a href="#fs.deleteifexists">FS.deleteIfExists</a>
       </div>
       <div class="heading h2">
@@ -35,6 +38,9 @@
       </div>
       <div class="heading h2">
         <a href="#fs.copyfile">FS.copyFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#wrench">wrench</a>
       </div>
     </div>
   </div>
@@ -58,6 +64,22 @@ MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions related to file system operations.</p>
   </div>
+  <div class="details">
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href="http://nodejs.org/api/fs.html">http://nodejs.org/api/fs.html</a>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href="https://github.com/ryanmcgrath/wrench-js">https://github.com/ryanmcgrath/wrench-js</a>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">https://github.com/substack/node-resolve
+
+</a>
+    </div>
+  </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
@@ -69,9 +91,29 @@ MIT Licensed</p>
 
 <span class="kd">var</span> <span class="nx">resolve</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;resolve&#39;</span><span class="p">),</span>
   <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
-  <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+  <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+  <span class="nx">wrench</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;wrench&#39;</span><span class="p">);</span>
+
 
 <span class="kd">function</span> <span class="nx">FS</span><span class="p">(){};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="fs.resolvemoduledir">
+  <h2>
+    <a href="#fs.resolvemoduledir" class="pilcrow">&#182;</a>
+    FS.resolveModuleDir
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Backward-compatible version of fs.existsSync</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">)</span> <span class="o">?</span> <span class="nx">path</span><span class="p">.</span><span class="nx">existsSync</span> <span class="o">:</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -97,20 +139,26 @@ module as installed by npm.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>module</span>
+      <span class="dox_tag_name">module</span>
       <span class="dox_type">string</span>
       <span>The name of the module</span>
     </div>
     <div class="dox_tag_detail">
-      <span>basedir</span>
+      <span class="dox_tag_name">basedir</span>
       <span class="dox_type">string</span>
       <span>Optional The basedir from which starting searching</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>The path of the root directory of the module</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">https://github.com/substack/node-resolve
+
+</a>
     </div>
   </div>
 </div>
@@ -142,35 +190,27 @@ module as installed by npm.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>file</span>
+      <span class="dox_tag_name">file</span>
       <span class="dox_type">string</span>
       <span>The path to the file or directory</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE, if operation is succesfull</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">FS.cleanDir</span>
+      <span class="dox_type">FS.cleanDir
+  </span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">FS</span><span class="p">.</span><span class="nx">deleteIfExists</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">path</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
-</div>
-<!-- console.log(file); -->
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="kd">var</span> <span class="nx">stats</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">lstatSync</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="nx">stats</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="p">{</span>
@@ -208,29 +248,30 @@ The '.' (dot) must be included as part of the extension.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>dir</span>
+      <span class="dox_tag_name">dir</span>
       <span class="dox_type">string</span>
       <span>The directory to clean</span>
     </div>
     <div class="dox_tag_detail">
-      <span>ext</span>
+      <span class="dox_tag_name">ext</span>
       <span class="dox_type">string</span>
       <span>Optional. If set, only files with this extension will be removed</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Optional. A callback function to call if no error is raised</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE, if the operation is successful</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">FS.deleteIfExists</span>
+      <span class="dox_type">FS.deleteIfExists
+  </span>
     </div>
   </div>
 </div>
@@ -289,40 +330,44 @@ The '.' (dot) must be included as part of the extension.</p>
   <div class="body"><p>Copies all files from a source directory to a destination 
 directory.</p>
 
-<p>It is possible to specify an extension as second parameter.
+<p>It is possible to specify an extension as second parameter (e.g. '.js').
 In such case, only file with that extension will be copied.</p>
+
+<p>Warning! If an extension filter is not specified, and if subdirectories
+are found, an error will occur.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>dirIn</span>
+      <span class="dox_tag_name">dirIn</span>
       <span class="dox_type">string</span>
       <span>The source directory</span>
     </div>
     <div class="dox_tag_detail">
-      <span>dirOut</span>
+      <span class="dox_tag_name">dirOut</span>
       <span class="dox_type">string</span>
       <span>The destination directory</span>
     </div>
     <div class="dox_tag_detail">
-      <span>ext</span>
+      <span class="dox_tag_name">ext</span>
       <span class="dox_type">string</span>
       <span>Optional. If set, only files with this extension will be copied</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Optional. A callback function to call if no error is raised</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE, if the operation is successful</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">FS.copyFile</span>
+      <span class="dox_type">FS.copyFile
+  </span>
     </div>
   </div>
 </div>
@@ -337,15 +382,32 @@ In such case, only file with that extension will be copied.</p>
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
   
+  <span class="nx">dirOut</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">dirOut</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="nx">dirIn</span><span class="p">,</span> <span class="nx">dirOut</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">dir</span> <span class="o">=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; does not exist&#39;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">stats</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">lstatSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">stats</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; is not a directory&#39;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
   <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span><span class="p">(</span><span class="nx">dirIn</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
       <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">ext</span> <span class="o">&amp;&amp;</span> <span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span> <span class="nx">ext</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">copyFile</span><span class="p">(</span><span class="nx">dirIn</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">dirOut</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">ext</span> <span class="o">&amp;&amp;</span> <span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">!==</span> <span class="nx">ext</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">continue</span><span class="p">;</span>
       <span class="p">}</span>
+      <span class="nx">copyFile</span><span class="p">(</span><span class="nx">dirIn</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">dirOut</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
     <span class="p">}</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
@@ -371,34 +433,35 @@ In such case, only file with that extension will be copied.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>srcFile</span>
+      <span class="dox_tag_name">srcFile</span>
       <span class="dox_type">string</span>
       <span>The source file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>destFile</span>
+      <span class="dox_tag_name">destFile</span>
       <span class="dox_type">string</span>
       <span>The destination file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Optional. If set, the callback will be executed upon success</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Optional. A callback function to call if no error is raised</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE, if the operation is successful</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <a href="https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js">https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js</a>
+      <a href=" ">https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
+</a>
     </div>
   </div>
 </div>
@@ -420,7 +483,32 @@ In such case, only file with that extension will be copied.</p>
       <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
     <span class="p">});</span>
     <span class="k">return</span> <span class="nx">fdr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">fdw</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="wrench">
+  <h2>
+    <a href="#wrench" class="pilcrow">&#182;</a>
+    wrench
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>FS exposes the properties of the great package wrench for
+ performing recursive operations on directories</p>
+
+<p>@see <a href='https://github.com/ryanmcgrath/wrench-js'>https://github.com/ryanmcgrath/wrench-js</a></p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">w</span> <span class="k">in</span> <span class="nx">wrench</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">wrench</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">w</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">FS</span><span class="p">[</span><span class="nx">w</span><span class="p">]</span> <span class="o">=</span> <span class="nx">wrench</span><span class="p">[</span><span class="nx">w</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">FS</span><span class="p">);</span>
 

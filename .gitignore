@@ -6,4 +6,7 @@ _*
 npm-debug.log
 yuidoc.js
 /node_modules/*
+<<<<<<< HEAD
 /build/*
+=======
+>>>>>>> master

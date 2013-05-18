@@ -40,7 +40,7 @@
         <a href="#array.removeelement">ARRAY.removeElement</a>
       </div>
       <div class="heading h2">
-        <a href="#array.in_array">ARRAY.in_array</a>
+        <a href="#array.inarray">ARRAY.inArray</a>
       </div>
       <div class="heading h2">
         <a href="#array.getngroups">ARRAY.getNGroups</a>
@@ -67,6 +67,9 @@
         <a href="#array.rep">ARRAY.rep</a>
       </div>
       <div class="heading h2">
+        <a href="#array.stretch">ARRAY.stretch</a>
+      </div>
+      <div class="heading h2">
         <a href="#array.arrayintersect">ARRAY.arrayIntersect</a>
       </div>
       <div class="heading h2">
@@ -80,6 +83,9 @@
       </div>
       <div class="heading h2">
         <a href="#array.distinct">ARRAY.distinct</a>
+      </div>
+      <div class="heading h2">
+        <a href="#array.transpose">ARRAY.transpose</a>
       </div>
     </div>
   </div>
@@ -125,7 +131,7 @@ MIT Licensed</p>
 supported natively. </p>
 
 
-<div class="highlight"><pre><code>    <span class="nv">@see</span> <span class="n">https:</span><span class="sr">//</span><span class="n">developer</span><span class="o">.</span><span class="n">mozilla</span><span class="o">.</span><span class="n">org</span><span class="sr">/en/</span><span class="n">JavaScript</span><span class="sr">/Reference/</span><span class="n">Global_Objects</span><span class="sr">/ARRAY/</span><span class="n">filter</span>
+<div class="highlight"><pre><code><span class="nv">@see</span> <span class="n">https:</span><span class="sr">//</span><span class="n">developer</span><span class="o">.</span><span class="n">mozilla</span><span class="o">.</span><span class="n">org</span><span class="sr">/en/</span><span class="n">JavaScript</span><span class="sr">/Reference/</span><span class="n">Global_Objects</span><span class="sr">/ARRAY/</span><span class="n">filter</span>
 </code></pre></div>
 
 
@@ -176,13 +182,15 @@ but it works on a larger share of browsers. </p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>o</span>
+      <span class="dox_tag_name">o</span>
       <span class="dox_type">object</span>
       <span>The variable to check.</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">Array.isArray</span>
+      <span class="dox_type">Array.isArray
+
+  </span>
     </div>
   </div>
 </div>
@@ -221,30 +229,30 @@ can be passed as fourth parameter.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>start</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">start</span>
+      <span class="dox_type">number</span>
       <span>The first element of the sequence</span>
     </div>
     <div class="dox_tag_detail">
-      <span>end</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">end</span>
+      <span class="dox_type">number</span>
       <span>The last element of the sequence</span>
     </div>
     <div class="dox_tag_detail">
-      <span>increment</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">increment</span>
+      <span class="dox_type">number</span>
       <span>Optional. The increment between two subsequents element of the sequence</span>
     </div>
     <div class="dox_tag_detail">
-      <span>func</span>
+      <span class="dox_tag_name">func</span>
       <span class="dox_type">Function</span>
       <span>Optional. A callback function that can modify each number of the sequence before returning it</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>out The final sequence</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>out The final sequence </span>
     </div>
   </div>
 </div>
@@ -302,23 +310,23 @@ can be passed as fourth parameter.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array to loop in</span>
     </div>
     <div class="dox_tag_detail">
-      <span>func</span>
+      <span class="dox_tag_name">func</span>
       <span class="dox_type">Function</span>
       <span>The callback for each element in the array</span>
     </div>
     <div class="dox_tag_detail">
-      <span>context</span>
+      <span class="dox_tag_name">context</span>
       <span class="dox_type">object</span>
       <span>Optional. The context of execution of the callback. Defaults ARRAY.each</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">Boolean</span>
       <span>TRUE, if execution was successful</span>
     </div>
@@ -359,13 +367,15 @@ callback function</p>
   <div class="details">
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>out The result of the mapping execution</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">ARRAY.each</span>
+      <span class="dox_type">ARRAY.each
+
+  </span>
     </div>
   </div>
 </div>
@@ -413,24 +423,25 @@ through JSUS.equals.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>needle</span>
+      <span class="dox_tag_name">needle</span>
       <span class="dox_type">mixed</span>
       <span>The element to search in the array</span>
     </div>
     <div class="dox_tag_detail">
-      <span>haystack</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">haystack</span>
+      <span class="dox_type">array</span>
       <span>The array to search in</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">mixed</span>
       <span>The element that was removed, FALSE if none was removed</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">JSUS.equals</span>
+      <span class="dox_type">JSUS.equals
+  </span>
     </div>
   </div>
 </div>
@@ -459,10 +470,10 @@ through JSUS.equals.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="array.in_array">
+<div class="pilwrap" id="array.inarray">
   <h2>
-    <a href="#array.in_array" class="pilcrow">&#182;</a>
-    ARRAY.in_array
+    <a href="#array.inarray" class="pilcrow">&#182;</a>
+    ARRAY.inArray
   </h2>
 </div>
 
@@ -472,29 +483,33 @@ FALSE otherwise</p>
 
 <p>For objects, deep equality comparison is performed 
 through JSUS.equals.</p>
+
+<p>Alias ARRAY.in_array (deprecated)</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>needle</span>
+      <span class="dox_tag_name">needle</span>
       <span class="dox_type">mixed</span>
       <span>The element to search in the array</span>
     </div>
     <div class="dox_tag_detail">
-      <span>haystack</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">haystack</span>
+      <span class="dox_type">array</span>
       <span>The array to search in</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">Boolean</span>
-      <span>TRUE, if the element is contained in the array</span>
+      <span>TRUE, if the element is contained in the array
+
+@see JSUS.equals</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     
     <span class="kd">var</span> <span class="nx">func</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">;</span>    
@@ -540,19 +555,19 @@ are not multiple, the last group could have less elements</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array to split in subgroups</span>
     </div>
     <div class="dox_tag_detail">
-      <span>N</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">N</span>
+      <span class="dox_type">number</span>
       <span>The number of subgroups</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>Array containing N groups</span>
     </div>
   </div>
@@ -580,20 +595,24 @@ The last group could have less elements</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array to split in subgroups</span>
     </div>
     <div class="dox_tag_detail">
-      <span>N</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">N</span>
+      <span class="dox_type">number</span>
       <span>The number of elements in each subgroup</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>Array containing groups of size N</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>Array containing groups of size N
+
+@see ARRAY.getNGroups
+   @see ARRAY.generateCombinations
+   @see ARRAY.matchN</span>
     </div>
   </div>
 </div>
@@ -711,23 +730,23 @@ is found or not in in column "i".</p>
     </span>
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>S</span>
+      <span class="dox_tag_name">S</span>
       <span class="dox_type">number</span>
       <span>The number of rows</span>
     </div>
     <div class="dox_tag_detail">
-      <span>Optional.</span>
+      <span class="dox_tag_name">Optional.</span>
       <span class="dox_type">number</span>
       <span>N The number of columns. Defaults N = S</span>
     </div>
     <div class="dox_tag_detail">
-      <span>Optional.</span>
+      <span class="dox_tag_name">Optional.</span>
       <span class="dox_type">boolean</span>
       <span>If TRUE self-match is allowed. Defaults TRUE</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
       <span>The resulting latin square (or rectangle)</span>
     </div>
@@ -791,19 +810,19 @@ is found or not in in column "i".</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>S</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">S</span>
+      <span class="dox_type">number</span>
       <span>The number of rows</span>
     </div>
     <div class="dox_tag_detail">
-      <span>Optional.</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">number</span>
       <span>N The number of columns. Defaults N = S</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>The resulting latin square (or rectangle)</span>
     </div>
   </div>
@@ -837,19 +856,19 @@ in each column "i", the symbol "i" is not found</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>S</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">S</span>
+      <span class="dox_type">number</span>
       <span>The number of rows</span>
     </div>
     <div class="dox_tag_detail">
-      <span>Optional.</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">number</span>
       <span>N The number of columns. Defaults N = S-1</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>The resulting latin square (or rectangle)</span>
     </div>
   </div>
@@ -878,17 +897,13 @@ in each column "i", the symbol "i" is not found</p>
   <div class="body"><p>Generates all distinct combinations of exactly r elements each 
  and returns them into an array</p>
 
-<p>@param {Array} array The array from which the combinations are extracted
- @param {Number} r The number of elements in each combination
- @return {Array} The total sets of combinations</p>
+<p>@param {array} array The array from which the combinations are extracted
+ @param {number} r The number of elements in each combination
+ @return {array} The total sets of combinations</p>
 
-
-<div class="highlight"><pre><code> <span class="nv">@see</span> <span class="n">ARRAY</span><span class="o">.</span><span class="n">getGroupSizeN</span>
- <span class="nv">@see</span> <span class="n">ARRAY</span><span class="o">.</span><span class="n">getNGroups</span>
- <span class="nv">@see</span> <span class="n">ARRAY</span><span class="o">.</span><span class="n">matchN</span>
-</code></pre></div>
-
-
+<p>@see ARRAY.getGroupSizeN
+   @see ARRAY.getNGroups
+   @see ARRAY.matchN</p>
   </div>
 </div>
         </td>
@@ -937,25 +952,29 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array in which operate the matching</span>
     </div>
     <div class="dox_tag_detail">
-      <span>N</span>
-      <span class="dox_type">Number</span>
+      <span class="dox_tag_name">N</span>
+      <span class="dox_type">number</span>
       <span>The number of matches per element</span>
     </div>
     <div class="dox_tag_detail">
-      <span>strict</span>
+      <span class="dox_tag_name">strict</span>
       <span class="dox_type">Boolean</span>
       <span>Optional. If TRUE, matched elements cannot be repeated. Defaults, FALSE </span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>result The results of the matching</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>result The results of the matching
+
+@see ARRAY.getGroupSizeN
+   @see ARRAY.getNGroups
+   @see ARRAY.generateCombinations</span>
     </div>
   </div>
 </div>
@@ -1038,19 +1057,19 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>the array to repeat </span>
     </div>
     <div class="dox_tag_detail">
-      <span>times</span>
+      <span class="dox_tag_name">times</span>
       <span class="dox_type">number</span>
       <span>The number of times the array must be appended to itself</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>A copy of the original array appended to itself</span>
     </div>
   </div>
@@ -1075,6 +1094,84 @@ elements instead.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="array.stretch">
+  <h2>
+    <a href="#array.stretch" class="pilcrow">&#182;</a>
+    ARRAY.stretch
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Repeats each element of the array N times</p>
+
+<p>N can be specified as an integer or as an array. In the former case all 
+the elements are repeat the same number of times. In the latter, the each
+element can be repeated a custom number of times. If the length of the <code>times</code>
+array differs from that of the array to stretch a recycle rule is applied.</p>
+
+<p>The original array is not modified.</p>
+
+<p>E.g.:</p>
+
+
+<div class="highlight"><pre><code>  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
+
+  <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">stretch</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// [1, 1, 2, 2, 3, 3]</span>
+
+  <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">stretch</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]);</span> <span class="c1">// [1, 2, 2, 3, 3, 3];</span>
+
+  <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">stretch</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// [1, 1, 2, 3, 3];</span>
+</code></pre></div>
+
+
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
+      <span>the array to strech</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">times</span>
+      <span class="dox_type">number</span>
+      <span class="dox_type">array</span>
+      <span>The number of times each element must be repeated</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>A stretched copy of the original array</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">stretch</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">times</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">times</span><span class="p">)</span> <span class="k">return</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">times</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">times</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;times must be greater or equal 1&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">times</span> <span class="o">=</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">rep</span><span class="p">([</span><span class="nx">times</span><span class="p">],</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">repeat</span> <span class="o">=</span> <span class="nx">times</span><span class="p">[(</span><span class="nx">i</span> <span class="o">%</span> <span class="nx">times</span><span class="p">.</span><span class="nx">length</span><span class="p">)];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">repeat</span> <span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="array.arrayintersect">
   <h2>
     <a href="#array.arrayintersect" class="pilcrow">&#182;</a>
@@ -1090,19 +1187,19 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>a1</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">a1</span>
+      <span class="dox_type">array</span>
       <span>The first array</span>
     </div>
     <div class="dox_tag_detail">
-      <span>a2</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">a2</span>
+      <span class="dox_type">array</span>
       <span>The second array</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>All the values of the first array that are found also in the second one</span>
     </div>
   </div>
@@ -1134,19 +1231,19 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>a1</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">a1</span>
+      <span class="dox_type">array</span>
       <span>The first array</span>
     </div>
     <div class="dox_tag_detail">
-      <span>a2</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">a2</span>
+      <span class="dox_type">array</span>
       <span>The second array</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
       <span>All the values of the first array that are not found in the second one</span>
     </div>
   </div>
@@ -1177,15 +1274,21 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>shuffle</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">shuffle</span>
+      <span class="dox_type">array</span>
       <span>The array to shuffle</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>copy The shuffled array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>copy The shuffled array
+
+
+<div class="highlight"><pre><code><span class="nv">@see</span> <span class="n">http:</span><span class="sr">//</span><span class="n">en</span><span class="o">.</span><span class="n">wikipedia</span><span class="o">.</span><span class="n">org</span><span class="sr">/wiki/</span><span class="n">Fisher</span><span class="nv">%E2%80%93Yates_shuffle</span>
+</code></pre></div>
+
+</span>
     </div>
   </div>
 </div>
@@ -1221,15 +1324,15 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array from which extracts random elements</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>An new array with N elements randomly chose from the original array</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>An new array with N elements randomly chose from the original array  </span>
     </div>
   </div>
 </div>
@@ -1260,15 +1363,17 @@ elements instead.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>array</span>
-      <span class="dox_type">Array</span>
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
       <span>The array from which eliminates duplicates</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
-      <span class="dox_type">Array</span>
-      <span>out A copy of the array without duplicates</span>
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>out A copy of the array without duplicates
+
+@see JSUS.equals</span>
     </div>
   </div>
 </div>
@@ -1284,6 +1389,65 @@ elements instead.</p>
   <span class="p">});</span>
   <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
   
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="array.transpose">
+  <h2>
+    <a href="#array.transpose" class="pilcrow">&#182;</a>
+    ARRAY.transpose
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Transposes a given 2D array.</p>
+
+<p>The original array is not modified, and a new copy is
+returned.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">array</span>
+      <span class="dox_type">array</span>
+      <span>The array to transpose</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>The Transposed Array</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">transpose</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>  
+  </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Calculate width and height</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=</span> <span class="p">[];</span> 
+  <span class="nx">w</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">h</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">?</span> <span class="nx">array</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">h</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">t</span><span class="p">;</span>
+  
+  <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="k">for</span> <span class="p">(</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>     
+        <span class="nx">t</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span><span class="nx">i</span><span class="p">];</span>
+      <span class="p">}</span>
+  <span class="p">}</span> 
+  <span class="k">return</span> <span class="nx">t</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ARRAY</span><span class="p">);</span>

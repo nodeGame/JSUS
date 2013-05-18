@@ -1,0 +1,35 @@
+{
+  "name": "JSUS",
+  "description": "JavaScript UtilS. Collection of general purpose functions. JSUS helps!",
+  "version": "0.7.4",
+  "keywords": [ "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
+  "author": "Stefano Balietti <futur.dorko@gmail.com>",
+  "licenses": [
+    { "type": "MIT" }
+  ],
+  "directories": { "lib": "./lib"},
+  "dependencies": {
+    "commander": "1.0.0",
+    "smoosh": "0.4.0",
+    "resolve": "0.2.3",
+    "wrench": "1.4.4"
+  },
+  "devDependencies": {
+    "docker": "0.2.2",
+    "mocha": ">= 0.3.0",
+    "should": ">= 0.5.1"
+  },
+  "optionalDependencies": {
+    "docker": "0.2.2"
+  },
+  "engines": { "node":  ">=0.4.0" },
+  "main": "jsus.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodeGame/JSUS.git"
+  },
+  "scripts": {
+    "test": "make test",
+    "prepublish": "node bin/make.js build -a"
+  }
+}

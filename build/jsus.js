@@ -1405,15 +1405,16 @@ OBJ._obj2Array = function(obj, keyed, level, cur_level) {
     var result = [];
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
+        	if (keyed) result.push(key);
             if ('object' === typeof obj[key]) {
                 result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
             } else {
-                if (keyed) result.push(key);
                 result.push(obj[key]);
             }
            
         }
-    }        
+    }      
+    
     return result;
 };
 
@@ -1430,7 +1431,7 @@ OBJ._obj2Array = function(obj, keyed, level, cur_level) {
  * gets totally unfolded into an array.
  * 
  * @param {object} obj The object to convert in array
- * @param {number} level Optional. The level of recursion. Defaults undefined
+ * @param {number} level Optional. The level of recursion. Defaults, undefined
  * @return {array} The converted object
  * 
  * 	@see OBJ._obj2Array
@@ -1450,7 +1451,7 @@ OBJ.obj2Array = function (obj, level) {
  * returns it.
  * 
  * @param {object} obj The object to convert in array
- * @param {number} level Optional. The level of recursion. Defaults undefined
+ * @param {number} level Optional. The level of recursion. Defaults, undefined
  * @return {array} The converted object
  * 
  * @see OBJ.obj2Array 

@@ -93,6 +93,9 @@
       <div class="heading h2">
         <a href="#obj.uniquekey">OBJ.uniqueKey</a>
       </div>
+      <div class="heading h2">
+        <a href="#obj.augment">OBJ.augment</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -378,15 +381,16 @@ A fixed level of recursion can be set.</p>
     <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">keyed</span><span class="p">)</span> <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
                 <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="nx">keyed</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">cur_level</span><span class="p">));</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">keyed</span><span class="p">)</span> <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
                 <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
             <span class="p">}</span>
            
         <span class="p">}</span>
-    <span class="p">}</span>        
+    <span class="p">}</span>      
+    
     <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -421,7 +425,7 @@ gets totally unfolded into an array.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">level</span>
       <span class="dox_type">number</span>
-      <span>Optional. The level of recursion. Defaults undefined</span>
+      <span>Optional. The level of recursion. Defaults, undefined</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -466,7 +470,7 @@ returns it.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">level</span>
       <span class="dox_type">number</span>
-      <span>Optional. The level of recursion. Defaults undefined</span>
+      <span>Optional. The level of recursion. Defaults, undefined</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -1714,6 +1718,74 @@ in the object, but it just returns the name.</p>
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">name</span><span class="p">;</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.augment">
+  <h2>
+    <a href="#obj.augment" class="pilcrow">&#182;</a>
+    OBJ.augment
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Creates an object containing arrays of all the values of </p>
+
+<p>User can specifies the subset of keys from both objects 
+that will subject to augmentation. The values of the other keys 
+will not be changed</p>
+
+<p>Notice: the method modifies the first input paramteer</p>
+
+<p>E.g.</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span> <span class="nx">c</span><span class="o">:</span><span class="mi">3</span> <span class="p">};</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span> <span class="nx">b</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span> <span class="nx">c</span><span class="o">:</span><span class="mi">100</span><span class="p">,</span> <span class="nx">d</span><span class="o">:</span><span class="mi">4</span> <span class="p">};</span>
+<span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// { a: [1, 10], b: [2, 2], c: [3, 100]}</span>
+
+<span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]);</span> <span class="c1">// { a: 1, b: [2, 2], c: [3, 100], d: [4]});</span>
+</code></pre></div>
+
+
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj1</span>
+      <span class="dox_type">object</span>
+      <span>The object whose properties will be augmented</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj2</span>
+      <span class="dox_type">object</span>
+      <span>The augmenting object</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">key</span>
+      <span class="dox_type">array</span>
+      <span>Optional. Array of key names common to both objects taken as
+  the set of properties to augment</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">,</span> <span class="nx">keys</span><span class="p">)</span> <span class="p">{</span>  
+  <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">keys</span> <span class="o">||</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="o">!==</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]];</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span> 
+      <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">obj2</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 
 

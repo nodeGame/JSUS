@@ -1,8 +1,8 @@
 {
   "name": "JSUS",
-  "description": "JavaScript UtilS. Collection of general purpose functions. JSUS helps!",
+  "description": "JavaScript UtilS. Extended functional programming support. JSUS helps!",
   "version": "0.7.5",
-  "keywords": [ "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
+  "keywords": [ "functional", "functional programming", "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
   "author": "Stefano Balietti <futur.dorko@gmail.com>",
   "licenses": [
     { "type": "MIT" }

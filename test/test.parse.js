@@ -3,7 +3,7 @@ var util = require('util');
     JSUS = require('./../jsus').JSUS;
     
  
-var str_null, str_und, str_func, str_func2, str_obj, str_obj_special;    
+var str_null, str_und, str_func, str_func2, str_obj, str_obj_special, str_obj_proto;    
     
 
 var f = function(a,b) { console.log(a+b); };
@@ -14,18 +14,37 @@ var f2 = function(a,b) {
 };
 
 var o = {
-		a: "a",
-		b: "b",
-		c: 10
+    a: "a",
+    b: "b",
+    c: 10
 };
 
 var os = {
-		a: "a",
-		b: null,
-		c: undefined,
-		d: function(a,b) { console.log(a+b); },
-		e: function(a,b) { this.a = a; this.b = b; }
+    a: "a",
+    b: null,
+    c: undefined,
+    d: function(a,b) { console.log(a+b); },
+    e: function(a,b) { this.a = a; this.b = b; },
+    f: NaN,
+    g: Infinity,
+    h: -Infinity
 };
+
+
+function ah() {};
+
+ah.prototype.iamamethod = function(a){
+    return a;
+};
+
+var obj_with_proto = new ah();
+
+//console.log(obj_with_proto.iamamethod(1));
+//console.log(typeof obj_with_proto.iamamethod);
+
+
+// Test also a function with comments in between and with comments with special characters
+
 
 describe('PARSE: ', function(){
     
@@ -50,11 +69,10 @@ describe('PARSE: ', function(){
     });
     
     describe('#stringify()', function(){
-    
-        
+	
         it('should stringify null', function(){
-           str_null = JSUS.stringify(null);
-           str_null.should.be.eql('"' + JSUS.stringify_prefix + "null" + '"');
+            str_null = JSUS.stringify(null);
+            str_null.should.be.eql('"' + JSUS.stringify_prefix + "null" + '"');
         });
 
         it('should stringify undefined', function(){
@@ -63,37 +81,52 @@ describe('PARSE: ', function(){
         });
         
         it('should stringify a function', function(){
-        	str_func = JSUS.stringify(f);
-        	str_func.should.be.eql('"' + JSUS.stringify_prefix + "function (a,b) { console.log(a+b); }" + '"');
+            str_func = JSUS.stringify(f);
+            str_func.should.be.eql('"' + JSUS.stringify_prefix + "function (a,b) { console.log(a+b); }" + '"');
         });
         
         it('should stringify a function with public properties', function(){
-        	str_func2 = JSUS.stringify(f2);
-        	//console.log(JSUS.stringify_prefix + "function (a,b) {\n\tthis.a = a;\n\tthis.b = b;\n}")
-        	str_func2.should.be.eql('"' + JSUS.stringify_prefix + "function (a,b) {\\n\\tthis.a = a;\\n\\tthis.b = b;\\n}\"");
+            str_func2 = JSUS.stringify(f2);
+            //console.log(JSUS.stringify_prefix + "function (a,b) {\n\tthis.a = a;\n\tthis.b = b;\n}")
+            str_func2.should.be.eql('"' + JSUS.stringify_prefix + "function (a,b) {\\n\\tthis.a = a;\\n\\tthis.b = b;\\n}\"");
         });
 
         it('should stringify a normal object (without prefix)', function(){
-        	str_obj = JSUS.stringify(o);
-        	str_obj.should.be.eql('{"a":"a","b":"b","c":10}');
+            str_obj = JSUS.stringify(o);
+            str_obj.should.be.eql('{"a":"a","b":"b","c":10}');
         });
 
+
+
         it('should stringify an object with special values (with prefix)', function(){        	
-        	str_obj_special = JSUS.stringify(os);
-        	
-        	var str = '{"a":"a","b":"' 
-					+ JSUS.stringify_prefix + 'null","c":"' 
-					+ JSUS.stringify_prefix + 'undefined","d":"' 
-					+ JSUS.stringify_prefix + 'function (a,b) { console.log(a+b); }","e":"'
-					//+ JSUS.stringify_prefix + 'function (a,b) {\\n\\tthis.a = a;\\n\\tthis.b = b;\\n}'
-					+ JSUS.stringify_prefix + 'function (a,b) { this.a = a; this.b = b; }\"'
-					+ '}';
-        	
-        	str_obj_special.should.be.eql(str);
+            str_obj_special = JSUS.stringify(os);
+            
+            var str = '{"a":"a","b":"' 
+		+ JSUS.stringify_prefix + 'null","c":"' 
+		+ JSUS.stringify_prefix + 'undefined","d":"' 
+		+ JSUS.stringify_prefix + 'function (a,b) { console.log(a+b); }","e":"'
+		+ JSUS.stringify_prefix + 'function (a,b) { this.a = a; this.b = b; }\","f":"'
+		+ JSUS.stringify_prefix + 'NaN","g":"'
+		+ JSUS.stringify_prefix + 'Infinity","h":"'
+		+ JSUS.stringify_prefix + '-Infinity"'
+		+ '}';
+
+            str_obj_special.should.be.eql(str);
         });
+	
     });
+
+    describe('#stringifyAll()', function(){
     
+//	it('should stringify an object with properties of the prototype', function(){
+//            str_obj_proto = JSUS.stringifyAll(obj_with_proto);
+//            console.log(str_obj_proto);
+//	});
+//	
+    });
 });
+
+
 
 describe('#parse()', function(){
     
@@ -123,10 +156,9 @@ describe('#parse()', function(){
     	JSUS.parse(str_obj).should.be.eql(o);
     });
 
-//    it('should parse a stringified object with special values (with prefix)', function(){
-//    	var a = JSUS.parse(str_obj_special);
-//    	JSUS.equals(a, os).should.be.true;
-//    	
-//    });
+    it('should parse a stringified object with special values (with prefix)', function(){
+    	var a = JSUS.parse(str_obj_special);
+    	JSUS.equals(a, os).should.be.true;    	
+    });
 
 });

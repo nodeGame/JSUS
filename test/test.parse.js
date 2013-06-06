@@ -118,11 +118,11 @@ describe('PARSE: ', function(){
 
     describe('#stringifyAll()', function(){
     
-//	it('should stringify an object with properties of the prototype', function(){
-//            str_obj_proto = JSUS.stringifyAll(obj_with_proto);
-//            console.log(str_obj_proto);
-//	});
-//	
+	it('should stringify an object with properties of the prototype', function(){
+            str_obj_proto = JSUS.stringifyAll(obj_with_proto);
+	    var str_method = '{"iamamethod":"!?_function (a){\\n    return a;\\n}"}';
+	    str_obj_proto.should.be.eql(str_method);
+	});	
     });
 });
 

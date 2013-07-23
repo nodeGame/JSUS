@@ -800,7 +800,6 @@ describe('OBJ: ', function() {
 	    it('should unfold an object only until the limit', function(){
 	    	var o = { a:1, b:2, c:{ d: 1} };
 	    	var a = JSUS.obj2Array(o,1);
-	    	console.log(a)
 	    	a.should.eql([1,2,{d:1}]);
         }); 
     });
@@ -816,6 +815,23 @@ describe('OBJ: ', function() {
 	    	var a = JSUS.obj2KeyedArray(o,1);
 	    	a.should.eql(['a', 1, 'b', 2, 'c', {d: 1}]);
         }); 
+    });
+    
+    describe('#pairwiseWalk()', function() {  	
+	it('should perform the sum of two object', function(){
+	    var o1 = { a:1, b:2, c:3, d1: 4};
+            var o2 = { a:1, b:2, c:3, d2: 5 };
+            
+            var sum = function(a,b) {
+                if ('undefined' !== typeof a) {
+                    return 'undefined' !== typeof b ? a + b : a;  
+                }
+                return b;
+            };
+
+	    var a = JSUS.pairwiseWalk(o1, o2, sum);
+	    a.should.eql( { a:2, b:4, c:6, d1:4, d2:5});
+        });
     });
     
 });

@@ -697,7 +697,7 @@ ARRAY.inArray = ARRAY.in_array = function (needle, haystack) {
     var func = JSUS.equals;    
     for (var i = 0; i < haystack.length; i++) {
         if (func.call(this, needle, haystack[i])) {
-        	return true;
+            return true;
         }
     }
     // <!-- console.log(needle, haystack); -->
@@ -1126,16 +1126,15 @@ ARRAY.getNRandom = function (array, N) {
  * 	@see JSUS.equals
  */
 ARRAY.distinct = function (array) {
-	var out = [];
-	if (!array) return out;
-	
-	ARRAY.each(array, function(e) {
-		if (!ARRAY.in_array(e, out)) {
-			out.push(e);
-		}
-	});
-	return out;
-	
+    var out = [];
+    if (!array) return out;
+    
+    ARRAY.each(array, function(e) {
+	if (!ARRAY.in_array(e, out)) {
+	    out.push(e);
+	}
+    });
+    return out;
 };
 
 /**
@@ -1253,7 +1252,7 @@ function OBJ(){};
 var compatibility = null;
 
 if ('undefined' !== typeof JSUS.compatibility) {
-	compatibility = JSUS.compatibility();
+    compatibility = JSUS.compatibility();
 }
 
 
@@ -1405,13 +1404,12 @@ OBJ._obj2Array = function(obj, keyed, level, cur_level) {
     var result = [];
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-        	if (keyed) result.push(key);
+            if (keyed) result.push(key);
             if ('object' === typeof obj[key]) {
                 result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
             } else {
                 result.push(obj[key]);
-            }
-           
+            }   
         }
     }      
     
@@ -1884,17 +1882,18 @@ OBJ.skim = function (o, remove) {
  *  
  */
 OBJ.setNestedValue = function (str, value, obj) {
-	if (!str) {
-		JSUS.log('Cannot set value of undefined property', 'ERR');
-		return false;
-	}
-	obj = ('object' === typeof obj) ? obj : {};
-    var keys = str.split('.');
+    var keys, k;
+    if (!str) {
+	JSUS.log('Cannot set value of undefined property', 'ERR');
+	return false;
+    }
+    obj = ('object' === typeof obj) ? obj : {};
+    keys = str.split('.');
     if (keys.length === 1) {
     	obj[str] = value;
         return obj;
     }
-    var k = keys.shift();
+    k = keys.shift();
     obj[k] = OBJ.setNestedValue(keys.join('.'), value, obj[k]);
     return obj;
 };
@@ -2154,19 +2153,75 @@ OBJ.uniqueKey = function(obj, name, stop) {
  * 	the set of properties to augment
  */
 OBJ.augment = function(obj1, obj2, keys) {  
-	var i, k, keys = keys || OBJ.keys(obj1);
-	
-	for (i = 0 ; i < keys.length; i++) {
-		k = keys[i];
-		if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
-			obj1[k] = [obj1[k]];
-		}
-		if ('undefined' !== obj2[k]) {
-			if (!obj1[k]) obj1[k] = []; 
-			obj1[k].push(obj2[k]);
-		}
+    var i, k, keys = keys || OBJ.keys(obj1);
+    
+    for (i = 0 ; i < keys.length; i++) {
+	k = keys[i];
+	if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
+	    obj1[k] = [obj1[k]];
 	}
+	if ('undefined' !== obj2[k]) {
+	    if (!obj1[k]) obj1[k] = []; 
+	    obj1[k].push(obj2[k]);
+	}
+    }
 }
+
+
+/**
+ * ## OBJ.pairwiseWalk
+ *
+ * Given two objects, executes a callback on all attributes with the same name
+ *
+ * The result of each callback are aggregated in a new object under the 
+ * same property name.
+ * 
+ * Does not traverse nested objects, and properties of the prototype are excluded
+ *
+ * Returns a new object, the original ones are not modified.
+ *  
+ * E.g.
+ * 
+ * ```javascript
+ * var a = { b:2, c:3, d:5 };
+ * var b = { a:10, b:2, c:100, d:4 };
+ * var sum = function(a,b) {
+ *     if ('undefined' !== typeof a) {
+ *         return 'undefined' !== typeof b ? a + b : a;  
+ *     }
+ *     return b;
+ * };
+ * OBJ.pairwiseWalk(a, b, sum); // { a:10, b:4, c:103, d:9 }
+ * ```
+ *  
+ * @param {object} o1 The first object
+ * @param {object} o2 The second object
+ * @return {object} clone The object aggregating the results
+ * 
+ */
+OBJ.pairwiseWalk = function(o1, o2, cb) {
+    var i, out;
+    if (!o1 && !o2) return;
+    if (!o1) return o2;
+    if (!o2) return o1;
+    
+    out = {};
+    for (i in o1) {
+        if (o1.hasOwnProperty(i)) {
+            out[i] = o2.hasOwnProperty(i) ? cb(o1[i], o2[i]) : cb(o1[i]);
+        }
+    }
+    
+    for (i in o2) {
+        if (o2.hasOwnProperty(i)) {
+            if ('undefined' === typeof out[i]) {
+                out[i] = cb(undefined, o2[i]);
+            }
+        }
+    }
+    
+    return out;
+};
 
 
 JSUS.extend(OBJ);
@@ -2255,6 +2310,13 @@ function PARSE(){};
  */
 PARSE.stringify_prefix = '!?_';
 
+PARSE.marker_func = PARSE.stringify_prefix + 'function';
+PARSE.marker_null = PARSE.stringify_prefix + 'null';
+PARSE.marker_und = PARSE.stringify_prefix + 'undefined';
+PARSE.marker_nan = PARSE.stringify_prefix + 'NaN';
+PARSE.marker_inf = PARSE.stringify_prefix + 'Infinity';
+PARSE.marker_minus_inf = PARSE.stringify_prefix + '-Infinity';
+
 /**
  * ## PARSE.getQueryString
  * 
@@ -2297,22 +2359,22 @@ PARSE.getQueryString = function (variable) {
  * 
  */
 PARSE.tokenize = function (str, separators, modifiers) {
-	if (!str) return;
-	if (!separators || !separators.length) return [str];
-	modifiers = modifiers || {};
+    if (!str) return;
+    if (!separators || !separators.length) return [str];
+    modifiers = modifiers || {};
+    
+    var pattern = '[';
+    
+    JSUS.each(separators, function(s) {
+	if (s === ' ') s = '\\s';
 	
-	var pattern = '[';
-	
-	JSUS.each(separators, function(s) {
-		if (s === ' ') s = '\\s';
-		
-		pattern += s;
-	});
-	
-	pattern += ']+';
-	
-	var regex = new RegExp(pattern);
-	return str.split(regex, modifiers.limit);
+	pattern += s;
+    });
+    
+    pattern += ']+';
+    
+    var regex = new RegExp(pattern);
+    return str.split(regex, modifiers.limit);
 };
 
 /**
@@ -2334,24 +2396,49 @@ PARSE.tokenize = function (str, separators, modifiers) {
  * @see PARSE.stringify_prefix
  */
 PARSE.stringify = function(o, spaces) {
-	return JSON.stringify(o, function(key, value){
-		var type = typeof value;
-		
-		if ('function' === type) {
-			return PARSE.stringify_prefix + value.toString()
-		}
-		
-		if ('undefined' === type) {
-			return PARSE.stringify_prefix + 'undefined';
-		}
-		
-		if (value === null) {
-			return PARSE.stringify_prefix + 'null';
-		}
-		
-		return value;
-		
-	}, spaces);
+    return JSON.stringify(o, function(key, value){
+	var type = typeof value;
+	if ('function' === type) {
+	    return PARSE.stringify_prefix + value.toString()
+	}
+	
+	if ('undefined' === type) return PARSE.marker_und;
+	if (value === null) return PARSE.marker_null;
+        if ('number' === type && isNaN(value)) return PARSE.marker_nan;
+	if (value == Number.POSITIVE_INFINITY) return PARSE.marker_inf;
+	if (value == Number.NEGATIVE_INFINITY) return PARSE.marker_minus_inf;
+	
+	return value;
+	
+    }, spaces);
+};
+
+/**
+ * ## PARSE.stringifyAll
+ * 
+ * Copies all the properties of the prototype before stringifying
+ *
+ * Notice: The original object is modified!
+ * 
+ * @param {mixed} o The value to stringify
+ * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
+ * 
+ * @return {string} The stringified result
+ * 
+ * @see PARSE.stringify
+ */
+PARSE.stringifyAll = function(o, spaces) {
+    for (var i in o) {
+	if (!o.hasOwnProperty(i)) {
+	    if ('object' === typeof o[i]) {
+		o[i] = PARSE.stringifyAll(o[i]);
+	    }
+	    else {
+		o[i] = o[i];
+	    }
+	}
+    }
+    return PARSE.stringify(o);
 };
 
 /**
@@ -2370,59 +2457,65 @@ PARSE.stringify = function(o, spaces) {
  */
 PARSE.parse = function(str) {
 	
-	var marker_func = PARSE.stringify_prefix + 'function',
-		marker_null = PARSE.stringify_prefix + 'null',
-		marker_und	= PARSE.stringify_prefix + 'undefined';
+    var len_prefix = PARSE.stringify_prefix.length,
+        len_func = PARSE.marker_func.length,
+        len_null = PARSE.marker_null.length,
+        len_und = PARSE.marker_und.length,
+        len_nan = PARSE.marker_nan.length,
+        len_inf = PARSE.marker_inf.length,
+        len_inf = PARSE.marker_minus_inf.length;
+       
 	
-	var len_prefix 	= PARSE.stringify_prefix.length,
-		len_func 	= marker_func.length,
-		len_null 	= marker_null.length,
-		len_und 	= marker_und.length;	
+    var o = JSON.parse(str);
+    return walker(o);
 	
-	var o = JSON.parse(str);
-	return walker(o);
-	
-	function walker(o) {
-		var tmp;
+    function walker(o) {
+	if ('object' !== typeof o) return reviver(o);
 		
-		if ('object' !== typeof o) {
-			return reviver(o);
+	for (var i in o) {
+	    if (o.hasOwnProperty(i)) {
+		if ('object' === typeof o[i]) {
+		    walker(o[i]);
 		}
-		
-		for (var i in o) {
-			if (o.hasOwnProperty(i)) {
-				if ('object' === typeof o[i]) {
-					walker(o[i]);
-				}
-				else {
-					o[i] = reviver(o[i]);
-				}
-			}
+		else {
+		    o[i] = reviver(o[i]);
 		}
-		
-		return o;
+	    }
 	}
 	
-	function reviver(value) {
-		var type = typeof value;
-		
-		if (type === 'string') {
-			if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
-				return value;
-			}
-			else if (value.substring(0, len_func) === marker_func) {
-				return eval('('+value.substring(len_prefix)+')');
-			}
-			else if (value.substring(0, len_null) === marker_null) {
-				return null;
-			}
-			else if (value.substring(0, len_und) === marker_und) {
-				return undefined;
-			}
-		}	
-		
+	return o;
+    }
+	
+    function reviver(value) {
+	var type = typeof value;
+	
+	if (type === 'string') {
+	    if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
 		return value;
-	};
+	    }
+	    else if (value.substring(0, len_func) === PARSE.marker_func) {
+		return eval('('+value.substring(len_prefix)+')');
+	    }
+	    else if (value.substring(0, len_null) === PARSE.marker_null) {
+		return null;
+	    }
+	    else if (value.substring(0, len_und) === PARSE.marker_und) {
+		return undefined;
+	    }
+
+	    else if (value.substring(0, len_nan) === PARSE.marker_nan) {
+		return NaN;
+	    }
+	    else if (value.substring(0, len_inf) === PARSE.marker_inf) {
+		return Infinity;
+	    }
+	    else if (value.substring(0, len_inf) === PARSE.marker_minus_inf) {
+		return -Infinity;
+	    }
+
+	}		
+	return value;
+    };
 }
 
 

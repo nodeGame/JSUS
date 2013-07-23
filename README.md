@@ -4,6 +4,8 @@
 
 Collection of general purpose javascript functions. JSUS helps!
 
+Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.js.html).
+
 ## Usage
 
 JSUS is designed to be modular and easy to extend. 

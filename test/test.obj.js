@@ -817,6 +817,23 @@ describe('OBJ: ', function() {
         }); 
     });
     
+    describe('#pairwiseWalk()', function() {  	
+	it('should perform the sum of two object', function(){
+	    var o1 = { a:1, b:2, c:3, d1: 4};
+            var o2 = { a:1, b:2, c:3, d2: 5 };
+            
+            var sum = function(a,b) {
+                if ('undefined' !== typeof a) {
+                    return 'undefined' !== typeof b ? a + b : a;  
+                }
+                return b;
+            };
+
+	    var a = JSUS.pairwiseWalk(o1, o2, sum);
+	    a.should.eql( { a:2, b:4, c:6, d1:4, d2:5});
+        });
+    });
+    
 });
 
 

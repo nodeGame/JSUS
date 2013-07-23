@@ -697,7 +697,7 @@ ARRAY.inArray = ARRAY.in_array = function (needle, haystack) {
     var func = JSUS.equals;    
     for (var i = 0; i < haystack.length; i++) {
         if (func.call(this, needle, haystack[i])) {
-        	return true;
+            return true;
         }
     }
     // <!-- console.log(needle, haystack); -->
@@ -1126,16 +1126,15 @@ ARRAY.getNRandom = function (array, N) {
  * 	@see JSUS.equals
  */
 ARRAY.distinct = function (array) {
-	var out = [];
-	if (!array) return out;
-	
-	ARRAY.each(array, function(e) {
-		if (!ARRAY.in_array(e, out)) {
-			out.push(e);
-		}
-	});
-	return out;
-	
+    var out = [];
+    if (!array) return out;
+    
+    ARRAY.each(array, function(e) {
+	if (!ARRAY.in_array(e, out)) {
+	    out.push(e);
+	}
+    });
+    return out;
 };
 
 /**
@@ -1253,7 +1252,7 @@ function OBJ(){};
 var compatibility = null;
 
 if ('undefined' !== typeof JSUS.compatibility) {
-	compatibility = JSUS.compatibility();
+    compatibility = JSUS.compatibility();
 }
 
 
@@ -1405,13 +1404,12 @@ OBJ._obj2Array = function(obj, keyed, level, cur_level) {
     var result = [];
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-        	if (keyed) result.push(key);
+            if (keyed) result.push(key);
             if ('object' === typeof obj[key]) {
                 result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
             } else {
                 result.push(obj[key]);
-            }
-           
+            }   
         }
     }      
     
@@ -1884,17 +1882,18 @@ OBJ.skim = function (o, remove) {
  *  
  */
 OBJ.setNestedValue = function (str, value, obj) {
-	if (!str) {
-		JSUS.log('Cannot set value of undefined property', 'ERR');
-		return false;
-	}
-	obj = ('object' === typeof obj) ? obj : {};
-    var keys = str.split('.');
+    var keys, k;
+    if (!str) {
+	JSUS.log('Cannot set value of undefined property', 'ERR');
+	return false;
+    }
+    obj = ('object' === typeof obj) ? obj : {};
+    keys = str.split('.');
     if (keys.length === 1) {
     	obj[str] = value;
         return obj;
     }
-    var k = keys.shift();
+    k = keys.shift();
     obj[k] = OBJ.setNestedValue(keys.join('.'), value, obj[k]);
     return obj;
 };
@@ -2154,19 +2153,75 @@ OBJ.uniqueKey = function(obj, name, stop) {
  * 	the set of properties to augment
  */
 OBJ.augment = function(obj1, obj2, keys) {  
-	var i, k, keys = keys || OBJ.keys(obj1);
-	
-	for (i = 0 ; i < keys.length; i++) {
-		k = keys[i];
-		if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
-			obj1[k] = [obj1[k]];
-		}
-		if ('undefined' !== obj2[k]) {
-			if (!obj1[k]) obj1[k] = []; 
-			obj1[k].push(obj2[k]);
-		}
+    var i, k, keys = keys || OBJ.keys(obj1);
+    
+    for (i = 0 ; i < keys.length; i++) {
+	k = keys[i];
+	if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
+	    obj1[k] = [obj1[k]];
 	}
+	if ('undefined' !== obj2[k]) {
+	    if (!obj1[k]) obj1[k] = []; 
+	    obj1[k].push(obj2[k]);
+	}
+    }
 }
+
+
+/**
+ * ## OBJ.pairwiseWalk
+ *
+ * Given two objects, executes a callback on all attributes with the same name
+ *
+ * The result of each callback are aggregated in a new object under the 
+ * same property name.
+ * 
+ * Does not traverse nested objects, and properties of the prototype are excluded
+ *
+ * Returns a new object, the original ones are not modified.
+ *  
+ * E.g.
+ * 
+ * ```javascript
+ * var a = { b:2, c:3, d:5 };
+ * var b = { a:10, b:2, c:100, d:4 };
+ * var sum = function(a,b) {
+ *     if ('undefined' !== typeof a) {
+ *         return 'undefined' !== typeof b ? a + b : a;  
+ *     }
+ *     return b;
+ * };
+ * OBJ.pairwiseWalk(a, b, sum); // { a:10, b:4, c:103, d:9 }
+ * ```
+ *  
+ * @param {object} o1 The first object
+ * @param {object} o2 The second object
+ * @return {object} clone The object aggregating the results
+ * 
+ */
+OBJ.pairwiseWalk = function(o1, o2, cb) {
+    var i, out;
+    if (!o1 && !o2) return;
+    if (!o1) return o2;
+    if (!o2) return o1;
+    
+    out = {};
+    for (i in o1) {
+        if (o1.hasOwnProperty(i)) {
+            out[i] = o2.hasOwnProperty(i) ? cb(o1[i], o2[i]) : cb(o1[i]);
+        }
+    }
+    
+    for (i in o2) {
+        if (o2.hasOwnProperty(i)) {
+            if ('undefined' === typeof out[i]) {
+                out[i] = cb(undefined, o2[i]);
+            }
+        }
+    }
+    
+    return out;
+};
 
 
 JSUS.extend(OBJ);

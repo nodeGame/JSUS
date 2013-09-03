@@ -152,261 +152,325 @@ if (JSUS.isNodeJS()) {
 
 
 /**
- * # FS
+ * # TIME
  *  
  * Copyright(c) 2012 Stefano Balietti
  * MIT Licensed
  * 
- * Collection of static functions related to file system operations.
- * 
- * @see http://nodejs.org/api/fs.html
- * @see https://github.com/ryanmcgrath/wrench-js
- * @see https://github.com/substack/node-resolve
+ * Collection of static functions related to the generation, 
+ * manipulation, and formatting of time strings in javascript
  * 
  */
-
 
 (function (JSUS) {
-
-if (!JSUS.isNodeJS()){
-	JSUS.log('Cannot load JSUS.FS outside of Node.JS.')
-	return false;
-}
-
-var resolve = require('resolve'),
-	path = require('path'),
-	fs = require('fs'),
-	wrench = require('wrench');
-
-
-function FS(){};
-
-
+    
+function TIME() {};
 
 /**
- * ## FS.resolveModuleDir
- *
- * Backward-compatible version of fs.existsSync
+ * ## TIME.getDate
  * 
+ * Returns a string representation of the current date 
+ * and time formatted as follows:
+ * 
+ * dd-mm-yyyy hh:mm:ss milliseconds
+ * 
+ * @return {string} date Formatted time string hh:mm:ss
  */
-FS.existsSync = ('undefined' === typeof fs.existsSync) ? path.existsSync : fs.existsSync;
-
-
-/**
- * ## FS.resolveModuleDir
- * 
- * Resolves the root directory of a module
- * 
- * Npm does not install a dependency if the same module
- * is available in a parent folder. This method returns
- * the full path of the root directory of the specified
- * module as installed by npm.
- * 
- * Trailing slash is added.
- * 
- * @param {string} module The name of the module
- * @param {string} basedir Optional The basedir from which starting searching
- * @return {string} The path of the root directory of the module
- * 
- * @see https://github.com/substack/node-resolve
- * 
- */
-FS.resolveModuleDir = function (module, basedir) {
-	if (!module) return false;
-
-	var str = resolve.sync(module, {basedir: basedir || __dirname});
-	var stop = str.indexOf(module) + module.length;
-	return str.substr(0, stop) + '/';
+TIME.getDate = TIME.getFullDate = function() {
+    var d = new Date();
+    var date = d.getUTCDate() + '-' + (d.getUTCMonth()+1) + '-' + d.getUTCFullYear() + ' ' 
+            + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' ' 
+            + d.getMilliseconds();
+    
+    return date;
 };
 
 /**
- * ## FS.deleteIfExists
+ * ## TIME.getTime
  * 
- * Deletes a file or directory
+ * Returns a string representation of the current time
+ * formatted as follows:
  * 
- * Returns false if the file does not exist.
+ * hh:mm:ss
  * 
- * @param {string} file The path to the file or directory
- * @return {boolean} TRUE, if operation is succesfull
- * 
- * @see FS.cleanDir
+ * @return {string} time Formatted time string hh:mm:ss
  */
-FS.deleteIfExists = function (file) {
-	if (!FS.existsSync(file)) {
-		return false;
-	}
-	var stats = fs.lstatSync(file);
-	if (stats.isDirectory()) {
-		fs.rmdir(file, function (err) {
-			if (err) throw err;  
-		});
-	}
-	else {
-		fs.unlink(file, function (err) {
-			if (err) throw err;  
-		});
-	}
-	return true;
-		
+TIME.getTime = function() {
+    var d = new Date();
+    var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    
+    return time;
 };
 
 /**
- * ## FS.cleanDir
+ * ## TIME.parseMilliseconds
  * 
- * Removes all files from a target directory
+ * Parses an integer number representing milliseconds, 
+ * and returns an array of days, hours, minutes and seconds
  * 
- * It is possible to specify an extension as second parameter.
- * In such case, only file with that extension will be removed.
- * The '.' (dot) must be included as part of the extension.
+ * @param {number} ms Integer representing milliseconds
+ * @return {array} result Milleconds parsed in days, hours, minutes, and seconds
  * 
- * 
- * @param {string} dir The directory to clean
- * @param {string} ext Optional. If set, only files with this extension will be removed
- * @param {function} cb Optional. A callback function to call if no error is raised
- * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see FS.deleteIfExists
  */
-FS.cleanDir = function (dir, ext, cb) {
-	if (!dir) {
-		JSUS.log('You must specify a directory to clean.');
-		return false;
-	}
-	var filterFunc = (ext) ? function(file) { return path.extname(file) ===  ext; }
-						   : function(file) { return true; };
-
-	if (dir[dir.length] !== '/') dir = dir + '/';
+TIME.parseMilliseconds = function (ms) {
+	if ('number' !== typeof ms) return;
 	
-	fs.readdir(dir, function(err, files) {
-		if (err) {
-			JSUS.log(err);
-			return false;
-		}
+    var result = [];
+    var x = ms / 1000;
+    result[4] = x;
+    var seconds = x % 60;
+    result[3] = Math.floor(seconds);
+    var x = x /60;
+    var minutes = x % 60;
+    result[2] = Math.floor(minutes);
+    var x = x / 60;
+    var hours = x % 24;
+    result[1] = Math.floor(hours);
+    var x = x / 24;
+    var days = x;
+    result[1] = Math.floor(days);
+    
+    return result;
+};
 
-	    files.filter(filterFunc)
-	         .forEach(function(file) { 
-	        	// <!-- console.log(dir + file); -->
-	        	 JSUS.deleteIfExists(dir + file); 
-	         });
-	    
+JSUS.extend(TIME);
+    
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # PARSE
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Collection of static functions related to parsing strings
+ * 
+ */
+(function (JSUS) {
+    
+function PARSE(){};
 
-	    if (cb) return cb(null);
+/**
+ * ## PARSE.stringify_prefix
+ * 
+ * Prefix used by PARSE.stringify and PARSE.parse
+ * to decode strings with special meaning
+ * 
+ * @see PARSE.stringify
+ * @see PARSE.parse
+ */
+PARSE.stringify_prefix = '!?_';
 
-	});
-	
+PARSE.marker_func = PARSE.stringify_prefix + 'function';
+PARSE.marker_null = PARSE.stringify_prefix + 'null';
+PARSE.marker_und = PARSE.stringify_prefix + 'undefined';
+PARSE.marker_nan = PARSE.stringify_prefix + 'NaN';
+PARSE.marker_inf = PARSE.stringify_prefix + 'Infinity';
+PARSE.marker_minus_inf = PARSE.stringify_prefix + '-Infinity';
 
-	return true;
+/**
+ * ## PARSE.getQueryString
+ * 
+ * Parses the current querystring and returns it full or a specific variable.
+ * Return false if the requested variable is not found.
+ * 
+ * @param {string} variable Optional. If set, returns only the value associated
+ *   with this variable
+ *   
+ * @return {string|boolean} The querystring, or a part of it, or FALSE
+ */
+PARSE.getQueryString = function (variable) {
+    var query = window.location.search.substring(1);
+    if ('undefined' === typeof variable) return query;
+    
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] === variable) {
+            return unescape(pair[1]);
+        }
+    }
+    return false;
 };
 
 /**
- * ## FS.copyFromDir
+ * ## PARSE.tokenize
  * 
- * Copies all files from a source directory to a destination 
- * directory.
+ * Splits a string in tokens that users can specified as input parameter.
+ * Additional options can be specified with the modifiers parameter
  * 
- * It is possible to specify an extension as second parameter (e.g. '.js').
- * In such case, only file with that extension will be copied.
+ * - limit: An integer that specifies the number of splits, 
+ * 		items after the split limit will not be included in the array
  * 
- * Warning! If an extension filter is not specified, and if subdirectories
- * are found, an error will occur.
+ * @param {string} str The string to split
+ * @param {array} separators Array containing the separators words
+ * @param {object} modifiers Optional. Configuration options for the tokenizing
  * 
- * @param {string} dirIn The source directory
- * @param {string} dirOut The destination directory
- * @param {string} ext Optional. If set, only files with this extension will be copied
- * @param {function} cb Optional. A callback function to call if no error is raised
+ * @return {array} Tokens in which the string was split
  * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see FS.copyFile
  */
-FS.copyFromDir = function (dirIn, dirOut, ext, cb) {
-	if (!dirIn) {
-		JSUS.log('You must specify a source directory');
-		return false;
-	}
-	if (!dirOut) {
-		JSUS.log('You must specify a destination directory');
-		return false;
-	}
+PARSE.tokenize = function (str, separators, modifiers) {
+    if (!str) return;
+    if (!separators || !separators.length) return [str];
+    modifiers = modifiers || {};
+    
+    var pattern = '[';
+    
+    JSUS.each(separators, function(s) {
+	if (s === ' ') s = '\\s';
 	
-	dirOut = path.resolve(dirOut) + '/';
-	var i, dir, dirs = [dirIn, dirOut];
-	for (i=0; i < 2; i++) {
-		dir = dirs[i];
-		if (!FS.existsSync(dir)) {
-			console.log(dir + ' does not exist');
-			return false;
-		}
-		
-		var stats = fs.lstatSync(dir);
-		if (!stats.isDirectory()) {
-			console.log(dir + ' is not a directory');
-			return false;
-		}
-	}
-	
-	fs.readdir(dirIn, function(err, files){
-		if (err) {
-			JSUS.log(err);
-			throw new Error;
-		}
-		for (var i in files) {
-			if (ext && path.extname(files[i]) !== ext) {
-				continue;
-			}
-			copyFile(dirIn + files[i], dirOut + files[i]);
-		}
-		
-		if (cb) return cb(null);
-	});
-	
-	return true;
-};
-
-/**
- * ## FS.copyFile
- * 
- * Copies a file into another path
- * 
- * @param {string} srcFile The source file
- * @param {string} destFile The destination file
- * @param {function} cb Optional. If set, the callback will be executed upon success
- * @param {function} cb Optional. A callback function to call if no error is raised
- * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
- */
-var copyFile = function (srcFile, destFile, cb) {
-	// <!-- console.log('from ' + srcFile + ' to ' + destFile); -->
-    var fdr, fdw;
-    fdr = fs.createReadStream(srcFile);
-    fdw = fs.createWriteStream(destFile);
-    fdr.on('end', function() {
-    	if (cb) return cb(null);
+	pattern += s;
     });
-    return fdr.pipe(fdw);
+    
+    pattern += ']+';
+    
+    var regex = new RegExp(pattern);
+    return str.split(regex, modifiers.limit);
 };
 
+/**
+ * ## PARSE.stringify
+ * 
+ * Stringifies objects, functions, primitive, undefined or null values
+ * 
+ * Makes uses `JSON.stringify` with a special reviver function, that 
+ * strinfifies also functions, undefined, and null values.
+ * 
+ * A special prefix is prepended to avoid name collisions.
+ * 
+ * @param {mixed} o The value to stringify
+ * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
+ * 
+ * @return {string} The stringified result
+ * 
+ * @see JSON.stringify
+ * @see PARSE.stringify_prefix
+ */
+PARSE.stringify = function(o, spaces) {
+    return JSON.stringify(o, function(key, value){
+	var type = typeof value;
+	if ('function' === type) {
+	    return PARSE.stringify_prefix + value.toString()
+	}
+	
+	if ('undefined' === type) return PARSE.marker_und;
+	if (value === null) return PARSE.marker_null;
+        if ('number' === type && isNaN(value)) return PARSE.marker_nan;
+	if (value == Number.POSITIVE_INFINITY) return PARSE.marker_inf;
+	if (value == Number.NEGATIVE_INFINITY) return PARSE.marker_minus_inf;
+	
+	return value;
+	
+    }, spaces);
+};
 
 /**
- *  ## wrench
+ * ## PARSE.stringifyAll
  * 
- *  FS exposes the properties of the great package wrench for
- *  performing recursive operations on directories
- *  
- *  @see https://github.com/ryanmcgrath/wrench-js
- *  
+ * Copies all the properties of the prototype before stringifying
+ *
+ * Notice: The original object is modified!
+ * 
+ * @param {mixed} o The value to stringify
+ * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
+ * 
+ * @return {string} The stringified result
+ * 
+ * @see PARSE.stringify
  */
-for (var w in wrench) {
-	if (wrench.hasOwnProperty(w)) {
-		FS[w] = wrench[w];
+PARSE.stringifyAll = function(o, spaces) {
+    for (var i in o) {
+	if (!o.hasOwnProperty(i)) {
+	    if ('object' === typeof o[i]) {
+		o[i] = PARSE.stringifyAll(o[i]);
+	    }
+	    else {
+		o[i] = o[i];
+	    }
 	}
+    }
+    return PARSE.stringify(o);
+};
+
+/**
+ * ## PARSE.parse
+ * 
+ * Decodes strings in objects and other values
+ * 
+ * Uses `JSON.parse` and then looks  for special strings 
+ * encoded by `PARSE.stringify`
+ * 
+ * @param {string} str The string to decode
+ * @return {mixed} The decoded value 
+ * 
+ * @see JSON.parse
+ * @see PARSE.stringify_prefix
+ */
+PARSE.parse = function(str) {
+	
+    var len_prefix = PARSE.stringify_prefix.length,
+        len_func = PARSE.marker_func.length,
+        len_null = PARSE.marker_null.length,
+        len_und = PARSE.marker_und.length,
+        len_nan = PARSE.marker_nan.length,
+        len_inf = PARSE.marker_inf.length,
+        len_inf = PARSE.marker_minus_inf.length;
+       
+	
+    var o = JSON.parse(str);
+    return walker(o);
+	
+    function walker(o) {
+	if ('object' !== typeof o) return reviver(o);
+		
+	for (var i in o) {
+	    if (o.hasOwnProperty(i)) {
+		if ('object' === typeof o[i]) {
+		    walker(o[i]);
+		}
+		else {
+		    o[i] = reviver(o[i]);
+		}
+	    }
+	}
+	
+	return o;
+    }
+	
+    function reviver(value) {
+	var type = typeof value;
+	
+	if (type === 'string') {
+	    if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
+		return value;
+	    }
+	    else if (value.substring(0, len_func) === PARSE.marker_func) {
+		return eval('('+value.substring(len_prefix)+')');
+	    }
+	    else if (value.substring(0, len_null) === PARSE.marker_null) {
+		return null;
+	    }
+	    else if (value.substring(0, len_und) === PARSE.marker_und) {
+		return undefined;
+	    }
+
+	    else if (value.substring(0, len_nan) === PARSE.marker_nan) {
+		return NaN;
+	    }
+	    else if (value.substring(0, len_inf) === PARSE.marker_inf) {
+		return Infinity;
+	    }
+	    else if (value.substring(0, len_inf) === PARSE.marker_minus_inf) {
+		return -Infinity;
+	    }
+
+	}		
+	return value;
+    };
 }
 
-JSUS.extend(FS);
 
+JSUS.extend(PARSE);
+    
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
  * # EVAL
@@ -451,6 +515,65 @@ EVAL.eval = function (str, context) {
 };
 
 JSUS.extend(EVAL);
+    
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # RANDOM
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Collection of static functions related to the generation of 
+ * pseudo-random numbers
+ * 
+ */
+
+(function (JSUS) {
+    
+function RANDOM(){};
+
+/**
+ * ## RANDOM.random
+ * 
+ * Generates a pseudo-random floating point number between 
+ * (a,b), both a and b exclusive.
+ * 
+ * @param {number} a The lower limit 
+ * @param {number} b The upper limit
+ * @return {number} A random floating point number in (a,b)
+ */
+RANDOM.random = function (a, b) {
+	a = ('undefined' === typeof a) ? 0 : a;
+	b = ('undefined' === typeof b) ? 0 : b;
+	if (a === b) return a;
+	
+	if (b < a) {
+		var c = a;
+		a = b;
+		b = c;
+	}
+	return (Math.random() * (b - a)) + a
+};
+
+/**
+ * ## RANDOM.randomInt
+ * 
+ * Generates a pseudo-random integer between 
+ * (a,b] a exclusive, b inclusive.
+ * 
+ * @param {number} a The lower limit 
+ * @param {number} b The upper limit
+ * @return {number} A random integer in (a,b]
+ * 
+ * @see RANDOM.random
+ */
+RANDOM.randomInt = function (a, b) {
+	if (a === b) return a;
+    return Math.floor(RANDOM.random(a, b) + 1);
+};
+
+
+JSUS.extend(RANDOM);
     
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
@@ -1168,1443 +1291,6 @@ ARRAY.transpose = function (array) {
 };
 
 JSUS.extend(ARRAY);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # SUPPORT
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Tests browsers ECMAScript 5 compatibility
- * 
- * For more information see http://kangax.github.com/es5-compat-table/
- * 
- */
-
-(function (JSUS) {
-    
-function COMPATIBILITY() {};
-
-/**
- * ## COMPATIBILITY.compatibility
- * 
- * Returns a report of the ECS5 features available
- * 
- * Useful when an application routinely performs an operation 
- * depending on a potentially unsupported ECS5 feature. 
- * 
- * Transforms multiple try-catch statements in a if-else
- * 
- * @return {object} support The compatibility object
- */
-COMPATIBILITY.compatibility = function() {
-
-	var support = {};
-	
-	try {
-		Object.defineProperty({}, "a", {enumerable: false, value: 1})
-		support.defineProperty = true;
-	}
-	catch(e) {
-		support.defineProperty = false;	
-	}
-	
-	try {
-		eval('({ get x(){ return 1 } }).x === 1')
-		support.setter = true;
-	}
-	catch(err) {
-		support.setter = false;
-	}
-	  
-	try {
-		var value;
-		eval('({ set x(v){ value = v; } }).x = 1');
-		support.getter = true;
-	}
-	catch(err) {
-		support.getter = false;
-	}	  
-
-	return support;
-};
-
-
-JSUS.extend(COMPATIBILITY);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # OBJ
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions to manipulate javascript objects
- * 
- */
-(function (JSUS) {
-
-
-    
-function OBJ(){};
-
-var compatibility = null;
-
-if ('undefined' !== typeof JSUS.compatibility) {
-    compatibility = JSUS.compatibility();
-}
-
-
-/**
- * ## OBJ.equals
- * 
- * Checks for deep equality between two objects, string 
- * or primitive types.
- * 
- * All nested properties are checked, and if they differ 
- * in at least one returns FALSE, otherwise TRUE.
- * 
- * Takes care of comparing the following special cases: 
- * 
- * - undefined
- * - null
- * - NaN
- * - Infinity
- * - {}
- * - falsy values
- * 
- * 
- */
-OBJ.equals = function (o1, o2) {	
-	var type1 = typeof o1, type2 = typeof o2;
-	
-	if (type1 !== type2) return false;
-	
-	if ('undefined' === type1 || 'undefined' === type2) {
-		return (o1 === o2);
-	}
-	if (o1 === null || o2 === null) {
-		return (o1 === o2);
-	}
-	if (('number' === type1 && isNaN(o1)) && ('number' === type2 && isNaN(o2)) ) {
-		return (isNaN(o1) && isNaN(o2));
-	}
-	
-    // Check whether arguments are not objects
-	var primitives = {number: '', string: '', boolean: ''}
-    if (type1 in primitives) {
-    	return o1 === o2;
-    } 
-	
-	if ('function' === type1) {
-		return o1.toString() === o2.toString();
-	}
-
-    for (var p in o1) {
-        if (o1.hasOwnProperty(p)) {
-          
-            if ('undefined' === typeof o2[p] && 'undefined' !== typeof o1[p]) return false;
-            if (!o2[p] && o1[p]) return false; // <!-- null --> 
-            
-            switch (typeof o1[p]) {
-                case 'function':
-                        if (o1[p].toString() !== o2[p].toString()) return false;
-                        
-                    default:
-                    	if (!OBJ.equals(o1[p], o2[p])) return false; 
-              }
-          } 
-      }
-  
-      // Check whether o2 has extra properties
-  // TODO: improve, some properties have already been checked!
-  for (p in o2) {
-      if (o2.hasOwnProperty(p)) {
-          if ('undefined' === typeof o1[p] && 'undefined' !== typeof o2[p]) return false;
-          if (!o1[p] && o2[p]) return false; // <!-- null --> 
-      }
-  }
-
-  return true;
-};
-
-/**
- * ## OBJ.isEmpty
- * 
- * Returns TRUE if an object has no own properties, 
- * FALSE otherwise
- * 
- * Does not check properties of the prototype chain.
- * 
- * @param {object} o The object to check
- * @return {boolean} TRUE, if the object has no properties
- * 
- */
-OBJ.isEmpty = function (o) {
-	if ('undefined' === typeof o) return true;
-	
-    for (var key in o) {
-        if (o.hasOwnProperty(key)) {
-        	return false;
-        }
-    }
-
-    return true;
-};
-
-
-/**
- * ## OBJ.size
- * 
- * Counts the number of own properties of an object.
- * 
- * Prototype chain properties are excluded.
- * 
- * @param {object} obj The object to check
- * @return {number} The number of properties in the object
- */
-OBJ.size = OBJ.getListSize = function (obj) {
-	if (!obj) return 0;
-	if ('number' === typeof obj) return 0;
-	if ('string' === typeof obj) return 0;
-	
-    var n = 0;
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            n++;
-        }
-    }
-    return n;
-};
-
-/**
- * ## OBJ._obj2Array
- * 
- * Explodes an object into an array of keys and values,
- * according to the specified parameters.
-
- * A fixed level of recursion can be set.
- * 
- * @api private
- * @param {object} obj The object to convert in array
- * @param {boolean} keyed TRUE, if also property names should be included. Defaults FALSE
- * @param {number} level Optional. The level of recursion. Defaults undefined
- * @return {array} The converted object
- */
-OBJ._obj2Array = function(obj, keyed, level, cur_level) {
-    if ('object' !== typeof obj) return [obj];
-    
-    if (level) {
-        cur_level = ('undefined' !== typeof cur_level) ? cur_level : 1;
-        if (cur_level > level) return [obj];
-        cur_level = cur_level + 1;
-    }
-    
-    var result = [];
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            if (keyed) result.push(key);
-            if ('object' === typeof obj[key]) {
-                result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
-            } else {
-                result.push(obj[key]);
-            }   
-        }
-    }      
-    
-    return result;
-};
-
-/**
- * ## OBJ.obj2Array
- * 
- * Converts an object into an array, keys are lost
- * 
- * Recursively put the values of the properties of an object into 
- * an array and returns it.
- * 
- * The level of recursion can be set with the parameter level. 
- * By default recursion has no limit, i.e. that the whole object 
- * gets totally unfolded into an array.
- * 
- * @param {object} obj The object to convert in array
- * @param {number} level Optional. The level of recursion. Defaults, undefined
- * @return {array} The converted object
- * 
- * 	@see OBJ._obj2Array
- *	@see OBJ.obj2KeyedArray
- * 
- */
-OBJ.obj2Array = function (obj, level) {
-    return OBJ._obj2Array(obj, false, level);
-};
-
-/**
- * ## OBJ.obj2KeyedArray
- * 
- * Converts an object into array, keys are preserved
- * 
- * Creates an array containing all keys and values of an object and 
- * returns it.
- * 
- * @param {object} obj The object to convert in array
- * @param {number} level Optional. The level of recursion. Defaults, undefined
- * @return {array} The converted object
- * 
- * @see OBJ.obj2Array 
- * 
- */
-OBJ.obj2KeyedArray = OBJ.obj2KeyArray = function (obj, level) {
-    return OBJ._obj2Array(obj, true, level);
-};
-
-/**
- * ## OBJ.keys
- * 
- * Scans an object an returns all the keys of the properties,
- * into an array. 
- * 
- * The second paramter controls the level of nested objects 
- * to be evaluated. Defaults 0 (nested properties are skipped).
- * 
- * @param {object} obj The object from which extract the keys
- * @param {number} level Optional. The level of recursion. Defaults 0
- * @return {array} The array containing the extracted keys
- * 
- * 	@see Object.keys
- * 
- */
-OBJ.keys = OBJ.objGetAllKeys = function (obj, level, curLevel) {
-    if (!obj) return [];
-    level = ('number' === typeof level && level >= 0) ? level : 0; 
-    curLevel = ('number' === typeof curLevel && curLevel >= 0) ? curLevel : 0;
-    var result = [];
-    for (var key in obj) {
-       if (obj.hasOwnProperty(key)) {
-           result.push(key);
-           if (curLevel < level) {
-               if ('object' === typeof obj[key]) {
-                   result = result.concat(OBJ.objGetAllKeys(obj[key], (curLevel+1)));
-               }
-           }
-       }
-    }
-    return result;
-};
-
-/**
- * ## OBJ.implode
- * 
- * Separates each property into a new objects and returns
- * them into an array
- * 
- * E.g.
- * 
- * ```javascript
- * var a = { b:2, c: {a:1}, e:5 };
- * OBJ.implode(a); // [{b:2}, {c:{a:1}}, {e:5}]
- * ```
- * 
- * @param {object} obj The object to implode
- * @return {array} result The array containig all the imploded properties
- * 
- */
-OBJ.implode = OBJ.implodeObj = function (obj) {
-	if (!obj) return [];
-    var result = [];
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            var o = {};
-            o[key] = obj[key];
-            result.push(o);
-        }
-    }
-    return result;
-};
- 
-/**
- * ## OBJ.clone
- * 
- * Creates a perfect copy of the object passed as parameter
- * 
- * Recursively scans all the properties of the object to clone.
- * Properties of the prototype chain are copied as well.
- * 
- * Primitive types and special values are returned as they are.
- *  
- * @param {object} obj The object to clone
- * @return {object} clone The clone of the object
- */
-OBJ.clone = function (obj) {
-	if (!obj) return obj;
-	if ('number' === typeof obj) return obj;
-	if ('string' === typeof obj) return obj;
-	if ('boolean' === typeof obj) return obj;
-	if (obj === NaN) return obj;
-	if (obj === Infinity) return obj;
-	
-	var clone;
-	if ('function' === typeof obj) {
-//		clone = obj;
-		// <!-- Check when and if we need this -->
-		clone = function() { return obj.apply(clone, arguments); };
-	}
-	else {
-		clone = (Object.prototype.toString.call(obj) === '[object Array]') ? [] : {};
-	}
-	
-	for (var i in obj) {
-		var value;
-		// TODO: index i is being updated, so apply is called on the 
-		// last element, instead of the correct one.
-//		if ('function' === typeof obj[i]) {
-//			value = function() { return obj[i].apply(clone, arguments); };
-//		}
-		// It is not NULL and it is an object
-		if (obj[i] && 'object' === typeof obj[i]) {
-			// is an array
-			if (Object.prototype.toString.call(obj[i]) === '[object Array]') {
-				value = obj[i].slice(0);
-			}
-			// is an object
-			else {
-				value = OBJ.clone(obj[i]);
-			}
-		}
-		else {
-			value = obj[i];
-		} 
-	 	
-	    if (obj.hasOwnProperty(i)) {
-	    	clone[i] = value;
-	    }
-	    else {
-	    	// we know if object.defineProperty is available
-	    	if (compatibility && compatibility.defineProperty) {
-		    	Object.defineProperty(clone, i, {
-		    		value: value,
-	         		writable: true,
-	         		configurable: true
-	         	});
-	    	}
-	    	else {
-	    		// or we try...
-	    		try {
-	    			Object.defineProperty(clone, i, {
-			    		value: value,
-		         		writable: true,
-		         		configurable: true
-		         	});
-	    		}
-		    	catch(e) {
-		    		clone[i] = value;
-		    	}
-	    	}
-	    }
-    }
-    return clone;
-};
-    
-/**
- * ## OBJ.join
- * 
- * Performs a *left* join on the keys of two objects
- * 
- * Creates a copy of obj1, and in case keys overlap 
- * between obj1 and obj2, the values from obj2 are taken. 
- * 
- * Returns a new object, the original ones are not modified.
- *  
- * E.g.
- * 
- * ```javascript
- * var a = { b:2, c:3, e:5 };
- * var b = { a:10, b:2, c:100, d:4 };
- * OBJ.join(a, b); // { b:2, c:100, e:5 }
- * ```
- *  
- * @param {object} obj1 The object where the merge will take place
- * @param {object} obj2 The merging object
- * @return {object} clone The joined object
- * 
- * 	@see OBJ.merge
- */
-OBJ.join = function (obj1, obj2) {
-    var clone = OBJ.clone(obj1);
-    if (!obj2) return clone;
-    for (var i in clone) {
-        if (clone.hasOwnProperty(i)) {
-            if ('undefined' !== typeof obj2[i]) {
-                if ('object' === typeof obj2[i]) {
-                    clone[i] = OBJ.join(clone[i], obj2[i]);
-                } else {
-                    clone[i] = obj2[i];
-                }
-            }
-        }
-    }
-    return clone;
-};
-
-/**
- * ## OBJ.merge
- * 
- * Merges two objects in one
- * 
- * In case keys overlap the values from obj2 are taken. 
- * 
- * Only own properties are copied.
- * 
- * Returns a new object, the original ones are not modified.
- * 
- * E.g.
- * 
- * ```javascript
- * var a = { a:1, b:2, c:3 };
- * var b = { a:10, b:2, c:100, d:4 };
- * OBJ.merge(a, b); // { a: 10, b: 2, c: 100, d: 4 }
- * ```
- * 
- * @param {object} obj1 The object where the merge will take place
- * @param {object} obj2 The merging object
- * @return {object} clone The merged object
- * 
- * 	@see OBJ.join
- * 	@see OBJ.mergeOnKey
- */
-OBJ.merge = function (obj1, obj2) {
-	// Checking before starting the algorithm
-	if (!obj1 && !obj2) return false;
-	if (!obj1) return OBJ.clone(obj2);
-	if (!obj2) return OBJ.clone(obj1);
-	
-    var clone = OBJ.clone(obj1);
-    for (var i in obj2) {
-    	
-        if (obj2.hasOwnProperty(i)) {
-        	// it is an object and it is not NULL
-            if ( obj2[i] && 'object' === typeof obj2[i] ) {
-            	// If we are merging an object into  
-            	// a non-object, we need to cast the 
-            	// type of obj1
-            	if ('object' !== typeof clone[i]) {
-            		if (Object.prototype.toString.call(obj2[i]) === '[object Array]') {
-            			clone[i] = [];
-            		}
-            		else {
-            			clone[i] = {};
-            		}
-            	}
-                clone[i] = OBJ.merge(clone[i], obj2[i]);
-            } else {
-                clone[i] = obj2[i];
-            }
-        }
-    }
-    
-    return clone;
-};
-
-/**
- * ## OBJ.mixin
- * 
- * Adds all the properties of obj2 into obj1
- * 
- * Original object is modified
- * 
- * @param {object} obj1 The object to which the new properties will be added
- * @param {object} obj2 The mixin-in object
- */
-OBJ.mixin = function (obj1, obj2) {
-	if (!obj1 && !obj2) return;
-	if (!obj1) return obj2;
-	if (!obj2) return obj1;
-	
-	for (var i in obj2) {
-		obj1[i] = obj2[i];
-	}
-};
-
-/**
- * ## OBJ.mixout
- * 
- * Copies only non-overlapping properties from obj2 to obj1
- * 
- * Original object is modified
- * 
- * @param {object} obj1 The object to which the new properties will be added
- * @param {object} obj2 The mixin-in object
- */
-OBJ.mixout = function (obj1, obj2) {
-	if (!obj1 && !obj2) return;
-	if (!obj1) return obj2;
-	if (!obj2) return obj1;
-	
-	for (var i in obj2) {
-		if (!obj1[i]) obj1[i] = obj2[i];
-	}
-};
-
-/**
- * ## OBJ.mixcommon
- * 
- * Copies only overlapping properties from obj2 to obj1
- * 
- * Original object is modified
- * 
- * @param {object} obj1 The object to which the new properties will be added
- * @param {object} obj2 The mixin-in object
- */
-OBJ.mixcommon = function (obj1, obj2) {
-	if (!obj1 && !obj2) return;
-	if (!obj1) return obj2;
-	if (!obj2) return obj1;
-	
-	for (var i in obj2) {
-		if (obj1[i]) obj1[i] = obj2[i];
-	}
-};
-
-/**
- * ## OBJ.mergeOnKey
- * 
- * Appends / merges the values of the properties of obj2 into a 
- * a new property named 'key' in obj1.
- * 
- * Returns a new object, the original ones are not modified.
- * 
- * This method is useful when we want to merge into a larger 
- * configuration (e.g. min, max, value) object another one that 
- * contains just the values for one of the properties (e.g. value). 
- * 
- * @param {object} obj1 The object where the merge will take place
- * @param {object} obj2 The merging object
- * @param {string} key The name of property under which merging the second object
- * @return {object} clone The merged object
- * 	
- * 	@see OBJ.merge
- * 
- */
-OBJ.mergeOnKey = function (obj1, obj2, key) {
-    var clone = OBJ.clone(obj1);
-    if (!obj2 || !key) return clone;        
-    for (var i in obj2) {
-        if (obj2.hasOwnProperty(i)) {
-            if (!clone[i] || 'object' !== typeof clone[i]) {
-            	clone[i] = {};
-            } 
-            clone[i][key] = obj2[i];
-        }
-    }
-    return clone;
-};
-    
-/**
- * ## OBJ.subobj
- * 
- * Creates a copy of an object containing only the properties 
- * passed as second parameter
- * 
- * The parameter select can be an array of strings, or the name 
- * of a property. 
- * 
- * Use '.' (dot) to point to a nested property.
- * 
- * @param {object} o The object to dissect
- * @param {string|array} select The selection of properties to extract
- * @return {object} out The subobject with the properties from the parent one 
- * 
- * 	@see OBJ.getNestedValue
- */
-OBJ.subobj = function (o, select) {
-    if (!o) return false;
-    var out = {};
-    if (!select) return out;
-    if (!(select instanceof Array)) select = [select];
-    for (var i=0; i < select.length; i++) {
-        var key = select[i];
-        if (OBJ.hasOwnNestedProperty(key, o)) {
-        	OBJ.setNestedValue(key, OBJ.getNestedValue(key, o), out);
-        }
-    }
-    return out;
-};
-  
-/**
- * ## OBJ.skim
- * 
- * Creates a copy of an object where a set of selected properties
- * have been removed
- * 
- * The parameter `remove` can be an array of strings, or the name 
- * of a property. 
- * 
- * Use '.' (dot) to point to a nested property.
- * 
- * @param {object} o The object to dissect
- * @param {string|array} remove The selection of properties to remove
- * @return {object} out The subobject with the properties from the parent one 
- * 
- * 	@see OBJ.getNestedValue
- */
-OBJ.skim = function (o, remove) {
-    if (!o) return false;
-    var out = OBJ.clone(o);
-    if (!remove) return out;
-    if (!(remove instanceof Array)) remove = [remove];
-    for (var i=0; i < remove.length; i++) {
-    	OBJ.deleteNestedKey(remove[i], out);
-    }
-    return out;
-};
-
-
-/**
- * ## OBJ.setNestedValue
- * 
- * Sets the value of a nested property of an object,
- * and returns it.
- *
- * If the object is not passed a new one is created.
- * If the nested property is not existing, a new one is created.
- * 
- * Use '.' (dot) to point to a nested property.
- *
- * The original object is modified.
- *
- * @param {string} str The path to the value
- * @param {mixed} value The value to set
- * @return {object|boolean} obj The modified object, or FALSE if error occurred
- * 
- * @see OBJ.getNestedValue
- * @see OBJ.deleteNestedKey
- *  
- */
-OBJ.setNestedValue = function (str, value, obj) {
-    var keys, k;
-    if (!str) {
-	JSUS.log('Cannot set value of undefined property', 'ERR');
-	return false;
-    }
-    obj = ('object' === typeof obj) ? obj : {};
-    keys = str.split('.');
-    if (keys.length === 1) {
-    	obj[str] = value;
-        return obj;
-    }
-    k = keys.shift();
-    obj[k] = OBJ.setNestedValue(keys.join('.'), value, obj[k]);
-    return obj;
-};
-
-/**
- * ## OBJ.getNestedValue
- * 
- * Returns the value of a property of an object, as defined
- * by a path string. 
- * 
- * Use '.' (dot) to point to a nested property.
- *  
- * Returns undefined if the nested property does not exist.
- * 
- * E.g.
- * 
- * ```javascript
- * var o = { a:1, b:{a:2} };
- * OBJ.getNestedValue('b.a', o); // 2
- * ```
- * 
- * @param {string} str The path to the value
- * @param {object} obj The object from which extract the value
- * @return {mixed} The extracted value
- * 
- * @see OBJ.setNestedValue
- * @see OBJ.deleteNestedKey
- */
-OBJ.getNestedValue = function (str, obj) {
-    if (!obj) return;
-    var keys = str.split('.');
-    if (keys.length === 1) {
-        return obj[str];
-    }
-    var k = keys.shift();
-    return OBJ.getNestedValue(keys.join('.'), obj[k]); 
-};
-
-/**
- * ## OBJ.deleteNestedKey
- * 
- * Deletes a property from an object, as defined by a path string 
- * 
- * Use '.' (dot) to point to a nested property.
- *  
- * The original object is modified.
- * 
- * E.g.
- * 
- * ```javascript
- * var o = { a:1, b:{a:2} };
- * OBJ.deleteNestedKey('b.a', o); // { a:1, b: {} }
- * ```
- * 
- * @param {string} str The path string
- * @param {object} obj The object from which deleting a property
- * @param {boolean} TRUE, if the property was existing, and then deleted
- * 
- * @see OBJ.setNestedValue
- * @see OBJ.getNestedValue
- */
-OBJ.deleteNestedKey = function (str, obj) {
-    if (!obj) return;
-    var keys = str.split('.');
-    if (keys.length === 1) {
-		delete obj[str];
-        return true;
-    }
-    var k = keys.shift();
-    if ('undefined' === typeof obj[k]) {
-    	return false;
-    }
-    return OBJ.deleteNestedKey(keys.join('.'), obj[k]); 
-};
-
-/**
- * ## OBJ.hasOwnNestedProperty
- * 
- * Returns TRUE if a (nested) property exists
- * 
- * Use '.' to specify a nested property.
- * 
- * E.g.
- * 
- * ```javascript
- * var o = { a:1, b:{a:2} };
- * OBJ.hasOwnNestedProperty('b.a', o); // TRUE
- * ```
- * 
- * @param {string} str The path of the (nested) property
- * @param {object} obj The object to test
- * @return {boolean} TRUE, if the (nested) property exists
- * 
- */
-OBJ.hasOwnNestedProperty = function (str, obj) {
-    if (!obj) return false;
-    var keys = str.split('.');
-    if (keys.length === 1) {
-        return obj.hasOwnProperty(str);
-    }
-    var k = keys.shift();
-    return OBJ.hasOwnNestedProperty(keys.join('.'), obj[k]); 
-};
-
-
-/**
- * ## OBJ.split
- *
- * Splits an object along a specified dimension, and returns 
- * all the copies in an array.
- *  
- * It creates as many new objects as the number of properties 
- * contained in the specified dimension. The object are identical,
- * but for the given dimension, which was split. E.g.
- * 
- * ```javascript
- *  var o = { a: 1,
- *            b: {c: 2,
- *                d: 3
- *            },
- *            e: 4
- *  };
- *  
- *  o = OBJ.split(o, 'b');
- *  
- *  // o becomes:
- *  
- *  [{ a: 1,
- *     b: {c: 2},
- *     e: 4
- *  },
- *  { a: 1,
- *    b: {d: 3},
- *    e: 4
- *  }];
- * ```
- * 
- * @param {object} o The object to split
- * @param {sting} key The name of the property to split
- * @return {object} A copy of the object with split values
- */
-OBJ.split = function (o, key) {        
-    if (!o) return;
-    if (!key || 'object' !== typeof o[key]) {
-        return JSUS.clone(o);
-    }
-    
-    var out = [];
-    var model = JSUS.clone(o);
-    model[key] = {};
-    
-    var splitValue = function (value) {
-        for (var i in value) {
-            var copy = JSUS.clone(model);
-            if (value.hasOwnProperty(i)) {
-                if ('object' === typeof value[i]) {
-                    out = out.concat(splitValue(value[i]));
-                }
-                else {
-                    copy[key][i] = value[i]; 
-                    out.push(copy);
-                }
-            }
-        }
-        return out;
-    };
-    
-    return splitValue(o[key]);
-};
-
-/**
- * ## OBJ.melt
- * 
- * Creates a new object with the specified combination of
- * properties - values
- * 
- * The values are assigned cyclically to the properties, so that
- * they do not need to have the same length. E.g.
- * 
- * ```javascript
- * 	J.createObj(['a','b','c'], [1,2]); // { a: 1, b: 2, c: 1 }
- * ```
- * @param {array} keys The names of the keys to add to the object
- * @param {array} values The values to associate to the keys  
- * @return {object} A new object with keys and values melted together
- */
-OBJ.melt = function(keys, values) {
-	var o = {}, valen = values.length;
-	for (var i = 0; i < keys.length; i++) {
-		o[keys[i]] = values[i % valen];
-	}
-	return o;
-};
-
-/**
- * ## OBJ.uniqueKey
- * 
- * Creates a random unique key name for a collection
- * 
- * User can specify a tentative unique key name, and if already
- * existing an incremental index will be added as suffix to it. 
- * 
- * Notice: the method does not actually creates the key
- * in the object, but it just returns the name.
- * 
- * 
- * @param {object} obj The collection for which a unique key name will be created
- * @param {string} name Optional. A tentative key name. Defaults, a 10-digit random number
- * @param {number} stop Optional. The number of tries before giving up searching
- * 	for a unique key name. Defaults, 1000000.
- * 
- * @return {string|undefined} The unique key name, or undefined if it was not found
- */
-OBJ.uniqueKey = function(obj, name, stop) {
-	if (!obj) {
-		JSUS.log('Cannot find unique name in undefined object', 'ERR');
-		return;
-	}
-	name = name || '' + Math.floor(Math.random()*10000000000);
-	stop = stop || 1000000;
-	var duplicateCounter = 1;
-	while (obj[name]) {
-		name = name + '' + duplicateCounter;
-		duplicateCounter++;
-		if (duplicateCounter > stop) {
-			return;
-		}
-	}
-	return name;
-}
-
-/**
- * ## OBJ.augment
- * 
- * Creates an object containing arrays of all the values of 
- * 
- * User can specifies the subset of keys from both objects 
- * that will subject to augmentation. The values of the other keys 
- * will not be changed
- * 
- * Notice: the method modifies the first input paramteer
- * 
- * E.g.
- * 
- * ```javascript
- * var a = { a:1, b:2, c:3 };
- * var b = { a:10, b:2, c:100, d:4 };
- * OBJ.augment(a, b); // { a: [1, 10], b: [2, 2], c: [3, 100]}
- * 
- * OBJ.augment(a, b, ['b', 'c', 'd']); // { a: 1, b: [2, 2], c: [3, 100], d: [4]});
- * 
- * ```
- * 
- * @param {object} obj1 The object whose properties will be augmented
- * @param {object} obj2 The augmenting object
- * @param {array} key Optional. Array of key names common to both objects taken as
- * 	the set of properties to augment
- */
-OBJ.augment = function(obj1, obj2, keys) {  
-    var i, k, keys = keys || OBJ.keys(obj1);
-    
-    for (i = 0 ; i < keys.length; i++) {
-	k = keys[i];
-	if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
-	    obj1[k] = [obj1[k]];
-	}
-	if ('undefined' !== obj2[k]) {
-	    if (!obj1[k]) obj1[k] = []; 
-	    obj1[k].push(obj2[k]);
-	}
-    }
-}
-
-
-/**
- * ## OBJ.pairwiseWalk
- *
- * Given two objects, executes a callback on all attributes with the same name
- *
- * The result of each callback are aggregated in a new object under the 
- * same property name.
- * 
- * Does not traverse nested objects, and properties of the prototype are excluded
- *
- * Returns a new object, the original ones are not modified.
- *  
- * E.g.
- * 
- * ```javascript
- * var a = { b:2, c:3, d:5 };
- * var b = { a:10, b:2, c:100, d:4 };
- * var sum = function(a,b) {
- *     if ('undefined' !== typeof a) {
- *         return 'undefined' !== typeof b ? a + b : a;  
- *     }
- *     return b;
- * };
- * OBJ.pairwiseWalk(a, b, sum); // { a:10, b:4, c:103, d:9 }
- * ```
- *  
- * @param {object} o1 The first object
- * @param {object} o2 The second object
- * @return {object} clone The object aggregating the results
- * 
- */
-OBJ.pairwiseWalk = function(o1, o2, cb) {
-    var i, out;
-    if (!o1 && !o2) return;
-    if (!o1) return o2;
-    if (!o2) return o1;
-    
-    out = {};
-    for (i in o1) {
-        if (o1.hasOwnProperty(i)) {
-            out[i] = o2.hasOwnProperty(i) ? cb(o1[i], o2[i]) : cb(o1[i]);
-        }
-    }
-    
-    for (i in o2) {
-        if (o2.hasOwnProperty(i)) {
-            if ('undefined' === typeof out[i]) {
-                out[i] = cb(undefined, o2[i]);
-            }
-        }
-    }
-    
-    return out;
-};
-
-
-JSUS.extend(OBJ);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # RANDOM
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to the generation of 
- * pseudo-random numbers
- * 
- */
-
-(function (JSUS) {
-    
-function RANDOM(){};
-
-/**
- * ## RANDOM.random
- * 
- * Generates a pseudo-random floating point number between 
- * (a,b), both a and b exclusive.
- * 
- * @param {number} a The lower limit 
- * @param {number} b The upper limit
- * @return {number} A random floating point number in (a,b)
- */
-RANDOM.random = function (a, b) {
-	a = ('undefined' === typeof a) ? 0 : a;
-	b = ('undefined' === typeof b) ? 0 : b;
-	if (a === b) return a;
-	
-	if (b < a) {
-		var c = a;
-		a = b;
-		b = c;
-	}
-	return (Math.random() * (b - a)) + a
-};
-
-/**
- * ## RANDOM.randomInt
- * 
- * Generates a pseudo-random integer between 
- * (a,b] a exclusive, b inclusive.
- * 
- * @param {number} a The lower limit 
- * @param {number} b The upper limit
- * @return {number} A random integer in (a,b]
- * 
- * @see RANDOM.random
- */
-RANDOM.randomInt = function (a, b) {
-	if (a === b) return a;
-    return Math.floor(RANDOM.random(a, b) + 1);
-};
-
-
-JSUS.extend(RANDOM);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # PARSE
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to parsing strings
- * 
- */
-(function (JSUS) {
-    
-function PARSE(){};
-
-/**
- * ## PARSE.stringify_prefix
- * 
- * Prefix used by PARSE.stringify and PARSE.parse
- * to decode strings with special meaning
- * 
- * @see PARSE.stringify
- * @see PARSE.parse
- */
-PARSE.stringify_prefix = '!?_';
-
-PARSE.marker_func = PARSE.stringify_prefix + 'function';
-PARSE.marker_null = PARSE.stringify_prefix + 'null';
-PARSE.marker_und = PARSE.stringify_prefix + 'undefined';
-PARSE.marker_nan = PARSE.stringify_prefix + 'NaN';
-PARSE.marker_inf = PARSE.stringify_prefix + 'Infinity';
-PARSE.marker_minus_inf = PARSE.stringify_prefix + '-Infinity';
-
-/**
- * ## PARSE.getQueryString
- * 
- * Parses the current querystring and returns it full or a specific variable.
- * Return false if the requested variable is not found.
- * 
- * @param {string} variable Optional. If set, returns only the value associated
- *   with this variable
- *   
- * @return {string|boolean} The querystring, or a part of it, or FALSE
- */
-PARSE.getQueryString = function (variable) {
-    var query = window.location.search.substring(1);
-    if ('undefined' === typeof variable) return query;
-    
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) {
-            return unescape(pair[1]);
-        }
-    }
-    return false;
-};
-
-/**
- * ## PARSE.tokenize
- * 
- * Splits a string in tokens that users can specified as input parameter.
- * Additional options can be specified with the modifiers parameter
- * 
- * - limit: An integer that specifies the number of splits, 
- * 		items after the split limit will not be included in the array
- * 
- * @param {string} str The string to split
- * @param {array} separators Array containing the separators words
- * @param {object} modifiers Optional. Configuration options for the tokenizing
- * 
- * @return {array} Tokens in which the string was split
- * 
- */
-PARSE.tokenize = function (str, separators, modifiers) {
-    if (!str) return;
-    if (!separators || !separators.length) return [str];
-    modifiers = modifiers || {};
-    
-    var pattern = '[';
-    
-    JSUS.each(separators, function(s) {
-	if (s === ' ') s = '\\s';
-	
-	pattern += s;
-    });
-    
-    pattern += ']+';
-    
-    var regex = new RegExp(pattern);
-    return str.split(regex, modifiers.limit);
-};
-
-/**
- * ## PARSE.stringify
- * 
- * Stringifies objects, functions, primitive, undefined or null values
- * 
- * Makes uses `JSON.stringify` with a special reviver function, that 
- * strinfifies also functions, undefined, and null values.
- * 
- * A special prefix is prepended to avoid name collisions.
- * 
- * @param {mixed} o The value to stringify
- * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
- * 
- * @return {string} The stringified result
- * 
- * @see JSON.stringify
- * @see PARSE.stringify_prefix
- */
-PARSE.stringify = function(o, spaces) {
-    return JSON.stringify(o, function(key, value){
-	var type = typeof value;
-	if ('function' === type) {
-	    return PARSE.stringify_prefix + value.toString()
-	}
-	
-	if ('undefined' === type) return PARSE.marker_und;
-	if (value === null) return PARSE.marker_null;
-        if ('number' === type && isNaN(value)) return PARSE.marker_nan;
-	if (value == Number.POSITIVE_INFINITY) return PARSE.marker_inf;
-	if (value == Number.NEGATIVE_INFINITY) return PARSE.marker_minus_inf;
-	
-	return value;
-	
-    }, spaces);
-};
-
-/**
- * ## PARSE.stringifyAll
- * 
- * Copies all the properties of the prototype before stringifying
- *
- * Notice: The original object is modified!
- * 
- * @param {mixed} o The value to stringify
- * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
- * 
- * @return {string} The stringified result
- * 
- * @see PARSE.stringify
- */
-PARSE.stringifyAll = function(o, spaces) {
-    for (var i in o) {
-	if (!o.hasOwnProperty(i)) {
-	    if ('object' === typeof o[i]) {
-		o[i] = PARSE.stringifyAll(o[i]);
-	    }
-	    else {
-		o[i] = o[i];
-	    }
-	}
-    }
-    return PARSE.stringify(o);
-};
-
-/**
- * ## PARSE.parse
- * 
- * Decodes strings in objects and other values
- * 
- * Uses `JSON.parse` and then looks  for special strings 
- * encoded by `PARSE.stringify`
- * 
- * @param {string} str The string to decode
- * @return {mixed} The decoded value 
- * 
- * @see JSON.parse
- * @see PARSE.stringify_prefix
- */
-PARSE.parse = function(str) {
-	
-    var len_prefix = PARSE.stringify_prefix.length,
-        len_func = PARSE.marker_func.length,
-        len_null = PARSE.marker_null.length,
-        len_und = PARSE.marker_und.length,
-        len_nan = PARSE.marker_nan.length,
-        len_inf = PARSE.marker_inf.length,
-        len_inf = PARSE.marker_minus_inf.length;
-       
-	
-    var o = JSON.parse(str);
-    return walker(o);
-	
-    function walker(o) {
-	if ('object' !== typeof o) return reviver(o);
-		
-	for (var i in o) {
-	    if (o.hasOwnProperty(i)) {
-		if ('object' === typeof o[i]) {
-		    walker(o[i]);
-		}
-		else {
-		    o[i] = reviver(o[i]);
-		}
-	    }
-	}
-	
-	return o;
-    }
-	
-    function reviver(value) {
-	var type = typeof value;
-	
-	if (type === 'string') {
-	    if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
-		return value;
-	    }
-	    else if (value.substring(0, len_func) === PARSE.marker_func) {
-		return eval('('+value.substring(len_prefix)+')');
-	    }
-	    else if (value.substring(0, len_null) === PARSE.marker_null) {
-		return null;
-	    }
-	    else if (value.substring(0, len_und) === PARSE.marker_und) {
-		return undefined;
-	    }
-
-	    else if (value.substring(0, len_nan) === PARSE.marker_nan) {
-		return NaN;
-	    }
-	    else if (value.substring(0, len_inf) === PARSE.marker_inf) {
-		return Infinity;
-	    }
-	    else if (value.substring(0, len_inf) === PARSE.marker_minus_inf) {
-		return -Infinity;
-	    }
-
-	}		
-	return value;
-    };
-}
-
-
-JSUS.extend(PARSE);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # TIME
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to the generation, 
- * manipulation, and formatting of time strings in javascript
- * 
- */
-
-(function (JSUS) {
-    
-function TIME() {};
-
-/**
- * ## TIME.getDate
- * 
- * Returns a string representation of the current date 
- * and time formatted as follows:
- * 
- * dd-mm-yyyy hh:mm:ss milliseconds
- * 
- * @return {string} date Formatted time string hh:mm:ss
- */
-TIME.getDate = TIME.getFullDate = function() {
-    var d = new Date();
-    var date = d.getUTCDate() + '-' + (d.getUTCMonth()+1) + '-' + d.getUTCFullYear() + ' ' 
-            + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' ' 
-            + d.getMilliseconds();
-    
-    return date;
-};
-
-/**
- * ## TIME.getTime
- * 
- * Returns a string representation of the current time
- * formatted as follows:
- * 
- * hh:mm:ss
- * 
- * @return {string} time Formatted time string hh:mm:ss
- */
-TIME.getTime = function() {
-    var d = new Date();
-    var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-    
-    return time;
-};
-
-/**
- * ## TIME.parseMilliseconds
- * 
- * Parses an integer number representing milliseconds, 
- * and returns an array of days, hours, minutes and seconds
- * 
- * @param {number} ms Integer representing milliseconds
- * @return {array} result Milleconds parsed in days, hours, minutes, and seconds
- * 
- */
-TIME.parseMilliseconds = function (ms) {
-	if ('number' !== typeof ms) return;
-	
-    var result = [];
-    var x = ms / 1000;
-    result[4] = x;
-    var seconds = x % 60;
-    result[3] = Math.floor(seconds);
-    var x = x /60;
-    var minutes = x % 60;
-    result[2] = Math.floor(minutes);
-    var x = x / 60;
-    var hours = x % 24;
-    result[1] = Math.floor(hours);
-    var x = x / 24;
-    var days = x;
-    result[1] = Math.floor(days);
-    
-    return result;
-};
-
-JSUS.extend(TIME);
     
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
@@ -3416,4 +2102,1334 @@ DOM.addClass = function (el, c) {
     
 JSUS.extend(DOM);
     
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # SUPPORT
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Tests browsers ECMAScript 5 compatibility
+ * 
+ * For more information see http://kangax.github.com/es5-compat-table/
+ * 
+ */
+
+(function (JSUS) {
+    
+function COMPATIBILITY() {};
+
+/**
+ * ## COMPATIBILITY.compatibility
+ * 
+ * Returns a report of the ECS5 features available
+ * 
+ * Useful when an application routinely performs an operation 
+ * depending on a potentially unsupported ECS5 feature. 
+ * 
+ * Transforms multiple try-catch statements in a if-else
+ * 
+ * @return {object} support The compatibility object
+ */
+COMPATIBILITY.compatibility = function() {
+
+	var support = {};
+	
+	try {
+		Object.defineProperty({}, "a", {enumerable: false, value: 1})
+		support.defineProperty = true;
+	}
+	catch(e) {
+		support.defineProperty = false;	
+	}
+	
+	try {
+		eval('({ get x(){ return 1 } }).x === 1')
+		support.setter = true;
+	}
+	catch(err) {
+		support.setter = false;
+	}
+	  
+	try {
+		var value;
+		eval('({ set x(v){ value = v; } }).x = 1');
+		support.getter = true;
+	}
+	catch(err) {
+		support.getter = false;
+	}	  
+
+	return support;
+};
+
+
+JSUS.extend(COMPATIBILITY);
+    
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # OBJ
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Collection of static functions to manipulate javascript objects
+ * 
+ */
+(function (JSUS) {
+
+
+    
+    function OBJ(){};
+
+    var compatibility = null;
+
+    if ('undefined' !== typeof JSUS.compatibility) {
+        compatibility = JSUS.compatibility();
+    }
+
+
+    /**
+     * ## OBJ.equals
+     * 
+     * Checks for deep equality between two objects, string 
+     * or primitive types.
+     * 
+     * All nested properties are checked, and if they differ 
+     * in at least one returns FALSE, otherwise TRUE.
+     * 
+     * Takes care of comparing the following special cases: 
+     * 
+     * - undefined
+     * - null
+     * - NaN
+     * - Infinity
+     * - {}
+     * - falsy values
+     * 
+     * 
+     */
+    OBJ.equals = function (o1, o2) {	
+        var type1 = typeof o1, type2 = typeof o2;
+	
+        if (type1 !== type2) return false;
+	
+        if ('undefined' === type1 || 'undefined' === type2) {
+            return (o1 === o2);
+	}
+	if (o1 === null || o2 === null) {
+	    return (o1 === o2);
+	}
+	if (('number' === type1 && isNaN(o1)) && ('number' === type2 && isNaN(o2)) ) {
+	    return (isNaN(o1) && isNaN(o2));
+	}
+	
+        // Check whether arguments are not objects
+	var primitives = {number: '', string: '', boolean: ''}
+        if (type1 in primitives) {
+    	    return o1 === o2;
+        } 
+	
+	if ('function' === type1) {
+	    return o1.toString() === o2.toString();
+	}
+
+        for (var p in o1) {
+            if (o1.hasOwnProperty(p)) {
+                
+                if ('undefined' === typeof o2[p] && 'undefined' !== typeof o1[p]) return false;
+                if (!o2[p] && o1[p]) return false; // <!-- null --> 
+                
+                switch (typeof o1[p]) {
+                case 'function':
+                    if (o1[p].toString() !== o2[p].toString()) return false;
+                    
+                default:
+                    if (!OBJ.equals(o1[p], o2[p])) return false; 
+                }
+            } 
+        }
+        
+        // Check whether o2 has extra properties
+        // TODO: improve, some properties have already been checked!
+        for (p in o2) {
+            if (o2.hasOwnProperty(p)) {
+                if ('undefined' === typeof o1[p] && 'undefined' !== typeof o2[p]) return false;
+                if (!o1[p] && o2[p]) return false; // <!-- null --> 
+            }
+        }
+
+        return true;
+    };
+
+    /**
+     * ## OBJ.isEmpty
+     * 
+     * Returns TRUE if an object has no own properties, 
+     * FALSE otherwise
+     * 
+     * Does not check properties of the prototype chain.
+     * 
+     * @param {object} o The object to check
+     * @return {boolean} TRUE, if the object has no properties
+     * 
+     */
+    OBJ.isEmpty = function (o) {
+	if ('undefined' === typeof o) return true;
+	
+        for (var key in o) {
+            if (o.hasOwnProperty(key)) {
+        	return false;
+            }
+        }
+
+        return true;
+    };
+
+
+    /**
+     * ## OBJ.size
+     * 
+     * Counts the number of own properties of an object.
+     * 
+     * Prototype chain properties are excluded.
+     * 
+     * @param {object} obj The object to check
+     * @return {number} The number of properties in the object
+     */
+    OBJ.size = OBJ.getListSize = function (obj) {
+	if (!obj) return 0;
+	if ('number' === typeof obj) return 0;
+	if ('string' === typeof obj) return 0;
+	
+        var n = 0;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                n++;
+            }
+        }
+        return n;
+    };
+
+    /**
+     * ## OBJ._obj2Array
+     * 
+     * Explodes an object into an array of keys and values,
+     * according to the specified parameters.
+
+     * A fixed level of recursion can be set.
+     * 
+     * @api private
+     * @param {object} obj The object to convert in array
+     * @param {boolean} keyed TRUE, if also property names should be included. Defaults FALSE
+     * @param {number} level Optional. The level of recursion. Defaults undefined
+     * @return {array} The converted object
+     */
+    OBJ._obj2Array = function(obj, keyed, level, cur_level) {
+        if ('object' !== typeof obj) return [obj];
+        
+        if (level) {
+            cur_level = ('undefined' !== typeof cur_level) ? cur_level : 1;
+            if (cur_level > level) return [obj];
+            cur_level = cur_level + 1;
+        }
+        
+        var result = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (keyed) result.push(key);
+                if ('object' === typeof obj[key]) {
+                    result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
+                } else {
+                    result.push(obj[key]);
+                }   
+            }
+        }      
+        
+        return result;
+    };
+
+    /**
+     * ## OBJ.obj2Array
+     * 
+     * Converts an object into an array, keys are lost
+     * 
+     * Recursively put the values of the properties of an object into 
+     * an array and returns it.
+     * 
+     * The level of recursion can be set with the parameter level. 
+     * By default recursion has no limit, i.e. that the whole object 
+     * gets totally unfolded into an array.
+     * 
+     * @param {object} obj The object to convert in array
+     * @param {number} level Optional. The level of recursion. Defaults, undefined
+     * @return {array} The converted object
+     * 
+     * 	@see OBJ._obj2Array
+     *	@see OBJ.obj2KeyedArray
+     * 
+     */
+    OBJ.obj2Array = function (obj, level) {
+        return OBJ._obj2Array(obj, false, level);
+    };
+
+    /**
+     * ## OBJ.obj2KeyedArray
+     * 
+     * Converts an object into array, keys are preserved
+     * 
+     * Creates an array containing all keys and values of an object and 
+     * returns it.
+     * 
+     * @param {object} obj The object to convert in array
+     * @param {number} level Optional. The level of recursion. Defaults, undefined
+     * @return {array} The converted object
+     * 
+     * @see OBJ.obj2Array 
+     * 
+     */
+    OBJ.obj2KeyedArray = OBJ.obj2KeyArray = function (obj, level) {
+        return OBJ._obj2Array(obj, true, level);
+    };
+
+    /**
+     * ## OBJ.keys
+     * 
+     * Scans an object an returns all the keys of the properties,
+     * into an array. 
+     * 
+     * The second paramter controls the level of nested objects 
+     * to be evaluated. Defaults 0 (nested properties are skipped).
+     * 
+     * @param {object} obj The object from which extract the keys
+     * @param {number} level Optional. The level of recursion. Defaults 0
+     * @return {array} The array containing the extracted keys
+     * 
+     * 	@see Object.keys
+     * 
+     */
+    OBJ.keys = OBJ.objGetAllKeys = function (obj, level, curLevel) {
+        if (!obj) return [];
+        level = ('number' === typeof level && level >= 0) ? level : 0; 
+        curLevel = ('number' === typeof curLevel && curLevel >= 0) ? curLevel : 0;
+        var result = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result.push(key);
+                if (curLevel < level) {
+                    if ('object' === typeof obj[key]) {
+                        result = result.concat(OBJ.objGetAllKeys(obj[key], (curLevel+1)));
+                    }
+                }
+            }
+        }
+        return result;
+    };
+
+    /**
+     * ## OBJ.implode
+     * 
+     * Separates each property into a new objects and returns
+     * them into an array
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var a = { b:2, c: {a:1}, e:5 };
+     * OBJ.implode(a); // [{b:2}, {c:{a:1}}, {e:5}]
+     * ```
+     * 
+     * @param {object} obj The object to implode
+     * @return {array} result The array containig all the imploded properties
+     * 
+     */
+    OBJ.implode = OBJ.implodeObj = function (obj) {
+	if (!obj) return [];
+        var result = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var o = {};
+                o[key] = obj[key];
+                result.push(o);
+            }
+        }
+        return result;
+    };
+    
+    /**
+     * ## OBJ.clone
+     * 
+     * Creates a perfect copy of the object passed as parameter
+     * 
+     * Recursively scans all the properties of the object to clone.
+     * Properties of the prototype chain are copied as well.
+     * 
+     * Primitive types and special values are returned as they are.
+     *  
+     * @param {object} obj The object to clone
+     * @return {object} clone The clone of the object
+     */
+    OBJ.clone = function (obj) {
+	if (!obj) return obj;
+	if ('number' === typeof obj) return obj;
+	if ('string' === typeof obj) return obj;
+	if ('boolean' === typeof obj) return obj;
+	if (obj === NaN) return obj;
+	if (obj === Infinity) return obj;
+	
+	var clone;
+	if ('function' === typeof obj) {
+            //		clone = obj;
+	    // <!-- Check when and if we need this -->
+	    clone = function() { return obj.apply(clone, arguments); };
+	}
+	else {
+	    clone = (Object.prototype.toString.call(obj) === '[object Array]') ? [] : {};
+	}
+	
+	for (var i in obj) {
+	    var value;
+	    // TODO: index i is being updated, so apply is called on the 
+	    // last element, instead of the correct one.
+            //		if ('function' === typeof obj[i]) {
+            //			value = function() { return obj[i].apply(clone, arguments); };
+            //		}
+	    // It is not NULL and it is an object
+	    if (obj[i] && 'object' === typeof obj[i]) {
+		// is an array
+		if (Object.prototype.toString.call(obj[i]) === '[object Array]') {
+		    value = obj[i].slice(0);
+		}
+		// is an object
+		else {
+		    value = OBJ.clone(obj[i]);
+		}
+	    }
+	    else {
+		value = obj[i];
+	    } 
+	    
+	    if (obj.hasOwnProperty(i)) {
+	    	clone[i] = value;
+	    }
+	    else {
+	    	// we know if object.defineProperty is available
+	    	if (compatibility && compatibility.defineProperty) {
+		    Object.defineProperty(clone, i, {
+		    	value: value,
+	         	writable: true,
+	         	configurable: true
+	            });
+	    	}
+	    	else {
+	    	    // or we try...
+	    	    try {
+	    		Object.defineProperty(clone, i, {
+			    value: value,
+		            writable: true,
+		            configurable: true
+		        });
+	    	    }
+		    catch(e) {
+		    	clone[i] = value;
+		    }
+	    	}
+	    }
+        }
+        return clone;
+    };
+    
+    /**
+     * ## OBJ.join
+     * 
+     * Performs a *left* join on the keys of two objects
+     * 
+     * Creates a copy of obj1, and in case keys overlap 
+     * between obj1 and obj2, the values from obj2 are taken. 
+     * 
+     * Returns a new object, the original ones are not modified.
+     *  
+     * E.g.
+     * 
+     * ```javascript
+     * var a = { b:2, c:3, e:5 };
+     * var b = { a:10, b:2, c:100, d:4 };
+     * OBJ.join(a, b); // { b:2, c:100, e:5 }
+     * ```
+     *  
+     * @param {object} obj1 The object where the merge will take place
+     * @param {object} obj2 The merging object
+     * @return {object} clone The joined object
+     * 
+     * 	@see OBJ.merge
+     */
+    OBJ.join = function (obj1, obj2) {
+        var clone = OBJ.clone(obj1);
+        if (!obj2) return clone;
+        for (var i in clone) {
+            if (clone.hasOwnProperty(i)) {
+                if ('undefined' !== typeof obj2[i]) {
+                    if ('object' === typeof obj2[i]) {
+                        clone[i] = OBJ.join(clone[i], obj2[i]);
+                    } else {
+                        clone[i] = obj2[i];
+                    }
+                }
+            }
+        }
+        return clone;
+    };
+
+    /**
+     * ## OBJ.merge
+     * 
+     * Merges two objects in one
+     * 
+     * In case keys overlap the values from obj2 are taken. 
+     * 
+     * Only own properties are copied.
+     * 
+     * Returns a new object, the original ones are not modified.
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var a = { a:1, b:2, c:3 };
+     * var b = { a:10, b:2, c:100, d:4 };
+     * OBJ.merge(a, b); // { a: 10, b: 2, c: 100, d: 4 }
+     * ```
+     * 
+     * @param {object} obj1 The object where the merge will take place
+     * @param {object} obj2 The merging object
+     * @return {object} clone The merged object
+     * 
+     * 	@see OBJ.join
+     * 	@see OBJ.mergeOnKey
+     */
+    OBJ.merge = function (obj1, obj2) {
+	// Checking before starting the algorithm
+	if (!obj1 && !obj2) return false;
+	if (!obj1) return OBJ.clone(obj2);
+	if (!obj2) return OBJ.clone(obj1);
+	
+        var clone = OBJ.clone(obj1);
+        for (var i in obj2) {
+    	    
+            if (obj2.hasOwnProperty(i)) {
+        	// it is an object and it is not NULL
+                if ( obj2[i] && 'object' === typeof obj2[i] ) {
+            	    // If we are merging an object into  
+            	    // a non-object, we need to cast the 
+            	    // type of obj1
+            	    if ('object' !== typeof clone[i]) {
+            		if (Object.prototype.toString.call(obj2[i]) === '[object Array]') {
+            		    clone[i] = [];
+            		}
+            		else {
+            		    clone[i] = {};
+            		}
+            	    }
+                    clone[i] = OBJ.merge(clone[i], obj2[i]);
+                } else {
+                    clone[i] = obj2[i];
+                }
+            }
+        }
+        
+        return clone;
+    };
+
+    /**
+     * ## OBJ.mixin
+     * 
+     * Adds all the properties of obj2 into obj1
+     * 
+     * Original object is modified
+     * 
+     * @param {object} obj1 The object to which the new properties will be added
+     * @param {object} obj2 The mixin-in object
+     */
+    OBJ.mixin = function (obj1, obj2) {
+	if (!obj1 && !obj2) return;
+	if (!obj1) return obj2;
+	if (!obj2) return obj1;
+	
+	for (var i in obj2) {
+	    obj1[i] = obj2[i];
+	}
+    };
+
+    /**
+     * ## OBJ.mixout
+     * 
+     * Copies only non-overlapping properties from obj2 to obj1
+     * 
+     * Original object is modified
+     * 
+     * @param {object} obj1 The object to which the new properties will be added
+     * @param {object} obj2 The mixin-in object
+     */
+    OBJ.mixout = function (obj1, obj2) {
+	if (!obj1 && !obj2) return;
+	if (!obj1) return obj2;
+	if (!obj2) return obj1;
+	
+	for (var i in obj2) {
+	    if (!obj1[i]) obj1[i] = obj2[i];
+	}
+    };
+
+    /**
+     * ## OBJ.mixcommon
+     * 
+     * Copies only overlapping properties from obj2 to obj1
+     * 
+     * Original object is modified
+     * 
+     * @param {object} obj1 The object to which the new properties will be added
+     * @param {object} obj2 The mixin-in object
+     */
+    OBJ.mixcommon = function (obj1, obj2) {
+	if (!obj1 && !obj2) return;
+	if (!obj1) return obj2;
+	if (!obj2) return obj1;
+	
+	for (var i in obj2) {
+	    if (obj1[i]) obj1[i] = obj2[i];
+	}
+    };
+
+    /**
+     * ## OBJ.mergeOnKey
+     * 
+     * Appends / merges the values of the properties of obj2 into a 
+     * a new property named 'key' in obj1.
+     * 
+     * Returns a new object, the original ones are not modified.
+     * 
+     * This method is useful when we want to merge into a larger 
+     * configuration (e.g. min, max, value) object another one that 
+     * contains just the values for one of the properties (e.g. value). 
+     * 
+     * @param {object} obj1 The object where the merge will take place
+     * @param {object} obj2 The merging object
+     * @param {string} key The name of property under which merging the second object
+     * @return {object} clone The merged object
+     * 	
+     * 	@see OBJ.merge
+     * 
+     */
+    OBJ.mergeOnKey = function (obj1, obj2, key) {
+        var clone = OBJ.clone(obj1);
+        if (!obj2 || !key) return clone;        
+        for (var i in obj2) {
+            if (obj2.hasOwnProperty(i)) {
+                if (!clone[i] || 'object' !== typeof clone[i]) {
+            	    clone[i] = {};
+                } 
+                clone[i][key] = obj2[i];
+            }
+        }
+        return clone;
+    };
+    
+    /**
+     * ## OBJ.subobj
+     * 
+     * Creates a copy of an object containing only the properties 
+     * passed as second parameter
+     * 
+     * The parameter select can be an array of strings, or the name 
+     * of a property. 
+     * 
+     * Use '.' (dot) to point to a nested property, however if a property
+     * with a '.' in the name is found, it will be used first.
+     * 
+     * @param {object} o The object to dissect
+     * @param {string|array} select The selection of properties to extract
+     * @return {object} out The subobject with the properties from the parent one 
+     * 
+     * 	@see OBJ.getNestedValue
+     */
+    OBJ.subobj = function (o, select) {
+        var out, i, key
+        if (!o) return false;
+        out = {};
+        if (!select) return out;
+        if (!(select instanceof Array)) select = [select];
+        for (i=0; i < select.length; i++) {
+            key = select[i];
+            if (o.hasOwnProperty(key)) {
+                out[key] = o[key];
+            }
+            else if (OBJ.hasOwnNestedProperty(key, o)) {
+        	OBJ.setNestedValue(key, OBJ.getNestedValue(key, o), out);
+            }
+        }
+        return out;
+    };
+    
+    /**
+     * ## OBJ.skim
+     * 
+     * Creates a copy of an object where a set of selected properties
+     * have been removed
+     * 
+     * The parameter `remove` can be an array of strings, or the name 
+     * of a property. 
+     * 
+     * Use '.' (dot) to point to a nested property, however if a property
+     * with a '.' in the name is found, it will be deleted first.
+     * 
+     * @param {object} o The object to dissect
+     * @param {string|array} remove The selection of properties to remove
+     * @return {object} out The subobject with the properties from the parent one 
+     * 
+     * @see OBJ.getNestedValue
+     */
+    OBJ.skim = function (o, remove) {
+        var out, i;
+        if (!o) return false;
+        out = OBJ.clone(o);
+        if (!remove) return out;
+        if (!(remove instanceof Array)) remove = [remove];
+        for (i = 0; i < remove.length; i++) {
+            if (out.hasOwnProperty(i)) {
+                delete out[i];
+            }
+            else {
+    	        OBJ.deleteNestedKey(remove[i], out);
+            }
+        }
+        return out;
+    };
+
+
+    /**
+     * ## OBJ.setNestedValue
+     * 
+     * Sets the value of a nested property of an object,
+     * and returns it.
+     *
+     * If the object is not passed a new one is created.
+     * If the nested property is not existing, a new one is created.
+     * 
+     * Use '.' (dot) to point to a nested property.
+     *
+     * The original object is modified.
+     *
+     * @param {string} str The path to the value
+     * @param {mixed} value The value to set
+     * @return {object|boolean} obj The modified object, or FALSE if error occurred
+     * 
+     * @see OBJ.getNestedValue
+     * @see OBJ.deleteNestedKey
+     *  
+     */
+    OBJ.setNestedValue = function (str, value, obj) {
+        var keys, k;
+        if (!str) {
+	    JSUS.log('Cannot set value of undefined property', 'ERR');
+	    return false;
+        }
+        obj = ('object' === typeof obj) ? obj : {};
+        keys = str.split('.');
+        if (keys.length === 1) {
+    	    obj[str] = value;
+            return obj;
+        }
+        k = keys.shift();
+        obj[k] = OBJ.setNestedValue(keys.join('.'), value, obj[k]);
+        return obj;
+    };
+
+    /**
+     * ## OBJ.getNestedValue
+     * 
+     * Returns the value of a property of an object, as defined
+     * by a path string. 
+     * 
+     * Use '.' (dot) to point to a nested property.
+     *  
+     * Returns undefined if the nested property does not exist.
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var o = { a:1, b:{a:2} };
+     * OBJ.getNestedValue('b.a', o); // 2
+     * ```
+     * 
+     * @param {string} str The path to the value
+     * @param {object} obj The object from which extract the value
+     * @return {mixed} The extracted value
+     * 
+     * @see OBJ.setNestedValue
+     * @see OBJ.deleteNestedKey
+     */
+    OBJ.getNestedValue = function (str, obj) {
+        if (!obj) return;
+        var keys = str.split('.');
+        if (keys.length === 1) {
+            return obj[str];
+        }
+        var k = keys.shift();
+        return OBJ.getNestedValue(keys.join('.'), obj[k]); 
+    };
+
+    /**
+     * ## OBJ.deleteNestedKey
+     * 
+     * Deletes a property from an object, as defined by a path string 
+     * 
+     * Use '.' (dot) to point to a nested property.
+     *  
+     * The original object is modified.
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var o = { a:1, b:{a:2} };
+     * OBJ.deleteNestedKey('b.a', o); // { a:1, b: {} }
+     * ```
+     * 
+     * @param {string} str The path string
+     * @param {object} obj The object from which deleting a property
+     * @param {boolean} TRUE, if the property was existing, and then deleted
+     * 
+     * @see OBJ.setNestedValue
+     * @see OBJ.getNestedValue
+     */
+    OBJ.deleteNestedKey = function (str, obj) {
+        if (!obj) return;
+        var keys = str.split('.');
+        if (keys.length === 1) {
+	    delete obj[str];
+            return true;
+        }
+        var k = keys.shift();
+        if ('undefined' === typeof obj[k]) {
+    	    return false;
+        }
+        return OBJ.deleteNestedKey(keys.join('.'), obj[k]); 
+    };
+
+    /**
+     * ## OBJ.hasOwnNestedProperty
+     * 
+     * Returns TRUE if a (nested) property exists
+     * 
+     * Use '.' to specify a nested property.
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var o = { a:1, b:{a:2} };
+     * OBJ.hasOwnNestedProperty('b.a', o); // TRUE
+     * ```
+     * 
+     * @param {string} str The path of the (nested) property
+     * @param {object} obj The object to test
+     * @return {boolean} TRUE, if the (nested) property exists
+     * 
+     */
+    OBJ.hasOwnNestedProperty = function (str, obj) {
+        if (!obj) return false;
+        var keys = str.split('.');
+        if (keys.length === 1) {
+            return obj.hasOwnProperty(str);
+        }
+        var k = keys.shift();
+        return OBJ.hasOwnNestedProperty(keys.join('.'), obj[k]); 
+    };
+
+
+    /**
+     * ## OBJ.split
+     *
+     * Splits an object along a specified dimension, and returns 
+     * all the copies in an array.
+     *  
+     * It creates as many new objects as the number of properties 
+     * contained in the specified dimension. The object are identical,
+     * but for the given dimension, which was split. E.g.
+     * 
+     * ```javascript
+     *  var o = { a: 1,
+     *            b: {c: 2,
+     *                d: 3
+     *            },
+     *            e: 4
+     *  };
+     *  
+     *  o = OBJ.split(o, 'b');
+     *  
+     *  // o becomes:
+     *  
+     *  [{ a: 1,
+     *     b: {c: 2},
+     *     e: 4
+     *  },
+     *  { a: 1,
+     *    b: {d: 3},
+     *    e: 4
+     *  }];
+     * ```
+     * 
+     * @param {object} o The object to split
+     * @param {sting} key The name of the property to split
+     * @return {object} A copy of the object with split values
+     */
+    OBJ.split = function (o, key) {        
+        if (!o) return;
+        if (!key || 'object' !== typeof o[key]) {
+            return JSUS.clone(o);
+        }
+        
+        var out = [];
+        var model = JSUS.clone(o);
+        model[key] = {};
+        
+        var splitValue = function (value) {
+            for (var i in value) {
+                var copy = JSUS.clone(model);
+                if (value.hasOwnProperty(i)) {
+                    if ('object' === typeof value[i]) {
+                        out = out.concat(splitValue(value[i]));
+                    }
+                    else {
+                        copy[key][i] = value[i]; 
+                        out.push(copy);
+                    }
+                }
+            }
+            return out;
+        };
+        
+        return splitValue(o[key]);
+    };
+
+    /**
+     * ## OBJ.melt
+     * 
+     * Creates a new object with the specified combination of
+     * properties - values
+     * 
+     * The values are assigned cyclically to the properties, so that
+     * they do not need to have the same length. E.g.
+     * 
+     * ```javascript
+     * 	J.createObj(['a','b','c'], [1,2]); // { a: 1, b: 2, c: 1 }
+     * ```
+     * @param {array} keys The names of the keys to add to the object
+     * @param {array} values The values to associate to the keys  
+     * @return {object} A new object with keys and values melted together
+     */
+    OBJ.melt = function(keys, values) {
+	var o = {}, valen = values.length;
+	for (var i = 0; i < keys.length; i++) {
+	    o[keys[i]] = values[i % valen];
+	}
+	return o;
+    };
+
+    /**
+     * ## OBJ.uniqueKey
+     * 
+     * Creates a random unique key name for a collection
+     * 
+     * User can specify a tentative unique key name, and if already
+     * existing an incremental index will be added as suffix to it. 
+     * 
+     * Notice: the method does not actually creates the key
+     * in the object, but it just returns the name.
+     * 
+     * 
+     * @param {object} obj The collection for which a unique key name will be created
+     * @param {string} prefixName Optional. A tentative key name. Defaults, a 15-digit random number
+     * @param {number} stop Optional. The number of tries before giving up searching
+     * 	for a unique key name. Defaults, 1000000.
+     * 
+     * @return {string|undefined} The unique key name, or undefined if it was not found
+     */
+    OBJ.uniqueKey = function(obj, prefixName, stop) {
+        var name;
+        var duplicateCounter = 1;
+
+        if (!obj) {
+            JSUS.log('Cannot find unique name in undefined object', 'ERR');
+            return;
+        }
+        prefixName = '' + (prefixName || Math.floor(Math.random()*1000000000000000));
+        stop = stop || 1000000;
+        name = prefixName;
+        while (obj[name]) {
+            name = prefixName + duplicateCounter;
+            duplicateCounter++;
+            if (duplicateCounter > stop) {
+                return;
+            }
+        }
+        return name;
+    }
+
+    /**
+     * ## OBJ.augment
+     * 
+     * Pushes the values of the properties of an object into another one
+     * 
+     * User can specifies the subset of keys from both objects 
+     * that will subject to augmentation. The values of the other keys 
+     * will not be changed
+     * 
+     * Notice: the method modifies the first input paramteer
+     * 
+     * E.g.
+     * 
+     * ```javascript
+     * var a = { a:1, b:2, c:3 };
+     * var b = { a:10, b:2, c:100, d:4 };
+     * OBJ.augment(a, b); // { a: [1, 10], b: [2, 2], c: [3, 100]}
+     * 
+     * OBJ.augment(a, b, ['b', 'c', 'd']); // { a: 1, b: [2, 2], c: [3, 100], d: [4]});
+     * 
+     * ```
+     * 
+     * @param {object} obj1 The object whose properties will be augmented
+     * @param {object} obj2 The augmenting object
+     * @param {array} key Optional. Array of key names common to both objects taken as
+     * 	the set of properties to augment
+     */
+    OBJ.augment = function(obj1, obj2, keys) {  
+        var i, k, keys = keys || OBJ.keys(obj1);
+        
+        for (i = 0 ; i < keys.length; i++) {
+	    k = keys[i];
+	    if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
+	        obj1[k] = [obj1[k]];
+	    }
+	    if ('undefined' !== obj2[k]) {
+	        if (!obj1[k]) obj1[k] = []; 
+	        obj1[k].push(obj2[k]);
+	    }
+        }
+    }
+
+
+    /**
+     * ## OBJ.pairwiseWalk
+     *
+     * Given two objects, executes a callback on all attributes with the same name
+     *
+     * The results of each callback are aggregated in a new object under the 
+     * same property name.
+     * 
+     * Does not traverse nested objects, and properties of the prototype are excluded
+     *
+     * Returns a new object, the original ones are not modified.
+     *  
+     * E.g.
+     * 
+     * ```javascript
+     * var a = { b:2, c:3, d:5 };
+     * var b = { a:10, b:2, c:100, d:4 };
+     * var sum = function(a,b) {
+     *     if ('undefined' !== typeof a) {
+     *         return 'undefined' !== typeof b ? a + b : a;  
+     *     }
+     *     return b;
+     * };
+     * OBJ.pairwiseWalk(a, b, sum); // { a:10, b:4, c:103, d:9 }
+     * ```
+     *  
+     * @param {object} o1 The first object
+     * @param {object} o2 The second object
+     * @return {object} clone The object aggregating the results
+     * 
+     */
+    OBJ.pairwiseWalk = function(o1, o2, cb) {
+        var i, out;
+        if (!o1 && !o2) return;
+        if (!o1) return o2;
+        if (!o2) return o1;
+        
+        out = {};
+        for (i in o1) {
+            if (o1.hasOwnProperty(i)) {
+                out[i] = o2.hasOwnProperty(i) ? cb(o1[i], o2[i]) : cb(o1[i]);
+            }
+        }
+        
+        for (i in o2) {
+            if (o2.hasOwnProperty(i)) {
+                if ('undefined' === typeof out[i]) {
+                    out[i] = cb(undefined, o2[i]);
+                }
+            }
+        }
+        
+        return out;
+    };
+
+
+    JSUS.extend(OBJ);
+    
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+
+/**
+ * # FS
+ *  
+ * Copyright(c) 2012 Stefano Balietti
+ * MIT Licensed
+ * 
+ * Collection of static functions related to file system operations.
+ * 
+ * @see http://nodejs.org/api/fs.html
+ * @see https://github.com/ryanmcgrath/wrench-js
+ * @see https://github.com/substack/node-resolve
+ * 
+ */
+
+
+(function (JSUS) {
+
+if (!JSUS.isNodeJS()){
+	JSUS.log('Cannot load JSUS.FS outside of Node.JS.')
+	return false;
+}
+
+var resolve = require('resolve'),
+	path = require('path'),
+	fs = require('fs'),
+	wrench = require('wrench');
+
+
+function FS(){};
+
+
+
+/**
+ * ## FS.resolveModuleDir
+ *
+ * Backward-compatible version of fs.existsSync
+ * 
+ */
+FS.existsSync = ('undefined' === typeof fs.existsSync) ? path.existsSync : fs.existsSync;
+
+
+/**
+ * ## FS.resolveModuleDir
+ * 
+ * Resolves the root directory of a module
+ * 
+ * Npm does not install a dependency if the same module
+ * is available in a parent folder. This method returns
+ * the full path of the root directory of the specified
+ * module as installed by npm.
+ * 
+ * Trailing slash is added.
+ * 
+ * @param {string} module The name of the module
+ * @param {string} basedir Optional The basedir from which starting searching
+ * @return {string} The path of the root directory of the module
+ * 
+ * @see https://github.com/substack/node-resolve
+ * 
+ */
+FS.resolveModuleDir = function (module, basedir) {
+	if (!module) return false;
+
+	var str = resolve.sync(module, {basedir: basedir || __dirname});
+	var stop = str.indexOf(module) + module.length;
+	return str.substr(0, stop) + '/';
+};
+
+/**
+ * ## FS.deleteIfExists
+ * 
+ * Deletes a file or directory
+ * 
+ * Returns false if the file does not exist.
+ * 
+ * @param {string} file The path to the file or directory
+ * @return {boolean} TRUE, if operation is succesfull
+ * 
+ * @see FS.cleanDir
+ */
+FS.deleteIfExists = function (file) {
+	if (!FS.existsSync(file)) {
+		return false;
+	}
+	var stats = fs.lstatSync(file);
+	if (stats.isDirectory()) {
+		fs.rmdir(file, function (err) {
+			if (err) throw err;  
+		});
+	}
+	else {
+		fs.unlink(file, function (err) {
+			if (err) throw err;  
+		});
+	}
+	return true;
+		
+};
+
+/**
+ * ## FS.cleanDir
+ * 
+ * Removes all files from a target directory
+ * 
+ * It is possible to specify an extension as second parameter.
+ * In such case, only file with that extension will be removed.
+ * The '.' (dot) must be included as part of the extension.
+ * 
+ * 
+ * @param {string} dir The directory to clean
+ * @param {string} ext Optional. If set, only files with this extension will be removed
+ * @param {function} cb Optional. A callback function to call if no error is raised
+ * 
+ * @return {boolean} TRUE, if the operation is successful
+ * 
+ * @see FS.deleteIfExists
+ */
+FS.cleanDir = function (dir, ext, cb) {
+	if (!dir) {
+		JSUS.log('You must specify a directory to clean.');
+		return false;
+	}
+	var filterFunc = (ext) ? function(file) { return path.extname(file) ===  ext; }
+						   : function(file) { return true; };
+
+	if (dir[dir.length] !== '/') dir = dir + '/';
+	
+	fs.readdir(dir, function(err, files) {
+		if (err) {
+			JSUS.log(err);
+			return false;
+		}
+
+	    files.filter(filterFunc)
+	         .forEach(function(file) { 
+	        	// <!-- console.log(dir + file); -->
+	        	 JSUS.deleteIfExists(dir + file); 
+	         });
+	    
+
+	    if (cb) return cb(null);
+
+	});
+	
+
+	return true;
+};
+
+/**
+ * ## FS.copyFromDir
+ * 
+ * Copies all files from a source directory to a destination 
+ * directory.
+ * 
+ * It is possible to specify an extension as second parameter (e.g. '.js').
+ * In such case, only file with that extension will be copied.
+ * 
+ * Warning! If an extension filter is not specified, and if subdirectories
+ * are found, an error will occur.
+ * 
+ * @param {string} dirIn The source directory
+ * @param {string} dirOut The destination directory
+ * @param {string} ext Optional. If set, only files with this extension will be copied
+ * @param {function} cb Optional. A callback function to call if no error is raised
+ * 
+ * @return {boolean} TRUE, if the operation is successful
+ * 
+ * @see FS.copyFile
+ */
+FS.copyFromDir = function (dirIn, dirOut, ext, cb) {
+	if (!dirIn) {
+		JSUS.log('You must specify a source directory');
+		return false;
+	}
+	if (!dirOut) {
+		JSUS.log('You must specify a destination directory');
+		return false;
+	}
+	
+	dirOut = path.resolve(dirOut) + '/';
+	var i, dir, dirs = [dirIn, dirOut];
+	for (i=0; i < 2; i++) {
+		dir = dirs[i];
+		if (!FS.existsSync(dir)) {
+			console.log(dir + ' does not exist');
+			return false;
+		}
+		
+		var stats = fs.lstatSync(dir);
+		if (!stats.isDirectory()) {
+			console.log(dir + ' is not a directory');
+			return false;
+		}
+	}
+	
+	fs.readdir(dirIn, function(err, files){
+		if (err) {
+			JSUS.log(err);
+			throw new Error;
+		}
+		for (var i in files) {
+			if (ext && path.extname(files[i]) !== ext) {
+				continue;
+			}
+			copyFile(dirIn + files[i], dirOut + files[i]);
+		}
+		
+		if (cb) return cb(null);
+	});
+	
+	return true;
+};
+
+/**
+ * ## FS.copyFile
+ * 
+ * Copies a file into another path
+ * 
+ * @param {string} srcFile The source file
+ * @param {string} destFile The destination file
+ * @param {function} cb Optional. If set, the callback will be executed upon success
+ * @param {function} cb Optional. A callback function to call if no error is raised
+ * 
+ * @return {boolean} TRUE, if the operation is successful
+ * 
+ * @see https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
+ */
+var copyFile = function (srcFile, destFile, cb) {
+	// <!-- console.log('from ' + srcFile + ' to ' + destFile); -->
+    var fdr, fdw;
+    fdr = fs.createReadStream(srcFile);
+    fdw = fs.createWriteStream(destFile);
+    fdr.on('end', function() {
+    	if (cb) return cb(null);
+    });
+    return fdr.pipe(fdw);
+};
+
+
+/**
+ *  ## wrench
+ * 
+ *  FS exposes the properties of the great package wrench for
+ *  performing recursive operations on directories
+ *  
+ *  @see https://github.com/ryanmcgrath/wrench-js
+ *  
+ */
+for (var w in wrench) {
+	if (wrench.hasOwnProperty(w)) {
+		FS[w] = wrench[w];
+	}
+}
+
+JSUS.extend(FS);
+
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);

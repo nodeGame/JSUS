@@ -833,12 +833,12 @@ elements already appended.</p>
        if (!o) return;</p>
 
 
-<div class="highlight"><pre><code>   <span class="k">if</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">lastChild</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code>   <span class="k">if</span> <span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">lastChild</span><span class="p">)</span> <span class="p">{</span>
        <span class="n">var</span> <span class="n">e</span> 
-       <span class="n">JSUS</span><span class="o">.</span><span class="n">isElement</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">return</span> <span class="n">DOM</span><span class="o">.</span><span class="n">findLastElement</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+       <span class="n">JSUS</span><span class="p">.</span><span class="n">isElement</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">return</span> <span class="n">DOM</span><span class="p">.</span><span class="n">findLastElement</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
 
-       <span class="n">var</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">previousSibling</span><span class="p">;</span>
-       <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">&amp;&amp;</span> <span class="n">JSUS</span><span class="o">.</span><span class="n">isElement</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">return</span> <span class="n">DOM</span><span class="o">.</span><span class="n">findLastElement</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+       <span class="n">var</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">previousSibling</span><span class="p">;</span>
+       <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">&amp;&amp;</span> <span class="n">JSUS</span><span class="p">.</span><span class="n">isElement</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">return</span> <span class="n">DOM</span><span class="p">.</span><span class="n">findLastElement</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
 
    <span class="k">return</span> <span class="n">o</span><span class="p">;</span>
 </code></pre></div>

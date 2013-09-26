@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS. 
- * Copyright(c) 2012 Stefano Balietti
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
  * 
  * Collection of general purpose javascript functions. JSUS helps!

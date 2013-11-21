@@ -1,0 +1,9 @@
+# ChangeLog
+
+## 0.8
+
+ - Fixed bug in DOM.sprintf: string always correctly appended to root.
+
+## < 0.8
+
+Lots of changes...

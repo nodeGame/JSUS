@@ -19,7 +19,10 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#obj">OBJ</a>
+        <a href="#jsus.obj">JSUS.OBJ</a>
+      </div>
+      <div class="heading h2">
+        <a href="#collection-of-static-functions-to-manipulate-javascript-objects.">Collection of static functions to manipulate javascript objects.</a>
       </div>
       <div class="heading h2">
         <a href="#obj.equals">OBJ.equals</a>
@@ -108,22 +111,29 @@
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="obj">
+<div class="pilwrap" id="jsus.obj">
   <h1>
-    <a href="#obj" class="pilcrow">&#182;</a>
-    OBJ
+    <a href="#jsus.obj" class="pilcrow">&#182;</a>
+    JSUS.OBJ
   </h1>
 </div>
 
-  </div>
-  <div class="body"><p>Copyright(c) 2012 Stefano Balietti
-MIT Licensed</p>
 
-<p>Collection of static functions to manipulate javascript objects</p>
+<p>Copyright(c) 2013 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body">
+<div class="pilwrap" id="collection-of-static-functions-to-manipulate-javascript-objects.">
+  <h2>
+    <a href="#collection-of-static-functions-to-manipulate-javascript-objects." class="pilcrow">&#182;</a>
+    Collection of static functions to manipulate javascript objects.
+  </h2>
+</div>
+
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="kd">function</span> <span class="nx">OBJ</span><span class="p">(){};</span>
 
@@ -145,11 +155,10 @@ MIT Licensed</p>
 </div>
 
   </div>
-  <div class="body"><p>Checks for deep equality between two objects, string
-or primitive types.</p>
+  <div class="body"><p>Checks for deep equality between two objects, strings or primitive types</p>
 
-<p>All nested properties are checked, and if they differ
-in at least one returns FALSE, otherwise TRUE.</p>
+<p>All nested properties are checked, and if they differ in at least
+one returns FALSE, otherwise TRUE.</p>
 
 <p>Takes care of comparing the following special cases:</p>
 
@@ -162,10 +171,31 @@ in at least one returns FALSE, otherwise TRUE.</p>
 <li>falsy values</li>
 </ul>
   </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">o1</span>
+      <span class="dox_type">object</span>
+      <span>The first object</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">o2</span>
+      <span class="dox_type">object</span>
+      <span>The second object</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>TRUE if the objects are deeply equal.</span>
+    </div>
+  </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">equals</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o1</span><span class="p">,</span> <span class="nx">o2</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">type1</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">,</span> <span class="nx">type2</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">equals</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o1</span><span class="p">,</span> <span class="nx">o2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">type1</span><span class="p">,</span> <span class="nx">type2</span><span class="p">,</span> <span class="nx">primitives</span><span class="p">,</span> <span class="nx">p</span><span class="p">;</span>
+        <span class="nx">type1</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">;</span>
+        <span class="nx">type2</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">type1</span> <span class="o">!==</span> <span class="nx">type2</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
@@ -175,7 +205,8 @@ in at least one returns FALSE, otherwise TRUE.</p>
         <span class="k">if</span> <span class="p">(</span><span class="nx">o1</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">o2</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="p">(</span><span class="nx">o1</span> <span class="o">===</span> <span class="nx">o2</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="p">((</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="nx">type1</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">o1</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="nx">type2</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">o2</span><span class="p">))</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="nx">type1</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">o1</span><span class="p">))</span> <span class="o">&amp;&amp;</span>
+            <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="nx">type2</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">o2</span><span class="p">)))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">o1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">o2</span><span class="p">));</span>
         <span class="p">}</span></pre></div>
         </td>
@@ -187,7 +218,7 @@ in at least one returns FALSE, otherwise TRUE.</p>
 </div>
 <p>Check whether arguments are not objects</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">primitives</span> <span class="o">=</span> <span class="p">{</span><span class="nx">number</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">string</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kr">boolean</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">primitives</span> <span class="o">=</span> <span class="p">{</span><span class="nx">number</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">string</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kr">boolean</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">type1</span> <span class="k">in</span> <span class="nx">primitives</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">o1</span> <span class="o">===</span> <span class="nx">o2</span><span class="p">;</span>
         <span class="p">}</span>
@@ -196,11 +227,13 @@ in at least one returns FALSE, otherwise TRUE.</p>
             <span class="k">return</span> <span class="nx">o1</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">o2</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
         <span class="p">}</span>
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">p</span> <span class="k">in</span> <span class="nx">o1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">p</span> <span class="k">in</span> <span class="nx">o1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">o1</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span> <span class="p">{</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// &lt;!-- null --&gt;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+                    <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
                 <span class="k">switch</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="p">{</span>
                 <span class="k">case</span> <span class="s1">&#39;function&#39;</span><span class="o">:</span>
@@ -223,8 +256,10 @@ TODO: improve, some properties have already been checked!</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">p</span> <span class="k">in</span> <span class="nx">o2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">o2</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// &lt;!-- null --&gt;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+                    <span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
 
@@ -243,8 +278,7 @@ TODO: improve, some properties have already been checked!</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns TRUE if an object has no own properties,
-FALSE otherwise</p>
+  <div class="body"><p>Returns TRUE if an object has no own properties</p>
 
 <p>Does not check properties of the prototype chain.</p>
   </div>
@@ -264,15 +298,14 @@ FALSE otherwise</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
-
         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -308,13 +341,14 @@ FALSE otherwise</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getListSize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getListSize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 
-        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">n</span><span class="o">++</span><span class="p">;</span>
             <span class="p">}</span>
@@ -335,8 +369,9 @@ FALSE otherwise</p>
 
   </div>
   <div class="body"><p>Explodes an object into an array of keys and values,
-according to the specified parameters.
-A fixed level of recursion can be set.</p>
+according to the specified parameters.</p>
+
+<p>A fixed level of recursion can be set.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">API</div>
@@ -352,12 +387,14 @@ A fixed level of recursion can be set.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">keyed</span>
       <span class="dox_type">boolean</span>
-      <span>TRUE, if also property names should be included. Defaults FALSE</span>
+      <span>TRUE, if also property names should be included.
+  Defaults, FALSE</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">level</span>
       <span class="dox_type">number</span>
-      <span>Optional. The level of recursion. Defaults undefined</span>
+      <span>Optional. The level of recursion.
+  Defaults, undefined</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -369,6 +406,7 @@ A fixed level of recursion can be set.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">keyed</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">cur_level</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="p">[</span><span class="nx">obj</span><span class="p">];</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
@@ -377,18 +415,19 @@ A fixed level of recursion can be set.</p>
             <span class="nx">cur_level</span> <span class="o">=</span> <span class="nx">cur_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">keyed</span><span class="p">)</span> <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
                 <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
-                    <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="nx">keyed</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">cur_level</span><span class="p">));</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="nx">keyed</span><span class="p">,</span>
+                                                          <span class="nx">level</span><span class="p">,</span> <span class="nx">cur_level</span><span class="p">));</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
                     <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-
         <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -423,21 +462,28 @@ gets totally unfolded into an array.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">level</span>
       <span class="dox_type">number</span>
-      <span>Optional. The level of recursion. Defaults, undefined</span>
+      <span>Optional. The level of recursion. Defaults,
+  undefined</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>The converted object
-
-@see OBJ._obj2Array
- @see OBJ.obj2KeyedArray</span>
+      <span>The converted object</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ._obj2Array</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.obj2KeyedArray
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2Array</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2Array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">level</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -468,7 +514,8 @@ returns it.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">level</span>
       <span class="dox_type">number</span>
-      <span>Optional. The level of recursion. Defaults, undefined</span>
+      <span>Optional. The level of recursion. Defaults,
+  undefined</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -479,13 +526,12 @@ returns it.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">OBJ.obj2Array
-
   </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2KeyedArray</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2KeyArray</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2KeyedArray</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2KeyArray</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">_obj2Array</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">level</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -523,24 +569,29 @@ to be evaluated. Defaults 0 (nested properties are skipped).</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>The array containing the extracted keys
-
-@see Object.keys</span>
+      <span>The array containing the extracted keys</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">Object.keys
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">keys</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">objGetAllKeys</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">curLevel</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">keys</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">objGetAllKeys</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">curLevel</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="p">[];</span>
-        <span class="nx">level</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">level</span> <span class="o">&amp;&amp;</span> <span class="nx">level</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="nx">level</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">curLevel</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">curLevel</span> <span class="o">&amp;&amp;</span> <span class="nx">curLevel</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="nx">curLevel</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">level</span> <span class="o">=</span> <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">level</span> <span class="o">&amp;&amp;</span> <span class="nx">level</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">level</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">curLevel</span> <span class="o">=</span> <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">curLevel</span> <span class="o">&amp;&amp;</span> <span class="nx">curLevel</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">curLevel</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">curLevel</span> <span class="o">&lt;</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
-                        <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">objGetAllKeys</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="p">(</span><span class="nx">curLevel</span><span class="o">+</span><span class="mi">1</span><span class="p">)));</span>
+                        <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">objGetAllKeys</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span>
+                                                                 <span class="p">(</span><span class="nx">curLevel</span><span class="o">+</span><span class="mi">1</span><span class="p">)));</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
             <span class="p">}</span>
@@ -560,8 +611,7 @@ to be evaluated. Defaults 0 (nested properties are skipped).</p>
 </div>
 
   </div>
-  <div class="body"><p>Separates each property into a new objects and returns
-them into an array</p>
+  <div class="body"><p>Separates each property into a new object and returns them into an array</p>
 
 <p>E.g.</p>
 
@@ -588,12 +638,13 @@ them into an array</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">implode</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">implodeObj</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">implode</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">implodeObj</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">o</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="p">[];</span>
-        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{};</span>
+                <span class="nx">o</span> <span class="o">=</span> <span class="p">{};</span>
                 <span class="nx">o</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
                 <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
             <span class="p">}</span>
@@ -636,7 +687,8 @@ Properties of the prototype chain are copied as well.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">value</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
@@ -644,7 +696,6 @@ Properties of the prototype chain are copied as well.</p>
         <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">NaN</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
 
-        <span class="kd">var</span> <span class="nx">clone</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span></pre></div>
         </td>
       </tr>
@@ -664,11 +715,11 @@ Properties of the prototype chain are copied as well.</p>
         <td class="code highlight"><div class="highlight"><pre>            <span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span> <span class="p">};</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">clone</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="p">[]</span> <span class="o">:</span> <span class="p">{};</span>
+            <span class="nx">clone</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span> <span class="o">?</span>
+                <span class="p">[]</span> <span class="o">:</span> <span class="p">{};</span>
         <span class="p">}</span>
 
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span></pre></div>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -691,7 +742,7 @@ It is not NULL and it is an object</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
-<p>is an array</p>
+<p>Is an array.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
@@ -703,7 +754,7 @@ It is not NULL and it is an object</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
-<p>is an object</p>
+<p>Is an object.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="k">else</span> <span class="p">{</span>
                     <span class="nx">value</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
@@ -724,7 +775,7 @@ It is not NULL and it is an object</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
-<p>we know if object.defineProperty is available</p>
+<p>We know if object.defineProperty is available.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">compatibility</span> <span class="o">&amp;&amp;</span> <span class="nx">compatibility</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="p">{</span>
@@ -804,17 +855,21 @@ between obj1 and obj2, the values from obj2 are taken.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The joined object
-
-@see OBJ.merge</span>
+      <span>clone The joined object</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.merge
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">join</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">join</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">clone</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">clone</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">clone</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
@@ -874,15 +929,22 @@ between obj1 and obj2, the values from obj2 are taken.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The merged object
-
-@see OBJ.join
- @see OBJ.mergeOnKey</span>
+      <span>clone The merged object</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.join</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.mergeOnKey
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">merge</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">merge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -896,8 +958,8 @@ between obj1 and obj2, the values from obj2 are taken.</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj2</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
 
-        <span class="kd">var</span> <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj2</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span></pre></div>
         </td>
@@ -935,7 +997,6 @@ type of obj1</p>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-
         <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -953,7 +1014,7 @@ type of obj1</p>
   </div>
   <div class="body"><p>Adds all the properties of obj2 into obj1</p>
 
-<p>Original object is modified</p>
+<p>Original object is modified.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -970,12 +1031,12 @@ type of obj1</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixin</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj2</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
@@ -1011,12 +1072,12 @@ type of obj1</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixout</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj2</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
@@ -1052,12 +1113,12 @@ type of obj1</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixcommon</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mixcommon</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj2</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
@@ -1074,14 +1135,13 @@ type of obj1</p>
 </div>
 
   </div>
-  <div class="body"><p>Appends / merges the values of the properties of obj2 into a
-a new property named 'key' in obj1.</p>
+  <div class="body"><p>Merges the properties of obj2 into a new property named 'key' in obj1.</p>
 
 <p>Returns a new object, the original ones are not modified.</p>
 
 <p>This method is useful when we want to merge into a larger
-configuration (e.g. min, max, value) object another one that
-contains just the values for one of the properties (e.g. value).</p>
+configuration (e.g. with properties min, max, value) object, another one
+that contains just a subset of properties (e.g. value).</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1098,23 +1158,28 @@ contains just the values for one of the properties (e.g. value).</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">key</span>
       <span class="dox_type">string</span>
-      <span>The name of property under which merging the second object</span>
+      <span>The name of property under which the second object
+  will be merged</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The merged object
-
-@see OBJ.merge</span>
+      <span>clone The merged object</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.merge
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mergeOnKey</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">mergeOnKey</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">clone</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span> <span class="o">||</span> <span class="o">!</span><span class="nx">key</span><span class="p">)</span> <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">obj2</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                     <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
@@ -1163,14 +1228,17 @@ with a '.' in the name is found, it will be used first.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>out The subobject with the properties from the parent one
-
-@see OBJ.getNestedValue</span>
+      <span>out The subobject with the properties from the parent</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.getNestedValue
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">subobj</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">select</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">subobj</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">select</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">key</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="nx">out</span> <span class="o">=</span> <span class="p">{};</span>
@@ -1200,8 +1268,7 @@ with a '.' in the name is found, it will be used first.</p>
 </div>
 
   </div>
-  <div class="body"><p>Creates a copy of an object where a set of selected properties
-have been removed</p>
+  <div class="body"><p>Creates a copy of an object with some of the properties removed</p>
 
 <p>The parameter <code>remove</code> can be an array of strings, or the name
 of a property.</p>
@@ -1226,7 +1293,7 @@ with a '.' in the name is found, it will be deleted first.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>out The subobject with the properties from the parent one</span>
+      <span>out The subobject with the properties from the parent</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -1236,7 +1303,7 @@ with a '.' in the name is found, it will be deleted first.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">skim</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">remove</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">skim</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">remove</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="nx">out</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
@@ -1265,8 +1332,7 @@ with a '.' in the name is found, it will be deleted first.</p>
 </div>
 
   </div>
-  <div class="body"><p>Sets the value of a nested property of an object,
-and returns it.</p>
+  <div class="body"><p>Sets the value of a nested property of an object and returns it.</p>
 
 <p>If the object is not passed a new one is created.
 If the nested property is not existing, a new one is created.</p>
@@ -1292,7 +1358,8 @@ If the nested property is not existing, a new one is created.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
       <span class="dox_type">boolean</span>
-      <span>obj The modified object, or FALSE if error occurred</span>
+      <span>obj The modified object, or FALSE if error
+  occurrs</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -1301,13 +1368,12 @@ If the nested property is not existing, a new one is created.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">OBJ.deleteNestedKey
-
   </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">setNestedValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">setNestedValue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">keys</span><span class="p">,</span> <span class="nx">k</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot set value of undefined property&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
@@ -1382,13 +1448,14 @@ by a path string.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">keys</span><span class="p">,</span> <span class="nx">k</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">str</span><span class="p">];</span>
         <span class="p">}</span>
-        <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+        <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
         <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getNestedValue</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -1448,14 +1515,15 @@ by a path string.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">deleteNestedKey</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">keys</span><span class="p">,</span> <span class="nx">k</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">delete</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">str</span><span class="p">];</span>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+        <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
@@ -1508,13 +1576,14 @@ by a path string.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">hasOwnNestedProperty</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">hasOwnNestedProperty</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">keys</span><span class="p">,</span> <span class="nx">k</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <span class="nx">keys</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+        <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
         <span class="k">return</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">hasOwnNestedProperty</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">k</span><span class="p">]);</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -1582,19 +1651,21 @@ but for the given dimension, which was split. E.g.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">split</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">split</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">splitValue</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">key</span> <span class="o">||</span> <span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
+        <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">model</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
         <span class="nx">model</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
 
-        <span class="kd">var</span> <span class="nx">splitValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">copy</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
+        <span class="nx">splitValue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">copy</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">copy</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                         <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">splitValue</span><span class="p">(</span><span class="nx">value</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
@@ -1689,18 +1760,19 @@ in the object, but it just returns the name.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">obj</span>
       <span class="dox_type">object</span>
-      <span>The collection for which a unique key name will be created</span>
+      <span>The collection for which a unique key will be created</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">prefixName</span>
       <span class="dox_type">string</span>
-      <span>Optional. A tentative key name. Defaults, a 15-digit random number</span>
+      <span>Optional. A tentative key name. Defaults,
+  a 15-digit random number</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">stop</span>
       <span class="dox_type">number</span>
-      <span>Optional. The number of tries before giving up searching
- for a unique key name. Defaults, 1000000.</span>
+      <span>Optional. The number of tries before giving up
+  searching for a unique key name. Defaults, 1000000.</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -1719,7 +1791,8 @@ in the object, but it just returns the name.</p>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot find unique name in undefined object&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="nx">prefixName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">prefixName</span> <span class="o">||</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000000000000000</span><span class="p">));</span>
+        <span class="nx">prefixName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">prefixName</span> <span class="o">||</span>
+                           <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000000000000000</span><span class="p">));</span>
         <span class="nx">stop</span> <span class="o">=</span> <span class="nx">stop</span> <span class="o">||</span> <span class="mi">1000000</span><span class="p">;</span>
         <span class="nx">name</span> <span class="o">=</span> <span class="nx">prefixName</span><span class="p">;</span>
         <span class="k">while</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">name</span><span class="p">])</span> <span class="p">{</span>
@@ -1759,7 +1832,8 @@ will not be changed</p>
 <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span><span class="mi">10</span><span class="p">,</span> <span class="nx">b</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span> <span class="nx">c</span><span class="o">:</span><span class="mi">100</span><span class="p">,</span> <span class="nx">d</span><span class="o">:</span><span class="mi">4</span> <span class="p">};</span>
 <span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">);</span> <span class="c1">// { a: [1, 10], b: [2, 2], c: [3, 100]}</span>
 
-<span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]);</span> <span class="c1">// { a: 1, b: [2, 2], c: [3, 100], d: [4]});</span>
+<span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]);</span>
+<span class="c1">// { a: 1, b: [2, 2], c: [3, 100], d: [4]});</span>
 </code></pre></div>
 
 
@@ -1779,8 +1853,8 @@ will not be changed</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">key</span>
       <span class="dox_type">array</span>
-      <span>Optional. Array of key names common to both objects taken as
- the set of properties to augment</span>
+      <span>Optional. Array of key names common to both objects
+  taken as the set of properties to augment</span>
     </div>
   </div>
 </div>
@@ -1790,7 +1864,8 @@ will not be changed</p>
 
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="o">!==</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+                <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="o">!==</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">k</span><span class="p">]];</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="p">{</span>
@@ -1812,12 +1887,13 @@ will not be changed</p>
 </div>
 
   </div>
-  <div class="body"><p>Given two objects, executes a callback on all attributes with the same name</p>
+  <div class="body"><p>Executes a callback on all pairs of  attributes with the same name</p>
 
 <p>The results of each callback are aggregated in a new object under the
 same property name.</p>
 
-<p>Does not traverse nested objects, and properties of the prototype are excluded</p>
+<p>Does not traverse nested objects, and properties of the prototype
+are excluded.</p>
 
 <p>Returns a new object, the original ones are not modified.</p>
 
@@ -1878,10 +1954,8 @@ same property name.</p>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-
         <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
     <span class="p">};</span>
-
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">OBJ</span><span class="p">);</span>
 

@@ -22,6 +22,9 @@
         <a href="#random">RANDOM</a>
       </div>
       <div class="heading h2">
+        <a href="#pseudo-random-numbers.">pseudo-random numbers.</a>
+      </div>
+      <div class="heading h2">
         <a href="#random.random">RANDOM.random</a>
       </div>
       <div class="heading h2">
@@ -44,17 +47,25 @@
 </div>
 
 
-<p>Copyright(c) 2012 Stefano Balietti
+<p>Copyright(c) 2013 Stefano Balietti
 MIT Licensed</p>
   </div>
-  <div class="body"><p>Collection of static functions related to the generation of 
-pseudo-random numbers</p>
+  <div class="body"><p>Collection of static functions related to the generation of</p>
+
+
+<div class="pilwrap" id="pseudo-random-numbers.">
+  <h2>
+    <a href="#pseudo-random-numbers." class="pilcrow">&#182;</a>
+    pseudo-random numbers.
+  </h2>
+</div>
+
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="kd">function</span> <span class="nx">RANDOM</span><span class="p">(){};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">function</span> <span class="nx">RANDOM</span><span class="p">(){};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -68,7 +79,7 @@ pseudo-random numbers</p>
 </div>
 
   </div>
-  <div class="body"><p>Generates a pseudo-random floating point number between 
+  <div class="body"><p>Generates a pseudo-random floating point number between
 (a,b), both a and b exclusive.</p>
   </div>
   <div class="details">
@@ -76,7 +87,7 @@ pseudo-random numbers</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">a</span>
       <span class="dox_type">number</span>
-      <span>The lower limit </span>
+      <span>The lower limit</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">b</span>
@@ -92,18 +103,18 @@ pseudo-random numbers</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">a</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">a</span><span class="p">;</span>
-  <span class="nx">b</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">b</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">b</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
-  
-  <span class="k">if</span> <span class="p">(</span><span class="nx">b</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
-    <span class="nx">a</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="nx">b</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">a</span>
-<span class="p">};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">a</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">a</span><span class="p">;</span>
+        <span class="nx">b</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">b</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">b</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">b</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+            <span class="nx">a</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
+            <span class="nx">b</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">a</span>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -117,7 +128,7 @@ pseudo-random numbers</p>
 </div>
 
   </div>
-  <div class="body"><p>Generates a pseudo-random integer between 
+  <div class="body"><p>Generates a pseudo-random integer between
 (a,b] a exclusive, b inclusive.</p>
   </div>
   <div class="details">
@@ -125,7 +136,7 @@ pseudo-random numbers</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">a</span>
       <span class="dox_type">number</span>
-      <span>The lower limit </span>
+      <span>The lower limit</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">b</span>
@@ -146,14 +157,20 @@ pseudo-random numbers</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">randomInt</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">};</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">randomInt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">};</span>
 
+    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">sample</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">out</span><span class="p">;</span>
+        <span class="nx">out</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">seq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">out</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
+    <span class="p">}</span>
 
-<span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
-    
+    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
+
 <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
 </pre></div>
         </td>

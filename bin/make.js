@@ -1,90 +1,94 @@
 #!/usr/bin/env node
 
 // # JSUS make script
- 
+
 
 /**
  * Module dependencies.
  */
 
 var program = require('commander'),
-    os = require('os'),
-    fs = require('fs'),
-    util = require('util'),
-    path = require('path'),
-    exec = require('child_process').exec,
-    J = require('../jsus.js').JSUS;
+os = require('os'),
+fs = require('fs'),
+util = require('util'),
+path = require('path'),
+exec = require('child_process').exec,
+J = require('../jsus.js').JSUS;
 
 var pkg = require('../package.json'),
-    version = pkg.version;
+version = pkg.version;
 
 
 var build = require('./build.js').build;
 
 var rootDir = path.resolve(__dirname, '..') + '/',
-	buildDir = rootDir + 'build/',
-	libDir = rootDir + 'lib/';
+buildDir = rootDir + 'build/',
+libDir = rootDir + 'lib/';
 
 function list(val) {
-	return val.split(',');
+    return val.split(',');
 }
 
 program
-  .version(version);
+    .version(version);
 
 program  
-	.command('clean')
-	.description('Removes all files from build folder')
-	.action(function(){
-		J.cleanDir(buildDir);
-});
-  
+    .command('clean')
+    .description('Removes all files from build folder')
+    .action(function(){
+	J.cleanDir(buildDir);
+    });
+
 program  
-	.command('build [options]')
-	.description('Creates a custom build of JSUS.js')
-	.option('-l, --lib <items>', 'choose libraries to include', list)
-	.option('-a, --all', 'full build of JSUS')
-	.option('-A, --analyse', 'analyse build')
-	.option('-C, --clean', 'clean build directory')
-	.option('-o, --output <file>')
-	.action(function(env, options){
-		build(options);
-});
-   
+    .command('build [options]')
+    .description('Creates a custom build of JSUS.js')
+    .option('-l, --lib <items>', 'choose libraries to include', list)
+    .option('-a, --all', 'full build of JSUS')
+    .option('-A, --analyse', 'analyse build')
+    .option('-C, --clean', 'clean build directory')
+    .option('-o, --output <file>')
+    .action(function(env, options){
+	build(options);
+    });
+
 program
-	.command('doc')
-	.description('Build documentation files')
-	.action(function(){
-		console.log('Building documentation for JSUS v.' + version);
-		try {
-			var dockerDir = J.resolveModuleDir('docker');
-		}
-		catch(e) {
-			console.log('module Docker not found. Cannot build doc. Do \'npm install docker\' to fix it.');
-			return false;
-		}
-		var command = dockerDir + 'docker -i ' + rootDir + ' jsus.js lib/ -s true -o ' + rootDir + 'docs/';
-		var child = exec(command, function (error, stdout, stderr) {
-			util.print(stdout);
-			util.print(stderr);
-			if (error !== null) {
-				console.log('build error: ' + error);
-			}
-		});
+    .command('doc')
+    .description('Build documentation files')
+    .action(function() {
+        var dockerDir, command, child;
+	console.log('Building documentation for JSUS v.' + version);
+	try {
+	    dockerDir = J.resolveModuleDir('docker');
+	}
+	catch(e) {
+	    console.log('module Docker not found. Cannot build doc. ' +
+                        'Do \'npm install docker\' to fix it.');
+	    return false;
+	}
+	command = dockerDir + 'docker -i ' + rootDir + 
+            ' jsus.js lib/ -s true -o ' + rootDir + 'docs/';
+	child = exec(command, function (error, stdout, stderr) {
+	    util.print(stdout);
+	    util.print(stderr);
+	    if (error !== null) {
+		console.log('build error: ' + error);
+	    }
+	});
 
-});
+    });
 
 
 program  
-	.command('sync <path>')
-	.description('Sync the lib folder with the specified target directory (must exists)')
-	.action(function(path) {
+    .command('sync <path>')
+    .description('Sync the lib folder with the specified target ' +
+                 'directory (must exists)')
+    .action(function(path) {
 	
-		J.copyFromDir(libDir, path);	
-				
-		console.log('Done.');
+	J.copyFromDir(libDir, path);	
 	
-});
+	console.log('Done.');
+	
+    });
 
 // Parsing options
 program.parse(process.argv);

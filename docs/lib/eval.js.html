@@ -22,6 +22,9 @@
         <a href="#eval">EVAL</a>
       </div>
       <div class="heading h2">
+        <a href="#of-strings-as-javascript-commands">of strings as javascript commands</a>
+      </div>
+      <div class="heading h2">
         <a href="#eval.eval">EVAL.eval</a>
       </div>
     </div>
@@ -40,17 +43,25 @@
   </h1>
 </div>
 
-
-<p>Copyright(c) 2012 Stefano Balietti
-MIT Licensed</p>
   </div>
-  <div class="body"><p>Collection of static functions related to the evaluation
-of strings as javascript commands</p>
+  <div class="body"><p>Copyright(c) 2013 Stefano Balietti
+MIT Licensed</p>
+
+<p>Collection of static functions related to the evaluation</p>
+
+
+<div class="pilwrap" id="of-strings-as-javascript-commands">
+  <h2>
+    <a href="#of-strings-as-javascript-commands" class="pilcrow">&#182;</a>
+    of strings as javascript commands
+  </h2>
+</div>
+
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
-    
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+
 <span class="kd">function</span> <span class="nx">EVAL</span><span class="p">(){};</span></pre></div>
         </td>
       </tr>
@@ -65,8 +76,8 @@ of strings as javascript commands</p>
 </div>
 
   </div>
-  <div class="body"><p>Allows to execute the eval function within a given 
-context. </p>
+  <div class="body"><p>Allows to execute the eval function within a given
+context.</p>
 
 <p>If no context is passed a reference, <code>this</code> is used.</p>
   </div>
@@ -80,23 +91,30 @@ context. </p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">context</span>
       <span class="dox_type">object</span>
-      <span>Optional. The context of execution. Defaults <code>this</code></span>
+      <span>Optional. The context of execution. Defaults, <code>this</code></span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">mixed</span>
-      <span>The return value of the executed commands
-
-@see eval
-  @see JSON.parse</span>
+      <span>The return value of the executed commands</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">eval</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSON.parse
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">EVAL</span><span class="p">.</span><span class="nb">eval</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">EVAL</span><span class="p">.</span><span class="nb">eval</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">func</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">str</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-  <span class="nx">context</span> <span class="o">=</span> <span class="nx">context</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span></pre></div>
+    <span class="nx">context</span> <span class="o">=</span> <span class="nx">context</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -107,7 +125,7 @@ context. </p>
 <p>Eval must be called indirectly
 i.e. eval.call is not possible</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">func</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">func</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -123,7 +141,7 @@ i.e. eval.call is not possible</p>
 <span class="p">};</span>
 
 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">EVAL</span><span class="p">);</span>
-    
+
 <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
 </pre></div>
         </td>

@@ -165,6 +165,9 @@
       <div class="heading h3">
         <a href="#dom.addclass">DOM.addClass</a>
       </div>
+      <div class="heading h2">
+        <a href="#dom.getiframedocument">DOM.getIFrameDocument</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -1739,6 +1742,44 @@ of a given element.</p>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
     <span class="p">};</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.getiframedocument">
+  <h2>
+    <a href="#dom.getiframedocument" class="pilcrow">&#182;</a>
+    DOM.getIFrameDocument
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns a reference to the document of an iframe object </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">iframe</span>
+      <span class="dox_type">HTMLIFrameElement</span>
+      <span>The iframe object</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">HTMLDocument</span>
+      <span class="dox_type">undefined</span>
+      <span>The document of the iframe, or
+  undefined if not found.</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrameDocument</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">iframe</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentDocument</span> <span class="o">||</span> <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span><span class="p">;</span>
+    <span class="p">}</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">DOM</span><span class="p">);</span>
 

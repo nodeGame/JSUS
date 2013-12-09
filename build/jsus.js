@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS. 
- * Copyright(c) 2012 Stefano Balietti
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
  * 
  * Collection of general purpose javascript functions. JSUS helps!
@@ -152,321 +152,15 @@ if (JSUS.isNodeJS()) {
 
 
 /**
- * # FS
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to file system operations.
- * 
- * @see http://nodejs.org/api/fs.html
- * @see https://github.com/ryanmcgrath/wrench-js
- * @see https://github.com/substack/node-resolve
- * 
- */
-
-
-(function (JSUS) {
-
-if (!JSUS.isNodeJS()){
-	JSUS.log('Cannot load JSUS.FS outside of Node.JS.')
-	return false;
-}
-
-var resolve = require('resolve'),
-	path = require('path'),
-	fs = require('fs'),
-	wrench = require('wrench');
-
-
-function FS(){};
-
-
-
-/**
- * ## FS.resolveModuleDir
- *
- * Backward-compatible version of fs.existsSync
- * 
- */
-FS.existsSync = ('undefined' === typeof fs.existsSync) ? path.existsSync : fs.existsSync;
-
-
-/**
- * ## FS.resolveModuleDir
- * 
- * Resolves the root directory of a module
- * 
- * Npm does not install a dependency if the same module
- * is available in a parent folder. This method returns
- * the full path of the root directory of the specified
- * module as installed by npm.
- * 
- * Trailing slash is added.
- * 
- * @param {string} module The name of the module
- * @param {string} basedir Optional The basedir from which starting searching
- * @return {string} The path of the root directory of the module
- * 
- * @see https://github.com/substack/node-resolve
- * 
- */
-FS.resolveModuleDir = function (module, basedir) {
-	if (!module) return false;
-
-	var str = resolve.sync(module, {basedir: basedir || __dirname});
-	var stop = str.indexOf(module) + module.length;
-	return str.substr(0, stop) + '/';
-};
-
-/**
- * ## FS.deleteIfExists
- * 
- * Deletes a file or directory
- * 
- * Returns false if the file does not exist.
- * 
- * @param {string} file The path to the file or directory
- * @return {boolean} TRUE, if operation is succesfull
- * 
- * @see FS.cleanDir
- */
-FS.deleteIfExists = function (file) {
-	if (!FS.existsSync(file)) {
-		return false;
-	}
-	var stats = fs.lstatSync(file);
-	if (stats.isDirectory()) {
-		fs.rmdir(file, function (err) {
-			if (err) throw err;  
-		});
-	}
-	else {
-		fs.unlink(file, function (err) {
-			if (err) throw err;  
-		});
-	}
-	return true;
-		
-};
-
-/**
- * ## FS.cleanDir
- * 
- * Removes all files from a target directory
- * 
- * It is possible to specify an extension as second parameter.
- * In such case, only file with that extension will be removed.
- * The '.' (dot) must be included as part of the extension.
- * 
- * 
- * @param {string} dir The directory to clean
- * @param {string} ext Optional. If set, only files with this extension will be removed
- * @param {function} cb Optional. A callback function to call if no error is raised
- * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see FS.deleteIfExists
- */
-FS.cleanDir = function (dir, ext, cb) {
-	if (!dir) {
-		JSUS.log('You must specify a directory to clean.');
-		return false;
-	}
-	var filterFunc = (ext) ? function(file) { return path.extname(file) ===  ext; }
-						   : function(file) { return true; };
-
-	if (dir[dir.length] !== '/') dir = dir + '/';
-	
-	fs.readdir(dir, function(err, files) {
-		if (err) {
-			JSUS.log(err);
-			return false;
-		}
-
-	    files.filter(filterFunc)
-	         .forEach(function(file) { 
-	        	// <!-- console.log(dir + file); -->
-	        	 JSUS.deleteIfExists(dir + file); 
-	         });
-	    
-
-	    if (cb) return cb(null);
-
-	});
-	
-
-	return true;
-};
-
-/**
- * ## FS.copyFromDir
- * 
- * Copies all files from a source directory to a destination 
- * directory.
- * 
- * It is possible to specify an extension as second parameter (e.g. '.js').
- * In such case, only file with that extension will be copied.
- * 
- * Warning! If an extension filter is not specified, and if subdirectories
- * are found, an error will occur.
- * 
- * @param {string} dirIn The source directory
- * @param {string} dirOut The destination directory
- * @param {string} ext Optional. If set, only files with this extension will be copied
- * @param {function} cb Optional. A callback function to call if no error is raised
- * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see FS.copyFile
- */
-FS.copyFromDir = function (dirIn, dirOut, ext, cb) {
-	if (!dirIn) {
-		JSUS.log('You must specify a source directory');
-		return false;
-	}
-	if (!dirOut) {
-		JSUS.log('You must specify a destination directory');
-		return false;
-	}
-	
-	dirOut = path.resolve(dirOut) + '/';
-	var i, dir, dirs = [dirIn, dirOut];
-	for (i=0; i < 2; i++) {
-		dir = dirs[i];
-		if (!FS.existsSync(dir)) {
-			console.log(dir + ' does not exist');
-			return false;
-		}
-		
-		var stats = fs.lstatSync(dir);
-		if (!stats.isDirectory()) {
-			console.log(dir + ' is not a directory');
-			return false;
-		}
-	}
-	
-	fs.readdir(dirIn, function(err, files){
-		if (err) {
-			JSUS.log(err);
-			throw new Error;
-		}
-		for (var i in files) {
-			if (ext && path.extname(files[i]) !== ext) {
-				continue;
-			}
-			copyFile(dirIn + files[i], dirOut + files[i]);
-		}
-		
-		if (cb) return cb(null);
-	});
-	
-	return true;
-};
-
-/**
- * ## FS.copyFile
- * 
- * Copies a file into another path
- * 
- * @param {string} srcFile The source file
- * @param {string} destFile The destination file
- * @param {function} cb Optional. If set, the callback will be executed upon success
- * @param {function} cb Optional. A callback function to call if no error is raised
- * 
- * @return {boolean} TRUE, if the operation is successful
- * 
- * @see https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
- */
-var copyFile = function (srcFile, destFile, cb) {
-	// <!-- console.log('from ' + srcFile + ' to ' + destFile); -->
-    var fdr, fdw;
-    fdr = fs.createReadStream(srcFile);
-    fdw = fs.createWriteStream(destFile);
-    fdr.on('end', function() {
-    	if (cb) return cb(null);
-    });
-    return fdr.pipe(fdw);
-};
-
-
-/**
- *  ## wrench
- * 
- *  FS exposes the properties of the great package wrench for
- *  performing recursive operations on directories
- *  
- *  @see https://github.com/ryanmcgrath/wrench-js
- *  
- */
-for (var w in wrench) {
-	if (wrench.hasOwnProperty(w)) {
-		FS[w] = wrench[w];
-	}
-}
-
-JSUS.extend(FS);
-
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # EVAL
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to the evaluation
- * of strings as javascript commands
- * 
- */
-
-(function (JSUS) {
-    
-function EVAL(){};
-
-/**
- * ## EVAL.eval
- * 
- * Allows to execute the eval function within a given 
- * context. 
- * 
- * If no context is passed a reference, ```this``` is used.
- * 
- * @param {string} str The command to executes
- * @param {object} context Optional. The context of execution. Defaults ```this```
- * @return {mixed} The return value of the executed commands
- * 
- * 	@see eval
- * 	@see JSON.parse
- */
-EVAL.eval = function (str, context) {
-    if (!str) return;
-	context = context || this;
-    // Eval must be called indirectly
-    // i.e. eval.call is not possible
-    var func = function (str) {
-        // TODO: Filter str
-        return eval(str);
-    }
-    return func.call(context, str);
-};
-
-JSUS.extend(EVAL);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
  * # ARRAY
- *  
- * Copyright(c) 2012 Stefano Balietti
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
  * 
  * Collection of static functions to manipulate arrays.
- * 
  */
-
-(function (JSUS) {
+(function(JSUS) {
     
     function ARRAY(){};
-
 
     /**
      * ## ARRAY.filter
@@ -475,7 +169,6 @@ JSUS.extend(EVAL);
      * supported natively. 
      * 
      * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/ARRAY/filter
-     * 
      */
     if (!Array.prototype.filter) {  
         Array.prototype.filter = function(fun /*, thisp */) {  
@@ -495,8 +188,7 @@ JSUS.extend(EVAL);
                         res.push(val);  
                     }
                 }
-            }
-            
+            }     
             return res;  
         };
     }
@@ -511,9 +203,8 @@ JSUS.extend(EVAL);
      * 
      * @param {object} o The variable to check.
      * @see Array.isArray
-     *  
      */
-    ARRAY.isArray = function (o) {
+    ARRAY.isArray = function(o) {
         if (!o) return false;
         return Object.prototype.toString.call(o) === '[object Array]';  
     };
@@ -525,7 +216,8 @@ JSUS.extend(EVAL);
      * 
      * If start > end the series goes backward.
      * 
-     * The distance between two subsequent numbers can be controlled by the increment parameter.
+     * The distance between two subsequent numbers can be controlled
+     * by the increment parameter.
      * 
      * When increment is not a divider of Abs(start - end), end will
      * be missing from the series.
@@ -537,14 +229,15 @@ JSUS.extend(EVAL);
      * 
      * @param {number} start The first element of the sequence
      * @param {number} end The last element of the sequence
-     * @param {number} increment Optional. The increment between two subsequents element 
-     *   of the sequence
+     * @param {number} increment Optional. The increment between two 
+     *   subsequents element of the sequence
      * @param {Function} func Optional. A callback function that can modify 
      *   each number of the sequence before returning it
      *  
      * @return {array} out The final sequence 
      */
-    ARRAY.seq = function (start, end, increment, func) {
+    ARRAY.seq = function(start, end, increment, func) {
+        var i;
         if ('number' !== typeof start) return false;
         if (start === Infinity) return false;
         if ('number' !== typeof end) return false;
@@ -559,7 +252,7 @@ JSUS.extend(EVAL);
         increment = increment || 1;
         func = func || function(e) {return e;};
         
-        var i = start,
+        i = start,
         out = [];
         
         if (start < end) {
@@ -578,7 +271,6 @@ JSUS.extend(EVAL);
         return out;
     };
 
-
     /**
      * ## ARRAY.each
      * 
@@ -588,11 +280,12 @@ JSUS.extend(EVAL);
      * 
      * @param {array} array The array to loop in
      * @param {Function} func The callback for each element in the array
-     * @param {object} context Optional. The context of execution of the callback. Defaults ARRAY.each
+     * @param {object} context Optional. The context of execution of the
+     *   callback. Defaults ARRAY.each
      * 
      * @return {Boolean} TRUE, if execution was successful
      */
-    ARRAY.each = function (array, func, context) {
+    ARRAY.each = function(array, func, context) {
         if ('object' !== typeof array) return false;
         if (!func) return false;
         
@@ -601,7 +294,6 @@ JSUS.extend(EVAL);
         for (i = 0 ; i < len; i++) {
             func.call(context, array[i]);
         }
-        
         return true;
     };
 
@@ -616,16 +308,16 @@ JSUS.extend(EVAL);
      * 
      * @return {array} out The result of the mapping execution
      * @see ARRAY.each
-     * 
      */
-    ARRAY.map = function () {
+    ARRAY.map = function() {
         if (arguments.length < 2) return;
-        var     args = Array.prototype.slice.call(arguments),
+        var args = Array.prototype.slice.call(arguments),
         array = args.shift(),
         func = args[0];
         
         if (!ARRAY.isArray(array)) {
-            JSUS.log('ARRAY.map() the first argument must be an array. Found: ' + array);
+            JSUS.log('ARRAY.map() the first argument must be an array. ' +
+                     'Found: ' + array);
             return;
         }
 
@@ -656,23 +348,24 @@ JSUS.extend(EVAL);
      * @return {mixed} The element that was removed, FALSE if none was removed
      * @see JSUS.equals
      */
-    ARRAY.removeElement = function (needle, haystack) {
+    ARRAY.removeElement = function(needle, haystack) {
+        var func, i;
         if ('undefined' === typeof needle || !haystack) return false;
         
         if ('object' === typeof needle) {
-            var func = JSUS.equals;
-        } else {
-            var func = function (a,b) {
+            func = JSUS.equals;
+        }
+        else {
+            func = function(a,b) {
                 return (a === b);
             }
         }
         
-        for (var i=0; i < haystack.length; i++) {
+        for (i = 0; i < haystack.length; i++) {
             if (func(needle, haystack[i])){
                 return haystack.splice(i,1);
             }
         }
-        
         return false;
     };
 
@@ -693,7 +386,7 @@ JSUS.extend(EVAL);
      * 
      *  @see JSUS.equals
      */
-    ARRAY.inArray = ARRAY.in_array = function (needle, haystack) {
+    ARRAY.inArray = ARRAY.in_array = function(needle, haystack) {
         if (!haystack) return false;
         
         var func = JSUS.equals;    
@@ -723,7 +416,7 @@ JSUS.extend(EVAL);
      * @param {number} N The number of subgroups
      * @return {array} Array containing N groups
      */ 
-    ARRAY.getNGroups = function (array, N) {
+    ARRAY.getNGroups = function(array, N) {
         return ARRAY.getGroupsSizeN(array, Math.floor(array.length / N));
     };
 
@@ -737,43 +430,42 @@ JSUS.extend(EVAL);
      * @param {number} N The number of elements in each subgroup
      * @return {array} Array containing groups of size N
      * 
-     *          @see ARRAY.getNGroups
-     *          @see ARRAY.generateCombinations
-     *          @see ARRAY.matchN
-     * 
+     * @see ARRAY.getNGroups
+     * @see ARRAY.generateCombinations
+     * @see ARRAY.matchN
      */ 
-    ARRAY.getGroupsSizeN = function (array, N) {
+    ARRAY.getGroupsSizeN = function(array, N) {
         
         var copy = array.slice(0);
         var len = copy.length;
         var originalLen = copy.length;
         var result = [];
         
-        // <!-- Init values for the loop algorithm -->
+        // Init values for the loop algorithm.
         var i, idx;
         var group = [], count = 0;
         for (i=0; i < originalLen; i++) {
             
-            // <!-- Get a random idx between 0 and array length -->
+            // Get a random idx between 0 and array length.
             idx = Math.floor(Math.random()*len);
             
-            // <!-- Prepare the array container for the elements of a new group -->
+            // Prepare the array container for the elements of a new group.
             if (count >= N) {
                 result.push(group);
                 count = 0;
                 group = [];
             }
             
-            // <!-- Insert element in the group -->
+            // Insert element in the group.
             group.push(copy[idx]);
             
-            // <!-- Update -->
+            // Update.
             copy.splice(idx,1);
             len = copy.length;
             count++;
         }
         
-        // <!-- Add any remaining element -->
+        // Add any remaining element.
         if (group.length > 0) {
             result.push(group);
         }
@@ -796,11 +488,11 @@ JSUS.extend(EVAL);
      * @param {number} Optional. N The number of columns. Defaults N = S
      * @param {boolean} Optional. If TRUE self-match is allowed. Defaults TRUE
      * @return {array} The resulting latin square (or rectangle)
-     * 
      */
-    ARRAY._latinSquare = function (S, N, self) {
+    ARRAY._latinSquare = function(S, N, self) {
         self = ('undefined' === typeof self) ? true : self;
-        if (S === N && !self) return false; // <!-- infinite loop -->
+        // Infinite loop.
+        if (S === N && !self) return false;
         var seq = [];
         var latin = [];
         for (var i=0; i< S; i++) {
@@ -846,9 +538,8 @@ JSUS.extend(EVAL);
      * @param {number} S The number of rows
      * @param {number} Optional. N The number of columns. Defaults N = S
      * @return {array} The resulting latin square (or rectangle)
-     * 
      */
-    ARRAY.latinSquare = function (S, N) {
+    ARRAY.latinSquare = function(S, N) {
         if (!N) N = S;
         if (!S || S < 0 || (N < 0)) return false;
         if (N > S) N = S;
@@ -868,7 +559,7 @@ JSUS.extend(EVAL);
      * @param {number} Optional. N The number of columns. Defaults N = S-1
      * @return {array} The resulting latin square (or rectangle)
      */
-    ARRAY.latinSquareNoSelf = function (S, N) {
+    ARRAY.latinSquareNoSelf = function(S, N) {
         if (!N) N = S-1;
         if (!S || S < 0 || (N < 0)) return false;
         if (N > S) N = S-1;
@@ -880,19 +571,17 @@ JSUS.extend(EVAL);
     /**
      * ## ARRAY.generateCombinations
      * 
-     *  Generates all distinct combinations of exactly r elements each 
-     *  and returns them into an array
+     * Generates all distinct combinations of exactly r elements each 
      *  
-     *  @param {array} array The array from which the combinations are extracted
-     *  @param {number} r The number of elements in each combination
-     *  @return {array} The total sets of combinations
+     * @param {array} array The array from which the combinations are extracted
+     * @param {number} r The number of elements in each combination
+     * @return {array} The total sets of combinations
      *  
-     *          @see ARRAY.getGroupSizeN
-     *          @see ARRAY.getNGroups
-     *          @see ARRAY.matchN
-     * 
+     * @see ARRAY.getGroupSizeN
+     * @see ARRAY.getNGroups
+     * @see ARRAY.matchN
      */
-    ARRAY.generateCombinations = function (array, r) {
+    ARRAY.generateCombinations = function(array, r) {
         function values(i, a) {
             var ret = [];
             for (var j = 0; j < i.length; j++) ret.push(a[i[j]]);
@@ -920,43 +609,44 @@ JSUS.extend(EVAL);
      * 
      * If strict is equal to true, elements cannot be matched multiple times.
      * 
-     * *Important*: this method has a bug / feature. If the strict parameter is set,
-     * the last elements could remain without match, because all the other have been 
-     * already used. Another recombination would be able to match all the 
-     * elements instead.
+     * *Important*: this method has a bug / feature. If the strict parameter 
+     * is set, the last elements could remain without match, because all the
+     * other have been already used. Another recombination would be able
+     * to match all the elements instead.
      * 
      * @param {array} array The array in which operate the matching
      * @param {number} N The number of matches per element
-     * @param {Boolean} strict Optional. If TRUE, matched elements cannot be repeated. Defaults, FALSE 
+     * @param {Boolean} strict Optional. If TRUE, matched elements cannot be
+     *   repeated. Defaults, FALSE 
      * @return {array} result The results of the matching
      * 
-     *          @see ARRAY.getGroupSizeN
-     *          @see ARRAY.getNGroups
-     *          @see ARRAY.generateCombinations
-     * 
+     * @see ARRAY.getGroupSizeN
+     * @see ARRAY.getNGroups
+     * @see ARRAY.generateCombinations
      */
-    ARRAY.matchN = function (array, N, strict) {
+    ARRAY.matchN = function(array, N, strict) {
+        var result, i, copy, group;
         if (!array) return;
         if (!N) return array;
         
-        var result = [],
+        result = [],
         len = array.length,
         found = [];
-        for (var i = 0 ; i < len ; i++) {
-            // <!-- Recreate the array -->
-            var copy = array.slice(0);
+        for (i = 0 ; i < len ; i++) {
+            // Recreate the array.
+            copy = array.slice(0);
             copy.splice(i,1);
             if (strict) {
                 copy = ARRAY.arrayDiff(copy,found);
             }
-            var group = ARRAY.getNRandom(copy,N);
-            // <!-- Add to the set of used elements -->
+            group = ARRAY.getNRandom(copy,N);
+            // Add to the set of used elements.
             found = found.concat(group);
-            // <!-- Re-add the current element -->
+            // Re-add the current element.
             group.splice(0,0,array[i]);
             result.push(group);
             
-            // <!-- Update -->
+            // Update.
             group = [];
         }
         return result;
@@ -970,11 +660,12 @@ JSUS.extend(EVAL);
      * The original array is not modified.
      * 
      * @param {array} array the array to repeat 
-     * @param {number} times The number of times the array must be appended to itself
+     * @param {number} times The number of times the array must be appended
+     *   to itself
      * @return {array} A copy of the original array appended to itself
-     * 
      */
-    ARRAY.rep = function (array, times) {
+    ARRAY.rep = function(array, times) {
+        var i, result;
         if (!array) return;
         if (!times) return array.slice(0);
         if (times < 1) {
@@ -982,7 +673,7 @@ JSUS.extend(EVAL);
             return;
         }
         
-        var i = 1, result = array.slice(0);
+        i = 1, result = array.slice(0);
         for (; i < times; i++) {
             result = result.concat(array);
         }
@@ -995,9 +686,10 @@ JSUS.extend(EVAL);
      * Repeats each element of the array N times
      * 
      * N can be specified as an integer or as an array. In the former case all 
-     * the elements are repeat the same number of times. In the latter, the each
-     * element can be repeated a custom number of times. If the length of the `times`
-     * array differs from that of the array to stretch a recycle rule is applied.
+     * the elements are repeat the same number of times. In the latter, each
+     * element can be repeated a custom number of times. If the length of the
+     * `times` array differs from that of the array to stretch a recycle rule
+     * is applied.
      * 
      * The original array is not modified.
      * 
@@ -1014,11 +706,12 @@ JSUS.extend(EVAL);
      * ```
      * 
      * @param {array} array the array to strech
-     * @param {number|array} times The number of times each element must be repeated
+     * @param {number|array} times The number of times each element 
+     *   must be repeated
      * @return {array} A stretched copy of the original array
-     * 
      */
-    ARRAY.stretch = function (array, times) {
+    ARRAY.stretch = function(array, times) {
+        var result, i, repeat, j;
         if (!array) return;
         if (!times) return array.slice(0);
         if ('number' === typeof times) {
@@ -1029,10 +722,10 @@ JSUS.extend(EVAL);
             times = ARRAY.rep([times], array.length);
         }
         
-        var result = [];
-        for (var i = 0; i < array.length; i++) {
-            var repeat = times[(i % times.length)];
-            for (var j = 0; j < repeat ; j++) {
+        result = [];
+        for (i = 0; i < array.length; i++) {
+            repeat = times[(i % times.length)];
+            for (j = 0; j < repeat ; j++) {
                 result.push(array[i]);
             }
         }
@@ -1049,9 +742,10 @@ JSUS.extend(EVAL);
      * 
      * @param {array} a1 The first array
      * @param {array} a2 The second array
-     * @return {array} All the values of the first array that are found also in the second one
+     * @return {array} All the values of the first array that are found
+     *   also in the second one
      */
-    ARRAY.arrayIntersect = function (a1, a2) {
+    ARRAY.arrayIntersect = function(a1, a2) {
         return a1.filter( function(i) {
             return JSUS.in_array(i, a2);
         });
@@ -1066,9 +760,10 @@ JSUS.extend(EVAL);
      * 
      * @param {array} a1 The first array
      * @param {array} a2 The second array
-     * @return {array} All the values of the first array that are not found in the second one
+     * @return {array} All the values of the first array that are not 
+     *   found in the second one
      */
-    ARRAY.arrayDiff = function (a1, a2) {
+    ARRAY.arrayDiff = function(a1, a2) {
         return a1.filter( function(i) {
             return !(JSUS.in_array(i, a2));
         });
@@ -1084,14 +779,14 @@ JSUS.extend(EVAL);
      * @param {array} shuffle The array to shuffle
      * @return {array} copy The shuffled array
      * 
-     *          @see http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+     * @see http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
      */
-    ARRAY.shuffle = function (array) {
+    ARRAY.shuffle = function(array) {
+        var copy, len, j, tmp, i;
         if (!array) return;
-        var copy = array.slice(0);
-        var len = array.length-1; // ! -1
-        var j, tmp;
-        for (var i = len; i > 0; i--) {
+        copy = Array.prototype.slice.call(array);
+        len = array.length-1; // ! -1
+        for (i = len; i > 0; i--) {
             j = Math.floor(Math.random()*(i+1));
             tmp = copy[j];
             copy[j] = copy[i];
@@ -1107,9 +802,9 @@ JSUS.extend(EVAL);
      * 
      * @param {array} array The array from which extracts random elements
      * @paran {number} N The number of random elements to extract
-     * @return {array} An new array with N elements randomly chose from the original array  
+     * @return {array} An new array with N elements randomly chosen
      */
-    ARRAY.getNRandom = function (array, N) {
+    ARRAY.getNRandom = function(array, N) {
         return ARRAY.shuffle(array).slice(0,N);
     };                           
     
@@ -1125,9 +820,9 @@ JSUS.extend(EVAL);
      * @param {array} array The array from which eliminates duplicates
      * @return {array} out A copy of the array without duplicates
      * 
-     *  @see JSUS.equals
+     * @see JSUS.equals
      */
-    ARRAY.distinct = function (array) {
+    ARRAY.distinct = function(array) {
         var out = [];
         if (!array) return out;
         
@@ -1149,9 +844,8 @@ JSUS.extend(EVAL);
      *
      * @param {array} array The array to transpose
      * @return {array} The Transposed Array
-     * 
      */
-    ARRAY.transpose = function (array) {
+    ARRAY.transpose = function(array) {
         if (!array) return;  
         
         // Calculate width and height
@@ -1173,79 +867,1292 @@ JSUS.extend(EVAL);
     
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
- * # SUPPORT
- *  
- * Copyright(c) 2012 Stefano Balietti
+ * # COMPATIBILITY
+ *
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
- * 
+ *
  * Tests browsers ECMAScript 5 compatibility
- * 
+ *
  * For more information see http://kangax.github.com/es5-compat-table/
- * 
+ * ---
  */
+(function(JSUS) {
 
-(function (JSUS) {
-    
-function COMPATIBILITY() {};
+    function COMPATIBILITY() {};
 
-/**
- * ## COMPATIBILITY.compatibility
- * 
- * Returns a report of the ECS5 features available
- * 
- * Useful when an application routinely performs an operation 
- * depending on a potentially unsupported ECS5 feature. 
- * 
- * Transforms multiple try-catch statements in a if-else
- * 
- * @return {object} support The compatibility object
- */
-COMPATIBILITY.compatibility = function() {
+    /**
+     * ## COMPATIBILITY.compatibility
+     *
+     * Returns a report of the ECS5 features available
+     *
+     * Useful when an application routinely performs an operation
+     * depending on a potentially unsupported ECS5 feature.
+     *
+     * Transforms multiple try-catch statements in a if-else
+     *
+     * @return {object} support The compatibility object
+     */
+    COMPATIBILITY.compatibility = function() {
 
-	var support = {};
-	
-	try {
-		Object.defineProperty({}, "a", {enumerable: false, value: 1})
-		support.defineProperty = true;
-	}
-	catch(e) {
-		support.defineProperty = false;	
-	}
-	
-	try {
-		eval('({ get x(){ return 1 } }).x === 1')
-		support.setter = true;
-	}
-	catch(err) {
-		support.setter = false;
-	}
-	  
-	try {
-		var value;
-		eval('({ set x(v){ value = v; } }).x = 1');
-		support.getter = true;
-	}
-	catch(err) {
-		support.getter = false;
-	}	  
+        var support = {};
 
-	return support;
-};
+        try {
+            Object.defineProperty({}, "a", {enumerable: false, value: 1})
+            support.defineProperty = true;
+        }
+        catch(e) {
+            support.defineProperty = false;
+        }
+
+        try {
+            eval('({ get x(){ return 1 } }).x === 1')
+            support.setter = true;
+        }
+        catch(err) {
+            support.setter = false;
+        }
+
+        try {
+            var value;
+            eval('({ set x(v){ value = v; } }).x = 1');
+            support.getter = true;
+        }
+        catch(err) {
+            support.getter = false;
+        }
+
+        return support;
+    };
 
 
-JSUS.extend(COMPATIBILITY);
-    
+    JSUS.extend(COMPATIBILITY);
+
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
- * # OBJ
+ * # DOM
  *
- * Copyright(c) 2012 Stefano Balietti
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
  *
- * Collection of static functions to manipulate javascript objects
+ * Collection of static functions related to DOM manipulation
  *
+ * Helper library to perform generic operation with DOM elements.
+ *
+ * The general syntax is the following: Every HTML element has associated
+ * a get* and a add* method, whose syntax is very similar.
+ *
+ * - The get* method creates the element and returns it.
+ * - The add* method creates the element, append it as child to a root element,
+ *     and then returns it.
+ *
+ * The syntax of both method is the same, but the add* method
+ * needs the root element as first parameter. E.g.
+ *
+ * - getButton(id, text, attributes);
+ * - addButton(root, id, text, attributes);
+ *
+ * The last parameter is generally an object containing a list of
+ * of key-values pairs as additional attributes to set to the element.
+ *
+ * Only the methods which do not follow the above-mentioned syntax
+ * will receive further explanation.
+ * ---
  */
-(function (JSUS) {
+(function(JSUS) {
+
+    function DOM() {};
+
+    // ## GENERAL
+
+    /**
+     * ### DOM.write
+     *
+     * Write a text, or append an HTML element or node, into the
+     * the root element.
+     *
+     * @see DOM.writeln
+     */
+    DOM.write = function(root, text) {
+        if (!root) return;
+        if (!text) return;
+        var content = (!JSUS.isNode(text) || !JSUS.isElement(text)) ?
+            document.createTextNode(text) : text;
+        root.appendChild(content);
+        return content;
+    };
+
+    /**
+     * ### DOM.writeln
+     *
+     * Write a text, or append an HTML element or node, into the
+     * the root element and adds a break immediately after.
+     *
+     * @see DOM.write
+     * @see DOM.addBreak
+     */
+    DOM.writeln = function(root, text, rc) {
+        if (!root) return;
+        var br = this.addBreak(root, rc);
+        return (text) ? DOM.write(root, text) : br;
+    };
+
+    /**
+     * ### DOM.sprintf
+     *
+     * Builds up a decorated HTML text element
+     *
+     * Performs string substitution from an args object where the first
+     * character of the key bears the following semantic:
+     *
+     * - '@': variable substitution with escaping
+     * - '!': variable substitution without variable escaping
+     * - '%': wraps a portion of string into a _span_ element to which is
+     *        possible to associate a css class or id. Alternatively,
+     *        it also possible to add in-line style. E.g.:
+     *
+     * ```javascript
+     *      sprintf('%sImportant!%s An error has occurred: %pre@err%pre', {
+     *              '%pre': {
+     *                      style: 'font-size: 12px; font-family: courier;'
+     *              },
+     *              '%s': {
+     *                      id: 'myId',
+     *                      'class': 'myClass',
+     *              },
+     *              '@err': 'file not found',
+     *      }, document.body);
+     * ```
+     *
+     * @param {string} string A text to transform
+     * @param {object} args Optional. An object containing string transformations
+     * @param {Element} root Optional. An HTML element to which append the
+     *    string. Defaults, a new _span_ element
+     *
+     * @return {Element} root The root element.
+     */
+    DOM.sprintf = function(string, args, root) {
+
+        var text, textNode, span, idx_start, idx_finish, idx_replace, idxs;
+        var spans, key, i, returnElement;
+
+        // If no formatting arguments are provided, just create a string
+        // and inserted into a span tag. If a root element is provided, add it.
+        if (!args) {
+            returnElement = document.createElement('span');
+            returnElement.appendChild(document.createTextNode(string));
+            return root ? root.appendChild(returnElement) : returnElement;
+        }
+
+        root = root || document.createElement('span');
+        spans = {};
+
+        // Transform arguments before inserting them.
+        for (key in args) {
+            if (args.hasOwnProperty(key)) {
+
+                // Pattern not found.
+                if (idx_start === -1) continue;
+
+                switch(key[0]) {
+
+                case '%': // Span.
+
+                    idx_start = string.indexOf(key);
+                    idx_replace = idx_start + key.length;
+                    idx_finish = string.indexOf(key, idx_replace);
+
+                    if (idx_finish === -1) {
+                        JSUS.log('Error. Could not find closing key: ' + key);
+                        continue;
+                    }
+
+                    spans[idx_start] = key;
+
+                    break;
+
+                case '@': // Replace and sanitize.
+                    string = string.replace(key, escape(args[key]));
+                    break;
+
+                case '!': // Replace and not sanitize.
+                    string = string.replace(key, args[key]);
+                    break;
+
+                default:
+                    JSUS.log('Identifier not in [!,@,%]: ' + key[0]);
+
+                }
+            }
+        }
+
+        // No span to creates.
+        if (!JSUS.size(spans)) {
+            return root.appendChild(document.createTextNode(string));
+        }
+
+        // Re-assamble the string.
+
+        idxs = JSUS.keys(spans).sort(function(a, b){ return a - b; });
+        idx_finish = 0;
+        for (i = 0; i < idxs.length; i++) {
+
+            // Add span.
+            key = spans[idxs[i]];
+            idx_start = string.indexOf(key);
+
+            // Add fragments of string.
+            if (idx_finish !== idx_start-1) {
+                root.appendChild(document.createTextNode(
+                    string.substring(idx_finish, idx_start)));
+            }
+
+            idx_replace = idx_start + key.length;
+            idx_finish = string.indexOf(key, idx_replace);
+
+            span = JSUS.getElement('span', null, args[key]);
+
+            text = string.substring(idx_replace, idx_finish);
+
+            span.appendChild(document.createTextNode(text));
+
+            root.appendChild(span);
+            idx_finish = idx_finish + key.length;
+        }
+
+        // Add the final part of the string.
+        if (idx_finish !== string.length) {
+            root.appendChild(document.createTextNode(
+                string.substring(idx_finish)));
+        }
+
+        return root;
+    }
+
+    /**
+     * ### DOM.isNode
+     *
+     * Returns TRUE if the object is a DOM node
+     *
+     * @param {mixed} The variable to check
+     * @param {boolean} TRUE, if the the object is a DOM node
+     */
+    DOM.isNode = function(o) {
+        return (
+            typeof Node === "object" ? o instanceof Node :
+                typeof o === "object" &&
+                typeof o.nodeType === "number" &&
+                typeof o.nodeName === "string"
+        );
+    };
+
+    /**
+     * ### DOM.isElement
+     *
+     * Returns TRUE if the object is a DOM element
+     *
+     * @param {mixed} The variable to check
+     * @param {boolean} TRUE, if the the object is a DOM element
+     */
+    DOM.isElement = function(o) {
+        return (
+            typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+            typeof o === "object" &&
+                o.nodeType === 1 &&
+                typeof o.nodeName === "string"
+        );
+    };
+
+    /**
+     * ## DOM.shuffleNodes
+     *
+     * Shuffles the children nodes
+     *
+     * @param {Node} parent The parent node
+     * @param {array} order Optional. A pre-specified order. Defaults, random
+     */
+    DOM.shuffleNodes = function(parent, order) {
+        var i, len;
+        if (!JSUS.isNode(parent)) {
+            throw new TypeError('DOM.shuffleNodes: parent must node.');
+        }
+        if (!parent.children || !parent.children.length) {
+            JSUS.log('DOM.shuffleNodes: parent has no children.', 'ERR');
+            return false;
+        }
+        if (order) {
+            if (!J.isArray(order)) {
+                throw new TypeError('DOM.shuffleNodes: order must array.');
+            }
+            if (order.length !== parent.children.length) {
+                throw new Error('DOM.shuffleNodes: order length must match ' +
+                                'the number of children nodes.');
+            }
+        }
+
+        len = parent.children.length;
+
+        if (!order) order = JSUS.sample(0,len);
+        for (i = 0 ; i < len; i++) {
+            parent.appendChild(parent.children[order[i]]);
+        }
+
+        return true;
+    };
+
+    /**
+     * ### DOM.getElement
+     *
+     * Creates a generic HTML element with id and attributes as specified,
+     * and returns it.
+     *
+     * @see DOM.addAttributes2Elem
+     */
+    DOM.getElement = function(elem, id, attributes) {
+        var e = document.createElement(elem);
+        if ('undefined' !== typeof id) {
+            e.id = id;
+        }
+        return this.addAttributes2Elem(e, attributes);
+    };
+
+    /**
+     * ### DOM.addElement
+     *
+     * Creates a generic HTML element with id and attributes as specified,
+     * appends it to the root element, and returns it.
+     *
+     * @see DOM.getElement
+     * @see DOM.addAttributes2Elem
+     */
+    DOM.addElement = function(elem, root, id, attributes) {
+        var el = this.getElement(elem, id, attributes);
+        return root.appendChild(el);
+    };
+
+    /**
+     * ### DOM.addAttributes2Elem
+     *
+     * Adds attributes to an HTML element and returns it.
+     *
+     * Attributes are defined as key-values pairs.
+     * Attributes 'style', and 'label' are ignored.
+     *
+     * @see DOM.style
+     * @see DOM.addLabel
+     *
+     */
+    DOM.addAttributes2Elem = function(e, a) {
+        if (!e || !a) return e;
+        if ('object' != typeof a) return e;
+        var specials = ['id', 'label'];
+        for (var key in a) {
+            if (a.hasOwnProperty(key)) {
+                if (!JSUS.in_array(key, specials)) {
+                    e.setAttribute(key,a[key]);
+                } else if (key === 'id') {
+                    e.id = a[key];
+                }
+
+                // TODO: handle special cases
+                // <!--
+                //                else {
+                //
+                //                    // If there is no parent node, the legend cannot be created
+                //                    if (!e.parentNode) {
+                //                        node.log('Cannot add label: no parent element found', 'ERR');
+                //                        continue;
+                //                    }
+                //
+                //                    this.addLabel(e.parentNode, e, a[key]);
+                //                }
+                // -->
+            }
+        }
+        return e;
+    };
+
+    /**
+     * ### DOM.populateSelect
+     *
+     * Appends a list of options into a HTML select element.
+     * The second parameter list is an object containing
+     * a list of key-values pairs as text-value attributes for
+     * the option.
+     *
+     */
+    DOM.populateSelect = function(select, list) {
+        if (!select || !list) return;
+        for (var key in list) {
+            if (list.hasOwnProperty(key)) {
+                var opt = document.createElement('option');
+                opt.value = list[key];
+                opt.appendChild(document.createTextNode(key));
+                select.appendChild(opt);
+            }
+        }
+    };
+
+    /**
+     * ### DOM.removeChildrenFromNode
+     *
+     * Removes all children from a node.
+     *
+     */
+    DOM.removeChildrenFromNode = function(e) {
+
+        if (!e) return false;
+
+        while (e.hasChildNodes()) {
+            e.removeChild(e.firstChild);
+        }
+        return true;
+    };
+
+    /**
+     * ### DOM.insertAfter
+     *
+     * Insert a node element after another one.
+     *
+     * The first parameter is the node to add.
+     *
+     */
+    DOM.insertAfter = function(node, referenceNode) {
+        referenceNode.insertBefore(node, referenceNode.nextSibling);
+    };
+
+    /**
+     * ### DOM.generateUniqueId
+     *
+     * Generate a unique id for the page (frames included).
+     *
+     * TODO: now it always create big random strings, it does not actually
+     * check if the string exists.
+     *
+     */
+    DOM.generateUniqueId = function(prefix) {
+        var search = [window];
+        if (window.frames) {
+            search = search.concat(window.frames);
+        }
+
+        function scanDocuments(id) {
+            var found = true;
+            while (found) {
+                for (var i=0; i < search.length; i++) {
+                    found = search[i].document.getElementById(id);
+                    if (found) {
+                        id = '' + id + '_' + JSUS.randomInt(0, 1000);
+                        break;
+                    }
+                }
+            }
+            return id;
+        };
+
+
+        return scanDocuments(prefix + '_' + JSUS.randomInt(0, 10000000));
+        //return scanDocuments(prefix);
+    };
+
+    /**
+     * ### DOM.getBlankPage
+     *
+     * Creates a blank HTML page with the html and body
+     * elements already appended.
+     *
+     */
+    DOM.getBlankPage = function() {
+        var html = document.createElement('html');
+        html.appendChild(document.createElement('body'));
+        return html;
+    };
+
+    //    DOM.findLastElement = function(o) {
+    //        if (!o) return;
+    //
+    //        if (o.lastChild) {
+    //            var e
+    //            JSUS.isElement(e)) return DOM.findLastElement(e);
+    //
+    //            var e = e.previousSibling;
+    //            if (e && JSUS.isElement(e)) return DOM.findLastElement(e);
+    //
+    //        return o;
+    //    };
+
+    // ## GET/ADD
+
+    /**
+     * ### DOM.getButton
+     *
+     */
+    DOM.getButton = function(id, text, attributes) {
+        var sb = document.createElement('button');
+        sb.id = id;
+        sb.appendChild(document.createTextNode(text || 'Send'));
+        return this.addAttributes2Elem(sb, attributes);
+    };
+
+    /**
+     * ### DOM.addButton
+     *
+     */
+    DOM.addButton = function(root, id, text, attributes) {
+        var b = this.getButton(id, text, attributes);
+        return root.appendChild(b);
+    };
+
+    /**
+     * ### DOM.getFieldset
+     *
+     */
+    DOM.getFieldset = function(id, legend, attributes) {
+        var f = this.getElement('fieldset', id, attributes);
+        var l = document.createElement('Legend');
+        l.appendChild(document.createTextNode(legend));
+        f.appendChild(l);
+        return f;
+    };
+
+    /**
+     * ### DOM.addFieldset
+     *
+     */
+    DOM.addFieldset = function(root, id, legend, attributes) {
+        var f = this.getFieldset(id, legend, attributes);
+        return root.appendChild(f);
+    };
+
+    /**
+     * ### DOM.getTextInput
+     *
+     */
+    DOM.getTextInput = function(id, attributes) {
+        var ti =  document.createElement('input');
+        if ('undefined' !== typeof id) ti.id = id;
+        ti.setAttribute('type', 'text');
+        return this.addAttributes2Elem(ti, attributes);
+    };
+
+    /**
+     * ### DOM.addTextInput
+     *
+     */
+    DOM.addTextInput = function(root, id, attributes) {
+        var ti = this.getTextInput(id, attributes);
+        return root.appendChild(ti);
+    };
+
+    /**
+     * ### DOM.getTextArea
+     *
+     */
+    DOM.getTextArea = function(id, attributes) {
+        var ta =  document.createElement('textarea');
+        if ('undefined' !== typeof id) ta.id = id;
+        return this.addAttributes2Elem(ta, attributes);
+    };
+
+    /**
+     * ### DOM.addTextArea
+     *
+     */
+    DOM.addTextArea = function(root, id, attributes) {
+        var ta = this.getTextArea(id, attributes);
+        return root.appendChild(ta);
+    };
+
+    /**
+     * ### DOM.getCanvas
+     *
+     */
+    DOM.getCanvas = function(id, attributes) {
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+
+        if (!context) {
+            alert('Canvas is not supported');
+            return false;
+        }
+
+        canvas.id = id;
+        return this.addAttributes2Elem(canvas, attributes);
+    };
+
+    /**
+     * ### DOM.addCanvas
+     *
+     */
+    DOM.addCanvas = function(root, id, attributes) {
+        var c = this.getCanvas(id, attributes);
+        return root.appendChild(c);
+    };
+
+    /**
+     * ### DOM.getSlider
+     *
+     */
+    DOM.getSlider = function(id, attributes) {
+        var slider = document.createElement('input');
+        slider.id = id;
+        slider.setAttribute('type', 'range');
+        return this.addAttributes2Elem(slider, attributes);
+    };
+
+    /**
+     * ### DOM.addSlider
+     *
+     */
+    DOM.addSlider = function(root, id, attributes) {
+        var s = this.getSlider(id, attributes);
+        return root.appendChild(s);
+    };
+
+    /**
+     * ### DOM.getRadioButton
+     *
+     */
+    DOM.getRadioButton = function(id, attributes) {
+        var radio = document.createElement('input');
+        radio.id = id;
+        radio.setAttribute('type', 'radio');
+        return this.addAttributes2Elem(radio, attributes);
+    };
+
+    /**
+     * ### DOM.addRadioButton
+     *
+     */
+    DOM.addRadioButton = function(root, id, attributes) {
+        var rb = this.getRadioButton(id, attributes);
+        return root.appendChild(rb);
+    };
+
+    /**
+     * ### DOM.getLabel
+     *
+     */
+    DOM.getLabel = function(forElem, id, labelText, attributes) {
+        if (!forElem) return false;
+        var label = document.createElement('label');
+        label.id = id;
+        label.appendChild(document.createTextNode(labelText));
+
+        if ('undefined' === typeof forElem.id) {
+            forElem.id = this.generateUniqueId();
+        }
+
+        label.setAttribute('for', forElem.id);
+        this.addAttributes2Elem(label, attributes);
+        return label;
+    };
+
+    /**
+     * ### DOM.addLabel
+     *
+     */
+    DOM.addLabel = function(root, forElem, id, labelText, attributes) {
+        if (!root || !forElem || !labelText) return false;
+        var l = this.getLabel(forElem, id, labelText, attributes);
+        root.insertBefore(l, forElem);
+        return l;
+    };
+
+    /**
+     * ### DOM.getSelect
+     *
+     */
+    DOM.getSelect = function(id, attributes) {
+        return this.getElement('select', id, attributes);
+    };
+
+    /**
+     * ### DOM.addSelect
+     *
+     */
+    DOM.addSelect = function(root, id, attributes) {
+        return this.addElement('select', root, id, attributes);
+    };
+
+    /**
+     * ### DOM.getIFrame
+     *
+     */
+    DOM.getIFrame = function(id, attributes) {
+        var attributes = {'name' : id}; // For Firefox
+        return this.getElement('iframe', id, attributes);
+    };
+
+    /**
+     * ### DOM.addIFrame
+     *
+     */
+    DOM.addIFrame = function(root, id, attributes) {
+        var ifr = this.getIFrame(id, attributes);
+        return root.appendChild(ifr);
+    };
+
+    /**
+     * ### DOM.addBreak
+     *
+     */
+    DOM.addBreak = function(root, rc) {
+        var RC = rc || 'br';
+        var br = document.createElement(RC);
+        return root.appendChild(br);
+        //return this.insertAfter(br,root);
+    };
+
+    /**
+     * ### DOM.getDiv
+     *
+     */
+    DOM.getDiv = function(id, attributes) {
+        return this.getElement('div', id, attributes);
+    };
+
+    /**
+     * ### DOM.addDiv
+     *
+     */
+    DOM.addDiv = function(root, id, attributes) {
+        return this.addElement('div', root, id, attributes);
+    };
+
+    // ## CSS / JS
+
+    /**
+     * ### DOM.addCSS
+     *
+     * If no root element is passed, it tries to add the CSS
+     * link element to document.head, document.body, and
+     * finally document. If it fails, returns FALSE.
+     *
+     */
+    DOM.addCSS = function(root, css, id, attributes) {
+        var root = root || document.head || document.body || document;
+        if (!root) return false;
+
+        attributes = attributes || {};
+
+        attributes = JSUS.merge(attributes, {rel : 'stylesheet',
+                                             type: 'text/css',
+                                             href: css
+                                            });
+
+        return this.addElement('link', root, id, attributes);
+    };
+
+    /**
+     * ### DOM.addJS
+     *
+     */
+    DOM.addJS = function(root, js, id, attributes) {
+        var root = root || document.head || document.body || document;
+        if (!root) return false;
+
+        attributes = attributes || {};
+
+        attributes = JSUS.merge(attributes, {charset : 'utf-8',
+                                             type: 'text/javascript',
+                                             src: js
+                                            });
+
+        return this.addElement('script', root, id, attributes);
+    };
+
+    /**
+     * ### DOM.highlight
+     *
+     * Provides a simple way to highlight an HTML element
+     * by adding a colored border around it.
+     *
+     * Three pre-defined modes are implemented:
+     *
+     * - OK: green
+     * - WARN: yellow
+     * - ERR: red (default)
+     *
+     * Alternatively, it is possible to specify a custom
+     * color as HEX value. Examples:
+     *
+     * ```javascript
+     * highlight(myDiv, 'WARN'); // yellow border
+     * highlight(myDiv);          // red border
+     * highlight(myDiv, '#CCC'); // grey border
+     * ```
+     *
+     * @see DOM.addBorder
+     * @see DOM.style
+     */
+    DOM.highlight = function(elem, code) {
+        if (!elem) return;
+
+        // default value is ERR
+        switch (code) {
+        case 'OK':
+            var color =  'green';
+            break;
+        case 'WARN':
+            var color = 'yellow';
+            break;
+        case 'ERR':
+            var color = 'red';
+            break;
+        default:
+            if (code[0] === '#') {
+                var color = code;
+            }
+            else {
+                var color = 'red';
+            }
+        }
+
+        return this.addBorder(elem, color);
+    };
+
+    /**
+     * ### DOM.addBorder
+     *
+     * Adds a border around the specified element. Color,
+     * width, and type can be specified.
+     */
+    DOM.addBorder = function(elem, color, width, type) {
+        var properties;
+        if (!elem) return;
+
+        color = color || 'red';
+        width = width || '5px';
+        type = type || 'solid';
+
+        properties = { border: width + ' ' + type + ' ' + color };
+        return DOM.style(elem, properties);
+    };
+
+    /**
+     * ### DOM.style
+     *
+     * Styles an element as an in-line css.
+     * Takes care to add new styles, and not overwriting previuous
+     * attributes.
+     *
+     * Returns the element.
+     *
+     * @see DOM.setAttribute
+     */
+    DOM.style = function(elem, properties) {
+        var style, i;
+        if (!elem || !properties) return;
+        if (!DOM.isElement(elem)) return;
+
+        style = '';
+        for (i in properties) {
+            style += i + ': ' + properties[i] + '; ';
+        };
+        return elem.setAttribute('style', style);
+    };
+
+    /**
+     * ### DOM.removeClass
+     *
+     * Removes a specific class from the classNamex attribute of a given element
+     *
+     * @param {HTMLElement} el An HTML element
+     * @param {string} c The name of a CSS class already in the element
+     * @return {HTMLElement|undefined} el The HTML element with the removed
+     *   class, or undefined input are misspecified.
+     */
+    DOM.removeClass = function(el, c) {
+        var regexpr, o;
+        if (!el || !c) return;
+        regexpr = '/(?:^|\s)' + c + '(?!\S)/';
+        o = el.className = el.className.replace( regexpr, '' );
+        return el;
+    };
+
+    /**
+     * ### DOM.addClass
+     *
+     * Adds one or more classes to the className attribute of the given element
+     *
+     * Takes care not to overwrite already existing classes.
+     *
+     * @param {HTMLElement} el An HTML element
+     * @param {string|array} c The name/s of CSS class/es
+     * @return {HTMLElement|undefined} el The HTML element with the additional
+     *   class, or undefined input are misspecified.
+     */
+    DOM.addClass = function(el, c) {
+        if (!el || !c) return;
+        if (c instanceof Array) c = c.join(' ');
+        if ('undefined' === typeof el.className) {
+            el.className = c;
+        }
+        else {
+            el.className += ' ' + c;
+        }
+        return el;
+    };
+    
+    /**
+     * ## DOM.getIFrameDocument
+     *
+     * Returns a reference to the document of an iframe object 
+     *
+     * @param {HTMLIFrameElement} iframe The iframe object
+     * @return {HTMLDocument|undefined} The document of the iframe, or
+     *   undefined if not found.
+     */
+    DOM.getIFrameDocument = function(iframe) {
+        if (!iframe) return;
+        return iframe.contentDocument || iframe.contentWindow.document;
+    };
+
+    /**
+     * ### DOM.getIFrameAnyChild
+     *
+     * Gets the first available child of an IFrame
+     *
+     * Tries head, body, lastChild and the HTML element
+     *
+     * @param {HTMLIFrameElement} iframe The iframe object
+     * @return {HTMLElement|undefined} The child, or undefined if none is found
+     */
+    DOM.getIFrameAnyChild = function(iframe) {
+        var contentDocument;
+        if (!iframe) return;
+        contentDocument = W.getIFrameDocument(iframe);
+        return contentDocument.head || contentDocument.body ||
+            contentDocument.lastChild ||
+            contentDocument.getElementsByTagName('html')[0];
+    };
+
+    JSUS.extend(DOM);
+
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # EVAL
+ *
+ * Copyright(c) 2013 Stefano Balietti
+ * MIT Licensed
+ *
+ * Collection of static functions related to the evaluation
+ * of strings as javascript commands
+ * ---
+ */
+
+(function(JSUS) {
+
+function EVAL(){};
+
+/**
+ * ## EVAL.eval
+ *
+ * Allows to execute the eval function within a given
+ * context.
+ *
+ * If no context is passed a reference, `this` is used.
+ *
+ * @param {string} str The command to executes
+ * @param {object} context Optional. The context of execution. Defaults, `this`
+ * @return {mixed} The return value of the executed commands
+ *
+ * @see eval
+ * @see JSON.parse
+ */
+EVAL.eval = function(str, context) {
+    var func;
+    if (!str) return;
+    context = context || this;
+    // Eval must be called indirectly
+    // i.e. eval.call is not possible
+    func = function(str) {
+        // TODO: Filter str
+        return eval(str);
+    }
+    return func.call(context, str);
+};
+
+JSUS.extend(EVAL);
+
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # FS
+ *
+ * Copyright(c) 2013 Stefano Balietti
+ * MIT Licensed
+ *
+ * Collection of static functions related to file system operations.
+ *
+ * @see http://nodejs.org/api/fs.html
+ * @see https://github.com/ryanmcgrath/wrench-js
+ * @see https://github.com/substack/node-resolve
+ * ---
+ */
+(function(JSUS) {
+
+    if (!JSUS.isNodeJS()){
+        JSUS.log('Cannot load JSUS.FS outside of Node.JS.')
+        return false;
+    }
+
+    var resolve = require('resolve'),
+    path = require('path'),
+    fs = require('fs'),
+    wrench = require('wrench');
+
+
+    function FS(){};
+
+    /**
+     * ## FS.resolveModuleDir
+     *
+     * Backward-compatible version of fs.existsSync
+     */
+    FS.existsSync = ('undefined' === typeof fs.existsSync) ?
+        path.existsSync : fs.existsSync;
+
+
+    /**
+     * ## FS.resolveModuleDir
+     *
+     * Resolves the root directory of a module
+     *
+     * Npm does not install a dependency if the same module
+     * is available in a parent folder. This method returns
+     * the full path of the root directory of the specified
+     * module as installed by npm.
+     *
+     * Trailing slash is added.
+     *
+     * @param {string} module The name of the module
+     * @param {string} basedir Optional The basedir from which starting searching
+     * @return {string} The path of the root directory of the module
+     *
+     * @see https://github.com/substack/node-resolve
+     */
+    FS.resolveModuleDir = function(module, basedir) {
+        var str, stop;
+        if (!module) return false;
+
+        str = resolve.sync(module, {basedir: basedir || __dirname});
+        stop = str.indexOf(module) + module.length;
+        return str.substr(0, stop) + '/';
+    };
+
+    /**
+     * ## FS.deleteIfExists
+     *
+     * Deletes a file or directory
+     *
+     * Returns false if the file does not exist.
+     *
+     * @param {string} file The path to the file or directory
+     * @return {boolean} TRUE, if operation is succesfull
+     *
+     * @see FS.cleanDir
+     */
+    FS.deleteIfExists = function(file) {
+        if (!FS.existsSync(file)) {
+            return false;
+        }
+        var stats = fs.lstatSync(file);
+        if (stats.isDirectory()) {
+            fs.rmdir(file, function(err) {
+                if (err) throw err;
+            });
+        }
+        else {
+            fs.unlink(file, function(err) {
+                if (err) throw err;
+            });
+        }
+        return true;
+
+    };
+
+    /**
+     * ## FS.cleanDir
+     *
+     * Removes all files from a target directory
+     *
+     * It is possible to specify an extension as second parameter.
+     * In such case, only file with that extension will be removed.
+     * The '.' (dot) must be included as part of the extension.
+     *
+     *
+     * @param {string} dir The directory to clean
+     * @param {string} ext Optional. If set, only files with this extension
+     *   will be removed
+     * @param {function} cb Optional. A callback function to call if
+     *   no error is raised
+     *
+     * @return {boolean} TRUE, if the operation is successful
+     *
+     * @see FS.deleteIfExists
+     */
+    FS.cleanDir = function(dir, ext, cb) {
+        var fileterFunc;
+        if (!dir) {
+            JSUS.log('You must specify a directory to clean.');
+            return false;
+        }
+        if (ext) {
+            filterFunc = function(file) {
+                return path.extname(file) ===  ext;
+            };
+        }
+        else {
+            filterFunc = function(file) {
+                return true;
+            };
+        }
+
+        if (dir[dir.length] !== '/') dir = dir + '/';
+
+        fs.readdir(dir, function(err, files) {
+            if (err) {
+                JSUS.log(err);
+                return false;
+            }
+
+            files.filter(filterFunc)
+                .forEach(function(file) {
+                    JSUS.deleteIfExists(dir + file);
+                });
+
+            if (cb) return cb(null);
+
+        });
+
+
+        return true;
+    };
+
+    /**
+     * ## FS.copyFromDir
+     *
+     * Copies all files from a source directory to a destination
+     * directory.
+     *
+     * It is possible to specify an extension as second parameter (e.g. '.js').
+     * In such case, only file with that extension will be copied.
+     *
+     * Warning! If an extension filter is not specified, and if subdirectories
+     * are found, an error will occur.
+     *
+     * @param {string} dirIn The source directory
+     * @param {string} dirOut The destination directory
+     * @param {string} ext Optional. If set, only files with this extension
+     *   will be copied
+     * @param {function} cb Optional. A callback function to call if
+     *   no error is raised
+     *
+     * @return {boolean} TRUE, if the operation is successful
+     *
+     * @see FS.copyFile
+     */
+    FS.copyFromDir = function(dirIn, dirOut, ext, cb) {
+        if (!dirIn) {
+            JSUS.log('You must specify a source directory');
+            return false;
+        }
+        if (!dirOut) {
+            JSUS.log('You must specify a destination directory');
+            return false;
+        }
+
+        dirOut = path.resolve(dirOut) + '/';
+        var i, dir, dirs = [dirIn, dirOut];
+        for (i=0; i < 2; i++) {
+            dir = dirs[i];
+            if (!FS.existsSync(dir)) {
+                console.log(dir + ' does not exist');
+                return false;
+            }
+
+            var stats = fs.lstatSync(dir);
+            if (!stats.isDirectory()) {
+                console.log(dir + ' is not a directory');
+                return false;
+            }
+        }
+
+        fs.readdir(dirIn, function(err, files){
+            if (err) {
+                JSUS.log(err);
+                throw new Error;
+            }
+            for (var i in files) {
+                if (ext && path.extname(files[i]) !== ext) {
+                    continue;
+                }
+                copyFile(dirIn + files[i], dirOut + files[i]);
+            }
+
+            if (cb) return cb(null);
+        });
+
+        return true;
+    };
+
+    /**
+     * ## FS.copyFile
+     *
+     * Copies a file into another path
+     *
+     * @param {string} srcFile The source file
+     * @param {string} destFile The destination file
+     * @param {function} cb Optional. If set, the callback will be executed
+     *   upon success
+     * @param {function} cb Optional. A callback function to call if
+     *   no error is raised
+     *
+     * @return {boolean} TRUE, if the operation is successful
+     *
+     * @see https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
+     */
+    var copyFile = function(srcFile, destFile, cb) {
+        var fdr, fdw;
+        fdr = fs.createReadStream(srcFile);
+        fdw = fs.createWriteStream(destFile);
+        fdr.on('end', function() {
+            if (cb) return cb(null);
+        });
+        return fdr.pipe(fdw);
+    };
+
+    /**
+      *  ## wrench
+      *
+      *  FS exposes the properties of the great package wrench for
+      *  performing recursive operations on directories
+      *
+      *  @see https://github.com/ryanmcgrath/wrench-js
+      *
+      */
+
+    (function() {
+        for (var w in wrench) {
+            if (wrench.hasOwnProperty(w)) {
+                FS[w] = wrench[w];
+            }
+        }
+
+    })();
+    JSUS.extend(FS);
+
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # JSUS.OBJ
+ * Copyright(c) 2013 Stefano Balietti
+ * MIT Licensed
+ *
+ * Collection of static functions to manipulate javascript objects.
+ * ---
+ */
+(function(JSUS) {
 
     function OBJ(){};
 
@@ -1258,11 +2165,10 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.equals
      *
-     * Checks for deep equality between two objects, string
-     * or primitive types.
+     * Checks for deep equality between two objects, strings or primitive types
      *
-     * All nested properties are checked, and if they differ
-     * in at least one returns FALSE, otherwise TRUE.
+     * All nested properties are checked, and if they differ in at least
+     * one returns FALSE, otherwise TRUE.
      *
      * Takes care of comparing the following special cases:
      *
@@ -1273,10 +2179,14 @@ JSUS.extend(COMPATIBILITY);
      * - {}
      * - falsy values
      *
-     *
+     * @param {object} o1 The first object
+     * @param {object} o2 The second object
+     * @return {boolean} TRUE if the objects are deeply equal.
      */
-    OBJ.equals = function (o1, o2) {
-        var type1 = typeof o1, type2 = typeof o2;
+    OBJ.equals = function(o1, o2) {
+        var type1, type2, primitives, p;
+        type1 = typeof o1;
+        type2 = typeof o2;
 
         if (type1 !== type2) return false;
 
@@ -1286,12 +2196,13 @@ JSUS.extend(COMPATIBILITY);
         if (o1 === null || o2 === null) {
             return (o1 === o2);
         }
-        if (('number' === type1 && isNaN(o1)) && ('number' === type2 && isNaN(o2)) ) {
+        if (('number' === type1 && isNaN(o1)) &&
+            ('number' === type2 && isNaN(o2))) {
             return (isNaN(o1) && isNaN(o2));
         }
 
         // Check whether arguments are not objects
-        var primitives = {number: '', string: '', boolean: ''}
+        primitives = {number: '', string: '', boolean: ''}
         if (type1 in primitives) {
             return o1 === o2;
         }
@@ -1300,11 +2211,13 @@ JSUS.extend(COMPATIBILITY);
             return o1.toString() === o2.toString();
         }
 
-        for (var p in o1) {
+        for (p in o1) {
             if (o1.hasOwnProperty(p)) {
 
-                if ('undefined' === typeof o2[p] && 'undefined' !== typeof o1[p]) return false;
-                if (!o2[p] && o1[p]) return false; // <!-- null -->
+                if ('undefined' === typeof o2[p] &&
+                    'undefined' !== typeof o1[p]) return false;
+
+                if (!o2[p] && o1[p]) return false;
 
                 switch (typeof o1[p]) {
                 case 'function':
@@ -1320,8 +2233,10 @@ JSUS.extend(COMPATIBILITY);
         // TODO: improve, some properties have already been checked!
         for (p in o2) {
             if (o2.hasOwnProperty(p)) {
-                if ('undefined' === typeof o1[p] && 'undefined' !== typeof o2[p]) return false;
-                if (!o1[p] && o2[p]) return false; // <!-- null -->
+                if ('undefined' === typeof o1[p] &&
+                    'undefined' !== typeof o2[p]) return false;
+
+                if (!o1[p] && o2[p]) return false;
             }
         }
 
@@ -1331,24 +2246,21 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.isEmpty
      *
-     * Returns TRUE if an object has no own properties,
-     * FALSE otherwise
+     * Returns TRUE if an object has no own properties
      *
      * Does not check properties of the prototype chain.
      *
      * @param {object} o The object to check
      * @return {boolean} TRUE, if the object has no properties
-     *
      */
-    OBJ.isEmpty = function (o) {
+    OBJ.isEmpty = function(o) {
+        var key;
         if ('undefined' === typeof o) return true;
-
-        for (var key in o) {
+        for (key in o) {
             if (o.hasOwnProperty(key)) {
                 return false;
             }
         }
-
         return true;
     };
 
@@ -1363,13 +2275,14 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj The object to check
      * @return {number} The number of properties in the object
      */
-    OBJ.size = OBJ.getListSize = function (obj) {
+    OBJ.size = OBJ.getListSize = function(obj) {
+        var n, key;
         if (!obj) return 0;
         if ('number' === typeof obj) return 0;
         if ('string' === typeof obj) return 0;
 
-        var n = 0;
-        for (var key in obj) {
+        n = 0;
+        for (key in obj) {
             if (obj.hasOwnProperty(key)) {
                 n++;
             }
@@ -1382,16 +2295,19 @@ JSUS.extend(COMPATIBILITY);
      *
      * Explodes an object into an array of keys and values,
      * according to the specified parameters.
-
+     *
      * A fixed level of recursion can be set.
      *
      * @api private
      * @param {object} obj The object to convert in array
-     * @param {boolean} keyed TRUE, if also property names should be included. Defaults FALSE
-     * @param {number} level Optional. The level of recursion. Defaults undefined
+     * @param {boolean} keyed TRUE, if also property names should be included.
+     *   Defaults, FALSE
+     * @param {number} level Optional. The level of recursion.
+     *   Defaults, undefined
      * @return {array} The converted object
      */
     OBJ._obj2Array = function(obj, keyed, level, cur_level) {
+        var result, key;
         if ('object' !== typeof obj) return [obj];
 
         if (level) {
@@ -1400,18 +2316,19 @@ JSUS.extend(COMPATIBILITY);
             cur_level = cur_level + 1;
         }
 
-        var result = [];
-        for (var key in obj) {
+        result = [];
+        for (key in obj) {
             if (obj.hasOwnProperty(key)) {
                 if (keyed) result.push(key);
                 if ('object' === typeof obj[key]) {
-                    result = result.concat(OBJ._obj2Array(obj[key], keyed, level, cur_level));
-                } else {
+                    result = result.concat(OBJ._obj2Array(obj[key], keyed,
+                                                          level, cur_level));
+                }
+                else {
                     result.push(obj[key]);
                 }
             }
         }
-
         return result;
     };
 
@@ -1428,14 +2345,14 @@ JSUS.extend(COMPATIBILITY);
      * gets totally unfolded into an array.
      *
      * @param {object} obj The object to convert in array
-     * @param {number} level Optional. The level of recursion. Defaults, undefined
+     * @param {number} level Optional. The level of recursion. Defaults,
+     *   undefined
      * @return {array} The converted object
      *
-     *  @see OBJ._obj2Array
-     *  @see OBJ.obj2KeyedArray
-     *
+     * @see OBJ._obj2Array
+     * @see OBJ.obj2KeyedArray
      */
-    OBJ.obj2Array = function (obj, level) {
+    OBJ.obj2Array = function(obj, level) {
         return OBJ._obj2Array(obj, false, level);
     };
 
@@ -1448,13 +2365,13 @@ JSUS.extend(COMPATIBILITY);
      * returns it.
      *
      * @param {object} obj The object to convert in array
-     * @param {number} level Optional. The level of recursion. Defaults, undefined
+     * @param {number} level Optional. The level of recursion. Defaults,
+     *   undefined
      * @return {array} The converted object
      *
      * @see OBJ.obj2Array
-     *
      */
-    OBJ.obj2KeyedArray = OBJ.obj2KeyArray = function (obj, level) {
+    OBJ.obj2KeyedArray = OBJ.obj2KeyArray = function(obj, level) {
         return OBJ._obj2Array(obj, true, level);
     };
 
@@ -1471,20 +2388,21 @@ JSUS.extend(COMPATIBILITY);
      * @param {number} level Optional. The level of recursion. Defaults 0
      * @return {array} The array containing the extracted keys
      *
-     *  @see Object.keys
-     *
+     * @see Object.keys
      */
-    OBJ.keys = OBJ.objGetAllKeys = function (obj, level, curLevel) {
+    OBJ.keys = OBJ.objGetAllKeys = function(obj, level, curLevel) {
+        var result, key;
         if (!obj) return [];
-        level = ('number' === typeof level && level >= 0) ? level : 0;
-        curLevel = ('number' === typeof curLevel && curLevel >= 0) ? curLevel : 0;
-        var result = [];
-        for (var key in obj) {
+        level = 'number' === typeof level && level >= 0 ? level : 0;
+        curLevel = 'number' === typeof curLevel && curLevel >= 0 ? curLevel : 0;
+        result = [];
+        for (key in obj) {
             if (obj.hasOwnProperty(key)) {
                 result.push(key);
                 if (curLevel < level) {
                     if ('object' === typeof obj[key]) {
-                        result = result.concat(OBJ.objGetAllKeys(obj[key], (curLevel+1)));
+                        result = result.concat(OBJ.objGetAllKeys(obj[key],
+                                                                 (curLevel+1)));
                     }
                 }
             }
@@ -1495,8 +2413,7 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.implode
      *
-     * Separates each property into a new objects and returns
-     * them into an array
+     * Separates each property into a new object and returns them into an array
      *
      * E.g.
      *
@@ -1507,14 +2424,14 @@ JSUS.extend(COMPATIBILITY);
      *
      * @param {object} obj The object to implode
      * @return {array} result The array containig all the imploded properties
-     *
      */
-    OBJ.implode = OBJ.implodeObj = function (obj) {
+    OBJ.implode = OBJ.implodeObj = function(obj) {
+        var result, key, o;
         if (!obj) return [];
-        var result = [];
-        for (var key in obj) {
+        result = [];
+        for (key in obj) {
             if (obj.hasOwnProperty(key)) {
-                var o = {};
+                o = {};
                 o[key] = obj[key];
                 result.push(o);
             }
@@ -1535,7 +2452,8 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj The object to clone
      * @return {object} clone The clone of the object
      */
-    OBJ.clone = function (obj) {
+    OBJ.clone = function(obj) {
+        var clone, i, value;
         if (!obj) return obj;
         if ('number' === typeof obj) return obj;
         if ('string' === typeof obj) return obj;
@@ -1543,18 +2461,17 @@ JSUS.extend(COMPATIBILITY);
         if (obj === NaN) return obj;
         if (obj === Infinity) return obj;
 
-        var clone;
         if ('function' === typeof obj) {
             //          clone = obj;
             // <!-- Check when and if we need this -->
             clone = function() { return obj.apply(clone, arguments); };
         }
         else {
-            clone = (Object.prototype.toString.call(obj) === '[object Array]') ? [] : {};
+            clone = Object.prototype.toString.call(obj) === '[object Array]' ?
+                [] : {};
         }
 
-        for (var i in obj) {
-            var value;
+        for (i in obj) {
             // TODO: index i is being updated, so apply is called on the
             // last element, instead of the correct one.
             //          if ('function' === typeof obj[i]) {
@@ -1562,11 +2479,11 @@ JSUS.extend(COMPATIBILITY);
             //          }
             // It is not NULL and it is an object
             if (obj[i] && 'object' === typeof obj[i]) {
-                // is an array
+                // Is an array.
                 if (Object.prototype.toString.call(obj[i]) === '[object Array]') {
                     value = obj[i].slice(0);
                 }
-                // is an object
+                // Is an object.
                 else {
                     value = OBJ.clone(obj[i]);
                 }
@@ -1579,7 +2496,7 @@ JSUS.extend(COMPATIBILITY);
                 clone[i] = value;
             }
             else {
-                // we know if object.defineProperty is available
+                // We know if object.defineProperty is available.
                 if (compatibility && compatibility.defineProperty) {
                     Object.defineProperty(clone, i, {
                         value: value,
@@ -1627,12 +2544,13 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj2 The merging object
      * @return {object} clone The joined object
      *
-     *  @see OBJ.merge
+     * @see OBJ.merge
      */
-    OBJ.join = function (obj1, obj2) {
-        var clone = OBJ.clone(obj1);
+    OBJ.join = function(obj1, obj2) {
+        var clone, i;
+        clone = OBJ.clone(obj1);
         if (!obj2) return clone;
-        for (var i in clone) {
+        for (i in clone) {
             if (clone.hasOwnProperty(i)) {
                 if ('undefined' !== typeof obj2[i]) {
                     if ('object' === typeof obj2[i]) {
@@ -1669,17 +2587,18 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj2 The merging object
      * @return {object} clone The merged object
      *
-     *  @see OBJ.join
-     *  @see OBJ.mergeOnKey
+     * @see OBJ.join
+     * @see OBJ.mergeOnKey
      */
-    OBJ.merge = function (obj1, obj2) {
+    OBJ.merge = function(obj1, obj2) {
+        var clone, i;
         // Checking before starting the algorithm
         if (!obj1 && !obj2) return false;
         if (!obj1) return OBJ.clone(obj2);
         if (!obj2) return OBJ.clone(obj1);
 
-        var clone = OBJ.clone(obj1);
-        for (var i in obj2) {
+        clone = OBJ.clone(obj1);
+        for (i in obj2) {
 
             if (obj2.hasOwnProperty(i)) {
                 // it is an object and it is not NULL
@@ -1701,7 +2620,6 @@ JSUS.extend(COMPATIBILITY);
                 }
             }
         }
-
         return clone;
     };
 
@@ -1710,17 +2628,17 @@ JSUS.extend(COMPATIBILITY);
      *
      * Adds all the properties of obj2 into obj1
      *
-     * Original object is modified
+     * Original object is modified.
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
      */
-    OBJ.mixin = function (obj1, obj2) {
+    OBJ.mixin = function(obj1, obj2) {
+        var i;
         if (!obj1 && !obj2) return;
         if (!obj1) return obj2;
         if (!obj2) return obj1;
-
-        for (var i in obj2) {
+        for (i in obj2) {
             obj1[i] = obj2[i];
         }
     };
@@ -1735,12 +2653,12 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
      */
-    OBJ.mixout = function (obj1, obj2) {
+    OBJ.mixout = function(obj1, obj2) {
+        var i;
         if (!obj1 && !obj2) return;
         if (!obj1) return obj2;
         if (!obj2) return obj1;
-
-        for (var i in obj2) {
+        for (i in obj2) {
             if (!obj1[i]) obj1[i] = obj2[i];
         }
     };
@@ -1755,12 +2673,12 @@ JSUS.extend(COMPATIBILITY);
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
      */
-    OBJ.mixcommon = function (obj1, obj2) {
+    OBJ.mixcommon = function(obj1, obj2) {
+        var i;
         if (!obj1 && !obj2) return;
         if (!obj1) return obj2;
         if (!obj2) return obj1;
-
-        for (var i in obj2) {
+        for (i in obj2) {
             if (obj1[i]) obj1[i] = obj2[i];
         }
     };
@@ -1768,27 +2686,27 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.mergeOnKey
      *
-     * Appends / merges the values of the properties of obj2 into a
-     * a new property named 'key' in obj1.
+     * Merges the properties of obj2 into a new property named 'key' in obj1.
      *
      * Returns a new object, the original ones are not modified.
      *
      * This method is useful when we want to merge into a larger
-     * configuration (e.g. min, max, value) object another one that
-     * contains just the values for one of the properties (e.g. value).
+     * configuration (e.g. with properties min, max, value) object, another one
+     * that contains just a subset of properties (e.g. value).
      *
      * @param {object} obj1 The object where the merge will take place
      * @param {object} obj2 The merging object
-     * @param {string} key The name of property under which merging the second object
+     * @param {string} key The name of property under which the second object
+     *   will be merged
      * @return {object} clone The merged object
      *
-     *  @see OBJ.merge
-     *
+     * @see OBJ.merge
      */
-    OBJ.mergeOnKey = function (obj1, obj2, key) {
-        var clone = OBJ.clone(obj1);
+    OBJ.mergeOnKey = function(obj1, obj2, key) {
+        var clone, i;
+        clone = OBJ.clone(obj1);
         if (!obj2 || !key) return clone;
-        for (var i in obj2) {
+        for (i in obj2) {
             if (obj2.hasOwnProperty(i)) {
                 if (!clone[i] || 'object' !== typeof clone[i]) {
                     clone[i] = {};
@@ -1813,11 +2731,11 @@ JSUS.extend(COMPATIBILITY);
      *
      * @param {object} o The object to dissect
      * @param {string|array} select The selection of properties to extract
-     * @return {object} out The subobject with the properties from the parent one
+     * @return {object} out The subobject with the properties from the parent
      *
-     *  @see OBJ.getNestedValue
+     * @see OBJ.getNestedValue
      */
-    OBJ.subobj = function (o, select) {
+    OBJ.subobj = function(o, select) {
         var out, i, key
         if (!o) return false;
         out = {};
@@ -1838,8 +2756,7 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.skim
      *
-     * Creates a copy of an object where a set of selected properties
-     * have been removed
+     * Creates a copy of an object with some of the properties removed
      *
      * The parameter `remove` can be an array of strings, or the name
      * of a property.
@@ -1849,11 +2766,11 @@ JSUS.extend(COMPATIBILITY);
      *
      * @param {object} o The object to dissect
      * @param {string|array} remove The selection of properties to remove
-     * @return {object} out The subobject with the properties from the parent one
+     * @return {object} out The subobject with the properties from the parent
      *
      * @see OBJ.getNestedValue
      */
-    OBJ.skim = function (o, remove) {
+    OBJ.skim = function(o, remove) {
         var out, i;
         if (!o) return false;
         out = OBJ.clone(o);
@@ -1874,8 +2791,7 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.setNestedValue
      *
-     * Sets the value of a nested property of an object,
-     * and returns it.
+     * Sets the value of a nested property of an object and returns it.
      *
      * If the object is not passed a new one is created.
      * If the nested property is not existing, a new one is created.
@@ -1886,13 +2802,13 @@ JSUS.extend(COMPATIBILITY);
      *
      * @param {string} str The path to the value
      * @param {mixed} value The value to set
-     * @return {object|boolean} obj The modified object, or FALSE if error occurred
+     * @return {object|boolean} obj The modified object, or FALSE if error
+     *   occurrs
      *
      * @see OBJ.getNestedValue
      * @see OBJ.deleteNestedKey
-     *
      */
-    OBJ.setNestedValue = function (str, value, obj) {
+    OBJ.setNestedValue = function(str, value, obj) {
         var keys, k;
         if (!str) {
             JSUS.log('Cannot set value of undefined property', 'ERR');
@@ -1933,13 +2849,14 @@ JSUS.extend(COMPATIBILITY);
      * @see OBJ.setNestedValue
      * @see OBJ.deleteNestedKey
      */
-    OBJ.getNestedValue = function (str, obj) {
+    OBJ.getNestedValue = function(str, obj) {
+        var keys, k;
         if (!obj) return;
-        var keys = str.split('.');
+        keys = str.split('.');
         if (keys.length === 1) {
             return obj[str];
         }
-        var k = keys.shift();
+        k = keys.shift();
         return OBJ.getNestedValue(keys.join('.'), obj[k]);
     };
 
@@ -1966,14 +2883,15 @@ JSUS.extend(COMPATIBILITY);
      * @see OBJ.setNestedValue
      * @see OBJ.getNestedValue
      */
-    OBJ.deleteNestedKey = function (str, obj) {
+    OBJ.deleteNestedKey = function(str, obj) {
+        var keys, k;
         if (!obj) return;
-        var keys = str.split('.');
+        keys = str.split('.');
         if (keys.length === 1) {
             delete obj[str];
             return true;
         }
-        var k = keys.shift();
+        k = keys.shift();
         if ('undefined' === typeof obj[k]) {
             return false;
         }
@@ -1997,15 +2915,15 @@ JSUS.extend(COMPATIBILITY);
      * @param {string} str The path of the (nested) property
      * @param {object} obj The object to test
      * @return {boolean} TRUE, if the (nested) property exists
-     *
      */
-    OBJ.hasOwnNestedProperty = function (str, obj) {
+    OBJ.hasOwnNestedProperty = function(str, obj) {
+        var keys, k;
         if (!obj) return false;
-        var keys = str.split('.');
+        keys = str.split('.');
         if (keys.length === 1) {
             return obj.hasOwnProperty(str);
         }
-        var k = keys.shift();
+        k = keys.shift();
         return OBJ.hasOwnNestedProperty(keys.join('.'), obj[k]);
     };
 
@@ -2046,19 +2964,21 @@ JSUS.extend(COMPATIBILITY);
      * @param {sting} key The name of the property to split
      * @return {object} A copy of the object with split values
      */
-    OBJ.split = function (o, key) {
+    OBJ.split = function(o, key) {
+        var out, model, splitValue;
         if (!o) return;
         if (!key || 'object' !== typeof o[key]) {
             return JSUS.clone(o);
         }
 
-        var out = [];
-        var model = JSUS.clone(o);
+        out = [];
+        model = JSUS.clone(o);
         model[key] = {};
 
-        var splitValue = function (value) {
-            for (var i in value) {
-                var copy = JSUS.clone(model);
+        splitValue = function(value) {
+            var i, copy;
+            for (i in value) {
+                copy = JSUS.clone(model);
                 if (value.hasOwnProperty(i)) {
                     if ('object' === typeof value[i]) {
                         out = out.concat(splitValue(value[i]));
@@ -2110,10 +3030,11 @@ JSUS.extend(COMPATIBILITY);
      * Notice: the method does not actually create the key
      * in the object, but it just returns the name.
      *
-     * @param {object} obj The collection for which a unique key name will be created
-     * @param {string} prefixName Optional. A tentative key name. Defaults, a 15-digit random number
-     * @param {number} stop Optional. The number of tries before giving up searching
-     *  for a unique key name. Defaults, 1000000.
+     * @param {object} obj The collection for which a unique key will be created
+     * @param {string} prefixName Optional. A tentative key name. Defaults,
+     *   a 15-digit random number
+     * @param {number} stop Optional. The number of tries before giving up
+     *   searching for a unique key name. Defaults, 1000000.
      *
      * @return {string|undefined} The unique key name, or undefined if it was not found
      */
@@ -2124,7 +3045,8 @@ JSUS.extend(COMPATIBILITY);
             JSUS.log('Cannot find unique name in undefined object', 'ERR');
             return;
         }
-        prefixName = '' + (prefixName || Math.floor(Math.random()*1000000000000000));
+        prefixName = '' + (prefixName ||
+                           Math.floor(Math.random()*1000000000000000));
         stop = stop || 1000000;
         name = prefixName;
         while (obj[name]) {
@@ -2155,21 +3077,23 @@ JSUS.extend(COMPATIBILITY);
      * var b = { a:10, b:2, c:100, d:4 };
      * OBJ.augment(a, b); // { a: [1, 10], b: [2, 2], c: [3, 100]}
      *
-     * OBJ.augment(a, b, ['b', 'c', 'd']); // { a: 1, b: [2, 2], c: [3, 100], d: [4]});
+     * OBJ.augment(a, b, ['b', 'c', 'd']);
+     * // { a: 1, b: [2, 2], c: [3, 100], d: [4]});
      *
      * ```
      *
      * @param {object} obj1 The object whose properties will be augmented
      * @param {object} obj2 The augmenting object
-     * @param {array} key Optional. Array of key names common to both objects taken as
-     *  the set of properties to augment
+     * @param {array} key Optional. Array of key names common to both objects
+     *   taken as the set of properties to augment
      */
     OBJ.augment = function(obj1, obj2, keys) {
         var i, k, keys = keys || OBJ.keys(obj1);
 
         for (i = 0 ; i < keys.length; i++) {
             k = keys[i];
-            if ('undefined' !== typeof obj1[k] && Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
+            if ('undefined' !== typeof obj1[k] &&
+                Object.prototype.toString.call(obj1[k]) !== '[object Array]') {
                 obj1[k] = [obj1[k]];
             }
             if ('undefined' !== obj2[k]) {
@@ -2183,12 +3107,13 @@ JSUS.extend(COMPATIBILITY);
     /**
      * ## OBJ.pairwiseWalk
      *
-     * Given two objects, executes a callback on all attributes with the same name
+     * Executes a callback on all pairs of  attributes with the same name
      *
      * The results of each callback are aggregated in a new object under the
      * same property name.
      *
-     * Does not traverse nested objects, and properties of the prototype are excluded
+     * Does not traverse nested objects, and properties of the prototype
+     * are excluded.
      *
      * Returns a new object, the original ones are not modified.
      *
@@ -2231,374 +3156,375 @@ JSUS.extend(COMPATIBILITY);
                 }
             }
         }
-
         return out;
     };
-
 
     JSUS.extend(OBJ);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 
 /**
- * # RANDOM
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to the generation of 
- * pseudo-random numbers
- * 
- */
-
-(function (JSUS) {
-    
-function RANDOM(){};
-
-/**
- * ## RANDOM.random
- * 
- * Generates a pseudo-random floating point number between 
- * (a,b), both a and b exclusive.
- * 
- * @param {number} a The lower limit 
- * @param {number} b The upper limit
- * @return {number} A random floating point number in (a,b)
- */
-RANDOM.random = function (a, b) {
-	a = ('undefined' === typeof a) ? 0 : a;
-	b = ('undefined' === typeof b) ? 0 : b;
-	if (a === b) return a;
-	
-	if (b < a) {
-		var c = a;
-		a = b;
-		b = c;
-	}
-	return (Math.random() * (b - a)) + a
-};
-
-/**
- * ## RANDOM.randomInt
- * 
- * Generates a pseudo-random integer between 
- * (a,b] a exclusive, b inclusive.
- * 
- * @param {number} a The lower limit 
- * @param {number} b The upper limit
- * @return {number} A random integer in (a,b]
- * 
- * @see RANDOM.random
- */
-RANDOM.randomInt = function (a, b) {
-	if (a === b) return a;
-    return Math.floor(RANDOM.random(a, b) + 1);
-};
-
-
-JSUS.extend(RANDOM);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
  * # PARSE
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to parsing strings
- * 
- */
-(function (JSUS) {
-    
-function PARSE(){};
-
-/**
- * ## PARSE.stringify_prefix
- * 
- * Prefix used by PARSE.stringify and PARSE.parse
- * to decode strings with special meaning
- * 
- * @see PARSE.stringify
- * @see PARSE.parse
- */
-PARSE.stringify_prefix = '!?_';
-
-PARSE.marker_func = PARSE.stringify_prefix + 'function';
-PARSE.marker_null = PARSE.stringify_prefix + 'null';
-PARSE.marker_und = PARSE.stringify_prefix + 'undefined';
-PARSE.marker_nan = PARSE.stringify_prefix + 'NaN';
-PARSE.marker_inf = PARSE.stringify_prefix + 'Infinity';
-PARSE.marker_minus_inf = PARSE.stringify_prefix + '-Infinity';
-
-/**
- * ## PARSE.getQueryString
- * 
- * Parses the current querystring and returns it full or a specific variable.
- * Return false if the requested variable is not found.
- * 
- * @param {string} variable Optional. If set, returns only the value associated
- *   with this variable
- *   
- * @return {string|boolean} The querystring, or a part of it, or FALSE
- */
-PARSE.getQueryString = function (variable) {
-    var query = window.location.search.substring(1);
-    if ('undefined' === typeof variable) return query;
-    
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) {
-            return unescape(pair[1]);
-        }
-    }
-    return false;
-};
-
-/**
- * ## PARSE.tokenize
- * 
- * Splits a string in tokens that users can specified as input parameter.
- * Additional options can be specified with the modifiers parameter
- * 
- * - limit: An integer that specifies the number of splits, 
- * 		items after the split limit will not be included in the array
- * 
- * @param {string} str The string to split
- * @param {array} separators Array containing the separators words
- * @param {object} modifiers Optional. Configuration options for the tokenizing
- * 
- * @return {array} Tokens in which the string was split
- * 
- */
-PARSE.tokenize = function (str, separators, modifiers) {
-    if (!str) return;
-    if (!separators || !separators.length) return [str];
-    modifiers = modifiers || {};
-    
-    var pattern = '[';
-    
-    JSUS.each(separators, function(s) {
-	if (s === ' ') s = '\\s';
-	
-	pattern += s;
-    });
-    
-    pattern += ']+';
-    
-    var regex = new RegExp(pattern);
-    return str.split(regex, modifiers.limit);
-};
-
-/**
- * ## PARSE.stringify
- * 
- * Stringifies objects, functions, primitive, undefined or null values
- * 
- * Makes uses `JSON.stringify` with a special reviver function, that 
- * strinfifies also functions, undefined, and null values.
- * 
- * A special prefix is prepended to avoid name collisions.
- * 
- * @param {mixed} o The value to stringify
- * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
- * 
- * @return {string} The stringified result
- * 
- * @see JSON.stringify
- * @see PARSE.stringify_prefix
- */
-PARSE.stringify = function(o, spaces) {
-    return JSON.stringify(o, function(key, value){
-	var type = typeof value;
-	if ('function' === type) {
-	    return PARSE.stringify_prefix + value.toString()
-	}
-	
-	if ('undefined' === type) return PARSE.marker_und;
-	if (value === null) return PARSE.marker_null;
-        if ('number' === type && isNaN(value)) return PARSE.marker_nan;
-	if (value == Number.POSITIVE_INFINITY) return PARSE.marker_inf;
-	if (value == Number.NEGATIVE_INFINITY) return PARSE.marker_minus_inf;
-	
-	return value;
-	
-    }, spaces);
-};
-
-/**
- * ## PARSE.stringifyAll
- * 
- * Copies all the properties of the prototype before stringifying
  *
- * Notice: The original object is modified!
- * 
- * @param {mixed} o The value to stringify
- * @param {number} spaces Optional the number of indentation spaces. Defaults, 0
- * 
- * @return {string} The stringified result
- * 
- * @see PARSE.stringify
+ * Copyright(c) 2013 Stefano Balietti
+ * MIT Licensed
+ *
+ * Collection of static functions related to parsing strings
+ * ---
  */
-PARSE.stringifyAll = function(o, spaces) {
-    for (var i in o) {
-	if (!o.hasOwnProperty(i)) {
-	    if ('object' === typeof o[i]) {
-		o[i] = PARSE.stringifyAll(o[i]);
-	    }
-	    else {
-		o[i] = o[i];
-	    }
-	}
-    }
-    return PARSE.stringify(o);
-};
+(function(JSUS) {
 
-/**
- * ## PARSE.parse
- * 
- * Decodes strings in objects and other values
- * 
- * Uses `JSON.parse` and then looks  for special strings 
- * encoded by `PARSE.stringify`
- * 
- * @param {string} str The string to decode
- * @return {mixed} The decoded value 
- * 
- * @see JSON.parse
- * @see PARSE.stringify_prefix
- */
-PARSE.parse = function(str) {
-	
-    var len_prefix = PARSE.stringify_prefix.length,
+    function PARSE(){};
+
+    /**
+     * ## PARSE.stringify_prefix
+     *
+     * Prefix used by PARSE.stringify and PARSE.parse
+     * to decode strings with special meaning
+     *
+     * @see PARSE.stringify
+     * @see PARSE.parse
+     */
+    PARSE.stringify_prefix = '!?_';
+
+    PARSE.marker_func = PARSE.stringify_prefix + 'function';
+    PARSE.marker_null = PARSE.stringify_prefix + 'null';
+    PARSE.marker_und = PARSE.stringify_prefix + 'undefined';
+    PARSE.marker_nan = PARSE.stringify_prefix + 'NaN';
+    PARSE.marker_inf = PARSE.stringify_prefix + 'Infinity';
+    PARSE.marker_minus_inf = PARSE.stringify_prefix + '-Infinity';
+
+    /**
+     * ## PARSE.getQueryString
+     *
+     * Parses the current querystring and returns it full or a specific variable.
+     * Return false if the requested variable is not found.
+     *
+     * @param {string} variable Optional. If set, returns only the value
+     *    associated with this variable
+     *
+     * @return {string|boolean} The querystring, or a part of it, or FALSE
+     */
+    PARSE.getQueryString = function(variable) {
+        var query = window.location.search.substring(1);
+        if ('undefined' === typeof variable) return query;
+
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return unescape(pair[1]);
+            }
+        }
+        return false;
+    };
+
+    /**
+     * ## PARSE.tokenize
+     *
+     * Splits a string in tokens that users can specified as input parameter.
+     * Additional options can be specified with the modifiers parameter
+     *
+     * - limit: An integer that specifies the number of split items 
+     *     after the split limit will not be included in the array
+     *
+     * @param {string} str The string to split
+     * @param {array} separators Array containing the separators words
+     * @param {object} modifiers Optional. Configuration options 
+     *   for the tokenizing
+     *
+     * @return {array} Tokens in which the string was split
+     */
+    PARSE.tokenize = function(str, separators, modifiers) {
+        if (!str) return;
+        if (!separators || !separators.length) return [str];
+        modifiers = modifiers || {};
+
+        var pattern = '[';
+
+        JSUS.each(separators, function(s) {
+            if (s === ' ') s = '\\s';
+
+            pattern += s;
+        });
+
+        pattern += ']+';
+
+        var regex = new RegExp(pattern);
+        return str.split(regex, modifiers.limit);
+    };
+
+    /**
+     * ## PARSE.stringify
+     *
+     * Stringifies objects, functions, primitive, undefined or null values
+     *
+     * Makes uses `JSON.stringify` with a special reviver function, that
+     * strinfifies also functions, undefined, and null values.
+     *
+     * A special prefix is prepended to avoid name collisions.
+     *
+     * @param {mixed} o The value to stringify
+     * @param {number} spaces Optional the number of indentation spaces.
+     *   Defaults, 0
+     *
+     * @return {string} The stringified result
+     *
+     * @see JSON.stringify
+     * @see PARSE.stringify_prefix
+     */
+    PARSE.stringify = function(o, spaces) {
+        return JSON.stringify(o, function(key, value){
+            var type = typeof value;
+            if ('function' === type) {
+                return PARSE.stringify_prefix + value.toString()
+            }
+
+            if ('undefined' === type) return PARSE.marker_und;
+            if (value === null) return PARSE.marker_null;
+            if ('number' === type && isNaN(value)) return PARSE.marker_nan;
+            if (value == Number.POSITIVE_INFINITY) return PARSE.marker_inf;
+            if (value == Number.NEGATIVE_INFINITY) return PARSE.marker_minus_inf;
+
+            return value;
+
+        }, spaces);
+    };
+
+    /**
+     * ## PARSE.stringifyAll
+     *
+     * Copies all the properties of the prototype before stringifying
+     *
+     * Notice: The original object is modified!
+     *
+     * @param {mixed} o The value to stringify
+     * @param {number} spaces Optional the number of indentation spaces.
+     *   Defaults, 0
+     *
+     * @return {string} The stringified result
+     *
+     * @see PARSE.stringify
+     */
+    PARSE.stringifyAll = function(o, spaces) {
+        for (var i in o) {
+            if (!o.hasOwnProperty(i)) {
+                if ('object' === typeof o[i]) {
+                    o[i] = PARSE.stringifyAll(o[i]);
+                }
+                else {
+                    o[i] = o[i];
+                }
+            }
+        }
+        return PARSE.stringify(o);
+    };
+
+    /**
+     * ## PARSE.parse
+     *
+     * Decodes strings in objects and other values
+     *
+     * Uses `JSON.parse` and then looks  for special strings
+     * encoded by `PARSE.stringify`
+     *
+     * @param {string} str The string to decode
+     * @return {mixed} The decoded value
+     *
+     * @see JSON.parse
+     * @see PARSE.stringify_prefix
+     */
+    PARSE.parse = function(str) {
+
+        var len_prefix = PARSE.stringify_prefix.length,
         len_func = PARSE.marker_func.length,
         len_null = PARSE.marker_null.length,
         len_und = PARSE.marker_und.length,
         len_nan = PARSE.marker_nan.length,
         len_inf = PARSE.marker_inf.length,
         len_inf = PARSE.marker_minus_inf.length;
-       
-	
-    var o = JSON.parse(str);
-    return walker(o);
-	
-    function walker(o) {
-	if ('object' !== typeof o) return reviver(o);
-		
-	for (var i in o) {
-	    if (o.hasOwnProperty(i)) {
-		if ('object' === typeof o[i]) {
-		    walker(o[i]);
-		}
-		else {
-		    o[i] = reviver(o[i]);
-		}
-	    }
-	}
-	
-	return o;
+
+
+        var o = JSON.parse(str);
+        return walker(o);
+
+        function walker(o) {
+            if ('object' !== typeof o) return reviver(o);
+
+            for (var i in o) {
+                if (o.hasOwnProperty(i)) {
+                    if ('object' === typeof o[i]) {
+                        walker(o[i]);
+                    }
+                    else {
+                        o[i] = reviver(o[i]);
+                    }
+                }
+            }
+
+            return o;
+        }
+
+        function reviver(value) {
+            var type = typeof value;
+
+            if (type === 'string') {
+                if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
+                    return value;
+                }
+                else if (value.substring(0, len_func) === PARSE.marker_func) {
+                    return eval('('+value.substring(len_prefix)+')');
+                }
+                else if (value.substring(0, len_null) === PARSE.marker_null) {
+                    return null;
+                }
+                else if (value.substring(0, len_und) === PARSE.marker_und) {
+                    return undefined;
+                }
+
+                else if (value.substring(0, len_nan) === PARSE.marker_nan) {
+                    return NaN;
+                }
+                else if (value.substring(0, len_inf) === PARSE.marker_inf) {
+                    return Infinity;
+                }
+                else if (value.substring(0, len_inf) === PARSE.marker_minus_inf) {
+                    return -Infinity;
+                }
+
+            }
+            return value;
+        };
     }
-	
-    function reviver(value) {
-	var type = typeof value;
-	
-	if (type === 'string') {
-	    if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
-		return value;
-	    }
-	    else if (value.substring(0, len_func) === PARSE.marker_func) {
-		return eval('('+value.substring(len_prefix)+')');
-	    }
-	    else if (value.substring(0, len_null) === PARSE.marker_null) {
-		return null;
-	    }
-	    else if (value.substring(0, len_und) === PARSE.marker_und) {
-		return undefined;
-	    }
 
-	    else if (value.substring(0, len_nan) === PARSE.marker_nan) {
-		return NaN;
-	    }
-	    else if (value.substring(0, len_inf) === PARSE.marker_inf) {
-		return Infinity;
-	    }
-	    else if (value.substring(0, len_inf) === PARSE.marker_minus_inf) {
-		return -Infinity;
-	    }
+    JSUS.extend(PARSE);
 
-	}		
-	return value;
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
+ * # RANDOM
+ * Copyright(c) 2013 Stefano Balietti
+ * MIT Licensed
+ *
+ * Collection of static functions related to the generation of
+ * pseudo-random numbers.
+ * ---
+ */
+(function(JSUS) {
+
+    function RANDOM(){};
+
+    /**
+     * ## RANDOM.random
+     *
+     * Generates a pseudo-random floating point number between
+     * (a,b), both a and b exclusive.
+     *
+     * @param {number} a The lower limit
+     * @param {number} b The upper limit
+     * @return {number} A random floating point number in (a,b)
+     */
+    RANDOM.random = function(a, b) {
+        a = ('undefined' === typeof a) ? 0 : a;
+        b = ('undefined' === typeof b) ? 0 : b;
+        if (a === b) return a;
+
+        if (b < a) {
+            var c = a;
+            a = b;
+            b = c;
+        }
+        return (Math.random() * (b - a)) + a
     };
-}
 
+    /**
+     * ## RANDOM.randomInt
+     *
+     * Generates a pseudo-random integer between
+     * (a,b] a exclusive, b inclusive.
+     *
+     * @param {number} a The lower limit
+     * @param {number} b The upper limit
+     * @return {number} A random integer in (a,b]
+     *
+     * @see RANDOM.random
+     */
+    RANDOM.randomInt = function(a, b) {
+        if (a === b) return a;
+        return Math.floor(RANDOM.random(a, b) + 1);
+    };
 
-JSUS.extend(PARSE);
-    
+    RANDOM.sample = function(a, b) {
+        var out;
+        out = JSUS.seq(a,b)
+        if (!out) return false;
+        return JSUS.shuffle(out);
+    }
+
+    JSUS.extend(RANDOM);
+
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
  * # TIME
- *  
- * Copyright(c) 2012 Stefano Balietti
+ *
+ * Copyright(c) 2013 Stefano Balietti
  * MIT Licensed
- * 
- * Collection of static functions related to the generation, 
+ *
+ * Collection of static functions related to the generation,
  * manipulation, and formatting of time strings in javascript
- * 
+ * ---
  */
-
 (function (JSUS) {
-    
+
 function TIME() {};
 
 /**
  * ## TIME.getDate
- * 
- * Returns a string representation of the current date 
+ *
+ * Returns a string representation of the current date
  * and time formatted as follows:
- * 
+ *
  * dd-mm-yyyy hh:mm:ss milliseconds
- * 
+ *
  * @return {string} date Formatted time string hh:mm:ss
  */
 TIME.getDate = TIME.getFullDate = function() {
     var d = new Date();
-    var date = d.getUTCDate() + '-' + (d.getUTCMonth()+1) + '-' + d.getUTCFullYear() + ' ' 
-            + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ' ' 
-            + d.getMilliseconds();
-    
+    var date = d.getUTCDate() + '-' + (d.getUTCMonth()+1) + '-' +
+        d.getUTCFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() +
+        ':' + d.getSeconds() + ' ' + d.getMilliseconds();
+
     return date;
 };
 
 /**
  * ## TIME.getTime
- * 
+ *
  * Returns a string representation of the current time
  * formatted as follows:
- * 
+ *
  * hh:mm:ss
- * 
+ *
  * @return {string} time Formatted time string hh:mm:ss
  */
 TIME.getTime = function() {
     var d = new Date();
     var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-    
+
     return time;
 };
 
 /**
  * ## TIME.parseMilliseconds
- * 
- * Parses an integer number representing milliseconds, 
+ *
+ * Parses an integer number representing milliseconds,
  * and returns an array of days, hours, minutes and seconds
- * 
+ *
  * @param {number} ms Integer representing milliseconds
  * @return {array} result Milleconds parsed in days, hours, minutes, and seconds
- * 
  */
 TIME.parseMilliseconds = function (ms) {
-	if ('number' !== typeof ms) return;
-	
+    if ('number' !== typeof ms) return;
+
     var result = [];
     var x = ms / 1000;
     result[4] = x;
@@ -2613,820 +3539,10 @@ TIME.parseMilliseconds = function (ms) {
     var x = x / 24;
     var days = x;
     result[1] = Math.floor(days);
-    
+
     return result;
 };
 
 JSUS.extend(TIME);
-    
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
-/**
- * # DOM
- *  
- * Copyright(c) 2012 Stefano Balietti
- * MIT Licensed
- * 
- * Collection of static functions related to DOM manipulation
- * 
- * Helper library to perform generic operation with DOM elements.
- * 
- * The general syntax is the following: Every HTML element has associated
- * a get* and a add* method, whose syntax is very similar.
- * 
- * - The get* method creates the element and returns it.
- * - The add* method creates the element, append it as child to a root element, and then returns it.
- * 
- * The syntax of both method is the same, but the add* method 
- * needs the root element as first parameter. E.g.
- * 
- *  getButton(id, text, attributes);
- * 	addButton(root, id, text, attributes);
- *  
- * The last parameter is generally an object containing a list of 
- * of key-values pairs as additional attributes to set to the element.
- *   
- * Only the methods which do not follow the above-mentioned syntax
- * will receive further explanation. 
- * 
- * 
- */
 
-(function (JSUS) {
-    
-function DOM() {};
-
-// ## GENERAL
-
-/**
- * ### DOM.write
- * 
- * Write a text, or append an HTML element or node, into the
- * the root element.
- * 
- * 	@see DOM.writeln
- * 
- */
-DOM.write = function (root, text) {
-    if (!root) return;
-    if (!text) return;
-    var content = (!JSUS.isNode(text) || !JSUS.isElement(text)) ? document.createTextNode(text) : text;
-    root.appendChild(content);
-    return content;
-};
-
-/**
- * ### DOM.writeln
- * 
- * Write a text, or append an HTML element or node, into the
- * the root element and adds a break immediately after.
- * 
- * @see DOM.write
- * @see DOM.addBreak
- */
-DOM.writeln = function (root, text, rc) {
-    if (!root) return;
-    var br = this.addBreak(root, rc);
-    return (text) ? DOM.write(root, text) : br;
-};
-
-/**
- * ### DOM.sprintf
- * 
- * Builds up a decorated HTML text element
- * 
- * Performs string substitution from an args object where the first 
- * character of the key bears the following semantic: 
- *  
- * 	- '@': variable substitution with escaping 
- * 	- '!': variable substitution without variable escaping
- *  - '%': wraps a portion of string into a _span_ element to which is possible 
- *  		to associate a css class or id. Alternatively, it also possible to 
- *  		add in-line style. E.g.:
- * 
- * 	sprintf('%sImportant!%s An error has occurred: %pre@err%pre', {
- * 		'%pre': {
- * 			style: 'font-size: 12px; font-family: courier;'
- * 		},
- * 		'%s': {
- * 			id: 'myId',
- * 			'class': 'myClass',
- * 		},
- * 		'@err': 'file not found',
- * 	}, document.body);
- * 
- * 
- * @param {string} string A text to transform
- * @param {object} args Optional. An object containing the spans to apply to the string
- * @param {Element} root Optional. An HTML element to which append the string. Defaults, a new _span_ element
- * 
- */
-DOM.sprintf = function (string, args, root) {
-	
-	var text, textNode, span, idx_start, idx_finish, idx_replace, idxs, spans = {};
-	
-	if (!args) {
-		return document.createTextNode(string);
-	}
-	
-	root = root || document.createElement('span');
-	
-	// Transform arguments before inserting them.
-	for (var key in args) {
-		if (args.hasOwnProperty(key)) {
-			
-			// pattern not found
-			if (idx_start === -1) continue;
-			
-			switch(key[0]) {
-			
-			case '%': // span
-				
-				idx_start = string.indexOf(key);
-				idx_replace = idx_start + key.length;
-				idx_finish = string.indexOf(key, idx_replace);
-				
-				if (idx_finish === -1) {
-					JSUS.log('Error. Could not find closing key: ' + key);
-					continue;
-				}
-				
-				spans[idx_start] = key;
-				
-				break;
-			
-			case '@': // replace and sanitize
-				string = string.replace(key, escape(args[key]));
-				break;
-				
-			case '!': // replace and not sanitize
-				string = string.replace(key, args[key]);
-				break;
-				
-			default:
-				JSUS.log('Identifier not in [!,@,%]: ' + key[0]);
-		
-			}
-		}
-	}
-	
-	// No span to creates
-	if (!JSUS.size(spans)) {
-		return document.createTextNode(string);
-	}
-	
-	// Re-assamble the string
-	
-	idxs = JSUS.keys(spans).sort(function(a,b){return a-b;});
-	idx_finish = 0;
-	for (var i = 0; i < idxs.length; i++) {
-		
-		// add span
-		key = spans[idxs[i]];
-		idx_start = string.indexOf(key);
-		
-		// add fragments of string
-		if (idx_finish !== idx_start-1) {
-			root.appendChild(document.createTextNode(string.substring(idx_finish, idx_start)));
-		}
-		
-		idx_replace = idx_start + key.length;
-		idx_finish = string.indexOf(key, idx_replace);
-		
-		span = W.getElement('span', null, args[key]);
-
-		text = string.substring(idx_replace, idx_finish);
-		
-		span.appendChild(document.createTextNode(text));
-		
-		root.appendChild(span);
-		idx_finish = idx_finish + key.length;
-	}
-	
-	// add the final part of the string
-	if (idx_finish !== string.length) {
-		root.appendChild(document.createTextNode(string.substring(idx_finish)));
-	}
-	
-	return root;
-}
-
-
-/**
- * ### DOM.isNode
- * 
- * Returns TRUE if the object is a DOM node
- * 
- */
-DOM.isNode = function(o){
-    return (
-        typeof Node === "object" ? o instanceof Node : 
-        typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string"
-    );
-};
-
-/**
- * ### DOM.isElement
- * 
- * Returns TRUE if the object is a DOM element 
- * 
- */   
-DOM.isElement = function(o) {
-    return (
-        typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-        typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string"
-    );
-};
-
-/**
- * ### DOM.getElement
- * 
- * Creates a generic HTML element with id and attributes as specified,
- * and returns it.
- * 
- * @see DOM.addAttributes2Elem
- * 
- */
-DOM.getElement = function (elem, id, attributes) {
-    var e = document.createElement(elem);
-    if ('undefined' !== typeof id) {
-        e.id = id;
-    }
-    return this.addAttributes2Elem(e, attributes);
-};
-
-/**
- * ### DOM.addElement
- * 
- * Creates a generic HTML element with id and attributes as specified, 
- * appends it to the root element, and returns it.
- * 
- * @see DOM.getElement
- * @see DOM.addAttributes2Elem
- * 
- */
-DOM.addElement = function (elem, root, id, attributes) {
-    var el = this.getElement(elem, id, attributes);
-    return root.appendChild(el);
-};
-
-/**
- * ### DOM.addAttributes2Elem
- * 
- * Adds attributes to an HTML element and returns it.
- * 
- * Attributes are defined as key-values pairs. 
- * Attributes 'style', and 'label' are ignored.
- * 
- * @see DOM.style
- * @see DOM.addLabel
- * 
- */
-DOM.addAttributes2Elem = function (e, a) {
-    if (!e || !a) return e;
-    if ('object' != typeof a) return e;
-    var specials = ['id', 'label'];
-    for (var key in a) {
-        if (a.hasOwnProperty(key)) {
-            if (!JSUS.in_array(key, specials)) {
-                e.setAttribute(key,a[key]);
-            } else if (key === 'id') {
-                e.id = a[key];
-            }
-            
-            // TODO: handle special cases
-            // <!--
-//                else {
-//            
-//                    // If there is no parent node, the legend cannot be created
-//                    if (!e.parentNode) {
-//                        node.log('Cannot add label: no parent element found', 'ERR');
-//                        continue;
-//                    }
-//                    
-//                    this.addLabel(e.parentNode, e, a[key]);
-//                }
-            // -->
-        }
-    }
-    return e;
-};
-
-/**
- * ### DOM.populateSelect
- * 
- * Appends a list of options into a HTML select element.
- * The second parameter list is an object containing 
- * a list of key-values pairs as text-value attributes for
- * the option.
- *  
- */
-DOM.populateSelect = function (select, list) {
-    if (!select || !list) return;
-    for (var key in list) {
-        if (list.hasOwnProperty(key)) {
-            var opt = document.createElement('option');
-            opt.value = list[key];
-            opt.appendChild(document.createTextNode(key));
-            select.appendChild(opt);
-        }
-    }
-};
-
-/**
- * ### DOM.removeChildrenFromNode
- * 
- * Removes all children from a node.
- * 
- */
-DOM.removeChildrenFromNode = function (e) {
-    
-    if (!e) return false;
-    
-    while (e.hasChildNodes()) {
-        e.removeChild(e.firstChild);
-    }
-    return true;
-};
-
-/**
- * ### DOM.insertAfter
- * 
- * Insert a node element after another one.
- * 
- * The first parameter is the node to add.
- * 
- */
-DOM.insertAfter = function (node, referenceNode) {
-      referenceNode.insertBefore(node, referenceNode.nextSibling);
-};
-
-/**
- * ### DOM.generateUniqueId
- * 
- * Generate a unique id for the page (frames included).
- * 
- * TODO: now it always create big random strings, it does not actually
- * check if the string exists.
- * 
- */
-DOM.generateUniqueId = function (prefix) {
-    var search = [window];
-    if (window.frames) {
-        search = search.concat(window.frames);
-    }
-    
-    function scanDocuments(id) {
-        var found = true;
-        while (found) {
-            for (var i=0; i < search.length; i++) {
-                found = search[i].document.getElementById(id);
-                if (found) {
-                    id = '' + id + '_' + JSUS.randomInt(0, 1000);
-                    break;
-                }
-            }
-        }
-        return id;
-    };
-
-    
-    return scanDocuments(prefix + '_' + JSUS.randomInt(0, 10000000));
-    //return scanDocuments(prefix);
-};
-
-/**
- * ### DOM.getBlankPage
- * 
- * Creates a blank HTML page with the html and body 
- * elements already appended.
- * 
- */
-DOM.getBlankPage = function() {
-    var html = document.createElement('html');
-    html.appendChild(document.createElement('body'));
-    return html;
-};
-    
-//    DOM.findLastElement = function(o) {
-//        if (!o) return;
-//        
-//        if (o.lastChild) {
-//            var e 
-//            JSUS.isElement(e)) return DOM.findLastElement(e);
-//        
-//            var e = e.previousSibling;
-//            if (e && JSUS.isElement(e)) return DOM.findLastElement(e);
-//        
-//        return o;
-//    };
-
-// ## GET/ADD
-
-/**
- * ### DOM.getButton
- * 
- */
-DOM.getButton = function (id, text, attributes) {
-    var sb = document.createElement('button');
-    sb.id = id;
-    sb.appendChild(document.createTextNode(text || 'Send'));    
-    return this.addAttributes2Elem(sb, attributes);
-};
-
-/**
- * ### DOM.addButton
- * 
- */
-DOM.addButton = function (root, id, text, attributes) {
-    var b = this.getButton(id, text, attributes);
-    return root.appendChild(b);
-};
-
-/**
- * ### DOM.getFieldset
- * 
- */
-DOM.getFieldset = function (id, legend, attributes) {
-    var f = this.getElement('fieldset', id, attributes);
-    var l = document.createElement('Legend');
-    l.appendChild(document.createTextNode(legend));    
-    f.appendChild(l);
-    return f;
-};
-
-/**
- * ### DOM.addFieldset
- * 
- */
-DOM.addFieldset = function (root, id, legend, attributes) {
-    var f = this.getFieldset(id, legend, attributes);
-    return root.appendChild(f);
-};
-
-/**
- * ### DOM.getTextInput
- * 
- */
-DOM.getTextInput = function (id, attributes) {
-	var ti =  document.createElement('input');
-	if ('undefined' !== typeof id) ti.id = id;
-	ti.setAttribute('type', 'text');
-	return this.addAttributes2Elem(ti, attributes);
-};
-
-/**
- * ### DOM.addTextInput
- * 
- */
-DOM.addTextInput = function (root, id, attributes) {
-	var ti = this.getTextInput(id, attributes);
-	return root.appendChild(ti);
-};
-
-/**
- * ### DOM.getTextArea
- * 
- */
-DOM.getTextArea = function (id, attributes) {
-	var ta =  document.createElement('textarea');
-	if ('undefined' !== typeof id) ta.id = id;
-	return this.addAttributes2Elem(ta, attributes);
-};
-
-/**
- * ### DOM.addTextArea
- * 
- */
-DOM.addTextArea = function (root, id, attributes) {
-	var ta = this.getTextArea(id, attributes);
-	return root.appendChild(ta);
-};
-
-/**
- * ### DOM.getCanvas
- * 
- */
-DOM.getCanvas = function (id, attributes) {
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-        
-    if (!context) {
-        alert('Canvas is not supported');
-        return false;
-    }
-    
-    canvas.id = id;
-    return this.addAttributes2Elem(canvas, attributes);
-};
-
-/**
- * ### DOM.addCanvas
- * 
- */
-DOM.addCanvas = function (root, id, attributes) {
-    var c = this.getCanvas(id, attributes);
-    return root.appendChild(c);
-};
-  
-/**
- * ### DOM.getSlider
- * 
- */
-DOM.getSlider = function (id, attributes) {
-    var slider = document.createElement('input');
-    slider.id = id;
-    slider.setAttribute('type', 'range');
-    return this.addAttributes2Elem(slider, attributes);
-};
-
-/**
- * ### DOM.addSlider
- * 
- */
-DOM.addSlider = function (root, id, attributes) {
-    var s = this.getSlider(id, attributes);
-    return root.appendChild(s);
-};
-
-/**
- * ### DOM.getRadioButton
- * 
- */
-DOM.getRadioButton = function (id, attributes) {
-    var radio = document.createElement('input');
-    radio.id = id;
-    radio.setAttribute('type', 'radio');
-    return this.addAttributes2Elem(radio, attributes);
-};
-
-/**
- * ### DOM.addRadioButton
- * 
- */
-DOM.addRadioButton = function (root, id, attributes) {
-    var rb = this.getRadioButton(id, attributes);
-    return root.appendChild(rb);
-};
-
-/**
- * ### DOM.getLabel
- * 
- */
-DOM.getLabel = function (forElem, id, labelText, attributes) {
-    if (!forElem) return false;
-    var label = document.createElement('label');
-    label.id = id;
-    label.appendChild(document.createTextNode(labelText));
-    
-    if ('undefined' === typeof forElem.id) {
-        forElem.id = this.generateUniqueId();
-    }
-    
-    label.setAttribute('for', forElem.id);
-    this.addAttributes2Elem(label, attributes);
-    return label;
-};
-
-/**
- * ### DOM.addLabel
- * 
- */
-DOM.addLabel = function (root, forElem, id, labelText, attributes) {
-    if (!root || !forElem || !labelText) return false;        
-    var l = this.getLabel(forElem, id, labelText, attributes);
-    root.insertBefore(l, forElem);
-    return l;
-};
-
-/**
- * ### DOM.getSelect
- * 
- */
-DOM.getSelect = function (id, attributes) {
-    return this.getElement('select', id, attributes);
-};
-
-/**
- * ### DOM.addSelect
- * 
- */
-DOM.addSelect = function (root, id, attributes) {
-    return this.addElement('select', root, id, attributes);
-};
-
-/**
- * ### DOM.getIFrame
- * 
- */
-DOM.getIFrame = function (id, attributes) {
-    var attributes = {'name' : id}; // For Firefox
-    return this.getElement('iframe', id, attributes);
-};
-
-/**
- * ### DOM.addIFrame
- * 
- */
-DOM.addIFrame = function (root, id, attributes) {
-    var ifr = this.getIFrame(id, attributes);
-    return root.appendChild(ifr);
-};
-
-/**
- * ### DOM.addBreak
- * 
- */
-DOM.addBreak = function (root, rc) {
-    var RC = rc || 'br';
-    var br = document.createElement(RC);
-    return root.appendChild(br);
-    //return this.insertAfter(br,root);
-};
-
-/**
- * ### DOM.getDiv
- * 
- */
-DOM.getDiv = function (id, attributes) {
-    return this.getElement('div', id, attributes);
-};
-
-/**
- * ### DOM.addDiv
- * 
- */
-DOM.addDiv = function (root, id, attributes) {
-    return this.addElement('div', root, id, attributes);
-};
-
-// ## CSS / JS
-
-/**
- * ### DOM.addCSS
- * 
- * If no root element is passed, it tries to add the CSS 
- * link element to document.head, document.body, and 
- * finally document. If it fails, returns FALSE.
- * 
- */
-DOM.addCSS = function (root, css, id, attributes) {
-    var root = root || document.head || document.body || document;
-    if (!root) return false;
-    
-    attributes = attributes || {};
-    
-    attributes = JSUS.merge(attributes, {rel : 'stylesheet',
-                                        type: 'text/css',
-                                        href: css
-    });
-    
-    return this.addElement('link', root, id, attributes);
-};
-
-/**
- * ### DOM.addJS
- * 
- */
-DOM.addJS = function (root, js, id, attributes) {
-	var root = root || document.head || document.body || document;
-    if (!root) return false;
-    
-    attributes = attributes || {};
-    
-    attributes = JSUS.merge(attributes, {charset : 'utf-8',
-                                        type: 'text/javascript',
-                                        src: js
-    });
-    
-    return this.addElement('script', root, id, attributes);
-};
-
-
-/**
- * ### DOM.highlight
- * 
- * Provides a simple way to highlight an HTML element
- * by adding a colored border around it.
- * 
- * Three pre-defined modes are implemented: 
- * 
- * - OK: green
- * - WARN: yellow
- * - ERR: red (default)
- * 
- * Alternatively, it is possible to specify a custom
- * color as HEX value. Examples:
- * 
- * ```javascript
- * highlight(myDiv, 'WARN'); // yellow border
- * highlight(myDiv);          // red border
- * highlight(myDiv, '#CCC'); // grey border
- * ```
- *  
- * 	@see DOM.addBorder
- *	@see DOM.style
- * 
- */
-DOM.highlight = function (elem, code) {
-    if (!elem) return;
-    
-    // default value is ERR        
-    switch (code) {    
-        case 'OK':
-            var color =  'green';
-            break;
-        case 'WARN':
-            var color = 'yellow';
-            break;
-        case 'ERR':
-            var color = 'red';
-            break;
-        default:
-            if (code[0] === '#') {
-                var color = code;
-            }
-            else {
-                var color = 'red';
-            }
-    }
-    
-    return this.addBorder(elem, color);
-};
-
-/**
- * ### DOM.addBorder
- * 
- * Adds a border around the specified element. Color,
- * width, and type can be specified.
- * 
- */
-DOM.addBorder = function (elem, color, witdh, type) {
-    if (!elem) return;
-    
-    var color = color || 'red';
-    var width = width || '5px';
-    var type = type || 'solid';
-    
-    var properties = { border: width + ' ' + type + ' ' + color };
-    return this.style(elem,properties);
-};
-
-/**
- * ### DOM.style
- * 
- * Styles an element as an in-line css. 
- * Takes care to add new styles, and not overwriting previuous
- * attributes.
- * 
- * Returns the element.
- * 
- * @see DOM.setAttribute
- */
-DOM.style = function (elem, properties) {
-    if (!elem || !properties) return;
-    if (!DOM.isElement(elem)) return;
-    
-    var style = '';
-    for (var i in properties) {
-        style += i + ': ' + properties[i] + '; ';
-    };
-    return elem.setAttribute('style', style);
-};
-
-/**
- * ### DOM.removeClass
- * 
- * Removes a specific class from the class attribute
- * of a given element.
- * 
- * Returns the element.
- */
-DOM.removeClass = function (el, c) {
-    if (!el || !c) return;
-    var regexpr = '/(?:^|\s)' + c + '(?!\S)/';
-    var o = el.className = el.className.replace( regexpr, '' );
-    return el;
-};
-
-/**
- * ### DOM.addClass
- * 
- * Add a class to the class attribute of the given element.
- * 
- * Takes care not to overwrite already existing classes
- * 
- */
-DOM.addClass = function (el, c) {
-    if (!el || !c) return;
-    if (c instanceof Array) c = c.join(' ');
-    if ('undefined' === typeof el.className) {
-        el.className = c;
-    } else {
-        el.className += ' ' + c;
-    }
-    return el;
-  };
-    
-JSUS.extend(DOM);
-    
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);

@@ -94,11 +94,6 @@ node make.js doc
     -a, --all            full build of JSUS
     -o, --output <file>  
 
-## Recent Changelog
-### 0.7.8
- - OBJ.uniqueKey uses 15-digit random number and creates shorter prefixed keys
-
-
 ## License
 
 Copyright (C) 2013 Stefano Balietti

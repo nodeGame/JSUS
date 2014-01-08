@@ -553,21 +553,20 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <span class="dox_type">mixed</span>
       <span>variable to check</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">TRUE,</span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
-      <span>if the the object is a DOM node</span>
+      <span>TRUE, if the the object is a DOM node</span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="k">typeof</span> <span class="nx">Node</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Node</span> <span class="o">:</span>
-                <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">&amp;&amp;</span>
-                <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span> <span class="o">&amp;&amp;</span>
-                <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span>
-        <span class="p">);</span>
+        <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Node</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Node</span> <span class="o">:</span>
+            <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span>
+            <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">&amp;&amp;</span>
+            <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -583,6 +582,9 @@ and inserted into a span tag. If a root element is provided, add it.</p>
 
   </div>
   <div class="body"><p>Returns TRUE if the object is a DOM element</p>
+
+<p>Notice: instanceof HTMLElement is not reliable in Safari, even if
+the method is defined.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -591,21 +593,18 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <span class="dox_type">mixed</span>
       <span>variable to check</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">TRUE,</span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
-      <span>if the the object is a DOM element</span>
+      <span>TRUE, if the the object is a DOM element</span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="k">typeof</span> <span class="nx">HTMLElement</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">HTMLElement</span> <span class="o">:</span> <span class="c1">//DOM2</span>
-            <span class="k">typeof</span> <span class="nx">o</span> <span class="o">===</span> <span class="s2">&quot;object&quot;</span> <span class="o">&amp;&amp;</span>
-                <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
-                <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span>
-        <span class="p">);</span>
+        <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
+            <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>

@@ -30,6 +30,9 @@
       <div class="heading h2">
         <a href="#random.randomint">RANDOM.randomInt</a>
       </div>
+      <div class="heading h2">
+        <a href="#random.sample">RANDOM.sample</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -128,8 +131,7 @@ MIT Licensed</p>
 </div>
 
   </div>
-  <div class="body"><p>Generates a pseudo-random integer between
-(a,b] a exclusive, b inclusive.</p>
+  <div class="body"><p>Generates a pseudo-random integer between (a,b] a exclusive, b inclusive</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -160,14 +162,56 @@ MIT Licensed</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">randomInt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">)</span> <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
         <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="p">};</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.sample">
+  <h2>
+    <a href="#random.sample" class="pilcrow">&#182;</a>
+    RANDOM.sample
+  </h2>
+</div>
 
-    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">sample</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  </div>
+  <div class="body"><p>Generates a randomly shuffled sequence of numbers in (a,b)</p>
+
+<p>Both <em>a</em> and <em>b</em> are inclued in the interval.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">a</span>
+      <span class="dox_type">number</span>
+      <span>The lower limit</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">b</span>
+      <span class="dox_type">number</span>
+      <span>The upper limit</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>The randomly shuffled sequence.</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSUS.seq
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">sample</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">out</span><span class="p">;</span>
         <span class="nx">out</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">seq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">out</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
 

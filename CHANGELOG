@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.8.1
+- `DOM.addAttributes2Elem()` correctly handles the _style_ and _class_ property also in IE.
+
 ## 0.8.0
 - `#RANDOM` implements a brand new series of pseudo random number generators: `nextNormal()`, `nextLogNormal()`, `nextExponential()`, `nextBinomial()`, and `getNormalGenerator()`.
 - `#DOM.sprintf()` uses `charAt` for backward compatibility with IE, instead of treating the string as an array.

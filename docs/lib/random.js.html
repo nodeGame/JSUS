@@ -33,6 +33,9 @@
       <div class="heading h2">
         <a href="#random.sample">RANDOM.sample</a>
       </div>
+      <div class="heading h2">
+        <a href="#random.sample">RANDOM.sample</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -200,7 +203,7 @@ MIT Licensed</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">JSUS.seq
+      <span class="dox_type">RANDOM.seq
   </span>
     </div>
   </div>
@@ -211,7 +214,356 @@ MIT Licensed</p>
         <span class="nx">out</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">seq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">out</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
-    <span class="p">};</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.sample">
+  <h2>
+    <a href="#random.sample" class="pilcrow">&#182;</a>
+    RANDOM.sample
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns a new generator of normally distributed pseudo random numbers</p>
+
+<p>The generator is independent from RANDOM.nextNormal</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">function</span>
+      <span>An independent generator </span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">RANDOM.nextNormal
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">getNormalGenerator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+            <span class="kd">var</span> <span class="nx">oldMu</span><span class="p">,</span> <span class="nx">oldSigma</span><span class="p">;</span>    
+            <span class="kd">var</span> <span class="nx">x2</span><span class="p">,</span> <span class="nx">multiplier</span><span class="p">,</span> <span class="nx">genReady</span><span class="p">;</span>    
+            
+            <span class="k">return</span> <span class="kd">function</span> <span class="nx">normal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
+                
+                <span class="kd">var</span> <span class="nx">x1</span><span class="p">,</span> <span class="nx">u1</span><span class="p">,</span> <span class="nx">u2</span><span class="p">,</span> <span class="nx">v1</span><span class="p">,</span> <span class="nx">v2</span><span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
+                
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">mu</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextNormal: mu must be number.&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextNormal: sigma must be number.&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nx">mu</span> <span class="o">!==</span> <span class="nx">oldMu</span> <span class="o">||</span> <span class="nx">sigma</span> <span class="o">!==</span> <span class="nx">oldSigma</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">genReady</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+                    <span class="nx">oldMu</span> <span class="o">=</span> <span class="nx">mu</span><span class="p">;</span>
+                    <span class="nx">oldSigma</span> <span class="o">=</span> <span class="nx">sigma</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nx">genReady</span><span class="p">)</span> <span class="p">{</span>     
+                    <span class="nx">genReady</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="nx">sigma</span> <span class="o">*</span> <span class="nx">x2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">mu</span><span class="p">;</span>
+                <span class="p">}</span>
+                
+                <span class="nx">u1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+                <span class="nx">u2</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+                </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Normalize between -1 and +1.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">v1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="nx">v2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> 
+                
+                <span class="nx">s</span> <span class="o">=</span> <span class="p">(</span><span class="nx">v1</span> <span class="o">*</span> <span class="nx">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">v2</span> <span class="o">*</span> <span class="nx">v2</span><span class="p">);</span>
+                </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Condition is true on average 1.27 times, 
+with variance equal to 0.587.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">s</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">normal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">);</span>
+                <span class="p">}</span>
+                
+                <span class="nx">multiplier</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">/</span> <span class="nx">s</span><span class="p">);</span>
+                
+                <span class="nx">x1</span> <span class="o">=</span> <span class="nx">v1</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">;</span>
+                <span class="nx">x2</span> <span class="o">=</span> <span class="nx">v2</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">;</span>
+                
+                <span class="nx">genReady</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                
+                <span class="k">return</span> <span class="p">(</span><span class="nx">sigma</span> <span class="o">*</span> <span class="nx">x1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">mu</span><span class="p">;</span>
+                
+            <span class="p">}</span>
+        <span class="p">})();</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Generates random numbers with Normal Gaussian distribution.</p>
+  </div>
+  <div class="body"><p>User must specify the expected mean, and standard deviation a input 
+parameters.</p>
+
+<p>Implements the Polar Method by Knuth, "The Art Of Computer
+Programming", p. 117.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">mu</span>
+      <span class="dox_type">number</span>
+      <span>The mean of the distribution
+param {number} sigma The standard deviation of the distribution</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>A random number following a Normal Gaussian distribution</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">RANDOM.getNormalGenerator
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextNormal</span> <span class="o">=</span> <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">getNormalGenerator</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Generates random numbers with LogNormal distribution.</p>
+  </div>
+  <div class="body"><p>User must specify the expected mean, and standard deviation of the
+underlying gaussian distribution as input parameters.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">mu</span>
+      <span class="dox_type">number</span>
+      <span>The mean of the gaussian distribution</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">sigma</span>
+      <span class="dox_type">number</span>
+      <span>The standard deviation of the gaussian distribution</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>A random number following a LogNormal distribution</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">RANDOM.nextNormal 
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextLogNormal</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">mu</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextLogNormal: mu must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextLogNormal: sigma must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">nextNormal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">));</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Generates random numbers with Exponential distribution.</p>
+  </div>
+  <div class="body"><p>User must specify the lambda the <em>rate parameter</em> of the distribution.
+The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</code>. </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lambda</span>
+      <span class="dox_type">number</span>
+      <span>The rate parameter</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>A random number following an Exponential distribution</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextExponential</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">lambda</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">lambda</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: lambda must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">lambda</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: lambda must be greater than 0.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">/</span> <span class="nx">lambda</span><span class="p">;</span>
+    <span class="p">}</span>
+    </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Generates random numbers following the Binomial distribution.</p>
+  </div>
+  <div class="body"><p>User must specify the probability of success and the number of trials.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">p</span>
+      <span class="dox_type">number</span>
+      <span>The probability of success</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">trials</span>
+      <span class="dox_type">number</span>
+      <span>The number of trials</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>sum The sum of successes in n trials</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextBinomial</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">trials</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">counter</span><span class="p">,</span> <span class="nx">sum</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextBinomial: p must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">trials</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextBinomial: trials must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">p</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextBinomial: p must between 0 and 1.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">trials</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextBinomial: trials must be greater than 0.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="nx">trials</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>  
+          <span class="nx">sum</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+  
+        <span class="k">return</span> <span class="nx">sum</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Generates random numbers following the Gamma distribution.</p>
+  </div>
+  <div class="body"><p>This function is experimental and untested. No documentation.</p>
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextGamma</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">alpha</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">intK</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">,</span> <span class="nx">alphaDiv</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">u1</span><span class="p">,</span> <span class="nx">u2</span><span class="p">,</span> <span class="nx">u3</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">tmp</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">alpha</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextGamma: alpha must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextGamma: k must be number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">alpha</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextGamma: alpha must be greater than 1.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextGamma: k must be greater than 1.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">u1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="nx">u2</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="nx">u3</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+
+        <span class="nx">intK</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+        <span class="nx">kDiv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nx">k</span><span class="p">;</span>
+        
+        <span class="nx">alphaDiv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nx">alpha</span><span class="p">;</span>
+
+        <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">intK</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="nx">x</span> <span class="o">+=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="nx">x</span> <span class="o">*=</span> <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span> 
+
+        <span class="nx">tmp</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">u3</span><span class="p">)</span> <span class="o">*</span> 
+            <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u1</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">)</span> <span class="o">/</span>
+             <span class="p">((</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u1</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">k</span><span class="p">)))));</span>
+        
+        <span class="nx">tmp</span> <span class="o">*=</span>  <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">tmp</span><span class="p">;</span>
+    <span class="p">}</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
 

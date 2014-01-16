@@ -19,7 +19,10 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#support">SUPPORT</a>
+        <a href="#compatibility">COMPATIBILITY</a>
+      </div>
+      <div class="heading h2">
+        <a href="#for-more-information-see-http---kangax.github.com-es5-compat-table-">For more information see http://kangax.github.com/es5-compat-table/</a>
       </div>
       <div class="heading h2">
         <a href="#compatibility.compatibility">COMPATIBILITY.compatibility</a>
@@ -33,26 +36,33 @@
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="support">
+<div class="pilwrap" id="compatibility">
   <h1>
-    <a href="#support" class="pilcrow">&#182;</a>
-    SUPPORT
+    <a href="#compatibility" class="pilcrow">&#182;</a>
+    COMPATIBILITY
   </h1>
 </div>
 
-
-<p>Copyright(c) 2012 Stefano Balietti
-MIT Licensed</p>
   </div>
-  <div class="body"><p>Tests browsers ECMAScript 5 compatibility</p>
+  <div class="body"><p>Copyright(c) 2013 Stefano Balietti
+MIT Licensed</p>
 
-<p>For more information see <a href='http://kangax.github.com/es5-compat-table/'>http://kangax.github.com/es5-compat-table/</a></p>
+<p>Tests browsers ECMAScript 5 compatibility</p>
+
+
+<div class="pilwrap" id="for-more-information-see-http---kangax.github.com-es5-compat-table-">
+  <h2>
+    <a href="#for-more-information-see-http---kangax.github.com-es5-compat-table-" class="pilcrow">&#182;</a>
+    For more information see <a href='http://kangax.github.com/es5-compat-table/'>http://kangax.github.com/es5-compat-table/</a>
+  </h2>
+</div>
+
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="kd">function</span> <span class="nx">COMPATIBILITY</span><span class="p">()</span> <span class="p">{};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">function</span> <span class="nx">COMPATIBILITY</span><span class="p">()</span> <span class="p">{};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -68,8 +78,8 @@ MIT Licensed</p>
   </div>
   <div class="body"><p>Returns a report of the ECS5 features available</p>
 
-<p>Useful when an application routinely performs an operation 
-depending on a potentially unsupported ECS5 feature. </p>
+<p>Useful when an application routinely performs an operation
+depending on a potentially unsupported ECS5 feature.</p>
 
 <p>Transforms multiple try-catch statements in a if-else</p>
   </div>
@@ -83,41 +93,41 @@ depending on a potentially unsupported ECS5 feature. </p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">COMPATIBILITY</span><span class="p">.</span><span class="nx">compatibility</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">COMPATIBILITY</span><span class="p">.</span><span class="nx">compatibility</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
-  <span class="kd">var</span> <span class="nx">support</span> <span class="o">=</span> <span class="p">{};</span>
-  
-  <span class="k">try</span> <span class="p">{</span>
-    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">({},</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span><span class="p">})</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> 
-  <span class="p">}</span>
-  
-  <span class="k">try</span> <span class="p">{</span>
-    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ get x(){ return 1 } }).x === 1&#39;</span><span class="p">)</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">setter</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">setter</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span>
-    
-  <span class="k">try</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
-    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ set x(v){ value = v; } }).x = 1&#39;</span><span class="p">);</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">getter</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">support</span><span class="p">.</span><span class="nx">getter</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span>   
+        <span class="kd">var</span> <span class="nx">support</span> <span class="o">=</span> <span class="p">{};</span>
 
-  <span class="k">return</span> <span class="nx">support</span><span class="p">;</span>
-<span class="p">};</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">({},</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span><span class="p">})</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ get x(){ return 1 } }).x === 1&#39;</span><span class="p">)</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">setter</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">setter</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">value</span><span class="p">;</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ set x(v){ value = v; } }).x = 1&#39;</span><span class="p">);</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">getter</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">support</span><span class="p">.</span><span class="nx">getter</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">support</span><span class="p">;</span>
+    <span class="p">};</span>
 
 
-<span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">COMPATIBILITY</span><span class="p">);</span>
-    
+    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">COMPATIBILITY</span><span class="p">);</span>
+
 <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
 </pre></div>
         </td>

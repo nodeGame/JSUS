@@ -745,39 +745,55 @@ appends it to the root element, and returns it.</p>
   <div class="body"><p>Adds attributes to an HTML element and returns it.</p>
 
 <p>Attributes are defined as key-values pairs.
-Attributes 'style', and 'label' are ignored.</p>
+Attributes 'label' is ignored.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">DOM.style</span>
-    </div>
-    <div class="dox_tag_title">See</div>
-    <div class="dox_tag_detail">
       <span class="dox_type">DOM.addLabel
-
   </span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addAttributes2Elem</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">a</span><span class="p">)</span> <span class="k">return</span> <span class="nx">e</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!=</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">)</span> <span class="k">return</span> <span class="nx">e</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">specials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">];</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">specials</span><span class="p">))</span> <span class="p">{</span>
-                    <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">e</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
-                <span class="p">}</span></pre></div>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Handle the case.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DOM.addAttributes2Elem: label attribute is not &#39;</span> <span class="o">+</span>
+                             <span class="s1">&#39;supported. Use DOM.addLabel instead.&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+                <span class="p">}</span> 
+                </pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 TODO: handle special cases
 <!--
@@ -815,19 +831,33 @@ The second parameter list is an object containing
 a list of key-values pairs as text-value attributes for
 the option.</p>
   </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">select</span>
+      <span class="dox_type">HTMLElement</span>
+      <span>HTML select element</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">list</span>
+      <span class="dox_type">object</span>
+      <span>Options to add to the select element</span>
+    </div>
+  </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">populateSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">select</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">opt</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">select</span> <span class="o">||</span> <span class="o">!</span><span class="nx">list</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">opt</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">);</span>
+                <span class="nx">opt</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">);</span>
                 <span class="nx">opt</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
                 <span class="nx">opt</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">key</span><span class="p">));</span>
                 <span class="nx">select</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">opt</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>    </pre></div>
         </td>
       </tr>
       <tr>
@@ -842,6 +872,14 @@ the option.</p>
 
   </div>
   <div class="body"><p>Removes all children from a node.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">e</span>
+      <span class="dox_type">HTMLElement</span>
+      <span>HTML element.</span>
+    </div>
   </div>
 </div>
         </td>
@@ -923,7 +961,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>return scanDocuments(prefix);</p>
         </td>
@@ -956,7 +994,7 @@ elements already appended.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>DOM.findLastElement = function(o) {
        if (!o) return;</p>
@@ -1466,7 +1504,7 @@ elements already appended.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>return this.insertAfter(br,root);</p>
         </td>
@@ -1641,7 +1679,7 @@ color as HEX value. Examples:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>default value is ERR</p>
         </td>

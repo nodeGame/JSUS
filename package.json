@@ -1,7 +1,7 @@
 {
   "name": "JSUS",
   "description": "JavaScript UtilS. Extended functional programming support. JSUS helps!",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "keywords": [ "functional", "functional programming", "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
   "author": "Stefano Balietti <futur.dorko@gmail.com>",
   "licenses": [

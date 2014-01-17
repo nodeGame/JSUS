@@ -785,9 +785,8 @@ Attributes 'label' is ignored.</p>
                              <span class="s1">&#39;supported. Use DOM.addLabel instead.&#39;</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
-                <span class="p">}</span> 
-                </pre></div>
+                    <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+                <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -857,7 +856,7 @@ the option.</p>
                 <span class="nx">select</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">opt</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">};</span>    </pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1672,7 +1671,8 @@ color as HEX value. Examples:</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>     <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">color</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
         </td>
       </tr>
@@ -1685,20 +1685,20 @@ color as HEX value. Examples:</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">switch</span> <span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">case</span> <span class="s1">&#39;OK&#39;</span><span class="o">:</span>
-            <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span>  <span class="s1">&#39;green&#39;</span><span class="p">;</span>
+            <span class="nx">color</span> <span class="o">=</span>  <span class="s1">&#39;green&#39;</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
         <span class="k">case</span> <span class="s1">&#39;WARN&#39;</span><span class="o">:</span>
-            <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span><span class="p">;</span>
+            <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
         <span class="k">case</span> <span class="s1">&#39;ERR&#39;</span><span class="o">:</span>
-            <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
+            <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
         <span class="k">default</span><span class="o">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">code</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">code</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="nx">code</span><span class="p">;</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
+                <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
 
@@ -1746,31 +1746,42 @@ width, and type can be specified.</p>
 </div>
 
   </div>
-  <div class="body"><p>Styles an element as an in-line css.
-Takes care to add new styles, and not overwriting previuous
-attributes.</p>
+  <div class="body"><p>Styles an element as an in-line css.</p>
 
-<p>Returns the element.</p>
+<p>Existing style properties are maintained, and new ones added.</p>
   </div>
   <div class="details">
-    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">DOM.setAttribute
-  </span>
+      <span class="dox_tag_name">elem</span>
+      <span class="dox_type">HTMLElement</span>
+      <span>The element to style</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">Objects</span>
+      <span class="dox_type">object</span>
+      <span>containing the properties to add.</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">HTMLElement</span>
+      <span>elem The styled element</span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">style</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span> <span class="o">||</span> <span class="o">!</span><span class="nx">properties</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">elem</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
 
-        <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">style</span> <span class="o">+=</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">properties</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;; &#39;</span><span class="p">;</span>
-        <span class="p">};</span>
-        <span class="k">return</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;style&#39;</span><span class="p">,</span> <span class="nx">style</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">properties</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">elem</span><span class="p">.</span><span class="nx">style</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">properties</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">elem</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1868,8 +1879,7 @@ attributes.</p>
             <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
-    <span class="p">};</span>
-    </pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1883,7 +1893,7 @@ attributes.</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns a reference to the document of an iframe object </p>
+  <div class="body"><p>Returns a reference to the document of an iframe object</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>

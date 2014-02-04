@@ -1,7 +1,10 @@
 # ChangeLog
 
+## 0.8.3
+- `#DOM.addIFrame() sets attributes correctly.
+
 ## 0.8.2
-- `#DOM.style() behaves as expected in IE.
+- `#DOM.style()` behaves as expected in IE.
 
 ## 0.8.1
 - `#DOM.addAttributes2Elem()` correctly handles the _style_ and _class_ property also in IE.

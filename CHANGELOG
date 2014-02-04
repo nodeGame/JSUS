@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.8.4
+- `#DOM.getElementsByTagName()` added.
+
 ## 0.8.3
 - `#DOM.addIFrame() sets attributes correctly.
 

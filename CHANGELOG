@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.8.5
+- Cosmetic changes
+- `#DOM.getBlankPage()` removed from API
+- `#DOM.removeChildrenFromNode()` does not have a return value
+
 ## 0.8.4
 - `#DOM.getElementsByClassName()` added.
 

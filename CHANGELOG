@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.8.6
+- `#PARSE.getQueryString() completely rewritten.
+- `#OBJ.mixout()` and `#OBJ.mixcommon()` consider the null value
+- `#EVAL.eval()` more correctly uses typeof checking for window object
+
 ## 0.8.5
 - Cosmetic changes
 - `#DOM.getBlankPage()` removed from API

@@ -119,7 +119,7 @@
 </div>
 
 
-<p>Copyright(c) 2013 Stefano Balietti
+<p>Copyright(c) 2014 Stefano Balietti
 MIT Licensed</p>
   </div>
   <div class="body">
@@ -1055,7 +1055,8 @@ type of obj1</p>
   </div>
   <div class="body"><p>Copies only non-overlapping properties from obj2 to obj1</p>
 
-<p>Original object is modified</p>
+<p>Check only if a property is defined, not its value.
+Original object is modified. </p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1078,7 +1079,7 @@ type of obj1</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj2</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -1096,7 +1097,8 @@ type of obj1</p>
   </div>
   <div class="body"><p>Copies only overlapping properties from obj2 to obj1</p>
 
-<p>Original object is modified</p>
+<p>Check only if a property is defined, not its value.
+Original object is modified.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1119,7 +1121,7 @@ type of obj1</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj2</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj2</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
         </td>

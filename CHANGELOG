@@ -1,7 +1,10 @@
 # ChangeLog
 
+## 0.8.7
+- `#DOM.shuffleNodes()` bug fix.
+
 ## 0.8.6
-- `#PARSE.getQueryString() completely rewritten.
+- `#PARSE.getQueryString()` completely rewritten.
 - `#OBJ.mixout()` and `#OBJ.mixcommon()` consider the null value
 - `#EVAL.eval()` more correctly uses typeof checking for window object
 

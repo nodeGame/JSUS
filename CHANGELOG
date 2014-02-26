@@ -1,7 +1,26 @@
 # ChangeLog
 
+## 0.8.7
+- `#DOM.shuffleNodes()` bug fix.
+
+## 0.8.6
+- `#PARSE.getQueryString()` completely rewritten.
+- `#OBJ.mixout()` and `#OBJ.mixcommon()` consider the null value
+- `#EVAL.eval()` more correctly uses typeof checking for window object
+
+## 0.8.5
+- Cosmetic changes
+- `#DOM.getBlankPage()` removed from API
+- `#DOM.removeChildrenFromNode()` does not have a return value
+
+## 0.8.4
+- `#DOM.getElementsByClassName()` added.
+
+## 0.8.3
+- `#DOM.addIFrame() sets attributes correctly.
+
 ## 0.8.2
-- `#DOM.style() behaves as expected in IE.
+- `#DOM.style()` behaves as expected in IE.
 
 ## 0.8.1
 - `#DOM.addAttributes2Elem()` correctly handles the _style_ and _class_ property also in IE.

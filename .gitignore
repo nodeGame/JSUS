@@ -8,3 +8,5 @@ yuidoc.js
 /node_modules/*
 /build/*
 test/tmp_*
+
+.\#*

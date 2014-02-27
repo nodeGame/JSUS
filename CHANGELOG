@@ -1,5 +1,8 @@
 # ChangeLog
 
+## Forthcoming
+- `#DOM.shuffleNodes()` correctly shuffles the nodes, and returns the id of the elements in the order used to append them.
+
 ## 0.8.7
 - `#DOM.shuffleNodes()` bug fix.
 

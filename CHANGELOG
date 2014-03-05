@@ -1,7 +1,8 @@
 # ChangeLog
 
-## Forthcoming
+## 0.8.8 
 - `#DOM.shuffleNodes()` correctly shuffles the nodes, and returns the id of the elements in the order used to append them.
+- `PARSE.getQueryString()` correctly returns the full query string when no argument is passed.
 
 ## 0.8.7
 - `#DOM.shuffleNodes()` bug fix.

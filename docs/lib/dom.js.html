@@ -620,6 +620,8 @@ the method is defined.</p>
 
   </div>
   <div class="body"><p>Shuffles the children nodes</p>
+
+<p>All children must have the id attribute.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -633,11 +635,17 @@ the method is defined.</p>
       <span class="dox_type">array</span>
       <span>Optional. A pre-specified order. Defaults, random</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>The order used to shuffle the nodes.</span>
+    </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">idOrder</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">parent</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: parent must node.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
@@ -650,19 +658,32 @@ the method is defined.</p>
                 <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order must array.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order length must match &#39;</span> <span class="o">+</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order length must match &#39;</span> <span class="o">+</span> 
                                 <span class="s1">&#39;the number of children nodes.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
-
-        <span class="nx">len</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-
+        
+        <span class="nx">len</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">order</span><span class="p">)</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span><span class="p">);</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
+            <span class="nx">idOrder</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Two fors are necessary to follow the real sequence.
+However parent.children is a special object, so the sequence
+could be unreliable.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
         <span class="p">}</span>
-
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="nx">idOrder</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -795,8 +816,8 @@ the method is defined.</p>
   <div class="body"><p>Adds attributes to an HTML element and returns it.</p>
 
 <p>Attributes are defined as key-values pairs.
-Attributes 'label' is ignored, attribute 'class' and 'style' are
-special and are delegated to special methods.</p>
+Attributes 'label' is ignored, attribute 'className' ('class') and
+'style' are special and are delegated to special methods.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -841,7 +862,7 @@ special and are delegated to special methods.</p>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">e</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
                 <span class="p">}</span>
-                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;class&#39;</span> <span class="o">||</span> <span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;className&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
                 <span class="p">}</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -853,7 +874,7 @@ special and are delegated to special methods.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Handle the case.</p>
         </td>
@@ -868,7 +889,7 @@ special and are delegated to special methods.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 TODO: handle special cases
 <!--
@@ -1032,7 +1053,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>return scanDocuments(prefix);</p>
         </td>
@@ -1529,7 +1550,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>return this.insertAfter(br,root);</p>
         </td>
@@ -1705,7 +1726,7 @@ color as HEX value. Examples:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>default value is ERR</p>
         </td>
@@ -1898,7 +1919,7 @@ width, and type can be specified.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span> <span class="o">||</span> <span class="o">!</span><span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">||</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>

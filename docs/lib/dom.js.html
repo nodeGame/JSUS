@@ -620,6 +620,8 @@ the method is defined.</p>
 
   </div>
   <div class="body"><p>Shuffles the children nodes</p>
+
+<p>All children must have the id attribute.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -814,8 +816,8 @@ could be unreliable.</p>
   <div class="body"><p>Adds attributes to an HTML element and returns it.</p>
 
 <p>Attributes are defined as key-values pairs.
-Attributes 'label' is ignored, attribute 'class' and 'style' are
-special and are delegated to special methods.</p>
+Attributes 'label' is ignored, attribute 'className' ('class') and
+'style' are special and are delegated to special methods.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -860,7 +862,7 @@ special and are delegated to special methods.</p>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">e</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
                 <span class="p">}</span>
-                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;class&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;class&#39;</span> <span class="o">||</span> <span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;className&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
                 <span class="p">}</span>
                 <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -1917,7 +1919,7 @@ width, and type can be specified.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span> <span class="o">||</span> <span class="o">!</span><span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">||</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>

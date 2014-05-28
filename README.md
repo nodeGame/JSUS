@@ -48,6 +48,7 @@ var myClass = JSUS.require('myClass');
 7. PARSE
 8. FS (+wrench)
 9. COMPATIBILITY
+10. QUEUE
 
 ## Build
 

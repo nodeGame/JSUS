@@ -143,6 +143,7 @@
         require('./lib/dom');
         require('./lib/random');
         require('./lib/parse');
+        require('./lib/queue');
         require('./lib/fs');
     }
     // end node

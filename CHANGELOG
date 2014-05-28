@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.9.0
+- `#QUEUE class added plust tests. It can manage a simple queue.
+
 ## 0.8.9
 - `#DOM.addClass()` extra space fix.
 - `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'

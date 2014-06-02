@@ -46,6 +46,9 @@
         <a href="#queue.remove">Queue.remove</a>
       </div>
       <div class="heading h3">
+        <a href="#queue.getremovecb">Queue.getRemoveCb</a>
+      </div>
+      <div class="heading h3">
         <a href="#queue.executeandclear">Queue.executeAndClear</a>
       </div>
     </div>
@@ -283,6 +286,47 @@ MIT Licensed</p>
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inProgress</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">executeAndClear</span><span class="p">()</span>
         <span class="p">}</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="queue.getremovecb">
+  <h3>
+    <a href="#queue.getremovecb" class="pilcrow">&#182;</a>
+    Queue.getRemoveCb
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns a callback to remove an item from the <em>inProgress</em> index</p>
+
+<p>This method is useful when the callbacks is defined inside loops,
+so that a closure is created around the variable key.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">key</span>
+      <span class="dox_type">string</span>
+      <span>The key to remove from the <em>inProgress</em> index.</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">Queue.remove
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getRemoveCb</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">that</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Queue.getRemoveCb: key must be string.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">that</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span> <span class="p">};</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>

@@ -1,159 +1,160 @@
 /**
- * # JSUS: JavaScript UtilS. 
- * Copyright(c) 2013 Stefano Balietti
+ * # JSUS: JavaScript UtilS.
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
- * 
+ *
  * Collection of general purpose javascript functions. JSUS helps!
- * 
+ *
  * See README.md for extra help.
+ * ---
  */
+(function(exports) {
 
-(function (exports) {
-    
     var JSUS = exports.JSUS = {};
-    
-// ## JSUS._classes
-// Reference to all the extensions
+
+    // ## JSUS._classes
+    // Reference to all the extensions
     JSUS._classes = {};
-    
-/**
- * ## JSUS.log
- * 
- * Reference to standard out, by default `console.log`
- * Override to redirect the standard output of all JSUS functions.
- * 
- * @param {string} txt Text to output
- * 
- */
-JSUS.log = function (txt) {
-    console.log(txt);
-};
-    
-/**
- * ## JSUS.extend
- * 
- * Extends JSUS with additional methods and or properties taken 
- * from the object passed as first parameter. 
- * 
- * The first parameter can be an object literal or a function.
- * A reference of the original extending object is stored in 
- * JSUS._classes
- * 
- * If a second parameter is passed, that will be the target of the
- * extension.
- * 
- * @param {object} additional Text to output
- * @param {object|function} target The object to extend
- * @return {object|function} target The extended object
- * 
- * 	@see JSUS.get
- * 
- */
-JSUS.extend = function (additional, target) {        
-    if ('object' !== typeof additional && 'function' !== typeof additional) {
-        return target;
-    }
-    
-    // If we are extending JSUS, store a reference
-    // of the additional object into the hidden
-    // JSUS._classes object;
-    if ('undefined' === typeof target) {
-        target = target || this;
-        if ('function' === typeof additional) {
-            var name = additional.toString();
-            name = name.substr('function '.length);
-            name = name.substr(0, name.indexOf('('));
+
+    /**
+     * ## JSUS.log
+     *
+     * Reference to standard out, by default `console.log`
+     *
+     * Override to redirect the standard output of all JSUS functions.
+     *
+     * @param {string} txt Text to output
+     */
+    JSUS.log = function(txt) {
+        console.log(txt);
+    };
+
+    /**
+     * ## JSUS.extend
+     *
+     * Extends JSUS with additional methods and or properties
+     *
+     * The first parameter can be an object literal or a function.
+     * A reference of the original extending object is stored in
+     * JSUS._classes
+     *
+     * If a second parameter is passed, that will be the target of the
+     * extension.
+     *
+     * @param {object} additional Text to output
+     * @param {object|function} target The object to extend
+     * @return {object|function} target The extended object
+     *
+     * @see JSUS.get
+     */
+    JSUS.extend = function(additional, target) {
+        var name, prop;
+        if ('object' !== typeof additional &&
+            'function' !== typeof additional) {
+            return target;
         }
-        //! must be object
-        else {
-            var name = additional.constructor || additional.__proto__.constructor;
-        }
-        if (name) {
-            this._classes[name] = additional;
-        }
-    }
-    
-    for (var prop in additional) {
-        if (additional.hasOwnProperty(prop)) {
-            if (typeof target[prop] !== 'object') {
-                target[prop] = additional[prop];
-            } else {
-                JSUS.extend(additional[prop], target[prop]);
+
+        // If we are extending JSUS, store a reference
+        // of the additional object into the hidden
+        // JSUS._classes object;
+        if ('undefined' === typeof target) {
+            target = target || this;
+            if ('function' === typeof additional) {
+                name = additional.toString();
+                name = name.substr('function '.length);
+                name = name.substr(0, name.indexOf('('));
+            }
+            // Must be object.
+            else {
+                name = additional.constructor ||
+                    additional.__proto__.constructor;
+            }
+            if (name) {
+                this._classes[name] = additional;
             }
         }
-    }
 
-    // additional is a class (Function)
-    // TODO: this is true also for {}
-    if (additional.prototype) {
-        JSUS.extend(additional.prototype, target.prototype || target);
+        for (prop in additional) {
+            if (additional.hasOwnProperty(prop)) {
+                if (typeof target[prop] !== 'object') {
+                    target[prop] = additional[prop];
+                } else {
+                    JSUS.extend(additional[prop], target[prop]);
+                }
+            }
+        }
+
+        // Additional is a class (Function)
+        // TODO: this is true also for {}
+        if (additional.prototype) {
+            JSUS.extend(additional.prototype, target.prototype || target);
+        };
+
+        return target;
     };
-    
-    return target;
-};
-  
-/**
- * ## JSUS.require
- * 
- * Returns a copy of one / all the objects that have extended the
- * current instance of JSUS.
- * 
- * The first parameter is a string representation of the name of 
- * the requested extending object. If no parameter is passed a copy 
- * of all the extending objects is returned.
- * 
- * @param {string} className The name of the requested JSUS library
- * @return {function|boolean} The copy of the JSUS library, or FALSE if the library does not exist
- * 
- */
-JSUS.require = JSUS.get = function (className) {
-    if ('undefined' === typeof JSUS.clone) {
-        JSUS.log('JSUS.clone not found. Cannot continue.');
-        return false;
+
+    /**
+     * ## JSUS.require
+     *
+     * Returns a copy of one / all the objects extending JSUS.
+     *
+     * The first parameter is a string representation of the name of
+     * the requested extending object. If no parameter is passed a copy
+     * of all the extending objects is returned.
+     *
+     * @param {string} className The name of the requested JSUS library
+     * @return {function|boolean} The copy of the JSUS library, or
+     *   FALSE if the library does not exist
+     */
+    JSUS.require = JSUS.get = function(className) {
+        if ('undefined' === typeof JSUS.clone) {
+            JSUS.log('JSUS.clone not found. Cannot continue.');
+            return false;
+        }
+        if ('undefined' === typeof className) return JSUS.clone(JSUS._classes);
+        if ('undefined' === typeof JSUS._classes[className]) {
+            JSUS.log('Could not find class ' + className);
+            return false;
+        }
+        return JSUS.clone(JSUS._classes[className]);
+    };
+
+    /**
+     * ## JSUS.isNodeJS
+     *
+     * Returns TRUE when executed inside Node.JS environment
+     *
+     * @return {boolean} TRUE when executed inside Node.JS environment
+     */
+    JSUS.isNodeJS = function() {
+	return 'undefined' !== typeof module
+	    && 'undefined' !== typeof module.exports
+	    && 'function' === typeof require;
+    };
+
+    // ## Node.JS includes
+    // if node
+    if (JSUS.isNodeJS()) {
+        require('./lib/compatibility');
+        require('./lib/obj');
+        require('./lib/array');
+        require('./lib/time');
+        require('./lib/eval');
+        require('./lib/dom');
+        require('./lib/random');
+        require('./lib/parse');
+        require('./lib/queue');
+        require('./lib/fs');
     }
-    if ('undefined' === typeof className) return JSUS.clone(JSUS._classes);
-    if ('undefined' === typeof JSUS._classes[className]) {
-        JSUS.log('Could not find class ' + className);
-        return false;
-    }
-    return JSUS.clone(JSUS._classes[className]);
-    //return new JSUS._classes[className]();
-};
+    // end node
 
-/**
- * ## JSUS.isNodeJS
- * 
- * Returns TRUE when executed inside Node.JS environment
- * 
- * @return {boolean} TRUE when executed inside Node.JS environment
- */
-JSUS.isNodeJS = function () {
-	return 'undefined' !== typeof module 
-			&& 'undefined' !== typeof module.exports
-			&& 'function' === typeof require;
-};
-
-// ## Node.JS includes
-// if node
-if (JSUS.isNodeJS()) {
-    require('./lib/compatibility');
-    require('./lib/obj');
-    require('./lib/array');
-    require('./lib/time');
-    require('./lib/eval');
-    require('./lib/dom');
-    require('./lib/random');
-    require('./lib/parse');
-    require('./lib/fs');
-}
-// end node
-    
-})('undefined' !== typeof module && 'undefined' !== typeof module.exports ? module.exports: window);
-
-
+})(
+    'undefined' !== typeof module && 'undefined' !== typeof module.exports ?
+        module.exports: window
+);
 /**
  * # ARRAY
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  * 
  * Collection of static functions to manipulate arrays.
@@ -387,10 +388,10 @@ if (JSUS.isNodeJS()) {
      *  @see JSUS.equals
      */
     ARRAY.inArray = ARRAY.in_array = function(needle, haystack) {
-        if (!haystack) return false;
-        
-        var func = JSUS.equals;    
-        for (var i = 0; i < haystack.length; i++) {
+        var func, i, len;
+        if (!haystack) return false;        
+        func = JSUS.equals, len = haystack.length;
+        for (i = 0; i < len; i++) {
             if (func.call(this, needle, haystack[i])) {
                 return true;
             }
@@ -869,7 +870,7 @@ if (JSUS.isNodeJS()) {
 /**
  * # COMPATIBILITY
  *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Tests browsers ECMAScript 5 compatibility
@@ -932,7 +933,7 @@ if (JSUS.isNodeJS()) {
 /**
  * # DOM
  *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to DOM manipulation
@@ -1054,7 +1055,7 @@ if (JSUS.isNodeJS()) {
                 // Pattern not found.
                 if (idx_start === -1) continue;
 
-                switch(key[0]) {
+                switch(key.charAt(0)) {
 
                 case '%': // Span.
 
@@ -1135,15 +1136,13 @@ if (JSUS.isNodeJS()) {
      * Returns TRUE if the object is a DOM node
      *
      * @param {mixed} The variable to check
-     * @param {boolean} TRUE, if the the object is a DOM node
+     * @return {boolean} TRUE, if the the object is a DOM node
      */
     DOM.isNode = function(o) {
-        return (
-            typeof Node === "object" ? o instanceof Node :
-                typeof o === "object" &&
-                typeof o.nodeType === "number" &&
-                typeof o.nodeName === "string"
-        );
+        return 'object' === typeof Node ? o instanceof Node :
+            'object' === typeof o &&
+            'number' === typeof o.nodeType &&
+            'string' === typeof o.nodeName;
     };
 
     /**
@@ -1151,28 +1150,30 @@ if (JSUS.isNodeJS()) {
      *
      * Returns TRUE if the object is a DOM element
      *
+     * Notice: instanceof HTMLElement is not reliable in Safari, even if
+     * the method is defined.
+     *
      * @param {mixed} The variable to check
-     * @param {boolean} TRUE, if the the object is a DOM element
+     * @return {boolean} TRUE, if the the object is a DOM element
      */
     DOM.isElement = function(o) {
-        return (
-            typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-            typeof o === "object" &&
-                o.nodeType === 1 &&
-                typeof o.nodeName === "string"
-        );
+        return 'object' === typeof o && o.nodeType === 1 &&
+            'string' === typeof o.nodeName;
     };
 
     /**
-     * ## DOM.shuffleNodes
+     * ### DOM.shuffleNodes
      *
      * Shuffles the children nodes
      *
+     * All children must have the id attribute.
+     *
      * @param {Node} parent The parent node
      * @param {array} order Optional. A pre-specified order. Defaults, random
+     * @return {array} The order used to shuffle the nodes.
      */
     DOM.shuffleNodes = function(parent, order) {
-        var i, len;
+        var i, len, idOrder;
         if (!JSUS.isNode(parent)) {
             throw new TypeError('DOM.shuffleNodes: parent must node.');
         }
@@ -1181,30 +1182,40 @@ if (JSUS.isNodeJS()) {
             return false;
         }
         if (order) {
-            if (!J.isArray(order)) {
+            if (!JSUS.isArray(order)) {
                 throw new TypeError('DOM.shuffleNodes: order must array.');
             }
             if (order.length !== parent.children.length) {
-                throw new Error('DOM.shuffleNodes: order length must match ' +
+                throw new Error('DOM.shuffleNodes: order length must match ' + 
                                 'the number of children nodes.');
             }
         }
-
-        len = parent.children.length;
-
+        
+        len = parent.children.length, idOrder = [];
         if (!order) order = JSUS.sample(0,len);
         for (i = 0 ; i < len; i++) {
-            parent.appendChild(parent.children[order[i]]);
+            idOrder.push(parent.children[order[i]].id);
         }
-
-        return true;
+        // Two fors are necessary to follow the real sequence.
+        // However parent.children is a special object, so the sequence
+        // could be unreliable.
+        for (i = 0 ; i < len; i++) {
+            parent.appendChild(parent.children[idOrder[i]]);
+        }
+        
+        return idOrder;
     };
 
     /**
      * ### DOM.getElement
      *
-     * Creates a generic HTML element with id and attributes as specified,
-     * and returns it.
+     * Creates a generic HTML element with id and attributes as specified
+     * 
+     * @param {string} elem The name of the tag
+     * @param {string} id Optional. The id of the tag
+     * @param {object} attributes Optional. Object containing attributes for
+     *   the newly created element
+     * @return {HTMLElement} The newly created HTML element
      *
      * @see DOM.addAttributes2Elem
      */
@@ -1219,8 +1230,15 @@ if (JSUS.isNodeJS()) {
     /**
      * ### DOM.addElement
      *
-     * Creates a generic HTML element with id and attributes as specified,
-     * appends it to the root element, and returns it.
+     * Creates and appends a generic HTML element with specified attributes
+     *
+     * @param {string} elem The name of the tag
+     * @param {HTMLElement} root The root element to which the new element will
+     *   be appended
+     * @param {string} id Optional. The id of the tag
+     * @param {object} attributes Optional. Object containing attributes for
+     *   the newly created element
+     * @return {HTMLElement} The newly created HTML element
      *
      * @see DOM.getElement
      * @see DOM.addAttributes2Elem
@@ -1236,23 +1254,42 @@ if (JSUS.isNodeJS()) {
      * Adds attributes to an HTML element and returns it.
      *
      * Attributes are defined as key-values pairs.
-     * Attributes 'style', and 'label' are ignored.
+     * Attributes 'label' is ignored, attribute 'className' ('class') and
+     * 'style' are special and are delegated to special methods.
      *
-     * @see DOM.style
+     * @param {HTMLElement} e The element to decorate
+     * @param {object} a Object containing attributes to add to the element
+     *
+     * @return {HTMLElement} e The decorated element
+     *
      * @see DOM.addLabel
-     *
+     * @see DOM.addClass
+     * @see DOM.style
      */
     DOM.addAttributes2Elem = function(e, a) {
+        var key;
         if (!e || !a) return e;
         if ('object' != typeof a) return e;
-        var specials = ['id', 'label'];
-        for (var key in a) {
+        for (key in a) {
             if (a.hasOwnProperty(key)) {
-                if (!JSUS.in_array(key, specials)) {
-                    e.setAttribute(key,a[key]);
-                } else if (key === 'id') {
+                if (key === 'id') {
                     e.id = a[key];
                 }
+                else if (key === 'class' || key === 'className') {
+                    DOM.addClass(e, a[key]);
+                }
+                else if (key === 'style') {
+                    DOM.style(e, a[key]);
+                }
+                else if (key === 'label') {
+                    // Handle the case.
+                    JSUS.log('DOM.addAttributes2Elem: label attribute is not ' +
+                             'supported. Use DOM.addLabel instead.');
+                }
+                else {
+                    e.setAttribute(key, a[key]);
+                }
+
 
                 // TODO: handle special cases
                 // <!--
@@ -1280,12 +1317,15 @@ if (JSUS.isNodeJS()) {
      * a list of key-values pairs as text-value attributes for
      * the option.
      *
+     * @param {HTMLElement} select HTML select element
+     * @param {object} list Options to add to the select element
      */
     DOM.populateSelect = function(select, list) {
+        var key, opt;
         if (!select || !list) return;
-        for (var key in list) {
+        for (key in list) {
             if (list.hasOwnProperty(key)) {
-                var opt = document.createElement('option');
+                opt = document.createElement('option');
                 opt.value = list[key];
                 opt.appendChild(document.createTextNode(key));
                 select.appendChild(opt);
@@ -1298,15 +1338,12 @@ if (JSUS.isNodeJS()) {
      *
      * Removes all children from a node.
      *
+     * @param {HTMLElement} e HTML element.
      */
     DOM.removeChildrenFromNode = function(e) {
-
-        if (!e) return false;
-
         while (e.hasChildNodes()) {
             e.removeChild(e.firstChild);
         }
-        return true;
     };
 
     /**
@@ -1354,32 +1391,6 @@ if (JSUS.isNodeJS()) {
         return scanDocuments(prefix + '_' + JSUS.randomInt(0, 10000000));
         //return scanDocuments(prefix);
     };
-
-    /**
-     * ### DOM.getBlankPage
-     *
-     * Creates a blank HTML page with the html and body
-     * elements already appended.
-     *
-     */
-    DOM.getBlankPage = function() {
-        var html = document.createElement('html');
-        html.appendChild(document.createElement('body'));
-        return html;
-    };
-
-    //    DOM.findLastElement = function(o) {
-    //        if (!o) return;
-    //
-    //        if (o.lastChild) {
-    //            var e
-    //            JSUS.isElement(e)) return DOM.findLastElement(e);
-    //
-    //            var e = e.previousSibling;
-    //            if (e && JSUS.isElement(e)) return DOM.findLastElement(e);
-    //
-    //        return o;
-    //    };
 
     // ## GET/ADD
 
@@ -1580,7 +1591,10 @@ if (JSUS.isNodeJS()) {
      *
      */
     DOM.getIFrame = function(id, attributes) {
-        var attributes = {'name' : id}; // For Firefox
+        attributes = attributes || {};
+        if (!attributes.name) {
+            attributes.name = id; // For Firefox
+        }
         return this.getElement('iframe', id, attributes);
     };
 
@@ -1686,26 +1700,27 @@ if (JSUS.isNodeJS()) {
      * @see DOM.addBorder
      * @see DOM.style
      */
-    DOM.highlight = function(elem, code) {
+     DOM.highlight = function(elem, code) {
+        var color;
         if (!elem) return;
 
         // default value is ERR
         switch (code) {
         case 'OK':
-            var color =  'green';
+            color =  'green';
             break;
         case 'WARN':
-            var color = 'yellow';
+            color = 'yellow';
             break;
         case 'ERR':
-            var color = 'red';
+            color = 'red';
             break;
         default:
-            if (code[0] === '#') {
-                var color = code;
+            if (code.charAt(0) === '#') {
+                color = code;
             }
             else {
-                var color = 'red';
+                color = 'red';
             }
         }
 
@@ -1734,23 +1749,24 @@ if (JSUS.isNodeJS()) {
      * ### DOM.style
      *
      * Styles an element as an in-line css.
-     * Takes care to add new styles, and not overwriting previuous
-     * attributes.
      *
-     * Returns the element.
+     * Existing style properties are maintained, and new ones added.
      *
-     * @see DOM.setAttribute
+     * @param {HTMLElement} elem The element to style
+     * @param {object} Objects containing the properties to add.
+     * @return {HTMLElement} elem The styled element
      */
     DOM.style = function(elem, properties) {
-        var style, i;
+        var i;
         if (!elem || !properties) return;
         if (!DOM.isElement(elem)) return;
 
-        style = '';
         for (i in properties) {
-            style += i + ': ' + properties[i] + '; ';
-        };
-        return elem.setAttribute('style', style);
+            if (properties.hasOwnProperty(i)) {
+                elem.style[i] = properties[i];
+            }
+        }
+        return elem;
     };
 
     /**
@@ -1766,7 +1782,7 @@ if (JSUS.isNodeJS()) {
     DOM.removeClass = function(el, c) {
         var regexpr, o;
         if (!el || !c) return;
-        regexpr = '/(?:^|\s)' + c + '(?!\S)/';
+        regexpr = new RegExp('(?:^|\\s)' + c + '(?!\\S)');
         o = el.className = el.className.replace( regexpr, '' );
         return el;
     };
@@ -1786,7 +1802,7 @@ if (JSUS.isNodeJS()) {
     DOM.addClass = function(el, c) {
         if (!el || !c) return;
         if (c instanceof Array) c = c.join(' ');
-        if ('undefined' === typeof el.className) {
+        if (el.className === '' || 'undefined' === typeof el.className) {
             el.className = c;
         }
         else {
@@ -1794,11 +1810,49 @@ if (JSUS.isNodeJS()) {
         }
         return el;
     };
+
+    /**
+     * ### DOM.getElementsByClassName
+     *
+     * Gets the first available child of an IFrame
+     *
+     * Tries head, body, lastChild and the HTML element
+     *
+     * @param {object} document The document object of a window or iframe
+     * @param {string} className The requested className
+     * @param {string}  nodeName Optional. If set only elements with
+     *   the specified tag name will be searched
+     * @return {array} Array of elements with the requested class name
+     *
+     * @see https://gist.github.com/E01T/6088383
+     */
+    DOM.getElementsByClassName = function(document, className, nodeName) {
+        var result, node, tag, seek, i, rightClass;
+        result = [], tag = nodeName || '*';
+        if (document.evaluate) {
+            seek = '//'+ tag +'[@class="'+ className +'"]';
+            seek = document.evaluate(seek, document, null, 0, null );
+            while ((node = seek.iterateNext())) {
+                result.push(node);
+            }
+        }
+        else {
+            rightClass = new RegExp( '(^| )'+ className +'( |$)' );
+            seek = document.getElementsByTagName(tag);
+            for (i = 0; i < seek.length; i++)
+                if (rightClass.test((node = seek[i]).className )) {
+                    result.push(seek[i]);
+                }
+        }
+        return result;
+    };
+
+    // ## IFRAME
     
     /**
-     * ## DOM.getIFrameDocument
+     * ### DOM.getIFrameDocument
      *
-     * Returns a reference to the document of an iframe object 
+     * Returns a reference to the document of an iframe object
      *
      * @param {HTMLIFrameElement} iframe The iframe object
      * @return {HTMLDocument|undefined} The document of the iframe, or
@@ -1828,59 +1882,69 @@ if (JSUS.isNodeJS()) {
             contentDocument.getElementsByTagName('html')[0];
     };
 
+
     JSUS.extend(DOM);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+
 /**
  * # EVAL
  *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the evaluation
  * of strings as javascript commands
  * ---
  */
-
 (function(JSUS) {
 
-function EVAL(){};
+    function EVAL(){};
 
-/**
- * ## EVAL.eval
- *
- * Allows to execute the eval function within a given
- * context.
- *
- * If no context is passed a reference, `this` is used.
- *
- * @param {string} str The command to executes
- * @param {object} context Optional. The context of execution. Defaults, `this`
- * @return {mixed} The return value of the executed commands
- *
- * @see eval
- * @see JSON.parse
- */
-EVAL.eval = function(str, context) {
-    var func;
-    if (!str) return;
-    context = context || this;
-    // Eval must be called indirectly
-    // i.e. eval.call is not possible
-    func = function(str) {
-        // TODO: Filter str
-        return eval(str);
-    }
-    return func.call(context, str);
-};
+    /**
+     * ## EVAL.eval
+     *
+     * Cross-browser eval function with context.
+     *
+     * If no context is passed a reference, `this` is used.
+     *
+     * In old IEs it will use _window.execScript_ instead.
+     *
+     * @param {string} str The command to executes
+     * @param {object} context Optional. Execution context. Defaults, `this`
+     * @return {mixed} The return value of the executed commands
+     *
+     * @see eval
+     * @see execScript
+     * @see JSON.parse
+     */
+    EVAL.eval = function(str, context) {
+        var func;
+        if (!str) return;
+        context = context || this;
+        // Eval must be called indirectly
+        // i.e. eval.call is not possible
+        func = function(str) {
+            // TODO: Filter str.
+            str = '(' + str + ')';
+            if ('undefined' !== typeof window && window.execScript) {
+                // Notice: execScript doesn’t return anything.
+                window.execScript('__my_eval__ = ' + str);
+                return __my_eval__;
+            }
+            else {
+                return eval(str);
+            }
+        }
+        return func.call(context, str);
+    };
 
-JSUS.extend(EVAL);
+    JSUS.extend(EVAL);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
  * # FS
- *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations.
@@ -2098,7 +2162,7 @@ JSUS.extend(EVAL);
     };
 
     /**
-     * ## FS.copyFile
+     * ## copyFile
      *
      * Copies a file into another path
      *
@@ -2124,29 +2188,27 @@ JSUS.extend(EVAL);
     };
 
     /**
-      *  ## wrench
+      * ## wrench
       *
-      *  FS exposes the properties of the great package wrench for
-      *  performing recursive operations on directories
+      * FS exposes the properties of the great package wrench for
+      * performing recursive operations on directories
       *
-      *  @see https://github.com/ryanmcgrath/wrench-js
-      *
+      * @see https://github.com/ryanmcgrath/wrench-js
       */
-
     (function() {
         for (var w in wrench) {
             if (wrench.hasOwnProperty(w)) {
                 FS[w] = wrench[w];
             }
         }
-
     })();
+
     JSUS.extend(FS);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
  * # JSUS.OBJ
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate javascript objects.
@@ -2648,7 +2710,8 @@ JSUS.extend(EVAL);
      *
      * Copies only non-overlapping properties from obj2 to obj1
      *
-     * Original object is modified
+     * Check only if a property is defined, not its value.
+     * Original object is modified. 
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
@@ -2659,7 +2722,7 @@ JSUS.extend(EVAL);
         if (!obj1) return obj2;
         if (!obj2) return obj1;
         for (i in obj2) {
-            if (!obj1[i]) obj1[i] = obj2[i];
+            if ('undefined' === typeof obj1[i]) obj1[i] = obj2[i];
         }
     };
 
@@ -2668,7 +2731,8 @@ JSUS.extend(EVAL);
      *
      * Copies only overlapping properties from obj2 to obj1
      *
-     * Original object is modified
+     * Check only if a property is defined, not its value.
+     * Original object is modified.
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
@@ -2679,7 +2743,7 @@ JSUS.extend(EVAL);
         if (!obj1) return obj2;
         if (!obj2) return obj1;
         for (i in obj2) {
-            if (obj1[i]) obj1[i] = obj2[i];
+            if ('undefined' !== typeof obj1[i]) obj1[i] = obj2[i];
         }
     };
 
@@ -3166,7 +3230,7 @@ JSUS.extend(EVAL);
 /**
  * # PARSE
  *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to parsing strings
@@ -3197,26 +3261,27 @@ JSUS.extend(EVAL);
     /**
      * ## PARSE.getQueryString
      *
-     * Parses the current querystring and returns it full or a specific variable.
-     * Return false if the requested variable is not found.
+     * Parses current querystring and returns the requested variable.
+     *
+     * If no variable is specified, returns the full query string.
+     * If requested variable is not found returns false.
      *
      * @param {string} variable Optional. If set, returns only the value
      *    associated with this variable
      *
      * @return {string|boolean} The querystring, or a part of it, or FALSE
+     *
+     * Kudos:
+     * @see http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
      */
-    PARSE.getQueryString = function(variable) {
-        var query = window.location.search.substring(1);
-        if ('undefined' === typeof variable) return query;
-
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            if (pair[0] === variable) {
-                return unescape(pair[1]);
-            }
-        }
-        return false;
+    PARSE.getQueryString = function(name) {
+        var regex;
+        if ('undefined' === typeof name) return window.location.search;
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+        return results == null ? false : 
+            decodeURIComponent(results[1].replace(/\+/g, " "))
     };
 
     /**
@@ -3236,11 +3301,12 @@ JSUS.extend(EVAL);
      * @return {array} Tokens in which the string was split
      */
     PARSE.tokenize = function(str, separators, modifiers) {
+        var pattern, regex;
         if (!str) return;
         if (!separators || !separators.length) return [str];
         modifiers = modifiers || {};
 
-        var pattern = '[';
+        pattern = '[';
 
         JSUS.each(separators, function(s) {
             if (s === ' ') s = '\\s';
@@ -3250,7 +3316,7 @@ JSUS.extend(EVAL);
 
         pattern += ']+';
 
-        var regex = new RegExp(pattern);
+        regex = new RegExp(pattern);
         return str.split(regex, modifiers.limit);
     };
 
@@ -3373,7 +3439,7 @@ JSUS.extend(EVAL);
                     return value;
                 }
                 else if (value.substring(0, len_func) === PARSE.marker_func) {
-                    return eval('('+value.substring(len_prefix)+')');
+                    return JSUS.eval(value.substring(len_prefix));
                 }
                 else if (value.substring(0, len_null) === PARSE.marker_null) {
                     return null;
@@ -3401,8 +3467,131 @@ JSUS.extend(EVAL);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 /**
+ * # QUEUE
+ * Copyright(c) 2014 Stefano Balietti
+ * MIT Licensed
+ *
+ * Handles a simple queue of operations
+ * ---
+ */
+(function(JSUS) {
+
+    var QUEUE = {};
+
+    module.exports = QUEUE;
+
+    QUEUE.getQueue = function() {
+        return new Queue();
+    };
+
+    /**
+     * ## Queue constructor
+     *
+     */
+    function Queue() {
+
+        /**
+         * ### Queue.queue
+         *
+         * The list of functions waiting to be executed.
+         */
+        this.queue = [];
+
+        /**
+         * ### Queue.inProgress
+         *
+         * The list of operations ids currently in progress.
+         */
+        this.inProgress = {};
+    }
+
+    /**
+     * ### Queue.isReady
+     *
+     * Returns TRUE if no operation is in progress
+     *
+     * @return {boolean} TRUE, if no operation is in progress
+     */
+    Queue.prototype.isReady = function() {
+        return JSUS.isEmpty(this.inProgress);
+    };
+
+    /**
+     * ### Queue.ready
+     *
+     * Executes the specified callback once the server is fully loaded
+     *
+     * @param {function} cb The callback to execute
+     */
+    Queue.prototype.onReady = function(cb) {
+        if ('function' !== typeof cb) {
+            throw new TypeError('Queue.onReady: cb must be function.');
+        }
+        if (JSUS.isEmpty(this.inProgress)) {
+            cb();
+        }
+        else {
+            this.queue.push(cb);
+        }
+    };
+
+    /**
+     * ### Queue.add
+     *
+     * Adds an item to the _inProgress_ index
+     *
+     * @param {string} key A tentative key name
+     * @return {string} The unique key to be used to unregister the operation
+     */
+    Queue.prototype.add = function(key) {
+        if (key && 'string' !== typeof key) {
+            throw new Error('Queue.add: key must be string.');
+        }
+        key = JSUS.uniqueKey(this.inProgress, key);
+        if ('string' !== typeof key) {
+            throw new Error('Queue.add: an error occurred ' +
+                            'generating unique key.');
+        }
+        this.inProgress[key] = key;
+        return key;
+    };
+
+    /**
+     * ### Queue.remove
+     *
+     * Remove a specified key from the _inProgress_ index
+     *
+     * @param {string} key The key to remove from the _inProgress_ index.
+     */
+    Queue.prototype.remove = function(key) {
+        if ('string' !== typeof key) {
+            throw new Error('Queue.remove: key must be string.');
+        }
+        delete this.inProgress[key];
+        if (JSUS.isEmpty(this.inProgress)) {
+            this.executeAndClear()
+        }
+    };
+
+    /**
+     * ### Queue.executeAndClear
+     *
+     * Executes sequentially all callbacks, and removes them from the queue
+     */
+    Queue.prototype.executeAndClear = function() {
+        var i, len;
+        i = -1, len = this.queue.length;
+        for ( ; ++i < len ; ) {
+            this.queue[i]();
+        }
+    };
+
+    JSUS.extend(QUEUE);
+
+})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+/**
  * # RANDOM
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the generation of
@@ -3424,12 +3613,13 @@ JSUS.extend(EVAL);
      * @return {number} A random floating point number in (a,b)
      */
     RANDOM.random = function(a, b) {
+        var c;
         a = ('undefined' === typeof a) ? 0 : a;
         b = ('undefined' === typeof b) ? 0 : b;
         if (a === b) return a;
 
         if (b < a) {
-            var c = a;
+            c = a;
             a = b;
             b = c;
         }
@@ -3439,8 +3629,7 @@ JSUS.extend(EVAL);
     /**
      * ## RANDOM.randomInt
      *
-     * Generates a pseudo-random integer between
-     * (a,b] a exclusive, b inclusive.
+     * Generates a pseudo-random integer between (a,b] a exclusive, b inclusive
      *
      * @param {number} a The lower limit
      * @param {number} b The upper limit
@@ -3453,11 +3642,238 @@ JSUS.extend(EVAL);
         return Math.floor(RANDOM.random(a, b) + 1);
     };
 
+    /**
+     * ## RANDOM.sample
+     *
+     * Generates a randomly shuffled sequence of numbers in (a,b)
+     *
+     * Both _a_ and _b_ are inclued in the interval.
+     *
+     * @param {number} a The lower limit
+     * @param {number} b The upper limit
+     * @return {array} The randomly shuffled sequence.
+     *
+     * @see RANDOM.seq
+     */
     RANDOM.sample = function(a, b) {
         var out;
         out = JSUS.seq(a,b)
         if (!out) return false;
         return JSUS.shuffle(out);
+    };
+
+    /**
+     * ## RANDOM.sample
+     *
+     * Returns a new generator of normally distributed pseudo random numbers
+     *
+     * The generator is independent from RANDOM.nextNormal
+     * 
+     * @return {function} An independent generator 
+     * 
+     * @see RANDOM.nextNormal
+     */
+    RANDOM.getNormalGenerator = function() {
+
+        return (function() {
+
+            var oldMu, oldSigma;    
+            var x2, multiplier, genReady;    
+            
+            return function normal(mu, sigma) {
+                
+                var x1, u1, u2, v1, v2, s;
+                
+                if ('number' !== typeof mu) {
+                    throw new TypeError('nextNormal: mu must be number.');
+                }
+                if ('number' !== typeof sigma) {
+                    throw new TypeError('nextNormal: sigma must be number.');
+                }
+
+                if (mu !== oldMu || sigma !== oldSigma) {
+                    genReady = false;
+                    oldMu = mu;
+                    oldSigma = sigma;
+                }
+
+                if (genReady) {     
+                    genReady = false;
+                    return (sigma * x2) + mu;
+                }
+                
+                u1 = Math.random();
+                u2 = Math.random();
+                
+                // Normalize between -1 and +1.
+                v1 = (2 * u1) - 1;
+                v2 = (2 * u2) - 1; 
+                
+                s = (v1 * v1) + (v2 * v2);
+                
+                // Condition is true on average 1.27 times, 
+                // with variance equal to 0.587.
+                if (s >= 1) {
+                    return normal(mu, sigma);
+                }
+                
+                multiplier = Math.sqrt(-2 * Math.log(s) / s);
+                
+                x1 = v1 * multiplier;
+                x2 = v2 * multiplier;
+                
+                genReady = true;
+                
+                return (sigma * x1) + mu;
+                
+            }
+        })();
+    }
+
+    /**
+     * Generates random numbers with Normal Gaussian distribution.
+     *
+     * User must specify the expected mean, and standard deviation a input 
+     * parameters.
+     *
+     * Implements the Polar Method by Knuth, "The Art Of Computer
+     * Programming", p. 117.
+     * 
+     * @param {number} mu The mean of the distribution
+     * param {number} sigma The standard deviation of the distribution
+     * @return {number} A random number following a Normal Gaussian distribution
+     *
+     * @see RANDOM.getNormalGenerator
+     */
+    RANDOM.nextNormal = RANDOM.getNormalGenerator();
+
+    /**
+     * Generates random numbers with LogNormal distribution.
+     *
+     * User must specify the expected mean, and standard deviation of the
+     * underlying gaussian distribution as input parameters.
+     * 
+     * @param {number} mu The mean of the gaussian distribution
+     * @param {number} sigma The standard deviation of the gaussian distribution
+     * @return {number} A random number following a LogNormal distribution
+     *
+     * @see RANDOM.nextNormal 
+     */
+    RANDOM.nextLogNormal = function(mu, sigma) {
+        if ('number' !== typeof mu) {
+            throw new TypeError('nextLogNormal: mu must be number.');
+        }
+        if ('number' !== typeof sigma) {
+            throw new TypeError('nextLogNormal: sigma must be number.');
+        }
+        return Math.exp(nextNormal(mu, sigma));
+    }
+
+    /**
+     * Generates random numbers with Exponential distribution.
+     *
+     * User must specify the lambda the _rate parameter_ of the distribution.
+     * The expected mean of the distribution is equal to `Math.pow(lamba, -1)`. 
+     * 
+     * @param {number} lambda The rate parameter
+     * @return {number} A random number following an Exponential distribution
+     */
+    RANDOM.nextExponential = function(lambda) {
+        if ('number' !== typeof lambda) {
+            throw new TypeError('nextExponential: lambda must be number.');
+        }
+        if (lambda <= 0) {
+            throw new TypeError('nextExponential: lambda must be greater than 0.');
+        }
+        return - Math.log(1 - Math.random()) / lambda;
+    }
+    
+    /**
+     * Generates random numbers following the Binomial distribution.
+     *
+     * User must specify the probability of success and the number of trials.
+     * 
+     * @param {number} p The probability of success
+     * @param {number} trials The number of trials
+     * @return {number} sum The sum of successes in n trials
+     */
+    RANDOM.nextBinomial = function(p, trials) {
+        var counter, sum;
+
+        if ('number' !== typeof p) {
+            throw new TypeError('nextBinomial: p must be number.');
+        }
+        if ('number' !== typeof trials) {
+            throw new TypeError('nextBinomial: trials must be number.');
+        }
+        if (p < 0 || p > 1) {
+            throw new TypeError('nextBinomial: p must between 0 and 1.');
+        }
+        if (trials < 1) {
+            throw new TypeError('nextBinomial: trials must be greater than 0.');
+        }
+        
+        counter = 0;
+        sum = 0;
+        
+        while(counter < trials){
+	    if (Math.random() < p) {	
+	        sum += 1;
+            }
+	    counter++;
+        }
+	
+        return sum;
+    };
+
+    /**
+     * Generates random numbers following the Gamma distribution.
+     *
+     * This function is experimental and untested. No documentation.
+     *
+     * @experimental
+     */
+    RANDOM.nextGamma = function(alpha, k) {
+        var intK, kDiv, alphaDiv;
+        var u1, u2, u3;
+        var x, i, len, tmp;
+
+        if ('number' !== typeof alpha) {
+            throw new TypeError('nextGamma: alpha must be number.');
+        }
+        if ('number' !== typeof k) {
+            throw new TypeError('nextGamma: k must be number.');
+        }
+        if (alpha < 1) {
+            throw new TypeError('nextGamma: alpha must be greater than 1.');
+        }
+        if (k < 1) {
+            throw new TypeError('nextGamma: k must be greater than 1.');
+        }
+
+        u1 = Math.random();
+        u2 = Math.random();
+        u3 = Math.random();
+
+        intK = Math.floor(k) + 3;
+        kDiv = 1 / k;
+        
+        alphaDiv = 1 / alpha;
+
+        x = 0;
+        for (i = 3 ; ++i < intK ; ) {
+            x += Math.log(Math.random());
+        }
+
+        x *= - alphaDiv; 
+
+        tmp = Math.log(u3) * 
+            (Math.pow(u1, kDiv) /
+             ((Math.pow(u1, kDiv) + Math.pow(u2, 1 / (1 - k)))));
+        
+        tmp *=  - alphaDiv;
+        
+        return x + tmp;
     }
 
     JSUS.extend(RANDOM);
@@ -3466,7 +3882,7 @@ JSUS.extend(EVAL);
 /**
  * # TIME
  *
- * Copyright(c) 2013 Stefano Balietti
+ * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the generation,

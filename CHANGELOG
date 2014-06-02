@@ -1,6 +1,13 @@
 # ChangeLog
 
-## 0.9.0
+## 0.9.3
+- `#QUEUE.getRemoveCb()` to get remove callbacks inside loops.
+- Better support for execution of callbacks after deletion and copy of files inside `#FS`.
+
+## 0.9.2
+- `#DOM.removeClass()` improved.
+
+## 0.9.1
 - `#QUEUE class added plust tests. It can manage a simple queue.
 
 ## 0.8.9

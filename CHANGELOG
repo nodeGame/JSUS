@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.9.4 (forthcoming)
+- `#PARSE.getQueryString()` accepts referer as second parameter.
+
 ## 0.9.3
 - `#QUEUE.getRemoveCb()` to get remove callbacks inside loops.
 - Better support for execution of callbacks after deletion and copy of files inside `#FS`.

@@ -1800,14 +1800,10 @@
      *   class, or undefined input are misspecified.
      */
     DOM.addClass = function(el, c) {
-        if (!el || !c) return;
+        if (!el) return;
         if (c instanceof Array) c = c.join(' ');
-        if (el.className === '' || 'undefined' === typeof el.className) {
-            el.className = c;
-        }
-        else {
-            el.className += ' ' + c;
-        }
+        else if ('string' !== typeof c) return;
+        el.className = el.className ? el.className + ' ' + c : c;
         return el;
     };
 
@@ -1882,6 +1878,61 @@
             contentDocument.getElementsByTagName('html')[0];
     };
 
+    // ## RIGHT-CLICK
+
+    /**
+     * ### DOM.disableRightClick
+     *
+     * Disables the popup of the context menu by right clicking with the mouse 
+     *
+     * @param {Document} Optional. A target document object. Defaults, document
+     *
+     * @see DOM.enableRightClick
+     */
+    DOM.disableRightClick = function(doc) {
+        doc = doc || document;
+        if (doc.layers) {
+            doc.captureEvents(Event.MOUSEDOWN);
+            doc.onmousedown = function clickNS4(e) {
+                if (doc.layers || doc.getElementById && !doc.all) {
+                    if (e.which == 2 || e.which == 3) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else if (doc.all && !doc.getElementById) {
+            doc.onmousedown = function clickIE4() {
+                if (event.button == 2) {
+                    return false;
+                }
+            }
+        }
+        doc.oncontextmenu = new Function("return false");
+    };
+
+    /**
+     * ### DOM.enableRightClick
+     *
+     * Enables the popup of the context menu by right clicking with the mouse 
+     *
+     * It unregisters the event handlers created by `DOM.disableRightClick` 
+     *
+     * @param {Document} Optional. A target document object. Defaults, document
+     *
+     * @see DOM.disableRightClick
+     */
+    DOM.enableRightClick = function(doc) {
+        doc = doc || document;
+        if (doc.layers) {
+            doc.releaseEvents(Event.MOUSEDOWN);
+            doc.onmousedown = null;
+        }
+        else if (doc.all && !doc.getElementById) {
+            doc.onmousedown = null;
+        }
+        doc.oncontextmenu = null;
+    };
 
     JSUS.extend(DOM);
 
@@ -2013,27 +2064,32 @@
      * Returns false if the file does not exist.
      *
      * @param {string} file The path to the file or directory
-     * @return {boolean} TRUE, if operation is succesfull
+     * @param {function} cb Optional. A callback to execute after successful
+     *   file deletion
+     * @return {boolean} TRUE, if file is found. An error can still occurs
+     *   during async removal
      *
      * @see FS.cleanDir
      */
-    FS.deleteIfExists = function(file) {
+    FS.deleteIfExists = function(file, cb) {
+        var stats;
         if (!FS.existsSync(file)) {
             return false;
         }
-        var stats = fs.lstatSync(file);
+        stats = fs.lstatSync(file);
         if (stats.isDirectory()) {
             fs.rmdir(file, function(err) {
                 if (err) throw err;
+                if (cb) cb();
             });
         }
         else {
             fs.unlink(file, function(err) {
                 if (err) throw err;
+                if (cb) cb();
             });
         }
         return true;
-
     };
 
     /**
@@ -2076,20 +2132,27 @@
         if (dir[dir.length] !== '/') dir = dir + '/';
 
         fs.readdir(dir, function(err, files) {
+            var asq, mycb;
             if (err) {
                 JSUS.log(err);
-                return false;
+                return;
             }
+            // Create async queue if a callback was specified.
+            if (cb) asq = JSUS.getQueue();
+            // Create a nested callback for the async queue, if necessary.
 
-            files.filter(filterFunc)
-                .forEach(function(file) {
-                    JSUS.deleteIfExists(dir + file);
-                });
-
-            if (cb) return cb(null);
-
+            files.filter(filterFunc).forEach(function(file) {
+                if (cb) {
+                    asq.add(file);
+                    mycb = asq.getRemoveCb(file);
+                }
+                JSUS.deleteIfExists(dir + file, mycb);
+            });
+            
+            if (cb) {
+                asq.onReady(cb);
+            }
         });
-
 
         return true;
     };
@@ -2118,6 +2181,7 @@
      * @see FS.copyFile
      */
     FS.copyFromDir = function(dirIn, dirOut, ext, cb) {
+        var i, dir, dirs, stats;
         if (!dirIn) {
             JSUS.log('You must specify a source directory');
             return false;
@@ -2128,34 +2192,45 @@
         }
 
         dirOut = path.resolve(dirOut) + '/';
-        var i, dir, dirs = [dirIn, dirOut];
-        for (i=0; i < 2; i++) {
+        dirs = [dirIn, dirOut];
+
+        for (i = 0; i < 2; i++) {
             dir = dirs[i];
             if (!FS.existsSync(dir)) {
                 console.log(dir + ' does not exist');
                 return false;
             }
 
-            var stats = fs.lstatSync(dir);
+            stats = fs.lstatSync(dir);
             if (!stats.isDirectory()) {
                 console.log(dir + ' is not a directory');
                 return false;
             }
         }
 
-        fs.readdir(dirIn, function(err, files){
+        fs.readdir(dirIn, function(err, files) {
+            var asq, i, mycb;
             if (err) {
                 JSUS.log(err);
                 throw new Error;
             }
-            for (var i in files) {
+            // Create async queue if a callback was specified.
+            if (cb) asq = JSUS.getQueue();
+            for (i in files) {
                 if (ext && path.extname(files[i]) !== ext) {
                     continue;
                 }
-                copyFile(dirIn + files[i], dirOut + files[i]);
+                // Create a nested callback for the asq, if necessary.
+                if (cb) {
+                    asq.add(i);
+                    mycb = asq.getRemoveCb(i);
+                }
+                copyFile(dirIn + files[i], dirOut + files[i], mycb);
             }
-
-            if (cb) return cb(null);
+            
+            if (cb) {
+                asq.onReady(cb);
+            }
         });
 
         return true;
@@ -3121,7 +3196,7 @@
             }
         }
         return name;
-    }
+    };
 
     /**
      * ## OBJ.augment
@@ -3165,7 +3240,7 @@
                 obj1[k].push(obj2[k]);
             }
         }
-    }
+    };
 
 
     /**
@@ -3263,23 +3338,29 @@
      *
      * Parses current querystring and returns the requested variable.
      *
-     * If no variable is specified, returns the full query string.
+     * If no variable name is specified, returns the full query string.
      * If requested variable is not found returns false.
      *
-     * @param {string} variable Optional. If set, returns only the value
-     *    associated with this variable
+     * @param {string} name Optional. If set, returns only the value
+     *   associated with this variable
+     * @param {string} referer Optional. If set, searches this string
      *
      * @return {string|boolean} The querystring, or a part of it, or FALSE
      *
      * Kudos:
      * @see http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
      */
-    PARSE.getQueryString = function(name) {
+    PARSE.getQueryString = function(name, referer) {
         var regex;
-        if ('undefined' === typeof name) return window.location.search;
+        if (referer && 'string' !== typeof referer) {
+            throw new TypeError('JSUS.getQueryString: referer must be string ' +
+                                'or undefined.');
+        }
+        referer = referer || window.location.search;
+        if ('undefined' === typeof name) return referer;
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
+        results = regex.exec(referer);
         return results == null ? false : 
             decodeURIComponent(results[1].replace(/\+/g, " "))
     };
@@ -3571,6 +3652,27 @@
         if (JSUS.isEmpty(this.inProgress)) {
             this.executeAndClear()
         }
+    };
+
+    /**
+     * ### Queue.getRemoveCb
+     *
+     * Returns a callback to remove an item from the _inProgress_ index
+     *
+     * This method is useful when the callbacks is defined inside loops,
+     * so that a closure is created around the variable key.
+     *
+     * @param {string} key The key to remove from the _inProgress_ index.
+     *
+     * @see Queue.remove
+     */
+    Queue.prototype.getRemoveCb = function(key) {
+        var that;
+        if ('string' !== typeof key) {
+            throw new Error('Queue.getRemoveCb: key must be string.');
+        }
+        that = this;
+        return function() { that.remove(key); };
     };
 
     /**

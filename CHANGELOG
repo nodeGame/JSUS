@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.9.4 (forthcoming)
+## 0.9.4 
 - `#PARSE.getQueryString()` accepts referer as second parameter.
 
 ## 0.9.3

@@ -1,7 +1,8 @@
 # ChangeLog
 
-## 0.9.4 
+## 0.9.4
 - `#PARSE.getQueryString()` accepts referer as second parameter.
+- `#DOM.disableRightClick()` and `#DOM.enableRightClick()`.
 
 ## 0.9.3
 - `#QUEUE.getRemoveCb()` to get remove callbacks inside loops.

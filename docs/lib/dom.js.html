@@ -174,6 +174,15 @@
       <div class="heading h3">
         <a href="#dom.getiframeanychild">DOM.getIFrameAnyChild</a>
       </div>
+      <div class="heading h2">
+        <a href="#right-click">RIGHT-CLICK</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.disablerightclick">DOM.disableRightClick</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.enablerightclick">DOM.enableRightClick</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -1920,14 +1929,10 @@ width, and type can be specified.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span> <span class="o">||</span> <span class="o">!</span><span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">||</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
-        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">?</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span> <span class="o">:</span> <span class="nx">c</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -2090,8 +2095,114 @@ width, and type can be specified.</p>
         <span class="k">return</span> <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span>
             <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">lastChild</span> <span class="o">||</span>
             <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
-    <span class="p">};</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="right-click">
+  <h2>
+    <a href="#right-click" class="pilcrow">&#182;</a>
+    RIGHT-CLICK
+  </h2>
+</div>
 
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.disablerightclick">
+  <h3>
+    <a href="#dom.disablerightclick" class="pilcrow">&#182;</a>
+    DOM.disableRightClick
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Disables the popup of the context menu by right clicking with the mouse </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">Document</span>
+      <span>A target document object. Defaults, document</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">DOM.enableRightClick
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">layers</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">captureEvents</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">MOUSEDOWN</span><span class="p">);</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">clickNS4</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">layers</span> <span class="o">||</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">getElementById</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">doc</span><span class="p">.</span><span class="nx">all</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">all</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">doc</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">clickIE4</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">button</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="s2">&quot;return false&quot;</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.enablerightclick">
+  <h3>
+    <a href="#dom.enablerightclick" class="pilcrow">&#182;</a>
+    DOM.enableRightClick
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Enables the popup of the context menu by right clicking with the mouse </p>
+
+<p>It unregisters the event handlers created by <code>DOM.disableRightClick</code> </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">Document</span>
+      <span>A target document object. Defaults, document</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">DOM.disableRightClick
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">enableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">layers</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">releaseEvents</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">MOUSEDOWN</span><span class="p">);</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">all</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">doc</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">DOM</span><span class="p">);</span>
 

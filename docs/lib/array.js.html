@@ -112,7 +112,7 @@ MIT Licensed</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
-    
+
     <span class="kd">function</span> <span class="nx">ARRAY</span><span class="p">(){};</span></pre></div>
         </td>
       </tr>
@@ -139,26 +139,26 @@ supported natively. </p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fun</span> <span class="cm">/*, thisp */</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>  
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span> <span class="o">||</span> <span class="k">this</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">();</span>  
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fun</span> <span class="cm">/*, thisp */</span><span class="p">)</span> <span class="p">{</span>
+            <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span> <span class="o">||</span> <span class="k">this</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">();</span>
 
-            <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>  
-            <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span><span class="p">;</span>  
-            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">fun</span> <span class="o">!==</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">();</span>  
-            
-            <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="p">[];</span>  
-            <span class="kd">var</span> <span class="nx">thisp</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>  
-            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-                <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">fun</span> <span class="o">!==</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">();</span>
+
+            <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="kd">var</span> <span class="nx">thisp</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
                     <span class="kd">var</span> <span class="nx">val</span> <span class="o">=</span> <span class="nx">t</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span> <span class="c1">// in case fun mutates this  </span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">fun</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">thisp</span><span class="p">,</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">t</span><span class="p">))</span> <span class="p">{</span> 
-                        <span class="nx">res</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>  
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">fun</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">thisp</span><span class="p">,</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">t</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="nx">res</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
-            <span class="p">}</span>     
-            <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>  
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
         <span class="p">};</span>
     <span class="p">}</span></pre></div>
         </td>
@@ -176,7 +176,7 @@ supported natively. </p>
   </div>
   <div class="body"><p>Returns TRUE if a variable is an Array</p>
 
-<p>This method is exactly the same as <code>Array.isArray</code>, 
+<p>This method is exactly the same as <code>Array.isArray</code>,
 but it works on a larger share of browsers. </p>
   </div>
   <div class="details">
@@ -196,7 +196,7 @@ but it works on a larger share of browsers. </p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">;</span>  
+        <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -241,13 +241,13 @@ can be passed as fourth parameter.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">increment</span>
       <span class="dox_type">number</span>
-      <span>Optional. The increment between two 
+      <span>Optional. The increment between two
   subsequents element of the sequence</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">func</span>
       <span class="dox_type">Function</span>
-      <span>Optional. A callback function that can modify 
+      <span>Optional. A callback function that can modify
   each number of the sequence before returning it</span>
     </div>
     <div class="dox_tag_title">Returns</div>
@@ -266,18 +266,18 @@ can be passed as fourth parameter.</p>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">end</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">end</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">===</span> <span class="nx">end</span><span class="p">)</span> <span class="k">return</span> <span class="p">[</span><span class="nx">start</span><span class="p">];</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="nx">increment</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">increment</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;undefined&#39;</span><span class="p">,</span> <span class="s1">&#39;number&#39;</span><span class="p">]))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="nx">increment</span> <span class="o">=</span> <span class="nx">increment</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
         <span class="nx">func</span> <span class="o">=</span> <span class="nx">func</span> <span class="o">||</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">e</span><span class="p">;};</span>
-        
+
         <span class="nx">i</span> <span class="o">=</span> <span class="nx">start</span><span class="p">,</span>
         <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">func</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
@@ -290,7 +290,7 @@ can be passed as fourth parameter.</p>
                 <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">-</span> <span class="nx">increment</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
-        
+
         <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -340,7 +340,7 @@ can be passed as fourth parameter.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">each</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">array</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">func</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        
+
         <span class="nx">context</span> <span class="o">=</span> <span class="nx">context</span> <span class="o">||</span> <span class="k">this</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -364,7 +364,7 @@ can be passed as fourth parameter.</p>
   <div class="body"><p>Applies a callback function to each element in the db, store
 the results in an array and returns it</p>
 
-<p>Any number of additional parameters can be passed after the 
+<p>Any number of additional parameters can be passed after the
 callback function</p>
   </div>
   <div class="details">
@@ -387,7 +387,7 @@ callback function</p>
         <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span>
         <span class="nx">array</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">shift</span><span class="p">(),</span>
         <span class="nx">func</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">array</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ARRAY.map() the first argument must be an array. &#39;</span> <span class="o">+</span>
                      <span class="s1">&#39;Found: &#39;</span> <span class="o">+</span> <span class="nx">array</span><span class="p">);</span>
@@ -418,7 +418,7 @@ callback function</p>
   </div>
   <div class="body"><p>Removes an element from the the array, and returns it</p>
 
-<p>For objects, deep equality comparison is performed 
+<p>For objects, deep equality comparison is performed
 through JSUS.equals.</p>
 
 <p>If no element is removed returns FALSE.</p>
@@ -452,7 +452,7 @@ through JSUS.equals.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">removeElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span> <span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">func</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">;</span>
         <span class="p">}</span>
@@ -461,7 +461,7 @@ through JSUS.equals.</p>
                 <span class="k">return</span> <span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
-        
+
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">func</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">])){</span>
                 <span class="k">return</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
@@ -485,7 +485,7 @@ through JSUS.equals.</p>
   <div class="body"><p>Returns TRUE if the element is contained in the array,
 FALSE otherwise</p>
 
-<p>For objects, deep equality comparison is performed 
+<p>For objects, deep equality comparison is performed
 through JSUS.equals.</p>
 
 <p>Alias ARRAY.in_array (deprecated)</p>
@@ -515,7 +515,7 @@ through JSUS.equals.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>        
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="nx">func</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
@@ -631,7 +631,7 @@ The last group could have less elements</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">getGroupsSizeN</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">N</span><span class="p">)</span> <span class="p">{</span>
-        
+
         <span class="kd">var</span> <span class="nx">copy</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">copy</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">originalLen</span> <span class="o">=</span> <span class="nx">copy</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
@@ -713,7 +713,7 @@ The last group could have less elements</p>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">group</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">group</span><span class="p">);</span>
         <span class="p">}</span>
-        
+
         <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -733,7 +733,7 @@ The last group could have less elements</p>
 
 <p>If N is defined, it returns "Latin Rectangle" (SxN) </p>
 
-<p>A parameter controls for self-match, i.e. whether the symbol "i" 
+<p>A parameter controls for self-match, i.e. whether the symbol "i"
 is found or not in in column "i".</p>
   </div>
   <div class="details">
@@ -783,23 +783,23 @@ is found or not in in column "i".</p>
         <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span> <span class="nx">S</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">seq</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="kd">var</span> <span class="nx">idx</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-        
+
         <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">limit</span> <span class="o">=</span> <span class="nx">S</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">extracted</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">self</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">limit</span> <span class="o">=</span> <span class="nx">S</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">do</span> <span class="p">{</span>
                 <span class="nx">idx</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">randomInt</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span><span class="nx">limit</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">while</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="nx">extracted</span><span class="p">));</span>
             <span class="nx">extracted</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
-            
+
             <span class="k">if</span> <span class="p">(</span><span class="nx">idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">latin</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">seq</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
                 <span class="nx">latin</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
@@ -807,9 +807,9 @@ is found or not in in column "i".</p>
             <span class="k">else</span> <span class="p">{</span>
                 <span class="nx">latin</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">seq</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">idx</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="nx">seq</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="nx">idx</span><span class="p">)));</span>
             <span class="p">}</span>
-            
+
         <span class="p">}</span>
-        
+
         <span class="k">return</span> <span class="nx">latin</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -854,7 +854,7 @@ is found or not in in column "i".</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">N</span><span class="p">)</span> <span class="nx">N</span> <span class="o">=</span> <span class="nx">S</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">S</span> <span class="o">||</span> <span class="nx">S</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span><span class="nx">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">N</span> <span class="o">&gt;</span> <span class="nx">S</span><span class="p">)</span> <span class="nx">N</span> <span class="o">=</span> <span class="nx">S</span><span class="p">;</span>
-        
+
         <span class="k">return</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">_latinSquare</span><span class="p">(</span><span class="nx">S</span><span class="p">,</span> <span class="nx">N</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -870,7 +870,7 @@ is found or not in in column "i".</p>
 </div>
 
   </div>
-  <div class="body"><p>Generate a random Latin Square of size Sx(S-1), where 
+  <div class="body"><p>Generate a random Latin Square of size Sx(S-1), where
 in each column "i", the symbol "i" is not found</p>
 
 <p>If N &lt; S, it returns a "Latin Rectangle" (SxN)</p>
@@ -900,7 +900,7 @@ in each column "i", the symbol "i" is not found</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">N</span><span class="p">)</span> <span class="nx">N</span> <span class="o">=</span> <span class="nx">S</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">S</span> <span class="o">||</span> <span class="nx">S</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span><span class="nx">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">N</span> <span class="o">&gt;</span> <span class="nx">S</span><span class="p">)</span> <span class="nx">N</span> <span class="o">=</span> <span class="nx">S</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        
+
         <span class="k">return</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">_latinSquare</span><span class="p">(</span><span class="nx">S</span><span class="p">,</span> <span class="nx">N</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
     <span class="p">}</span></pre></div>
         </td>
@@ -970,7 +970,7 @@ in each column "i", the symbol "i" is not found</p>
             <span class="nx">indices</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
             <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">r</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="nx">indices</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">indices</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">-</span> <span class="nx">i</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">values</span><span class="p">(</span><span class="nx">indices</span><span class="p">,</span> <span class="nx">array</span><span class="p">);</span> 
+        <span class="k">return</span> <span class="nx">values</span><span class="p">(</span><span class="nx">indices</span><span class="p">,</span> <span class="nx">array</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -989,7 +989,7 @@ in each column "i", the symbol "i" is not found</p>
 
 <p>If strict is equal to true, elements cannot be matched multiple times.</p>
 
-<p><em>Important</em>: this method has a bug / feature. If the strict parameter 
+<p><em>Important</em>: this method has a bug / feature. If the strict parameter
 is set, the last elements could remain without match, because all the
 other have been already used. Another recombination would be able
 to match all the elements instead.</p>
@@ -1038,7 +1038,7 @@ to match all the elements instead.</p>
         <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">copy</span><span class="p">,</span> <span class="nx">group</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">N</span><span class="p">)</span> <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
-        
+
         <span class="nx">result</span> <span class="o">=</span> <span class="p">[],</span>
         <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
         <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
@@ -1140,7 +1140,7 @@ to match all the elements instead.</p>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;times must be greater or equal 1&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
-        
+
         <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
         <span class="k">for</span> <span class="p">(;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">times</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">array</span><span class="p">);</span>
@@ -1162,7 +1162,7 @@ to match all the elements instead.</p>
   </div>
   <div class="body"><p>Repeats each element of the array N times</p>
 
-<p>N can be specified as an integer or as an array. In the former case all 
+<p>N can be specified as an integer or as an array. In the former case all
 the elements are repeat the same number of times. In the latter, each
 element can be repeated a custom number of times. If the length of the
 <code>times</code> array differs from that of the array to stretch a recycle rule
@@ -1195,7 +1195,7 @@ is applied.</p>
       <span class="dox_tag_name">times</span>
       <span class="dox_type">number</span>
       <span class="dox_type">array</span>
-      <span>The number of times each element 
+      <span>The number of times each element
   must be repeated</span>
     </div>
     <div class="dox_tag_title">Returns</div>
@@ -1218,7 +1218,7 @@ is applied.</p>
             <span class="p">}</span>
             <span class="nx">times</span> <span class="o">=</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">rep</span><span class="p">([</span><span class="nx">times</span><span class="p">],</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
         <span class="p">}</span>
-        
+
         <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">repeat</span> <span class="o">=</span> <span class="nx">times</span><span class="p">[(</span><span class="nx">i</span> <span class="o">%</span> <span class="nx">times</span><span class="p">.</span><span class="nx">length</span><span class="p">)];</span>
@@ -1306,7 +1306,7 @@ is applied.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>All the values of the first array that are not 
+      <span>All the values of the first array that are not
   found in the second one</span>
     </div>
   </div>
@@ -1401,7 +1401,7 @@ is applied.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">getNRandom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">N</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">array</span><span class="p">).</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">N</span><span class="p">);</span>
-    <span class="p">};</span>                           
+    <span class="p">};</span>
     </pre></div>
         </td>
       </tr>
@@ -1446,7 +1446,7 @@ is applied.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">distinct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
-        
+
         <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">out</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
@@ -1489,7 +1489,7 @@ returned.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">transpose</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>  
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         </pre></div>
         </td>
       </tr>
@@ -1500,22 +1500,22 @@ returned.</p>
 </div>
 <p>Calculate width and height</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=</span> <span class="p">[];</span> 
+        <td class="code highlight"><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="nx">w</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
         <span class="nx">h</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">?</span> <span class="nx">array</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">h</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">t</span><span class="p">;</span>
-        
+
         <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">h</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">t</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
-            <span class="k">for</span> <span class="p">(</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>     
+            <span class="k">for</span> <span class="p">(</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">w</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">t</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span><span class="nx">i</span><span class="p">];</span>
             <span class="p">}</span>
-        <span class="p">}</span> 
+        <span class="p">}</span>
         <span class="k">return</span> <span class="nx">t</span><span class="p">;</span>
     <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ARRAY</span><span class="p">);</span>
-    
+
 <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
 </pre></div>
         </td>

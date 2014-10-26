@@ -252,13 +252,13 @@ MIT Licensed</p>
 
         <span class="k">return</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
-            <span class="kd">var</span> <span class="nx">oldMu</span><span class="p">,</span> <span class="nx">oldSigma</span><span class="p">;</span>    
-            <span class="kd">var</span> <span class="nx">x2</span><span class="p">,</span> <span class="nx">multiplier</span><span class="p">,</span> <span class="nx">genReady</span><span class="p">;</span>    
-            
+            <span class="kd">var</span> <span class="nx">oldMu</span><span class="p">,</span> <span class="nx">oldSigma</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">x2</span><span class="p">,</span> <span class="nx">multiplier</span><span class="p">,</span> <span class="nx">genReady</span><span class="p">;</span>
+
             <span class="k">return</span> <span class="kd">function</span> <span class="nx">normal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
-                
+
                 <span class="kd">var</span> <span class="nx">x1</span><span class="p">,</span> <span class="nx">u1</span><span class="p">,</span> <span class="nx">u2</span><span class="p">,</span> <span class="nx">v1</span><span class="p">,</span> <span class="nx">v2</span><span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
-                
+
                 <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">mu</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextNormal: mu must be number.&#39;</span><span class="p">);</span>
                 <span class="p">}</span>
@@ -272,11 +272,11 @@ MIT Licensed</p>
                     <span class="nx">oldSigma</span> <span class="o">=</span> <span class="nx">sigma</span><span class="p">;</span>
                 <span class="p">}</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="nx">genReady</span><span class="p">)</span> <span class="p">{</span>     
+                <span class="k">if</span> <span class="p">(</span><span class="nx">genReady</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">genReady</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
                     <span class="k">return</span> <span class="p">(</span><span class="nx">sigma</span> <span class="o">*</span> <span class="nx">x2</span><span class="p">)</span> <span class="o">+</span> <span class="nx">mu</span><span class="p">;</span>
                 <span class="p">}</span>
-                
+
                 <span class="nx">u1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
                 <span class="nx">u2</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
                 </pre></div>
@@ -290,8 +290,8 @@ MIT Licensed</p>
 <p>Normalize between -1 and +1.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="nx">v1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-                <span class="nx">v2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> 
-                
+                <span class="nx">v2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
                 <span class="nx">s</span> <span class="o">=</span> <span class="p">(</span><span class="nx">v1</span> <span class="o">*</span> <span class="nx">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">v2</span> <span class="o">*</span> <span class="nx">v2</span><span class="p">);</span>
                 </pre></div>
         </td>
@@ -301,22 +301,22 @@ MIT Licensed</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
 </div>
-<p>Condition is true on average 1.27 times, 
+<p>Condition is true on average 1.27 times,
 with variance equal to 0.587.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">s</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">return</span> <span class="nx">normal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">);</span>
                 <span class="p">}</span>
-                
+
                 <span class="nx">multiplier</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">/</span> <span class="nx">s</span><span class="p">);</span>
-                
+
                 <span class="nx">x1</span> <span class="o">=</span> <span class="nx">v1</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">;</span>
                 <span class="nx">x2</span> <span class="o">=</span> <span class="nx">v2</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">;</span>
-                
+
                 <span class="nx">genReady</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-                
+
                 <span class="k">return</span> <span class="p">(</span><span class="nx">sigma</span> <span class="o">*</span> <span class="nx">x1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">mu</span><span class="p">;</span>
-                
+
             <span class="p">}</span>
         <span class="p">})();</span>
     <span class="p">}</span></pre></div>
@@ -330,7 +330,7 @@ with variance equal to 0.587.</p>
 <div class="dox">
   <div class="summary"><p>Generates random numbers with Normal Gaussian distribution.</p>
   </div>
-  <div class="body"><p>User must specify the expected mean, and standard deviation a input 
+  <div class="body"><p>User must specify the expected mean, and standard deviation a input
 parameters.</p>
 
 <p>Implements the Polar Method by Knuth, "The Art Of Computer
@@ -392,7 +392,7 @@ underlying gaussian distribution as input parameters.</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">RANDOM.nextNormal 
+      <span class="dox_type">RANDOM.nextNormal
   </span>
     </div>
   </div>
@@ -494,17 +494,17 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         <span class="k">if</span> <span class="p">(</span><span class="nx">trials</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextBinomial: trials must be greater than 0.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
-        
+
         <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        
+
         <span class="k">while</span><span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="nx">trials</span><span class="p">){</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>  
+      <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
           <span class="nx">sum</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span>
       <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
         <span class="p">}</span>
-  
+
         <span class="k">return</span> <span class="nx">sum</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -547,7 +547,7 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
 
         <span class="nx">intK</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
         <span class="nx">kDiv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nx">k</span><span class="p">;</span>
-        
+
         <span class="nx">alphaDiv</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nx">alpha</span><span class="p">;</span>
 
         <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -555,14 +555,14 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
             <span class="nx">x</span> <span class="o">+=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
         <span class="p">}</span>
 
-        <span class="nx">x</span> <span class="o">*=</span> <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span> 
+        <span class="nx">x</span> <span class="o">*=</span> <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span>
 
-        <span class="nx">tmp</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">u3</span><span class="p">)</span> <span class="o">*</span> 
+        <span class="nx">tmp</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">u3</span><span class="p">)</span> <span class="o">*</span>
             <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u1</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">)</span> <span class="o">/</span>
              <span class="p">((</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u1</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">u2</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">k</span><span class="p">)))));</span>
-        
+
         <span class="nx">tmp</span> <span class="o">*=</span>  <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span>
-        
+
         <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">tmp</span><span class="p">;</span>
     <span class="p">}</span>
 

@@ -172,7 +172,7 @@ Kudos:</span>
         <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\[]/</span><span class="p">,</span> <span class="s2">&quot;\\[&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\]]/</span><span class="p">,</span> <span class="s2">&quot;\\]&quot;</span><span class="p">);</span>
         <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;[\\?&amp;]&quot;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;=([^&amp;#]*)&quot;</span><span class="p">),</span>
         <span class="nx">results</span> <span class="o">=</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">referer</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nx">results</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">false</span> <span class="o">:</span> 
+        <span class="k">return</span> <span class="nx">results</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">false</span> <span class="o">:</span>
             <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\+/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -192,7 +192,7 @@ Kudos:</span>
 Additional options can be specified with the modifiers parameter</p>
 
 <ul>
-<li>limit: An integer that specifies the number of split items 
+<li>limit: An integer that specifies the number of split items
 after the split limit will not be included in the array</li>
 </ul>
   </div>
@@ -211,7 +211,7 @@ after the split limit will not be included in the array</li>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">modifiers</span>
       <span class="dox_type">object</span>
-      <span>Optional. Configuration options 
+      <span>Optional. Configuration options
   for the tokenizing</span>
     </div>
     <div class="dox_tag_title">Returns</div>

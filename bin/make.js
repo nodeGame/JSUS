@@ -32,14 +32,14 @@ function list(val) {
 program
     .version(version);
 
-program  
+program
     .command('clean')
     .description('Removes all files from build folder')
     .action(function(){
 	J.cleanDir(buildDir);
     });
 
-program  
+program
     .command('build [options]')
     .description('Creates a custom build of JSUS.js')
     .option('-l, --lib <items>', 'choose libraries to include', list)
@@ -65,7 +65,7 @@ program
                         'Do \'npm install docker\' to fix it.');
 	    return false;
 	}
-	command = dockerDir + 'docker -i ' + rootDir + 
+	command = dockerDir + 'docker -i ' + rootDir +
             ' jsus.js lib/ -s true -o ' + rootDir + 'docs/';
 	child = exec(command, function (error, stdout, stderr) {
 	    util.print(stdout);
@@ -78,16 +78,16 @@ program
     });
 
 
-program  
+program
     .command('sync <path>')
     .description('Sync the lib folder with the specified target ' +
                  'directory (must exists)')
     .action(function(path) {
-	
-	J.copyFromDir(libDir, path);	
-	
+
+	J.copyFromDir(libDir, path);
+
 	console.log('Done.');
-	
+
     });
 
 // Parsing options

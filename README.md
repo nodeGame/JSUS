@@ -1,4 +1,4 @@
-# JSUS: JavaScript UtilS. 
+# JSUS: JavaScript UtilS.
 
 [![Build Status](https://travis-ci.org/nodeGame/JSUS.png?branch=master)](https://travis-ci.org/nodeGame/JSUS)
 
@@ -8,15 +8,15 @@ Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.j
 
 ## Usage
 
-JSUS is designed to be modular and easy to extend. 
+JSUS is designed to be modular and easy to extend.
 
-Just use: 
+Just use:
 
 ```javascript
 JSUS.extend(myClass);
 ```
 
-to extend the functionalities of JSUS. All the methods of myClass 
+to extend the functionalities of JSUS. All the methods of myClass
 are immediately added to JSUS, and a reference to myClass is stored
 in `JSUS._classes`.
 
@@ -61,7 +61,7 @@ node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
 
 ## API Documentation
 
-Create html API documentation using the make file in the bin directory  
+Create html API documentation using the make file in the bin directory
 
 ```javascript
 node make.js doc
@@ -75,8 +75,8 @@ node make.js doc
 
 		build [options] [options]
 		Creates a custom build of JSUS.js
- 
-    doc 
+
+    doc
     Build documentation files
 
 	Options:
@@ -93,7 +93,7 @@ node make.js doc
     -l, --lib <items>    choose libraries to include
     -A, --analyse        analyse build
     -a, --all            full build of JSUS
-    -o, --output <file>  
+    -o, --output <file>
 
 ## License
 

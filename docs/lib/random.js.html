@@ -22,9 +22,6 @@
         <a href="#random">RANDOM</a>
       </div>
       <div class="heading h2">
-        <a href="#pseudo-random-numbers.">pseudo-random numbers.</a>
-      </div>
-      <div class="heading h2">
         <a href="#random.random">RANDOM.random</a>
       </div>
       <div class="heading h2">
@@ -52,20 +49,12 @@
   </h1>
 </div>
 
-
-<p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
   </div>
-  <div class="body"><p>Collection of static functions related to the generation of</p>
+  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
+MIT Licensed</p>
 
-
-<div class="pilwrap" id="pseudo-random-numbers.">
-  <h2>
-    <a href="#pseudo-random-numbers." class="pilcrow">&#182;</a>
-    pseudo-random numbers.
-  </h2>
-</div>
-
+<p>Collection of static functions related to the generation of
+pseudo-random numbers</p>
   </div>
 </div>
         </td>
@@ -238,7 +227,7 @@ MIT Licensed</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">function</span>
-      <span>An independent generator </span>
+      <span>An independent generator</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -278,8 +267,7 @@ MIT Licensed</p>
                 <span class="p">}</span>
 
                 <span class="nx">u1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
-                <span class="nx">u2</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
-                </pre></div>
+                <span class="nx">u2</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -292,8 +280,7 @@ MIT Licensed</p>
         <td class="code highlight"><div class="highlight"><pre>                <span class="nx">v1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
                 <span class="nx">v2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">u2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
 
-                <span class="nx">s</span> <span class="o">=</span> <span class="p">(</span><span class="nx">v1</span> <span class="o">*</span> <span class="nx">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">v2</span> <span class="o">*</span> <span class="nx">v2</span><span class="p">);</span>
-                </pre></div>
+                <span class="nx">s</span> <span class="o">=</span> <span class="p">(</span><span class="nx">v1</span> <span class="o">*</span> <span class="nx">v1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">v2</span> <span class="o">*</span> <span class="nx">v2</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -418,7 +405,7 @@ underlying gaussian distribution as input parameters.</p>
   <div class="summary"><p>Generates random numbers with Exponential distribution.</p>
   </div>
   <div class="body"><p>User must specify the lambda the <em>rate parameter</em> of the distribution.
-The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</code>. </p>
+The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</code>.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -444,8 +431,7 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: lambda must be greater than 0.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">/</span> <span class="nx">lambda</span><span class="p">;</span>
-    <span class="p">}</span>
-    </pre></div>
+    <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>

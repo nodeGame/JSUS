@@ -231,7 +231,7 @@ will receive further explanation.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -363,7 +363,8 @@ character of the key bears the following semantic:</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">args</span>
       <span class="dox_type">object</span>
-      <span>Optional. An object containing string transformations</span>
+      <span>Optional. An object containing string
+  transformations</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">root</span>
@@ -375,7 +376,7 @@ character of the key bears the following semantic:</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">Element</span>
-      <span>root The root element.</span>
+      <span>The root element.</span>
     </div>
   </div>
 </div>
@@ -531,7 +532,7 @@ and inserted into a span tag. If a root element is provided, add it.</p>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">root</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -640,7 +641,7 @@ the method is defined.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>The order used to shuffle the nodes.</span>
+      <span>The order used to shuffle the nodes</span>
     </div>
   </div>
 </div>
@@ -664,7 +665,8 @@ the method is defined.</p>
             <span class="p">}</span>
         <span class="p">}</span>
 
-        <span class="nx">len</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">len</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">order</span><span class="p">)</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span><span class="p">);</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">idOrder</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">);</span>
@@ -836,7 +838,7 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">HTMLElement</span>
-      <span>e The decorated element</span>
+      <span>The decorated element</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -894,16 +896,18 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
 </div>
 TODO: handle special cases
 <!--
-               else {
+else {
 
-                   // If there is no parent node, the legend cannot be created
-                   if (!e.parentNode) {
-                       node.log('Cannot add label: no parent element found', 'ERR');
-                       continue;
-                   }
+   // If there is no parent node,
+   // the legend cannot be created
+   if (!e.parentNode) {
+       node.log('Cannot add label: ' +
+                'no parent element found', 'ERR');
+       continue;
+   }
 
-                   this.addLabel(e.parentNode, e, a[key]);
-               }
+   this.addLabel(e.parentNode, e, a[key]);
+}
 -->
         </td>
         <td class="code highlight"><div class="highlight"><pre>            <span class="p">}</span>
@@ -1045,7 +1049,7 @@ check if the string exists.</p>
                 <span class="p">}</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="nx">id</span><span class="p">;</span>
-        <span class="p">};</span>
+        <span class="p">}</span>
 
 
         <span class="k">return</span> <span class="nx">scanDocuments</span><span class="p">(</span><span class="nx">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">randomInt</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">));</span></pre></div>
@@ -1629,7 +1633,7 @@ finally document. If it fails, returns FALSE.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addCSS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">css</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
+        <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
         <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span> <span class="o">||</span> <span class="p">{};</span>
@@ -1659,7 +1663,7 @@ finally document. If it fails, returns FALSE.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addJS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">js</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
+        <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
         <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span> <span class="o">||</span> <span class="p">{};</span>
@@ -1814,7 +1818,7 @@ width, and type can be specified.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">HTMLElement</span>
-      <span>elem The styled element</span>
+      <span>The styled element</span>
     </div>
   </div>
 </div>
@@ -1863,8 +1867,8 @@ width, and type can be specified.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">HTMLElement</span>
       <span class="dox_type">undefined</span>
-      <span>el The HTML element with the removed
-  class, or undefined input are misspecified.</span>
+      <span>The HTML element with the removed
+  class, or undefined if the inputs are misspecified</span>
     </div>
   </div>
 </div>
@@ -1911,8 +1915,8 @@ width, and type can be specified.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">HTMLElement</span>
       <span class="dox_type">undefined</span>
-      <span>el The HTML element with the additional
-  class, or undefined input are misspecified.</span>
+      <span>The HTML element with the additional
+  class, or undefined if the inputs are misspecified</span>
     </div>
   </div>
 </div>
@@ -1975,7 +1979,8 @@ width, and type can be specified.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getElementsByClassName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="nx">className</span><span class="p">,</span> <span class="nx">nodeName</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">tag</span><span class="p">,</span> <span class="nx">seek</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">rightClass</span><span class="p">;</span>
-        <span class="nx">result</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">tag</span> <span class="o">=</span> <span class="nx">nodeName</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
+        <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">tag</span> <span class="o">=</span> <span class="nx">nodeName</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">seek</span> <span class="o">=</span> <span class="s1">&#39;//&#39;</span><span class="o">+</span> <span class="nx">tag</span> <span class="o">+</span><span class="s1">&#39;[@class=&quot;&#39;</span><span class="o">+</span> <span class="nx">className</span> <span class="o">+</span><span class="s1">&#39;&quot;]&#39;</span><span class="p">;</span>
             <span class="nx">seek</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">seek</span><span class="p">,</span> <span class="nb">document</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span> <span class="p">);</span>
@@ -2138,14 +2143,14 @@ width, and type can be specified.</p>
                         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
-            <span class="p">}</span>
+            <span class="p">};</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">all</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">doc</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">clickIE4</span><span class="p">()</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">button</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
                 <span class="p">}</span>
-            <span class="p">}</span>
+            <span class="p">};</span>
         <span class="p">}</span>
         <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="s2">&quot;return false&quot;</span><span class="p">);</span>
     <span class="p">};</span></pre></div>

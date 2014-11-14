@@ -52,7 +52,7 @@ MIT Licensed</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">function</span> <span class="nx">COMPATIBILITY</span><span class="p">()</span> <span class="p">{};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">COMPATIBILITY</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -88,7 +88,7 @@ depending on a potentially unsupported ECS5 feature.</p>
         <span class="kd">var</span> <span class="nx">support</span> <span class="o">=</span> <span class="p">{};</span>
 
         <span class="k">try</span> <span class="p">{</span>
-            <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">({},</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span><span class="p">})</span>
+            <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">({},</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">enumerable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
             <span class="nx">support</span><span class="p">.</span><span class="nx">defineProperty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
@@ -96,7 +96,7 @@ depending on a potentially unsupported ECS5 feature.</p>
         <span class="p">}</span>
 
         <span class="k">try</span> <span class="p">{</span>
-            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ get x(){ return 1 } }).x === 1&#39;</span><span class="p">)</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;({ get x(){ return 1 } }).x === 1&#39;</span><span class="p">);</span>
             <span class="nx">support</span><span class="p">.</span><span class="nx">setter</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>

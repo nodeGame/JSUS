@@ -274,7 +274,7 @@ MIT Licensed</p>
         <span class="p">}</span>
         <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">inProgress</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inProgress</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">executeAndClear</span><span class="p">()</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">executeAndClear</span><span class="p">();</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -337,7 +337,8 @@ so that a closure is created around the variable key.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">executeAndClear</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
-        <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="nx">len</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">[</span><span class="nx">i</span><span class="p">]();</span>
         <span class="p">}</span>

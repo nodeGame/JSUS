@@ -60,7 +60,7 @@ pseudo-random numbers</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">function</span> <span class="nx">RANDOM</span><span class="p">(){};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">RANDOM</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -109,7 +109,7 @@ pseudo-random numbers</p>
             <span class="nx">a</span> <span class="o">=</span> <span class="nx">b</span><span class="p">;</span>
             <span class="nx">b</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">a</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">a</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -201,7 +201,7 @@ pseudo-random numbers</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">sample</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">out</span><span class="p">;</span>
-        <span class="nx">out</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">seq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
+        <span class="nx">out</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">seq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">out</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">shuffle</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
@@ -304,9 +304,9 @@ with variance equal to 0.587.</p>
 
                 <span class="k">return</span> <span class="p">(</span><span class="nx">sigma</span> <span class="o">*</span> <span class="nx">x1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">mu</span><span class="p">;</span>
 
-            <span class="p">}</span>
+            <span class="p">};</span>
         <span class="p">})();</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -393,7 +393,7 @@ underlying gaussian distribution as input parameters.</p>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextLogNormal: sigma must be number.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">nextNormal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">));</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -428,10 +428,11 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: lambda must be number.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">lambda</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: lambda must be greater than 0.&#39;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextExponential: &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;lambda must be greater than 0.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">/</span> <span class="nx">lambda</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -460,7 +461,7 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">number</span>
-      <span>sum The sum of successes in n trials</span>
+      <span>The sum of successes in n trials</span>
     </div>
   </div>
 </div>
@@ -485,10 +486,10 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
         <span class="k">while</span><span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="nx">trials</span><span class="p">){</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">sum</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">sum</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span>
-      <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+            <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">sum</span><span class="p">;</span>
@@ -550,7 +551,7 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         <span class="nx">tmp</span> <span class="o">*=</span>  <span class="o">-</span> <span class="nx">alphaDiv</span><span class="p">;</span>
 
         <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">tmp</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">);</span>
 

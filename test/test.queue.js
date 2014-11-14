@@ -1,7 +1,7 @@
 var util = require('util');
     should = require('should'),
     JSUS = require('./../jsus').JSUS;
-    
+
 var qId;
 var foo = 1;
 var foo2 = 2;
@@ -11,7 +11,7 @@ describe('QUEUE', function(){
     before(function() {
         q = JSUS.getQueue();
     });
-    
+
     it('#getQueue() should get a new Queue object', function() {
         ('object' === typeof q).should.be.true;
     });
@@ -23,13 +23,13 @@ describe('QUEUE', function(){
            q.onReady(function() {
                foo = foo + 1;
            });
-           foo.should.be.eql(1);           
+           foo.should.be.eql(1);
     });
-    
+
 
     it('the queue should wait until it is completely free', function(){
-        q.remove('bb');        
-        foo.should.be.eql(1); 
+        q.remove('bb');
+        foo.should.be.eql(1);
     });
 
     it('the queue should block callback to be executed if non-ready (2/2)',

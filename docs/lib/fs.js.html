@@ -58,11 +58,11 @@
   </h1>
 </div>
 
-
-<p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
   </div>
-  <div class="body"><p>Collection of static functions related to file system operations.</p>
+  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
+MIT Licensed</p>
+
+<p>Collection of static functions related to file system operations</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">See</div>
@@ -76,7 +76,6 @@ MIT Licensed</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <a href=" ">https://github.com/substack/node-resolve
----
 </a>
     </div>
   </div>
@@ -85,7 +84,7 @@ MIT Licensed</p>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNodeJS</span><span class="p">()){</span>
-        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot load JSUS.FS outside of Node.JS.&#39;</span><span class="p">)</span>
+        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot load JSUS.FS outside of Node.JS.&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -95,7 +94,7 @@ MIT Licensed</p>
     <span class="nx">wrench</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;wrench&#39;</span><span class="p">);</span>
 
 
-    <span class="kd">function</span> <span class="nx">FS</span><span class="p">(){};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">FS</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -147,7 +146,8 @@ module as installed by npm.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">basedir</span>
       <span class="dox_type">string</span>
-      <span>Optional The basedir from which starting searching</span>
+      <span>Optional. The basedir from which to start
+  searching</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -339,7 +339,7 @@ The '.' (dot) must be included as part of the extension.</p>
                 <span class="p">}</span>
                 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">deleteIfExists</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="nx">file</span><span class="p">,</span> <span class="nx">mycb</span><span class="p">);</span>
             <span class="p">});</span>
-            
+
             <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">asq</span><span class="p">.</span><span class="nx">onReady</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
             <span class="p">}</span>
@@ -439,7 +439,7 @@ are found, an error will occur.</p>
             <span class="kd">var</span> <span class="nx">asq</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">mycb</span><span class="p">;</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">();</span>
             <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -470,7 +470,7 @@ are found, an error will occur.</p>
                 <span class="p">}</span>
                 <span class="nx">copyFile</span><span class="p">(</span><span class="nx">dirIn</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">dirOut</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">mycb</span><span class="p">);</span>
             <span class="p">}</span>
-            
+
             <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">asq</span><span class="p">.</span><span class="nx">onReady</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
             <span class="p">}</span>
@@ -522,11 +522,6 @@ are found, an error will occur.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
       <span>TRUE, if the operation is successful</span>
-    </div>
-    <div class="dox_tag_title">See</div>
-    <div class="dox_tag_detail">
-      <a href=" ">https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
-</a>
     </div>
   </div>
 </div>

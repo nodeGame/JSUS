@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.9.4
+- `#PARSE.getQueryString()` accepts referer as second parameter.
+- `#DOM.disableRightClick()` and `#DOM.enableRightClick()`.
+
 ## 0.9.3
 - `#QUEUE.getRemoveCb()` to get remove callbacks inside loops.
 - Better support for execution of callbacks after deletion and copy of files inside `#FS`.
@@ -14,7 +18,7 @@
 - `#DOM.addClass()` extra space fix.
 - `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'
 
-## 0.8.8 
+## 0.8.8
 - `#DOM.shuffleNodes()` correctly shuffles the nodes, and returns the id of the elements in the order used to append them.
 - `PARSE.getQueryString()` correctly returns the full query string when no argument is passed.
 

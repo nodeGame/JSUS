@@ -22,9 +22,6 @@
         <a href="#eval">EVAL</a>
       </div>
       <div class="heading h2">
-        <a href="#of-strings-as-javascript-commands">of strings as javascript commands</a>
-      </div>
-      <div class="heading h2">
         <a href="#eval.eval">EVAL.eval</a>
       </div>
     </div>
@@ -47,22 +44,14 @@
   <div class="body"><p>Copyright(c) 2014 Stefano Balietti
 MIT Licensed</p>
 
-<p>Collection of static functions related to the evaluation</p>
-
-
-<div class="pilwrap" id="of-strings-as-javascript-commands">
-  <h2>
-    <a href="#of-strings-as-javascript-commands" class="pilcrow">&#182;</a>
-    of strings as javascript commands
-  </h2>
-</div>
-
+<p>Collection of static functions related to the evaluation
+of strings as JavaScript commands</p>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">function</span> <span class="nx">EVAL</span><span class="p">(){};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">EVAL</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -157,7 +146,7 @@ i.e. eval.call is not possible</p>
             <span class="k">else</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">}</span>
+        <span class="p">};</span>
         <span class="k">return</span> <span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">str</span><span class="p">);</span>
     <span class="p">};</span>
 

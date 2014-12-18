@@ -22,9 +22,6 @@
         <a href="#time">TIME</a>
       </div>
       <div class="heading h2">
-        <a href="#manipulation--and-formatting-of-time-strings-in-javascript">manipulation, and formatting of time strings in javascript</a>
-      </div>
-      <div class="heading h2">
         <a href="#time.getdate">TIME.getDate</a>
       </div>
       <div class="heading h2">
@@ -53,22 +50,14 @@
   <div class="body"><p>Copyright(c) 2014 Stefano Balietti
 MIT Licensed</p>
 
-<p>Collection of static functions related to the generation,</p>
-
-
-<div class="pilwrap" id="manipulation--and-formatting-of-time-strings-in-javascript">
-  <h2>
-    <a href="#manipulation--and-formatting-of-time-strings-in-javascript" class="pilcrow">&#182;</a>
-    manipulation, and formatting of time strings in javascript
-  </h2>
-</div>
-
+<p>Collection of static functions related to the generation,
+manipulation, and formatting of time strings in JavaScript</p>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-<span class="kd">function</span> <span class="nx">TIME</span><span class="p">()</span> <span class="p">{};</span></pre></div>
+    <span class="kd">function</span> <span class="nx">TIME</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -92,19 +81,19 @@ and time formatted as follows:</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
-      <span>date Formatted time string hh:mm:ss</span>
+      <span>Formatted time string hh:mm:ss</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">TIME</span><span class="p">.</span><span class="nx">getDate</span> <span class="o">=</span> <span class="nx">TIME</span><span class="p">.</span><span class="nx">getFullDate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getUTCDate</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">getUTCMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span>
-        <span class="nx">d</span><span class="p">.</span><span class="nx">getUTCFullYear</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span> <span class="o">+</span>
-        <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMilliseconds</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">TIME</span><span class="p">.</span><span class="nx">getDate</span> <span class="o">=</span> <span class="nx">TIME</span><span class="p">.</span><span class="nx">getFullDate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getUTCDate</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">getUTCMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span>
+            <span class="nx">d</span><span class="p">.</span><span class="nx">getUTCFullYear</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span> <span class="o">+</span>
+            <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMilliseconds</span><span class="p">();</span>
 
-    <span class="k">return</span> <span class="nx">date</span><span class="p">;</span>
-<span class="p">};</span></pre></div>
+        <span class="k">return</span> <span class="nx">date</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -128,17 +117,17 @@ formatted as follows:</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
-      <span>time Formatted time string hh:mm:ss</span>
+      <span>Formatted time string hh:mm:ss</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">TIME</span><span class="p">.</span><span class="nx">getTime</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">TIME</span><span class="p">.</span><span class="nx">getTime</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">();</span>
 
-    <span class="k">return</span> <span class="nx">time</span><span class="p">;</span>
-<span class="p">};</span></pre></div>
+        <span class="k">return</span> <span class="nx">time</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -166,33 +155,33 @@ and returns an array of days, hours, minutes and seconds</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>result Milleconds parsed in days, hours, minutes, and seconds</span>
+      <span>Milleconds parsed in days, hours, minutes, and seconds</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">TIME</span><span class="p">.</span><span class="nx">parseMilliseconds</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ms</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">TIME</span><span class="p">.</span><span class="nx">parseMilliseconds</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ms</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 
-    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">;</span>
-    <span class="nx">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">seconds</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span><span class="p">;</span>
-    <span class="nx">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">seconds</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span><span class="mi">60</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">minutes</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span><span class="p">;</span>
-    <span class="nx">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">minutes</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">60</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">hours</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">24</span><span class="p">;</span>
-    <span class="nx">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">hours</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">24</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">days</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="nx">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">days</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">;</span>
+        <span class="nx">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">seconds</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span><span class="p">;</span>
+        <span class="nx">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">seconds</span><span class="p">);</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">60</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">minutes</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">60</span><span class="p">;</span>
+        <span class="nx">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">minutes</span><span class="p">);</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">60</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">hours</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">24</span><span class="p">;</span>
+        <span class="nx">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">hours</span><span class="p">);</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">24</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">days</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+        <span class="nx">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">days</span><span class="p">);</span>
 
-    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-<span class="p">};</span>
+        <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">};</span>
 
-<span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">TIME</span><span class="p">);</span>
+    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">TIME</span><span class="p">);</span>
 
 <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span> <span class="o">?</span> <span class="nx">JSUS</span> <span class="o">:</span> <span class="nx">module</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">JSUS</span><span class="p">);</span>
 </pre></div>

@@ -19,10 +19,7 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#jsus.obj">JSUS.OBJ</a>
-      </div>
-      <div class="heading h2">
-        <a href="#collection-of-static-functions-to-manipulate-javascript-objects.">Collection of static functions to manipulate javascript objects.</a>
+        <a href="#obj">OBJ</a>
       </div>
       <div class="heading h2">
         <a href="#obj.equals">OBJ.equals</a>
@@ -41,6 +38,9 @@
       </div>
       <div class="heading h2">
         <a href="#obj.obj2keyedarray">OBJ.obj2KeyedArray</a>
+      </div>
+      <div class="heading h2">
+        <a href="#obj.obj2querystring">OBJ.obj2QueryString</a>
       </div>
       <div class="heading h2">
         <a href="#obj.keys">OBJ.keys</a>
@@ -111,31 +111,24 @@
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="jsus.obj">
+<div class="pilwrap" id="obj">
   <h1>
-    <a href="#jsus.obj" class="pilcrow">&#182;</a>
-    JSUS.OBJ
+    <a href="#obj" class="pilcrow">&#182;</a>
+    OBJ
   </h1>
 </div>
 
-
-<p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
   </div>
-  <div class="body">
-<div class="pilwrap" id="collection-of-static-functions-to-manipulate-javascript-objects.">
-  <h2>
-    <a href="#collection-of-static-functions-to-manipulate-javascript-objects." class="pilcrow">&#182;</a>
-    Collection of static functions to manipulate javascript objects.
-  </h2>
-</div>
+  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
+MIT Licensed</p>
 
+<p>Collection of static functions to manipulate JavaScript objects</p>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">function</span> <span class="nx">OBJ</span><span class="p">(){};</span>
+    <span class="kd">function</span> <span class="nx">OBJ</span><span class="p">()</span> <span class="p">{}</span>
 
     <span class="kd">var</span> <span class="nx">compatibility</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
@@ -187,7 +180,7 @@ one returns FALSE, otherwise TRUE.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
-      <span>TRUE if the objects are deeply equal.</span>
+      <span>TRUE if the objects are deeply equal</span>
     </div>
   </div>
 </div>
@@ -218,7 +211,7 @@ one returns FALSE, otherwise TRUE.</p>
 </div>
 <p>Check whether arguments are not objects</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">primitives</span> <span class="o">=</span> <span class="p">{</span><span class="nx">number</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">string</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kr">boolean</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">primitives</span> <span class="o">=</span> <span class="p">{</span><span class="nx">number</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">string</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kr">boolean</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">};</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">type1</span> <span class="k">in</span> <span class="nx">primitives</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">o1</span> <span class="o">===</span> <span class="nx">o2</span><span class="p">;</span>
         <span class="p">}</span>
@@ -239,6 +232,7 @@ one returns FALSE, otherwise TRUE.</p>
                 <span class="k">case</span> <span class="s1">&#39;function&#39;</span><span class="o">:</span>
                     <span class="k">if</span> <span class="p">(</span><span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">!==</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">].</span><span class="nx">toString</span><span class="p">())</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
+                    <span class="cm">/* falls through */</span>
                 <span class="k">default</span><span class="o">:</span>
                     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="nx">o1</span><span class="p">[</span><span class="nx">p</span><span class="p">],</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">p</span><span class="p">]))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
                 <span class="p">}</span>
@@ -539,6 +533,63 @@ returns it.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="obj.obj2querystring">
+  <h2>
+    <a href="#obj.obj2querystring" class="pilcrow">&#182;</a>
+    OBJ.obj2QueryString
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Creates a querystring with the key-value pairs of the given object.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj</span>
+      <span class="dox_type">object</span>
+      <span>The object to convert</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>The created querystring
+
+Kudos:</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">http://stackoverflow.com/a/1714899/3347292
+</a>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">obj2QueryString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">str</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">key</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span>
+                    <span class="s1">&#39;JSUS.objectToQueryString: obj must be object.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">str</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">str</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span>
+                         <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="nx">str</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="obj.keys">
   <h2>
     <a href="#obj.keys" class="pilcrow">&#182;</a>
@@ -633,7 +684,7 @@ to be evaluated. Defaults 0 (nested properties are skipped).</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
-      <span>result The array containig all the imploded properties</span>
+      <span>The array containing all the imploded properties</span>
     </div>
   </div>
 </div>
@@ -682,7 +733,7 @@ Properties of the prototype chain are copied as well.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The clone of the object</span>
+      <span>The clone of the object</span>
     </div>
   </div>
 </div>
@@ -692,17 +743,23 @@ Properties of the prototype chain are copied as well.</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;boolean&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">NaN</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;boolean&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>NaN and +-Infinity are numbers, so no check is necessary.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 
 <div class="highlight"><pre><code>     <span class="n">clone</span> <span class="o">=</span> <span class="n">obj</span><span class="p">;</span>
@@ -725,13 +782,13 @@ Properties of the prototype chain are copied as well.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>TODO: index i is being updated, so apply is called on the
 last element, instead of the correct one.
-         if ('function' === typeof obj[i]) {
-                 value = function() { return obj[i].apply(clone, arguments); };
-         }
+if ('function' === typeof obj[i]) {
+   value = function() { return obj[i].apply(clone, arguments); };
+}
 It is not NULL and it is an object</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span></pre></div>
@@ -740,11 +797,13 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>Is an array.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span>
+                    <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+
                     <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
                 <span class="p">}</span></pre></div>
         </td>
@@ -752,7 +811,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Is an object.</p>
         </td>
@@ -773,7 +832,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>We know if object.defineProperty is available.</p>
         </td>
@@ -790,7 +849,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>or we try...</p>
         </td>
@@ -855,7 +914,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The joined object</span>
+      <span>The joined object</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -929,7 +988,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The merged object</span>
+      <span>The merged object</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -950,7 +1009,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>Checking before starting the algorithm</p>
         </td>
@@ -967,7 +1026,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
@@ -977,14 +1036,16 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>If we are merging an object into
 a non-object, we need to cast the
 type of obj1</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span>
+                            <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
+
                             <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
                         <span class="p">}</span>
                         <span class="k">else</span> <span class="p">{</span>
@@ -1056,7 +1117,7 @@ type of obj1</p>
   <div class="body"><p>Copies only non-overlapping properties from obj2 to obj1</p>
 
 <p>Check only if a property is defined, not its value.
-Original object is modified. </p>
+Original object is modified.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1167,7 +1228,7 @@ that contains just a subset of properties (e.g. value).</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The merged object</span>
+      <span>The merged object</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -1230,7 +1291,7 @@ with a '.' in the name is found, it will be used first.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>out The subobject with the properties from the parent</span>
+      <span>The subobject with the properties from the parent</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -1241,7 +1302,7 @@ with a '.' in the name is found, it will be used first.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">subobj</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">select</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">key</span>
+        <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="nx">out</span> <span class="o">=</span> <span class="p">{};</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">select</span><span class="p">)</span> <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
@@ -1295,7 +1356,7 @@ with a '.' in the name is found, it will be deleted first.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>out The subobject with the properties from the parent</span>
+      <span>The subobject with the properties from the parent</span>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -1360,7 +1421,7 @@ If the nested property is not existing, a new one is created.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
       <span class="dox_type">boolean</span>
-      <span>obj The modified object, or FALSE if error
+      <span>The modified object, or FALSE if error
   occurrs</span>
     </div>
     <div class="dox_tag_title">See</div>
@@ -1781,7 +1842,8 @@ in the object, but it just returns the name.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span class="dox_type">undefined</span>
-      <span>The unique key name, or undefined if it was not found</span>
+      <span>The unique key name, or undefined if it was
+  not found</span>
     </div>
   </div>
 </div>
@@ -1862,7 +1924,8 @@ will not be changed</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">augment</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">,</span> <span class="nx">keys</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">keys</span> <span class="o">||</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">k</span><span class="p">;</span>
+        <span class="nx">keys</span> <span class="o">=</span> <span class="nx">keys</span> <span class="o">||</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj1</span><span class="p">);</span>
 
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">k</span> <span class="o">=</span> <span class="nx">keys</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
@@ -1931,7 +1994,7 @@ are excluded.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
-      <span>clone The object aggregating the results</span>
+      <span>The object aggregating the results</span>
     </div>
   </div>
 </div>

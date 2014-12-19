@@ -16,6 +16,10 @@
     // Reference to all the extensions
     JSUS._classes = {};
 
+    // Make sure that the console is available also in old browser, e.g. < IE8.
+    if ('undefined' === typeof console) console = {};
+    if ('undefined' === typeof console.log) console.log = function() {};
+
     /**
      * ## JSUS.log
      *
@@ -43,6 +47,7 @@
      *
      * @param {object} additional Text to output
      * @param {object|function} target The object to extend
+     *
      * @return {object|function} target The extended object
      *
      * @see JSUS.get
@@ -96,13 +101,14 @@
     /**
      * ## JSUS.require
      *
-     * Returns a copy of one / all the objects extending JSUS.
+     * Returns a copy of one / all the objects extending JSUS
      *
      * The first parameter is a string representation of the name of
      * the requested extending object. If no parameter is passed a copy
      * of all the extending objects is returned.
      *
      * @param {string} className The name of the requested JSUS library
+     *
      * @return {function|boolean} The copy of the JSUS library, or
      *   FALSE if the library does not exist
      */

@@ -96,6 +96,17 @@ MIT Licensed</p>
         </td>
       </tr>
       <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>Make sure that the console is available also in old browser, e.g. &lt; IE8.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">console</span><span class="p">)</span> <span class="nx">console</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
 <div class="pilwrap" id="jsus.log">
@@ -184,7 +195,7 @@ extension.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
 </div>
 <p>If we are extending JSUS, store a reference
 of the additional object into the hidden
@@ -202,7 +213,7 @@ JSUS._classes object;</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
 </div>
 <p>Must be object.</p>
         </td>
@@ -229,7 +240,7 @@ JSUS._classes object;</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
 </div>
 <p>Additional is a class (Function)
 TODO: this is true also for {}</p>
@@ -253,7 +264,7 @@ TODO: this is true also for {}</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns a copy of one / all the objects extending JSUS.</p>
+  <div class="body"><p>Returns a copy of one / all the objects extending JSUS</p>
 
 <p>The first parameter is a string representation of the name of
 the requested extending object. If no parameter is passed a copy
@@ -350,7 +361,7 @@ of all the extending objects is returned.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>end node</p>
         </td>

@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.9.5
+- An empty console and console.log objects are added if undefined. This avoids throwing errors in old browsers.
+
 ## 0.9.4
 - `#PARSE.getQueryString()` accepts referer as second parameter.
 - `#DOM.disableRightClick()` and `#DOM.enableRightClick()`.

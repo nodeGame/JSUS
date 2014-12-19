@@ -1030,7 +1030,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1053,7 +1053,8 @@ type of obj1</p>
                         <span class="p">}</span>
                     <span class="p">}</span>
                     <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
                     <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
                 <span class="p">}</span>
             <span class="p">}</span>

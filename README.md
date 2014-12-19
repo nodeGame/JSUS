@@ -4,8 +4,6 @@
 
 Collection of general purpose javascript functions. JSUS helps!
 
-Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.js.html).
-
 ## Libraries
 
 1. OBJ
@@ -18,6 +16,8 @@ Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.j
 8. FS (+wrench)
 9. COMPATIBILITY
 10. QUEUE
+
+Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.js.html).
 
 ## Build
 

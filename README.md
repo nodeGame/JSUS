@@ -6,7 +6,29 @@ Collection of general purpose javascript functions. JSUS helps!
 
 Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.js.html).
 
-## Usage
+## Libraries
+
+1. OBJ
+2. ARRAY
+3. TIME
+4. EVAL
+5. DOM
+6. RANDOM
+7. PARSE
+8. FS (+wrench)
+9. COMPATIBILITY
+10. QUEUE
+
+## Build
+
+Create your customized build of JSUS.js using the make file in the bin directory
+
+```javascript
+node make.js build -a // Full build, about 20Kb minified
+node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
+```
+
+## Extend
 
 JSUS is designed to be modular and easy to extend.
 
@@ -35,28 +57,6 @@ To get a copy of one of the registered JSUS libraries do:
 
 ```javascript
 var myClass = JSUS.require('myClass');
-```
-
-### JSUS come shipped in with a set of default libraries:
-
-1. OBJ
-2. ARRAY
-3. TIME
-4. EVAL
-5. DOM
-6. RANDOM
-7. PARSE
-8. FS (+wrench)
-9. COMPATIBILITY
-10. QUEUE
-
-## Build
-
-Create your customized build of JSUS.js using the make file in the bin directory
-
-```javascript
-node make.js build -a // Full build, about 20Kb minified
-node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
 ```
 
 ## API Documentation

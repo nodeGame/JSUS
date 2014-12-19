@@ -28,45 +28,14 @@
       </header>
       <section>
         <h1>
-<a name="jsus-javascript-utils" class="anchor" href="#jsus-javascript-utils"><span class="octicon octicon-link"></span></a>JSUS: JavaScript UtilS.</h1>
+<a id="jsus-javascript-utils" class="anchor" href="#jsus-javascript-utils" aria-hidden="true"><span class="octicon octicon-link"></span></a>JSUS: JavaScript UtilS.</h1>
 
 <p><a href="https://travis-ci.org/nodeGame/JSUS"><img src="https://travis-ci.org/nodeGame/JSUS.png?branch=master" alt="Build Status"></a></p>
 
 <p>Collection of general purpose javascript functions. JSUS helps!</p>
 
-<p>Full API description available <a href="http://nodegame.github.io/JSUS/docs/jsus.js.html">here</a>.</p>
-
 <h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>JSUS is designed to be modular and easy to extend. </p>
-
-<p>Just use: </p>
-
-<div class="highlight highlight-javascript"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">myClass</span><span class="p">);</span>
-</pre></div>
-
-<p>to extend the functionalities of JSUS. All the methods of myClass 
-are immediately added to JSUS, and a reference to myClass is stored
-in <code>JSUS._classes</code>.</p>
-
-<p><code>MyClass</code> can be either of type Object or Function.</p>
-
-<p>JSUS can also extend other objects. Just pass a second parameter:</p>
-
-<div class="highlight highlight-javascript"><pre><span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">myClass</span><span class="p">,</span> <span class="nx">mySecondClass</span><span class="p">);</span>
-</pre></div>
-
-<p>and <code>mySecondClass</code> will receive all the methods of <code>myClass</code>. In this case,
-no reference of myClass is stored.</p>
-
-<p>To get a copy of one of the registered JSUS libraries do:</p>
-
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">myClass</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s1">'myClass'</span><span class="p">);</span>
-</pre></div>
-
-<h3>
-<a name="jsus-come-shipped-in-with-a-set-of-default-libraries" class="anchor" href="#jsus-come-shipped-in-with-a-set-of-default-libraries"><span class="octicon octicon-link"></span></a>JSUS come shipped in with a set of default libraries:</h3>
+<a id="libraries" class="anchor" href="#libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Libraries</h2>
 
 <ol>
 <li>OBJ</li>
@@ -79,25 +48,53 @@ no reference of myClass is stored.</p>
 <li>FS (+wrench)</li>
 <li>COMPATIBILITY</li>
 <li>QUEUE</li>
-</ol><h2>
-<a name="build" class="anchor" href="#build"><span class="octicon octicon-link"></span></a>Build</h2>
+</ol>
+
+<p>Full API description available <a href="http://nodegame.github.io/JSUS/docs/jsus.js.html">here</a>.</p>
+
+<h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h2>
 
 <p>Create your customized build of JSUS.js using the make file in the bin directory</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="o">-</span><span class="nx">a</span> <span class="c1">// Full build, about 20Kb minified</span>
-<span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">build</span> <span class="o">-</span><span class="nx">l</span> <span class="nx">obj</span><span class="p">,</span><span class="nx">array</span> <span class="o">-</span><span class="nx">o</span> <span class="nx">jsus</span><span class="o">-</span><span class="nx">oa</span><span class="p">.</span><span class="nx">js</span> <span class="c1">// about 12Kb minified</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre>node make.js build <span class="pl-k">-</span>a <span class="pl-c">// Full build, about 20Kb minified</span>
+node make.js build <span class="pl-k">-</span>l obj,array <span class="pl-k">-</span>o jsus<span class="pl-k">-</span>oa.js <span class="pl-c">// about 12Kb minified</span></pre></div>
 
 <h2>
-<a name="api-documentation" class="anchor" href="#api-documentation"><span class="octicon octicon-link"></span></a>API Documentation</h2>
+<a id="extend" class="anchor" href="#extend" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extend</h2>
 
-<p>Create html API documentation using the make file in the bin directory  </p>
+<p>JSUS is designed to be modular and easy to extend.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">node</span> <span class="nx">make</span><span class="p">.</span><span class="nx">js</span> <span class="nx">doc</span>
-</pre></div>
+<p>Just use:</p>
+
+<div class="highlight highlight-javascript"><pre>JSUS.extend(myClass);</pre></div>
+
+<p>to extend the functionalities of JSUS. All the methods of myClass
+are immediately added to JSUS, and a reference to myClass is stored
+in <code>JSUS._classes</code>.</p>
+
+<p><code>MyClass</code> can be either of type Object or Function.</p>
+
+<p>JSUS can also extend other objects. Just pass a second parameter:</p>
+
+<div class="highlight highlight-javascript"><pre>JSUS.extend(myClass, mySecondClass);</pre></div>
+
+<p>and <code>mySecondClass</code> will receive all the methods of <code>myClass</code>. In this case,
+no reference of myClass is stored.</p>
+
+<p>To get a copy of one of the registered JSUS libraries do:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> myClass <span class="pl-k">=</span> JSUS.require(<span class="pl-s1"><span class="pl-pds">'</span>myClass<span class="pl-pds">'</span></span>);</pre></div>
 
 <h2>
-<a name="make-help" class="anchor" href="#make-help"><span class="octicon octicon-link"></span></a>Make help</h2>
+<a id="api-documentation" class="anchor" href="#api-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>API Documentation</h2>
+
+<p>Create html API documentation using the make file in the bin directory</p>
+
+<div class="highlight highlight-javascript"><pre>node make.js doc</pre></div>
+
+<h2>
+<a id="make-help" class="anchor" href="#make-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Make help</h2>
 
 <pre><code>Usage: make.jsus.js [options] [command]
 
@@ -106,7 +103,7 @@ Commands:
     build [options] [options]
     Creates a custom build of JSUS.js
 
-doc 
+doc
 Build documentation files
 
 Options:
@@ -123,19 +120,32 @@ Options:
 -l, --lib &lt;items&gt;    choose libraries to include
 -A, --analyse        analyse build
 -a, --all            full build of JSUS
--o, --output &lt;file&gt;  
+-o, --output &lt;file&gt;
 </code></pre>
 
 <h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Copyright (C) 2014 Stefano Balietti</p>
 
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
 
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
       </section>
     </div>
     <footer>

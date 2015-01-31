@@ -2,6 +2,7 @@
 
 ## 0.9.6
 - `#DOM.sprintf()` has default %strong and %em styles
+- Polyfill for `#Date.getISOString()`
 
 ## 0.9.5
 - An empty console and console.log objects are added if undefined. This avoids throwing errors in old browsers.

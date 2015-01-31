@@ -47,7 +47,7 @@
 </div>
 
   </div>
-  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
+  <div class="body"><p>Copyright(c) 2015 Stefano Balietti
 MIT Licensed</p>
 
 <p>Collection of static functions related to the generation,
@@ -61,6 +61,37 @@ manipulation, and formatting of time strings in JavaScript</p>
         </td>
       </tr>
       <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Polyfill for Date.toISOString (IE7, IE8, IE9)
+Kudos: <a href='https://developer.mozilla.org/en-US/docs/Web/'>https://developer.mozilla.org/en-US/docs/Web/</a>
+JavaScript/Reference/Global_Objects/Date/toISOString</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Date</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toISOString</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+            <span class="kd">function</span> <span class="nx">pad</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nx">number</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="nx">number</span> <span class="o">:</span> <span class="nx">number</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nb">Date</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toISOString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">ms</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCMilliseconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+                <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getUTCFullYear</span><span class="p">()</span> <span class="o">+</span>
+                    <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
+                    <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCDate</span><span class="p">())</span> <span class="o">+</span>
+                    <span class="s1">&#39;T&#39;</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCHours</span><span class="p">())</span> <span class="o">+</span>
+                    <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCMinutes</span><span class="p">())</span> <span class="o">+</span>
+                    <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getUTCSeconds</span><span class="p">())</span> <span class="o">+</span>
+                    <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">ms</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;Z&#39;</span><span class="p">;</span>
+            <span class="p">};</span>
+
+        <span class="p">}());</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
 <div class="pilwrap" id="time.getdate">
@@ -71,8 +102,9 @@ manipulation, and formatting of time strings in JavaScript</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns a string representation of the current date
-and time formatted as follows:</p>
+  <div class="body"><p>Returns a string representation of the current date and time (ISO)</p>
+
+<p>String is formatted as follows:</p>
 
 <p>YYYY-MM-DDTHH:mm:ss.sssZ</p>
   </div>
@@ -102,8 +134,9 @@ and time formatted as follows:</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns a string representation of the current time
-formatted as follows:</p>
+  <div class="body"><p>Returns a string representation of the current time</p>
+
+<p>String is ormatted as follows:</p>
 
 <p>hh:mm:ss</p>
   </div>

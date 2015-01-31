@@ -352,6 +352,10 @@ character of the key bears the following semantic:</p>
 </code></pre></div>
 
 
+
+<p>Special span elements are %strong and %em, which add
+respectively a <em>strong</em> and <em>em</em> tag instead of the default
+<em>span</em> tag. They cannot be styled.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -384,7 +388,11 @@ character of the key bears the following semantic:</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">sprintf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">root</span><span class="p">)</span> <span class="p">{</span>
 
         <span class="kd">var</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">textNode</span><span class="p">,</span> <span class="nx">span</span><span class="p">,</span> <span class="nx">idx_start</span><span class="p">,</span> <span class="nx">idx_finish</span><span class="p">,</span> <span class="nx">idx_replace</span><span class="p">,</span> <span class="nx">idxs</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">spans</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">returnElement</span><span class="p">;</span></pre></div>
+        <span class="kd">var</span> <span class="nx">spans</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">returnElement</span><span class="p">;</span>
+
+        <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span>
+        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span>
+ </pre></div>
         </td>
       </tr>
       <tr>
@@ -392,17 +400,13 @@ character of the key bears the following semantic:</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
 </div>
-<p>If no formatting arguments are provided, just create a string
-and inserted into a span tag. If a root element is provided, add it.</p>
+<p>Create an args object, if none is provided. 
+Defaults %em and %strong are added.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">returnElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span>
-            <span class="nx">returnElement</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">string</span><span class="p">));</span>
-            <span class="k">return</span> <span class="nx">root</span> <span class="o">?</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">returnElement</span><span class="p">)</span> <span class="o">:</span> <span class="nx">returnElement</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span>
-        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">args</span> <span class="o">=</span> <span class="nx">args</span> <span class="o">||</span> <span class="p">{};</span>
+        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%strong&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%em&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+        </pre></div>
         </td>
       </tr>
       <tr>
@@ -413,7 +417,13 @@ and inserted into a span tag. If a root element is provided, add it.</p>
 <p>Transform arguments before inserting them.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span></pre></div>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+                
+                <span class="k">switch</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+
+                <span class="k">case</span> <span class="s1">&#39;%&#39;</span><span class="o">:</span> <span class="c1">// Span/Strong/Emph .</span>
+
+                    <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -421,24 +431,27 @@ and inserted into a span tag. If a root element is provided, add it.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
 </div>
-<p>Pattern not found.</p>
+<p>Pattern not found. No error.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">idx_start</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="nx">idx_start</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
 
-                <span class="k">switch</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
-
-                <span class="k">case</span> <span class="s1">&#39;%&#39;</span><span class="o">:</span> <span class="c1">// Span.</span>
-
-                    <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
                     <span class="nx">idx_replace</span> <span class="o">=</span> <span class="nx">idx_start</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
                     <span class="nx">idx_finish</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">idx_replace</span><span class="p">);</span>
 
                     <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                         <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error. Could not find closing key: &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">);</span>
                         <span class="k">continue</span><span class="p">;</span>
-                    <span class="p">}</span>
-
-                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
+                    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Can be strong, emph or a generic span.          </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>                    
 
                     <span class="k">break</span><span class="p">;</span>
 
@@ -461,9 +474,9 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
 </div>
-<p>No span to creates.</p>
+<p>No span to create, return what we have.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="nx">spans</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">string</span><span class="p">));</span>
@@ -473,7 +486,7 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <p>Re-assamble the string.</p>
         </td>
@@ -485,7 +498,7 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>Add span.</p>
         </td>
@@ -496,7 +509,7 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>Add fragments of string.</p>
         </td>
@@ -508,7 +521,15 @@ and inserted into a span tag. If a root element is provided, add it.</p>
             <span class="nx">idx_replace</span> <span class="o">=</span> <span class="nx">idx_start</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
             <span class="nx">idx_finish</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">idx_replace</span><span class="p">);</span>
 
-            <span class="nx">span</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;%strong&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">span</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;strong&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;%em&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">span</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;em&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">span</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+            <span class="p">}</span>
 
             <span class="nx">text</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">idx_replace</span><span class="p">,</span> <span class="nx">idx_finish</span><span class="p">);</span>
 
@@ -522,7 +543,7 @@ and inserted into a span tag. If a root element is provided, add it.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Add the final part of the string.</p>
         </td>
@@ -676,7 +697,7 @@ the method is defined.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Two fors are necessary to follow the real sequence.
 However parent.children is a special object, so the sequence
@@ -877,7 +898,7 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>Handle the case.</p>
         </td>
@@ -892,7 +913,7 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 TODO: handle special cases
 <!--
@@ -1058,7 +1079,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>return scanDocuments(prefix);</p>
         </td>
@@ -1555,7 +1576,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>return this.insertAfter(br,root);</p>
         </td>
@@ -1731,7 +1752,7 @@ color as HEX value. Examples:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>default value is ERR</p>
         </td>

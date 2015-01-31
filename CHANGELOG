@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.9.6
+## 0.9.7
 - `#DOM.sprintf()` has default %strong and %em styles
 - Polyfill for `#Date.getISOString()`
 

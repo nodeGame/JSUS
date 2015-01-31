@@ -410,11 +410,11 @@ are found, an error will occur.</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">FS</span><span class="p">.</span><span class="nx">copyFromDir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dirIn</span><span class="p">,</span> <span class="nx">dirOut</span><span class="p">,</span> <span class="nx">ext</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">dirs</span><span class="p">,</span> <span class="nx">stats</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">dirIn</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a source directory&#39;</span><span class="p">);</span>
+            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a source directory.&#39;</span><span class="p">);</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">dirOut</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a destination directory&#39;</span><span class="p">);</span>
+            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a destination directory.&#39;</span><span class="p">);</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -424,13 +424,13 @@ are found, an error will occur.</p>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">dir</span> <span class="o">=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">FS</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">))</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; does not exist&#39;</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; does not exist.&#39;</span><span class="p">);</span>
                 <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
 
             <span class="nx">stats</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">lstatSync</span><span class="p">(</span><span class="nx">dir</span><span class="p">);</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">stats</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">())</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; is not a directory&#39;</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dir</span> <span class="o">+</span> <span class="s1">&#39; is not a directory.&#39;</span><span class="p">);</span>
                 <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>

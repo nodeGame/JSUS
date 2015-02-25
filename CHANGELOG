@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.9.8
+- `#DOM.write()` accepts undefined as text, and adds an empty string.
+
 ## 0.9.7
 - `#DOM.sprintf()` has default %strong and %em styles
 - Polyfill for `#Date.getISOString()`

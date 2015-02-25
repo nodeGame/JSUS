@@ -258,10 +258,26 @@ will receive further explanation.</p>
 </div>
 
   </div>
-  <div class="body"><p>Write a text, or append an HTML element or node, into the
-the root element.</p>
+  <div class="body"><p>Write a text, or append an HTML element or node, into a root element</p>
   </div>
   <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">root</span>
+      <span class="dox_type">Element</span>
+      <span>The HTML element where to write into</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">text</span>
+      <span class="dox_type">mixed</span>
+      <span>The text to write. Default, an ampty string</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">TextNode</span>
+      <span>The text node inserted in the root element</span>
+    </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.writeln
@@ -271,9 +287,10 @@ the root element.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">content</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">text</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span> <span class="o">?</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">text</span><span class="p">)</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="nx">content</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span> <span class="o">?</span>
             <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">:</span> <span class="nx">text</span><span class="p">;</span>
         <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
@@ -291,10 +308,33 @@ the root element.</p>
 </div>
 
   </div>
-  <div class="body"><p>Write a text, or append an HTML element or node, into the
-the root element and adds a break immediately after.</p>
+  <div class="body"><p>Write a text and a break into a root element</p>
+
+<p>Default break element is <br> tag</p>
   </div>
   <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">root</span>
+      <span class="dox_type">Element</span>
+      <span>The HTML element where to write into</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">text</span>
+      <span class="dox_type">mixed</span>
+      <span>The text to write. Default, an ampty string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">rc</span>
+      <span class="dox_type">string</span>
+      <span>the name of the tag to use as a break element</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">TextNode</span>
+      <span>The text node inserted in the root element</span>
+    </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.write</span>
@@ -391,8 +431,7 @@ respectively a <em>strong</em> and <em>em</em> tag instead of the default
         <span class="kd">var</span> <span class="nx">spans</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">returnElement</span><span class="p">;</span>
 
         <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span>
-        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span>
- </pre></div>
+        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -400,13 +439,12 @@ respectively a <em>strong</em> and <em>em</em> tag instead of the default
 <div class="pilwrap">
   <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
 </div>
-<p>Create an args object, if none is provided. 
+<p>Create an args object, if none is provided.
 Defaults %em and %strong are added.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="nx">args</span> <span class="o">=</span> <span class="nx">args</span> <span class="o">||</span> <span class="p">{};</span>
         <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%strong&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%em&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        </pre></div>
+        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%em&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -418,7 +456,7 @@ Defaults %em and %strong are added.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-                
+
                 <span class="k">switch</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
 
                 <span class="k">case</span> <span class="s1">&#39;%&#39;</span><span class="o">:</span> <span class="c1">// Span/Strong/Emph .</span>
@@ -449,9 +487,9 @@ Defaults %em and %strong are added.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
 </div>
-<p>Can be strong, emph or a generic span.          </p>
+<p>Can be strong, emph or a generic span.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>                    
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
 
                     <span class="k">break</span><span class="p">;</span>
 

@@ -40,6 +40,9 @@
         <a href="#dom.iselement">DOM.isElement</a>
       </div>
       <div class="heading h3">
+        <a href="#dom.shuffleelements">DOM.shuffleElements</a>
+      </div>
+      <div class="heading h3">
         <a href="#dom.shufflenodes">DOM.shuffleNodes</a>
       </div>
       <div class="heading h3">
@@ -197,7 +200,7 @@
 </div>
 
   </div>
-  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
+  <div class="body"><p>Copyright(c) 2015 Stefano Balietti
 MIT Licensed</p>
 
 <p>Collection of static functions related to DOM manipulation</p>
@@ -672,17 +675,22 @@ the method is defined.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="dom.shufflenodes">
+<div class="pilwrap" id="dom.shuffleelements">
   <h3>
-    <a href="#dom.shufflenodes" class="pilcrow">&#182;</a>
-    DOM.shuffleNodes
+    <a href="#dom.shuffleelements" class="pilcrow">&#182;</a>
+    DOM.shuffleElements
   </h3>
 </div>
 
   </div>
-  <div class="body"><p>Shuffles the children nodes</p>
+  <div class="body"><p>Shuffles the children element nodes</p>
 
 <p>All children must have the id attribute.</p>
+
+<p>Notice the difference between Elements and Nodes:</p>
+
+<p><a href='http://stackoverflow.com/questions/7935689/'>http://stackoverflow.com/questions/7935689/</a>
+what-is-the-difference-between-children-and-childnodes-in-javascript</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -705,8 +713,8 @@ the method is defined.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">idOrder</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">idOrder</span><span class="p">,</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">child</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">parent</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: parent must node.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
@@ -722,13 +730,6 @@ the method is defined.</p>
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order length must match &#39;</span> <span class="o">+</span>
                                 <span class="s1">&#39;the number of children nodes.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="nx">len</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">order</span><span class="p">)</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span><span class="p">);</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">idOrder</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">);</span>
         <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -737,16 +738,70 @@ the method is defined.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
+<p>DOM4 compliant browsers.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">children</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p><a href='https://developer.mozilla.org/en/DOM/Element.children'>https://developer.mozilla.org/en/DOM/Element.children</a>
+[IE lt 9] IE &lt; 9</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">child</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">children</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">child</span><span class="p">);</span>
+                <span class="nx">child</span> <span class="o">=</span> <span class="nx">child</span><span class="p">.</span><span class="nx">nextSibling</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nx">len</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">order</span><span class="p">)</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">idOrder</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
 <p>Two fors are necessary to follow the real sequence.
 However parent.children is a special object, so the sequence
 could be unreliable.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
+            <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">idOrder</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.shufflenodes">
+  <h3>
+    <a href="#dom.shufflenodes" class="pilcrow">&#182;</a>
+    DOM.shuffleNodes
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>It actually shuffles Elements.</p>
+  </div>
+  <div class="details">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -936,7 +991,7 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>Handle the case.</p>
         </td>
@@ -951,7 +1006,7 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 TODO: handle special cases
 <!--
@@ -1117,7 +1172,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>return scanDocuments(prefix);</p>
         </td>
@@ -1614,7 +1669,7 @@ check if the string exists.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p>return this.insertAfter(br,root);</p>
         </td>
@@ -1790,7 +1845,7 @@ color as HEX value. Examples:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p>default value is ERR</p>
         </td>

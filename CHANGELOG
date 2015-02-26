@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.9.9
+- `#DOM.shuffleElements()` replaces `#DOM.shuffleNodes()`, still a copy of the former method. A bug on the number of elements in the order is fixed, and also the method is more reliable to detect the children elements also in old browsers.
+
 ## 0.9.8
 - `#DOM.write()` accepts undefined as text, and adds an empty string.
 

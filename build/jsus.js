@@ -1483,8 +1483,9 @@
      *
      */
     DOM.getButton = function(id, text, attributes) {
-        var sb = document.createElement('button');
-        sb.id = id;
+        var sb;
+        sb = document.createElement('button');
+        if ('undefined' !== typeof id) sb.id = id;
         sb.appendChild(document.createTextNode(text || 'Send'));
         return this.addAttributes2Elem(sb, attributes);
     };
@@ -3700,6 +3701,44 @@
             }
             return value;
         }
+    };
+
+    /**
+     * ## PARSE.funcName
+     *
+     * Returns the name of the function
+     *
+     * Function.name is a non-standard JavaScript property,
+     * although many browsers implement it. This is a cross-browser
+     * implementation for it.
+     *
+     * In case of anonymous functions, an empty string is returned.
+     *
+     * @param {function} func The function to check
+     *
+     * @return {string} The name of the function
+     *
+     * Kudos to:
+     * http://matt.scharley.me/2012/03/09/monkey-patch-name-ie.html
+     */
+    if ('undefined' !== typeof Function.prototype.name) {
+        PARSE.funcName = function(func) {
+            if ('function' !== typeof func) {
+                throw new TypeError('PARSE.funcName: func must be function.');
+            }
+            return func.name;
+        };
+    }
+    else {
+        PARSE.funcName = function(func) {
+            var funcNameRegex, res;
+            if ('function' !== typeof func) {
+                throw new TypeError('PARSE.funcName: func must be function.');
+            }
+            funcNameRegex = /function\s([^(]{1,})\(/;
+            res = (funcNameRegex).exec(func.toString());
+            return (res && res.length > 1) ? res[1].trim() : "";
+        };
     };
 
     JSUS.extend(PARSE);

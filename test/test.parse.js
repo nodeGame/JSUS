@@ -86,7 +86,8 @@ describe('PARSE: ', function() {
 
         it('should stringify a function with public properties', function() {
             var str;
-            str = "function (a,b) {\\n\\tthis.a = a;\\n\\tthis.b = b;\\n}\"";
+            //str = "function (a,b) {\\n\\tthis.a = a;\\n\\tthis.b = b;\\n}\"";
+            str = "function (a,b) {\\n    this.a = a;\\n    this.b = b;\\n}\""
             str_func2 = JSUS.stringify(f2);
             str_func2.should.be.eql('"' + JSUS.stringify_prefix + str);
         });

@@ -3702,6 +3702,262 @@
         }
     };
 
+    /**
+     * ## PARSE.range
+     *
+     * Decodes strings into an array of integers
+     *
+     * Let n, m  and l be integers, then the tokens of the string are
+     * interpreted in the following way:
+     * - `*`: Any integer.
+     * - `n`: The integer `n`.
+     * - `begin`: The smallest integer in `available`.
+     * - `end`: The largest integer in `available`.
+     * - `<n`, `<=n`, `>n`, `>=n`: Any integer (strictly) smaller/larger than n.
+     * - `n..m`, `[n,m]`: Any integer between n and m (both inclusively).
+     * - `n..l..m`: Any i
+     * - `[n,m)`: Any integer between n (inclusively) and m (exclusively).
+     * - `(n,m]`: Any integer between n (exclusively) and m (inclusively).
+     * - `(n,m)`: Any integer between n and m (both exclusively).
+     * - `%n`: Divisible by n.
+     * - `%n = m`: Divisible with rest m.
+     * - `!`: Not.
+     * - `|`, `||`, `,`: Or.
+     * - `&`, `&&`: And.
+     * The elements of the resulting array are all elements of the `available`
+     * array which satisfy the expression defined by `expr`.
+     *
+     * Example:
+     * PARSE.range('2..5, >8 & !11', '[-2,12]');
+     *      // [2,3,4,5,9,10,12]
+     * PARSE.range('begin...end/2 | 3*end/4...3...end', '[0,40) & %2 = 1');
+     *      // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)
+     * PARSE.range('<=19, 22, %5', '>6 & !>27');
+     *      // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]
+     * PARSE.range('*','(3,8) & !%4, 22, (10,12]');
+     *      // [5,6,7,11,12,22]
+     * PARSE.range('<4', {
+     *      begin: 0,
+     *      end: 21,
+     *      prev: 0,
+     *      cur: 1,
+     *      next: function() {
+     *          var temp = this.prev;
+     *          this.prev = this.cur;
+     *          this.cur += temp;
+     *          return this.cur;
+     *      },
+     *      isFinished: function() {
+     *          return this.cur + this.prev > this.end;
+     *      }
+     * });
+     *      // [5, 8, 13, 21]
+     *
+     *
+     * @param {string} expr The string specifying the selection expression
+     * @param {mixed} available
+     *  - string adhering to be interpreted according to the same rules as
+     *       `expr`
+     *  - array containing the available elements
+     *  - object providing functions next, isFinished and attributes begin, end
+     * @return {array} The array containing the specified values
+     */
+    // available can be an array, a string or a object.
+    PARSE.range = function(expr, available) {
+        var i, x;
+        var solution = [];
+        var begin, end, lowerBound, numbers;
+        var invalidChars, invalidBeforeOpeningBracket;
+
+        if ("undefined" === typeof expr) {
+            return [];
+        }
+
+        if ("undefined" === typeof available) {
+            throw new TypeError('available needs to be defined');
+        }
+        if (!JSUS.isArray(available)) {
+            if ("string" !== typeof available) {
+                if ("function" !== typeof available.next ||
+                    "function" !== typeof available.isFinished ||
+                    "number"   !== typeof available.begin ||
+                    "number"   !== typeof available.end
+                )
+                throw new Error('available wrong type');
+            }
+        }
+
+        // If the availble points are also only given implicitly, compute set
+        // of available numbers by first guessing a bound.
+        if ("string" === typeof available) {
+            available = preprocessRange(available);
+
+            numbers = available.match(/([-+]?\d+)/g);
+            if (numbers === null) {
+                throw new Error('no numbers in available');
+            }
+            lowerBound = Math.min.apply(null, numbers);
+
+            available = PARSE.range(available, {
+                begin: lowerBound,
+                end: Math.max.apply(null, numbers),
+                value: lowerBound,
+                next: function() {
+                    return this.value++;
+                },
+                isFinished: function() {
+                    return this.value > this.end;
+                }
+            });
+        }
+        if (JSUS.isArray(available)) {
+            begin = Math.min.apply(null, available);
+            end = Math.max.apply(null, available);
+        }
+        else {
+            begin = available.begin;
+            end = available.end;
+        }
+
+        // end -> maximal available value.
+        expr = expr.replace(/end/g, parseInt(end));
+
+        // begin -> minimal available value.
+        expr = expr.replace(/begin/g, parseInt(begin));
+
+        // Do all computations.
+        expr = preprocessRange(expr);
+
+        // Round all floats
+        expr = expr.replace(/([-+]?\d+\.\d+)/g, function(match, p1) {
+            return parseInt(p1);
+        });
+
+        // Validate expression to only contain allowed symbols.
+        invalidChars = /[^ \*\d<>=!\|&\.\[\],\(\)\-\+%]/g;
+        if (expr.match(invalidChars)) {
+            throw new Error('invalidChars:' + expr);
+        }
+
+        // & -> && and | -> ||.
+        expr = expr.replace(/([^& ]) *& *([^& ])/g, "$1&&$2");
+        expr = expr.replace(/([^| ]) *\| *([^| ])/g, "$1||$2");
+
+        // n -> (x == n).
+        expr = expr.replace(/([-+]?\d+)/g, "(x==$1)");
+
+        // n has already been replaced by (x==n) so match for that from now on.
+
+        // %n -> !(x%n)
+        expr = expr.replace(/% *\(x==([-+]?\d+)\)/,"!(x%$1)");
+
+        // %n has already been replaced by !(x%n) so match for that from now on.
+        // %n = m, %n == m -> (x%n == m).
+        expr = expr.replace(/!\(x%([-+]?\d+)\) *={1,} *\(x==([-+]?\d+)\)/g,
+            "(x%$1==$2)");
+
+        // <n, <=n, >n, >=n -> (x < n), (x <= n), (x > n), (x >= n)
+        expr = expr.replace(/([<>]=?) *\(x==([-+]?\d+)\)/g, "(x$1$2)");
+
+        // n..l..m -> (x >= n && x <= m && !((x-n)%l)) for positive l.
+        expr = expr.replace(
+            /\(x==([-+]?\d+)\)\.{2,}\(x==(\+?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g,
+            "(x>=$1&&x<=$3&&!((x- $1)%$2))");
+
+        // n..l..m -> (x <= n && x >= m && !((x-n)%l)) for negative l.
+        expr = expr.replace(
+            /\(x==([-+]?\d+)\)\.{2,}\(x==(-\d+)\)\.{2,}\(x==([-+]?\d+)\)/g,
+            "(x<=$1&&x>=$3&&!((x- $1)%$2))");
+
+        // n..m -> (x >= n && x <= m).
+        expr = expr.replace(/\(x==([-+]?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g,
+                "(x>=$1&&x<=$2)");
+
+        // (n,m), ... ,[n,m] -> (x > n && x < m), ... , (x >= n && x <= m).
+        expr = expr.replace(
+            /([(\[]) *\(x==([-+]?\d+)\) *, *\(x==([-+]?\d+)\) *([\])])/g,
+                function (match, p1, p2, p3, p4) {
+                    return "(x>" + (p1 == '(' ? '': '=') + p2 + "&&x<" +
+                        (p4 == ')' ? '' : '=') + p3 + ')';
+            }
+        );
+
+        // * -> true.
+        expr = expr.replace('*', 1);
+
+        // a, b -> (a) || (b)
+        expr = expr.replace(/\)[,] *(!*)\(/g, ")||$1(");
+
+
+        // Validating the expression before eval"ing it.
+        invalidChars = /[^ \d<>=!\|&,\(\)\-\+%x\.]/g;
+        // Only & | ! may be before an opening bracket.
+        invalidBeforeOpeningBracket = /[^ &!|\(] *\(/g;
+        // Only dot in floats.
+        invalidDot = /\.[^\d]|[^\d]\./;
+
+        if (expr.match(invalidChars)) {
+            throw new Error('invalidChars:' + expr);
+        }
+        if (expr.match(invalidBeforeOpeningBracket)) {
+            throw new Error('invaludBeforeOpeningBracket:' + expr);
+        }
+        if (expr.match(invalidDot)) {
+            throw new Error('invalidDot:' + expr);
+        }
+
+        if (JSUS.isArray(available)) {
+            for (i in available) {
+                if (available.hasOwnProperty(i)) {
+                    x = parseInt(available[i]);
+                    if (JSUS.eval(expr.replace(/x/g, x))) {
+                        solution.push(x);
+                    }
+                }
+            }
+        }
+        else {
+            while (!available.isFinished()) {
+                x = parseInt(available.next());
+                if (JSUS.eval(expr.replace(/x/g, x))) {
+                    solution.push(x);
+                }
+            }
+        }
+        return solution;
+    };
+
+    function preprocessRange(expr) {
+        var mult = function(match, p1, p2, p3) {
+            var n1 = parseInt(p1);
+            var n3 = parseInt(p3);
+            return p2 == '*' ? n1*n3 : n1/n3;
+        };
+        var add = function(match, p1, p2, p3) {
+            var n1 = parseInt(p1);
+            var n3 = parseInt(p3);
+            return p2 == '-' ? n1 - n3 : n1 + n3;
+        };
+        var mod = function(match, p1, p2, p3) {
+            var n1 = parseInt(p1);
+            var n3 = parseInt(p3);
+            return n1 % n3;
+        };
+
+        while (expr.match(/([-+]?\d+) *([*\/]) *([-+]?\d+)/g)) {
+            expr = expr.replace(/([-+]?\d+) *([*\/]) *([-+]?\d+)/, mult);
+        }
+
+        while (expr.match(/([-+]?\d+) *([-+]) *([-+]?\d+)/g)) {
+            expr = expr.replace(/([-+]?\d+) *([-+]) *([-+]?\d+)/, add);
+        }
+        while (expr.match(/([-+]?\d+) *% *([-+]?\d+)/g)) {
+            expr = expr.replace(/([-+]?\d+) *% *([-+]?\d+)/, mod);
+        }
+        return expr;
+    }
+
+
     JSUS.extend(PARSE);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
@@ -3870,12 +4126,12 @@
      * ## RANDOM.random
      *
      * Generates a pseudo-random floating point number between
-     * (a,b), both a and b exclusive.
+     * [a,b), a inclusive and b exclusive.
      *
      * @param {number} a The lower limit
      * @param {number} b The upper limit
      *
-     * @return {number} A random floating point number in (a,b)
+     * @return {number} A random floating point number in [a,b)
      */
     RANDOM.random = function(a, b) {
         var c;
@@ -3930,7 +4186,7 @@
     };
 
     /**
-     * ## RANDOM.sample
+     * ## RANDOM.getNormalGenerator
      *
      * Returns a new generator of normally distributed pseudo random numbers
      *
@@ -3998,6 +4254,8 @@
     };
 
     /**
+     * ## RANDOM.nextNormal
+     *
      * Generates random numbers with Normal Gaussian distribution.
      *
      * User must specify the expected mean, and standard deviation a input
@@ -4016,6 +4274,8 @@
     RANDOM.nextNormal = RANDOM.getNormalGenerator();
 
     /**
+     * ## RANDOM.nextLogNormal
+     *
      * Generates random numbers with LogNormal distribution.
      *
      * User must specify the expected mean, and standard deviation of the
@@ -4039,6 +4299,8 @@
     };
 
     /**
+     * ## RANDOM.nextExponential
+     *
      * Generates random numbers with Exponential distribution.
      *
      * User must specify the lambda the _rate parameter_ of the distribution.
@@ -4060,6 +4322,8 @@
     };
 
     /**
+     * ## RANDOM.nextBinomial
+     *
      * Generates random numbers following the Binomial distribution.
      *
      * User must specify the probability of success and the number of trials.
@@ -4099,6 +4363,8 @@
     };
 
     /**
+     * ## RANDOM.nextGamma
+     *
      * Generates random numbers following the Gamma distribution.
      *
      * This function is experimental and untested. No documentation.

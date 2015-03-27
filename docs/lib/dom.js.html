@@ -1208,8 +1208,9 @@ check if the string exists.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">sb</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">);</span>
-        <span class="nx">sb</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">sb</span><span class="p">;</span>
+        <span class="nx">sb</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">sb</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="nx">sb</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span> <span class="o">||</span> <span class="s1">&#39;Send&#39;</span><span class="p">));</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">sb</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
     <span class="p">};</span></pre></div>

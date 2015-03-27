@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.9.10
+- `#PARSE.funcName()` retrieves the name of a function.
+- `#DOM.getButton()` does not add undefined id if none is passed.
+
 ## 0.9.9
 - `#DOM.shuffleElements()` replaces `#DOM.shuffleNodes()`, still a copy of the former method. A bug on the number of elements in the order is fixed, and also the method is more reliable to detect the children elements also in old browsers.
 
@@ -7,8 +11,8 @@
 - `#DOM.write()` accepts undefined as text, and adds an empty string.
 
 ## 0.9.7
-- `#DOM.sprintf()` has default %strong and %em styles
-- Polyfill for `#Date.getISOString()`
+- `#DOM.sprintf()` has default %strong and %em styles.
+- Polyfill for `#Date.getISOString()`.
 
 ## 0.9.5
 - An empty console and console.log objects are added if undefined. This avoids throwing errors in old browsers.
@@ -29,7 +33,7 @@
 
 ## 0.8.9
 - `#DOM.addClass()` extra space fix.
-- `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'
+- `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'.
 
 ## 0.8.8
 - `#DOM.shuffleNodes()` correctly shuffles the nodes, and returns the id of the elements in the order used to append them.

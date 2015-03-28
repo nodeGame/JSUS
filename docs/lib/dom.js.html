@@ -183,6 +183,12 @@
       <div class="heading h3">
         <a href="#dom.enablerightclick">DOM.enableRightClick</a>
       </div>
+      <div class="heading h3">
+        <a href="#dom.addevent">DOM.addEvent</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.removeelement">DOM.removeElement</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -2311,6 +2317,125 @@ width, and type can be specified.</p>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.addevent">
+  <h3>
+    <a href="#dom.addevent" class="pilcrow">&#182;</a>
+    DOM.addEvent
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Adds an event listener to an element (cross-browser)</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">element</span>
+      <span class="dox_type">Element</span>
+      <span>A target element</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">event</span>
+      <span class="dox_type">string</span>
+      <span>The name of the event to handle</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">func</span>
+      <span class="dox_type">function</span>
+      <span>The event listener</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">boolean</span>
+      <span>If TRUE, the event will initiate a capture.
+  Available only in some browsers. Default, FALSE</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>TRUE, on success. However, the return value is
+  browser dependent.</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">DOM.removeEvent
+
+Kudos:
+http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
+</a>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">capture</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">capture</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">)</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.removeelement">
+  <h3>
+    <a href="#dom.removeelement" class="pilcrow">&#182;</a>
+    DOM.removeElement
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Removes an event listener from an element (cross-browser)</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">element</span>
+      <span class="dox_type">Element</span>
+      <span>A target element</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">event</span>
+      <span class="dox_type">string</span>
+      <span>The name of the event to remove</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">func</span>
+      <span class="dox_type">function</span>
+      <span>The event listener</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">Optional.</span>
+      <span class="dox_type">boolean</span>
+      <span>If TRUE, the event was registered
+  as a capture. Available only in some browsers. Default, FALSE</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>TRUE, on success. However, the return value is
+  browser dependent.</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">DOM.addEvent
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">capture</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">capture</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">)</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
     <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">DOM</span><span class="p">);</span>

@@ -3,6 +3,7 @@
 ## 0.9.10
 - `#PARSE.funcName()` retrieves the name of a function.
 - `#DOM.getButton()` does not add undefined id if none is passed.
+- `#DOM.addEvent()` and `#DOM.removeEvent()`.
 
 ## 0.9.9
 - `#DOM.shuffleElements()` replaces `#DOM.shuffleNodes()`, still a copy of the former method. A bug on the number of elements in the order is fixed, and also the method is more reliable to detect the children elements also in old browsers.

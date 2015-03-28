@@ -117,6 +117,7 @@ describe('PARSE: ', function() {
 
             str_obj_special.should.be.eql(str);
         });
+
     });
 
     describe('#stringifyAll()', function() {
@@ -126,6 +127,52 @@ describe('PARSE: ', function() {
             str_obj_proto = JSUS.stringifyAll(obj_with_proto);
             strMethod = '{"iamamethod":"!?_function (a){\\n    return a;\\n}"}';
             str_obj_proto.should.be.eql(strMethod);
+        });
+    });
+
+    describe('#range()', function() {
+        it('should handle multiplications of constants, intervals' +
+            'negations, range notation and greater than notation',
+            function() {
+                var range = JSUS.range('2...5, >8 & !11','[-2,2*6]');
+                range.should.eql([2,3,4,5,9,10,12]);
+        });
+        it('should understand \'begin\' and \'end\', handle divisions and' +
+            'modulo operations.', function() {
+            var range = JSUS.range('begin...end/2 | 3*end/4...3...end',
+                '[0,40) & %2 = 1');
+            range.should.eql([1,3,5,7,9,11,13,15,17,19,29,35]);
+        });
+        it('should handle modulo operations in short notation', function() {
+            var range = JSUS.range('<=19, 22, %5', '>6 & !>27');
+            range.should.eql([7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]);
+        });
+        it('should handle an iterable object as second input', function() {
+            var range = JSUS.range('>4', {
+                begin: 0,
+                end: 21,
+                prev: 0,
+                cur: 1,
+                next: function() {
+                    var temp = this.prev;
+                    this.prev = this.cur;
+                    this.cur += temp;
+                    return this.cur;
+                },
+                isFinished: function() {
+                    return this.cur + this.prev > this.end;
+                }
+            });
+            range.should.eql([5,8,13,21]);
+        });
+        it('should understand \'*\'', function() {
+            var range = JSUS.range('*','(3,8) & !%4, 22, (10,12]');
+            range.should.eql([5,6,7,11,12,22]);
+        });
+
+        it('should handle an array as second input', function() {
+            var range = JSUS.range('%7', [6,7,8,9,12,21,25,14]);
+            range.should.eql([7,21,14]);
         });
     });
 

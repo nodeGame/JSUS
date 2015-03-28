@@ -31,7 +31,22 @@
         <a href="#random.sample">RANDOM.sample</a>
       </div>
       <div class="heading h2">
-        <a href="#random.sample">RANDOM.sample</a>
+        <a href="#random.getnormalgenerator">RANDOM.getNormalGenerator</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.nextnormal">RANDOM.nextNormal</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.nextlognormal">RANDOM.nextLogNormal</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.nextexponential">RANDOM.nextExponential</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.nextbinomial">RANDOM.nextBinomial</a>
+      </div>
+      <div class="heading h2">
+        <a href="#random.nextgamma">RANDOM.nextGamma</a>
       </div>
     </div>
   </div>
@@ -75,7 +90,7 @@ pseudo-random numbers</p>
 
   </div>
   <div class="body"><p>Generates a pseudo-random floating point number between
-(a,b), both a and b exclusive.</p>
+[a,b), a inclusive and b exclusive.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -93,7 +108,7 @@ pseudo-random numbers</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">number</span>
-      <span>A random floating point number in (a,b)</span>
+      <span>A random floating point number in [a,b)</span>
     </div>
   </div>
 </div>
@@ -210,10 +225,10 @@ pseudo-random numbers</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="random.sample">
+<div class="pilwrap" id="random.getnormalgenerator">
   <h2>
-    <a href="#random.sample" class="pilcrow">&#182;</a>
-    RANDOM.sample
+    <a href="#random.getnormalgenerator" class="pilcrow">&#182;</a>
+    RANDOM.getNormalGenerator
   </h2>
 </div>
 
@@ -310,14 +325,19 @@ with variance equal to 0.587.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.nextnormal">
+  <h2>
+    <a href="#random.nextnormal" class="pilcrow">&#182;</a>
+    RANDOM.nextNormal
+  </h2>
 </div>
-<div class="dox">
-  <div class="summary"><p>Generates random numbers with Normal Gaussian distribution.</p>
+
   </div>
-  <div class="body"><p>User must specify the expected mean, and standard deviation a input
+  <div class="body"><p>Generates random numbers with Normal Gaussian distribution.</p>
+
+<p>User must specify the expected mean, and standard deviation a input
 parameters.</p>
 
 <p>Implements the Polar Method by Knuth, "The Art Of Computer
@@ -349,14 +369,19 @@ param {number} sigma The standard deviation of the distribution</span>
         </td>
       </tr>
       <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.nextlognormal">
+  <h2>
+    <a href="#random.nextlognormal" class="pilcrow">&#182;</a>
+    RANDOM.nextLogNormal
+  </h2>
 </div>
-<div class="dox">
-  <div class="summary"><p>Generates random numbers with LogNormal distribution.</p>
+
   </div>
-  <div class="body"><p>User must specify the expected mean, and standard deviation of the
+  <div class="body"><p>Generates random numbers with LogNormal distribution.</p>
+
+<p>User must specify the expected mean, and standard deviation of the
 underlying gaussian distribution as input parameters.</p>
   </div>
   <div class="details">
@@ -397,14 +422,19 @@ underlying gaussian distribution as input parameters.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.nextexponential">
+  <h2>
+    <a href="#random.nextexponential" class="pilcrow">&#182;</a>
+    RANDOM.nextExponential
+  </h2>
 </div>
-<div class="dox">
-  <div class="summary"><p>Generates random numbers with Exponential distribution.</p>
+
   </div>
-  <div class="body"><p>User must specify the lambda the <em>rate parameter</em> of the distribution.
+  <div class="body"><p>Generates random numbers with Exponential distribution.</p>
+
+<p>User must specify the lambda the <em>rate parameter</em> of the distribution.
 The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</code>.</p>
   </div>
   <div class="details">
@@ -436,14 +466,19 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         </td>
       </tr>
       <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.nextbinomial">
+  <h2>
+    <a href="#random.nextbinomial" class="pilcrow">&#182;</a>
+    RANDOM.nextBinomial
+  </h2>
 </div>
-<div class="dox">
-  <div class="summary"><p>Generates random numbers following the Binomial distribution.</p>
+
   </div>
-  <div class="body"><p>User must specify the probability of success and the number of trials.</p>
+  <div class="body"><p>Generates random numbers following the Binomial distribution.</p>
+
+<p>User must specify the probability of success and the number of trials.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -497,14 +532,19 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         </td>
       </tr>
       <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="random.nextgamma">
+  <h2>
+    <a href="#random.nextgamma" class="pilcrow">&#182;</a>
+    RANDOM.nextGamma
+  </h2>
 </div>
-<div class="dox">
-  <div class="summary"><p>Generates random numbers following the Gamma distribution.</p>
+
   </div>
-  <div class="body"><p>This function is experimental and untested. No documentation.</p>
+  <div class="body"><p>Generates random numbers following the Gamma distribution.</p>
+
+<p>This function is experimental and untested. No documentation.</p>
   </div>
   <div class="details">
   </div>

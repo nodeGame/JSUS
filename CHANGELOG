@@ -2,6 +2,7 @@
 
 ## 0.9.10
 - `#PARSE.funcName()` retrieves the name of a function.
+- `#PARSE.range()` creates integer ranges based on specified criteria.
 - `#DOM.getButton()` does not add undefined id if none is passed.
 - `#DOM.addEvent()` and `#DOM.removeEvent()`.
 

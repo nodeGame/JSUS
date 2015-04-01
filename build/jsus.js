@@ -1006,7 +1006,7 @@
         var content;
         if ('undefined' === typeof text || text === null) text = "";
         if ('string' === typeof text) content = document.createTextNode(text);
-        else if (!JSUS.isNode(text) || !JSUS.isElement(text)) content = text;
+        else if (JSUS.isNode(text) || JSUS.isElement(text)) content = text;
         root.appendChild(content);
         return content;
     };

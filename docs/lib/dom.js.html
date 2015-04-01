@@ -297,10 +297,9 @@ will receive further explanation.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">content</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">text</span><span class="p">)</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-        <span class="nx">content</span> <span class="o">=</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span> <span class="o">?</span>
-            <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">:</span> <span class="nx">text</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">text</span> <span class="o">||</span> <span class="nx">text</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">text</span><span class="p">)</span> <span class="nx">content</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">text</span><span class="p">;</span>
         <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
@@ -357,9 +356,10 @@ will receive further explanation.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">writeln</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">rc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">br</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addBreak</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">rc</span><span class="p">);</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">?</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="o">:</span> <span class="nx">br</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">content</span><span class="p">;</span>
+        <span class="nx">content</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">addBreak</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">rc</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -633,8 +633,8 @@ Defaults %em and %strong are added.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Node</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Node</span> <span class="o">:</span>
-            <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
     <span class="p">};</span></pre></div>

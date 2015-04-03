@@ -7,6 +7,7 @@
 - `#DOM.addEvent()` and `#DOM.removeEvent()`.
 - `#DOM.isNode()` checks if input is object first, avoiding throwing unncessary errors.
 - `#DOM.write()` transforms null in empty strings.
+- `#DOM.getIFrameDocument` returns null if no iframe document is found.
 
 ## 0.9.9
 - `#DOM.shuffleElements()` replaces `#DOM.shuffleNodes()`, still a copy of the former method. A bug on the number of elements in the order is fixed, and also the method is more reliable to detect the children elements also in old browsers.

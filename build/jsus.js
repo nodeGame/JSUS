@@ -1005,8 +1005,8 @@
     DOM.write = function(root, text) {
         var content;
         if ('undefined' === typeof text || text === null) text = "";
-        if ('string' === typeof text) content = document.createTextNode(text);
-        else if (JSUS.isNode(text) || JSUS.isElement(text)) content = text;
+        if (JSUS.isNode(text) || JSUS.isElement(text)) content = text;
+        else content = document.createTextNode(text);
         root.appendChild(content);
         return content;
     };
@@ -1942,12 +1942,13 @@
      *
      * @param {HTMLIFrameElement} iframe The iframe object
      *
-     * @return {HTMLDocument|undefined} The document of the iframe, or
-     *   undefined if not found.
+     * @return {HTMLDocument|null} The document of the iframe, or
+     *   null if not found.
      */
     DOM.getIFrameDocument = function(iframe) {
-        if (!iframe) return;
-        return iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframe) return null;
+        return iframe.contentDocument ||
+            iframe.contentWindow ? iframe.contentWindow.document : null;
     };
 
     /**

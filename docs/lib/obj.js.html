@@ -102,6 +102,9 @@
       <div class="heading h2">
         <a href="#obj.pairwisewalk">OBJ.pairwiseWalk</a>
       </div>
+      <div class="heading h2">
+        <a href="#obj.getkeybyvalue">OBJ.getKeyByValue</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -2017,6 +2020,74 @@ are excluded.</p>
             <span class="k">if</span> <span class="p">(</span><span class="nx">o2</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">out</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                     <span class="nx">out</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">o2</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.getkeybyvalue">
+  <h2>
+    <a href="#obj.getkeybyvalue" class="pilcrow">&#182;</a>
+    OBJ.getKeyByValue
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns the key/s associated with a specific value</p>
+
+<p>Uses OBJ.equals so it can perform complicated comparisons of
+the value of the keys.</p>
+
+<p>Properties of the prototype are not skipped.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj</span>
+      <span class="dox_type">object</span>
+      <span>The object to search</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">value</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to match</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">allKeys</span>
+      <span class="dox_type">boolean</span>
+      <span>Optional. If TRUE, all keys with the
+  specific value are returned. Default FALSE</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>The object aggregating the results</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">OBJ.equals
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">getKeyByValue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">allKeys</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">out</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;OBJ.getKeyByValue: obj must be object.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">allKeys</span><span class="p">)</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">OBJ</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">allKeys</span><span class="p">)</span> <span class="k">return</span> <span class="nx">key</span><span class="p">;</span>
+                    <span class="k">else</span> <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>

@@ -42,8 +42,8 @@ describe('FS: ', function(){
 	    fs.writeFileSync(randomSubDir + "file.txt", "Hey there!");
 	});
 
-	it('should return TRUE when deleting existing files.', function() {
-	    var result = JSUS.deleteIfExists(randomSubDir + "file3.js");
+	it('should return TRUE when deleting existing files.', function(done) {
+	    var result = JSUS.deleteIfExists(randomSubDir + "file3.js", done);
 	    result.should.be.true;
 	});
 

@@ -787,40 +787,12 @@ Properties of the prototype chain are copied as well.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
-<p>TODO: index i is being updated, so apply is called on the
-last element, instead of the correct one.
-if ('function' === typeof obj[i]) {
-   value = function() { return obj[i].apply(clone, arguments); };
-}
-It is not NULL and it is an object</p>
+<p>It is not NULL and it is an object.
+Even if it is an array we need to use CLONE,
+because <code>slice()</code> does not clone array of objects.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
-</div>
-<p>Is an array.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">===</span>
-                    <span class="s1">&#39;[object Array]&#39;</span><span class="p">)</span> <span class="p">{</span>
-
-                    <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-                <span class="p">}</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
-</div>
-<p>Is an object.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">value</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-                <span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">value</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="p">{</span>
                 <span class="nx">value</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
@@ -835,7 +807,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>We know if object.defineProperty is available.</p>
         </td>
@@ -852,7 +824,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>or we try...</p>
         </td>
@@ -1012,7 +984,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Checking before starting the algorithm</p>
         </td>
@@ -1029,7 +1001,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
@@ -1039,7 +1011,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>If we are merging an object into
 a non-object, we need to cast the

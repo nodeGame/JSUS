@@ -47,6 +47,12 @@ var obj_func = {
     c: 3,
 };
 
+var obj_with_array_of_obj = {
+    a: 1,
+    b: [ {a:1}, {b: 2} ],
+    c: 3,
+};
+
 var array_simple = [1,2,3];
 var array_complex = [1, array_simple, 3];
 var array_with_null = [1,null,3];
@@ -141,6 +147,8 @@ describe('OBJ: ', function() {
         var copy_with_null      = JSUS.clone(obj_with_null);
         var copy_falsy          = JSUS.clone(obj_falsy);
         var copy_func           = JSUS.clone(obj_func)
+        var copy_with_array     = JSUS.clone(obj_with_array)
+        var copy_with_array_of_obj = JSUS.clone(obj_with_array_of_obj)
 
         // SIMPLE
         it('should return the copy of a simple object', function() {
@@ -206,6 +214,42 @@ describe('OBJ: ', function() {
 
             copy_func.b = 'foo';
             copy_func.b.should.not.be.equal(obj_func.b);
+        });
+
+        // ARRAY
+        it('should return the copy of an object containing array of objs',
+           function() {
+               copy_with_array.should.eql(obj_with_array);
+        });
+
+        it('cloned obj with array of obj should be the same', function() {
+            copy_with_array.b[0].should.be.eql(obj_with_array.b[0]);
+        });
+
+        it('modifying copy of obj with array of obj should not affect original',
+           function() {
+
+               copy_with_array.b[0] = -1;
+               copy_with_array.b[0].should.not.be.equal(obj_with_array.b[0]);
+        });
+
+        // ARRAY OF OBJ
+        it('should return the copy of an object containing array of objs',
+           function() {
+               copy_with_array_of_obj.should.eql(obj_with_array_of_obj);
+        });
+
+        it('cloned obj with array of obj should be the same', function() {
+            copy_with_array_of_obj.b[0].a
+                .should.be.eql(obj_with_array_of_obj.b[0].a);
+        });
+
+        it('modifying copy of obj with array of obj should not affect original',
+           function() {
+
+               copy_with_array_of_obj.b[0].a = -1;
+               copy_with_array_of_obj.b[0].a
+                   .should.not.be.equal(obj_with_array_of_obj.b[0].a);
         });
 
     });

@@ -789,7 +789,7 @@ Properties of the prototype chain are copied as well.</p>
 </div>
 <p>It is not NULL and it is an object.
 Even if it is an array we need to use CLONE,
-because <code>slice()</code> does not clone array of objects.</p>
+because <code>slice()</code> does not clone arrays of objects.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                 <span class="nx">value</span> <span class="o">=</span> <span class="nx">OBJ</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>

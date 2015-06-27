@@ -1,6 +1,7 @@
 # ChangeLog
 
 ## 0.9.10
+- `#OBJ.clone()` fixed bug with cloning arrays of objects.
 - `#PARSE.funcName()` retrieves the name of a function.
 - `#PARSE.range()` creates integer ranges based on specified criteria.
 - `#DOM.getButton()` does not add undefined id if none is passed.

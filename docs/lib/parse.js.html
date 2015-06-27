@@ -545,7 +545,7 @@ PARSE.range('&lt;4', {
 </span>
       <span class="dox_type">mixed</span>
       <span><ul>
-<li>string adhering to be interpreted according to the same rules as
+<li>string to be interpreted according to the same rules as
   <code>expr</code>
 <ul><li>array containing the available elements</li>
 <li>object providing functions next, isFinished and attributes begin, end</li></ul></li>
@@ -570,10 +570,18 @@ PARSE.range('&lt;4', {
 
         <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="p">[];</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;available needs to be defined&#39;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>If no available numbers defined, assumes all possible are allowed.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">available</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
@@ -582,7 +590,7 @@ PARSE.range('&lt;4', {
                     <span class="s2">&quot;number&quot;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">begin</span> <span class="o">||</span>
                     <span class="s2">&quot;number&quot;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">end</span>
                 <span class="p">)</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;available wrong type&#39;</span><span class="p">);</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available wrong type&#39;</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span></pre></div>
         </td>
@@ -590,7 +598,7 @@ PARSE.range('&lt;4', {
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
 </div>
 <p>If the availble points are also only given implicitly, compute set
 of available numbers by first guessing a bound.</p>
@@ -600,7 +608,8 @@ of available numbers by first guessing a bound.</p>
 
             <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">);</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">numbers</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;no numbers in available&#39;</span><span class="p">);</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span>
+                    <span class="s1">&#39;PARSE.range: no numbers in available: &#39;</span> <span class="o">+</span> <span class="nx">available</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="nx">lowerBound</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">);</span>
 
@@ -629,7 +638,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <p>end -> maximal available value.</p>
         </td>
@@ -639,7 +648,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>begin -> minimal available value.</p>
         </td>
@@ -649,7 +658,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>Do all computations.</p>
         </td>
@@ -659,7 +668,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Round all floats</p>
         </td>
@@ -671,7 +680,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>Validate expression to only contain allowed symbols.</p>
         </td>
@@ -684,7 +693,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>&amp; -> &amp;&amp; and | -> ||.</p>
         </td>
@@ -695,7 +704,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>n -> (x == n).</p>
         </td>
@@ -705,7 +714,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>n has already been replaced by (x==n) so match for that from now on.</p>
         </td>
@@ -715,7 +724,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>%n -> !(x%n)</p>
         </td>
@@ -725,7 +734,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>%n has already been replaced by !(x%n) so match for that from now on.
 %n = m, %n == m -> (x%n == m).</p>
@@ -737,7 +746,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
         </td>
@@ -747,7 +756,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
         </td>
@@ -759,7 +768,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
         </td>
@@ -771,7 +780,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
         </td>
@@ -782,7 +791,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
         </td>
@@ -798,7 +807,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <ul>
 <li>-> true.</li>
@@ -810,7 +819,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>a, b -> (a) || (b)</p>
         </td>
@@ -820,7 +829,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>Validating the expression before eval"ing it.</p>
         </td>
@@ -830,7 +839,7 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>Only &amp; | ! may be before an opening bracket.</p>
         </td>
@@ -840,20 +849,20 @@ of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Only dot in floats.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;invalidChars:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalidChars:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;invaludBeforeOpeningBracket:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invaludBeforeOpeningBracket:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;invalidDot:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalidDot:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>

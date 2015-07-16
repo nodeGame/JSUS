@@ -2053,7 +2053,7 @@
     };
 
     /**
-     * ### DOM.removeElement
+     * ### DOM.removeEvent
      *
      * Removes an event listener from an element (cross-browser)
      *
@@ -2795,23 +2795,11 @@
         }
 
         for (i in obj) {
-            // TODO: index i is being updated, so apply is called on the
-            // last element, instead of the correct one.
-            //if ('function' === typeof obj[i]) {
-            //    value = function() { return obj[i].apply(clone, arguments); };
-            //}
-            // It is not NULL and it is an object
+            // It is not NULL and it is an object.
+            // Even if it is an array we need to use CLONE,
+            // because `slice()` does not clone arrays of objects.
             if (obj[i] && 'object' === typeof obj[i]) {
-                // Is an array.
-                if (Object.prototype.toString.call(obj[i]) ===
-                    '[object Array]') {
-
-                    value = obj[i].slice(0);
-                }
-                // Is an object.
-                else {
-                    value = OBJ.clone(obj[i]);
-                }
+                value = OBJ.clone(obj[i]);
             }
             else {
                 value = obj[i];
@@ -3840,7 +3828,7 @@
      *
      * @param {string} expr The string specifying the selection expression
      * @param {mixed} available
-     *  - string adhering to be interpreted according to the same rules as
+     *  - string to be interpreted according to the same rules as
      *       `expr`
      *  - array containing the available elements
      *  - object providing functions next, isFinished and attributes begin, end
@@ -3857,8 +3845,9 @@
             return [];
         }
 
+        // If no available numbers defined, assumes all possible are allowed.
         if ("undefined" === typeof available) {
-            throw new TypeError('available needs to be defined');
+            available = expr;
         }
         if (!JSUS.isArray(available)) {
             if ("string" !== typeof available) {
@@ -3867,7 +3856,7 @@
                     "number"   !== typeof available.begin ||
                     "number"   !== typeof available.end
                 )
-                throw new Error('available wrong type');
+                throw new Error('PARSE.range: available wrong type');
             }
         }
 
@@ -3878,7 +3867,8 @@
 
             numbers = available.match(/([-+]?\d+)/g);
             if (numbers === null) {
-                throw new Error('no numbers in available');
+                throw new Error(
+                    'PARSE.range: no numbers in available: ' + available);
             }
             lowerBound = Math.min.apply(null, numbers);
 
@@ -3981,13 +3971,13 @@
         invalidDot = /\.[^\d]|[^\d]\./;
 
         if (expr.match(invalidChars)) {
-            throw new Error('invalidChars:' + expr);
+            throw new Error('PARSE.range: invalidChars:' + expr);
         }
         if (expr.match(invalidBeforeOpeningBracket)) {
-            throw new Error('invaludBeforeOpeningBracket:' + expr);
+            throw new Error('PARSE.range: invaludBeforeOpeningBracket:' + expr);
         }
         if (expr.match(invalidDot)) {
-            throw new Error('invalidDot:' + expr);
+            throw new Error('PARSE.range: invalidDot:' + expr);
         }
 
         if (JSUS.isArray(available)) {

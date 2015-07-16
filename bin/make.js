@@ -36,7 +36,7 @@ program
     .command('clean')
     .description('Removes all files from build folder')
     .action(function(){
-	J.cleanDir(buildDir);
+        J.cleanDir(buildDir);
     });
 
 program
@@ -48,7 +48,7 @@ program
     .option('-C, --clean', 'clean build directory')
     .option('-o, --output <file>')
     .action(function(env, options){
-	build(options);
+        build(options);
     });
 
 program
@@ -56,24 +56,24 @@ program
     .description('Build documentation files')
     .action(function() {
         var dockerDir, command, child;
-	console.log('Building documentation for JSUS v.' + version);
-	try {
-	    dockerDir = J.resolveModuleDir('docker', rootDir);
-	}
-	catch(e) {
-	    console.log('module Docker not found. Cannot build doc. ' +
-                        'Do \'npm install docker\' to fix it.');
-	    return false;
-	}
-	command = dockerDir + 'docker -i ' + rootDir +
-            ' jsus.js lib/ -s true -o ' + rootDir + 'docs/';
-	child = exec(command, function (error, stdout, stderr) {
-	    util.print(stdout);
-	    util.print(stderr);
-	    if (error !== null) {
-		console.log('build error: ' + error);
-	    }
-	});
+        console.log('Building documentation for JSUS v.' + version);
+        try {
+            dockerDir = J.resolveModuleDir('docker', rootDir);
+        }
+        catch(e) {
+            console.log('module Docker not found. Cannot build doc. ' +
+                        'Do \'npm install docker\' to install it.');
+            return false;
+        }
+        command = dockerDir + 'docker -i ' + rootDir +
+            ' jsus.js lib/ -s true -o ' + rootDir + 'docs/ -u';
+        child = exec(command, function (error, stdout, stderr) {
+            if (stdout) console.log(stdout);
+            if (stderr) console.log(stderr);
+            if (error !== null) {
+                console.log('build error: ' + error);
+            }
+        });
 
     });
 
@@ -84,9 +84,9 @@ program
                  'directory (must exists)')
     .action(function(path) {
 
-	J.copyFromDir(libDir, path);
+        J.copyFromDir(libDir, path);
 
-	console.log('Done.');
+        console.log('Done.');
 
     });
 

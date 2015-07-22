@@ -219,8 +219,8 @@ Reference: <a href='http://es5.github.io/#x15.2.3.5'>http://es5.github.io/#x15.2
 </ol>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">O</span> <span class="o">!=</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;Object prototype may only &#39;</span> <span class="o">+</span>
-                            <span class="s1">&#39;be an Object or null&#39;</span><span class="p">);</span>
+                        <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;Object prototype may only &#39;</span> <span class="o">+</span>
+                                            <span class="s1">&#39;be an Object or null&#39;</span><span class="p">);</span>
                     <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -264,7 +264,7 @@ with arguments obj and Properties.</li>
 <p>Object.defineProperties does ToObject on
 its first argument.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                        <span class="kd">var</span> <span class="nx">Properties</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <td class="code highlight"><div class="highlight"><pre>                        <span class="kd">var</span> <span class="nx">Properties</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
                         <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">Properties</span><span class="p">)</span> <span class="p">{</span>
                             <span class="k">if</span> <span class="p">(</span><span class="nx">hasOwn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">Properties</span><span class="p">,</span> <span class="nx">prop</span><span class="p">))</span> <span class="p">{</span>
                                 <span class="nx">obj</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Properties</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>

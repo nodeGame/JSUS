@@ -161,13 +161,14 @@
 
 /**
  * # ARRAY
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate arrays
  */
 (function(JSUS) {
+
+    "use strict";
 
     function ARRAY() {}
 
@@ -247,7 +248,7 @@
      * @return {array} The final sequence
      */
     ARRAY.seq = function(start, end, increment, func) {
-        var i;
+        var i, out;
         if ('number' !== typeof start) return false;
         if (start === Infinity) return false;
         if ('number' !== typeof end) return false;
@@ -310,29 +311,46 @@
     /**
      * ## ARRAY.map
      *
-     * Applies a callback function to each element in the db, store
-     * the results in an array and returns it
+     * Executes a callback to each element of the array and returns the result
      *
      * Any number of additional parameters can be passed after the
-     * callback function
+     * callback function.
      *
      * @return {array} The result of the mapping execution
+     *
      * @see ARRAY.each
      */
     ARRAY.map = function() {
-        if (arguments.length < 2) return;
-        var args = Array.prototype.slice.call(arguments),
-        array = args.shift(),
-        func = args[0];
+        var i, len, args, out, o;
+        var array, func;
+
+        array = arguments[0];
+        func = arguments[1];
 
         if (!ARRAY.isArray(array)) {
-            JSUS.log('ARRAY.map() the first argument must be an array. ' +
-                     'Found: ' + array);
+            JSUS.log('ARRAY.map: first parameter must be array. Found: ' +
+                     array);
+            return;
+        }
+        if ('function' !== typeof func) {
+            JSUS.log('ARRAY.map: second parameter must be function. Found: ' +
+                     func);
             return;
         }
 
-        var out = [], o;
-        for (var i = 0; i < array.length; i++) {
+        len = arguments.length;
+        if (len === 3) args = [null, arguments[2]];
+        else if (len === 4) args = [null, arguments[2], arguments[3]];
+        else {
+            len = len - 1;
+            args = new Array(len);
+            for (i = 1; i < (len); i++) {
+                args[i] = arguments[i+1];
+            }
+        }
+
+        out = [], len = array.length;
+        for (i = 0; i < len; i++) {
             args[0] = array[i];
             o = func.apply(this, args);
             if ('undefined' !== typeof o) out.push(o);
@@ -355,6 +373,7 @@
      * @param {array} haystack The array to search in
      *
      * @return {mixed} The element that was removed, FALSE if none was removed
+     *
      * @see JSUS.equals
      */
     ARRAY.removeElement = function(needle, haystack) {
@@ -365,7 +384,7 @@
             func = JSUS.equals;
         }
         else {
-            func = function(a,b) {
+            func = function(a, b) {
                 return (a === b);
             };
         }
@@ -406,7 +425,6 @@
                 return true;
             }
         }
-        // <!-- console.log(needle, haystack); -->
         return false;
     };
 
@@ -435,7 +453,8 @@
     /**
      * ## ARRAY.getGroupsSizeN
      *
-     * Returns an array of array containing N elements each
+     * Returns an array of arrays containing N elements each
+     *
      * The last group could have less elements
      *
      * @param {array} array The array to split in subgroups
@@ -644,7 +663,7 @@
      * @see ARRAY.generateCombinations
      */
     ARRAY.matchN = function(array, N, strict) {
-        var result, i, copy, group;
+        var result, i, copy, group, len, found
         if (!array) return;
         if (!N) return array;
 
@@ -895,7 +914,7 @@
 /**
  * # COMPATIBILITY
  *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Tests browsers ECMAScript 5 compatibility
@@ -903,6 +922,7 @@
  * For more information see http://kangax.github.com/es5-compat-table/
  */
 (function(JSUS) {
+    "use strict";
 
     function COMPATIBILITY() {}
 
@@ -985,6 +1005,8 @@
  * will receive further explanation.
  */
 (function(JSUS) {
+
+    "use strict";
 
     function DOM() {}
 
@@ -2080,14 +2102,14 @@
 
 /**
  * # EVAL
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
- * Collection of static functions related to the evaluation
- * of strings as JavaScript commands
+ * Evaluation of strings as JavaScript commands
  */
 (function(JSUS) {
+
+    "use strict";
 
     function EVAL() {}
 
@@ -2136,8 +2158,7 @@
 
 /**
  * # FS
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations
@@ -2147,6 +2168,8 @@
  * @see https://github.com/substack/node-resolve
  */
 (function(JSUS) {
+
+    "use strict";
 
     if (!JSUS.isNodeJS()){
         JSUS.log('Cannot load JSUS.FS outside of Node.JS.');
@@ -2162,7 +2185,7 @@
     function FS() {}
 
     /**
-     * ## FS.resolveModuleDir
+     * ## FS.existsSync
      *
      * Backward-compatible version of fs.existsSync
      */
@@ -2257,7 +2280,7 @@
      * @see FS.deleteIfExists
      */
     FS.cleanDir = function(dir, ext, cb) {
-        var fileterFunc;
+        var filterFunc;
         if (!dir) {
             JSUS.log('You must specify a directory to clean.');
             return false;
@@ -2268,7 +2291,7 @@
             };
         }
         else {
-            filterFunc = function(file) {
+            filterFunc = function() {
                 return true;
             };
         }
@@ -2429,13 +2452,14 @@
 
 /**
  * # OBJ
- *
  * Copyright(c) 2014 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects
  */
 (function(JSUS) {
+
+    "use strict";
 
     function OBJ() {}
 
@@ -2444,6 +2468,61 @@
     if ('undefined' !== typeof JSUS.compatibility) {
         compatibility = JSUS.compatibility();
     }
+
+    /**
+     * ## OBJ.createObj
+     *
+     * Polyfill for Object.create (when missing)
+     */
+    OBJ.createObj = (function() {
+        // From MDN Object.create (Polyfill)
+        if (typeof Object.create !== 'function') {
+            // Production steps of ECMA-262, Edition 5, 15.2.3.5
+            // Reference: http://es5.github.io/#x15.2.3.5
+            return (function() {
+                // To save on memory, use a shared constructor
+                function Temp() {}
+
+                // make a safe reference to Object.prototype.hasOwnProperty
+                var hasOwn = Object.prototype.hasOwnProperty;
+
+                return function(O) {
+                    // 1. If Type(O) is not Object or Null
+                    if (typeof O != 'object') {
+                        throw new TypeError('Object prototype may only ' +
+                                            'be an Object or null');
+                    }
+
+                    // 2. Let obj be the result of creating a new object as if
+                    //    by the expression new Object() where Object is the
+                    //    standard built-in constructor with that name
+                    // 3. Set the [[Prototype]] internal property of obj to O.
+                    Temp.prototype = O;
+                    var obj = new Temp();
+                    Temp.prototype = null;
+
+                    // 4. If the argument Properties is present and not
+                    //    undefined, add own properties to obj as if by calling
+                    //    the standard built-in function Object.defineProperties
+                    //    with arguments obj and Properties.
+                    if (arguments.length > 1) {
+                        // Object.defineProperties does ToObject on
+                        // its first argument.
+                        var Properties = Object(arguments[1]);
+                        for (var prop in Properties) {
+                            if (hasOwn.call(Properties, prop)) {
+                                obj[prop] = Properties[prop];
+                            }
+                        }
+                    }
+
+                    // 5. Return obj
+                    return obj;
+                };
+            })();
+        }
+        return Object.create
+    })();
 
     /**
      * ## OBJ.equals
@@ -2785,9 +2864,22 @@
         // NaN and +-Infinity are numbers, so no check is necessary.
 
         if ('function' === typeof obj) {
-            //          clone = obj;
-            // <!-- Check when and if we need this -->
-            clone = function() { return obj.apply(clone, arguments); };
+            clone = function() {
+                var len, args;
+                len = arguments.length;
+                if (!len) return obj.call(clone);
+                else if (len === 1) return obj.call(clone, arguments[0]);
+                else if (len === 2) {
+                    return obj.call(clone, arguments[0], arguments[1]);
+                }
+                else {
+                    args = new Array(len);
+                    for (i = 0; i < len; i++) {
+                        args[i] = arguments[i];
+                    }
+                    return obj.apply(clone, args);
+                }
+            }
         }
         else {
             clone = Object.prototype.toString.call(obj) === '[object Array]' ?
@@ -2818,21 +2910,65 @@
                     });
                 }
                 else {
-                    // or we try...
-                    try {
-                        Object.defineProperty(clone, i, {
-                            value: value,
-                            writable: true,
-                            configurable: true
-                        });
-                    }
-                    catch(e) {
-                        clone[i] = value;
-                    }
+                    setProp(clone, i, value);
                 }
             }
         }
         return clone;
+    };
+
+    function setProp(clone, i, value) {
+        try {
+            Object.defineProperty(clone, i, {
+                value: value,
+                writable: true,
+                configurable: true
+            });
+        }
+        catch(e) {
+            clone[i] = value;
+        }
+    }
+
+
+    /**
+     * ## OBJ.classClone
+     *
+     * Creates a copy (keeping class) of the object passed as parameter
+     *
+     * Recursively scans all the properties of the object to clone.
+     * The clone is an instance of the type of obj.
+     *
+     * @param {object} obj The object to clone
+     * @param {Number} depth how deep the copy should be
+     *
+     * @return {object} The clone of the object
+     */
+    OBJ.classClone = function(obj, depth) {
+        var clone, i;
+        if (depth === 0) {
+            return obj;
+        }
+
+        if (obj && 'object' === typeof obj) {
+            clone = Object.prototype.toString.call(obj) === '[object Array]' ?
+                [] : JSUS.createObj(obj.constructor.prototype);
+
+            for (i in obj) {
+                if (obj.hasOwnProperty(i)) {
+                    if (obj[i] && 'object' === typeof obj[i]) {
+                        clone[i] = JSUS.classClone(obj[i], depth - 1);
+                    }
+                    else {
+                        clone[i] = obj[i];
+                    }
+                }
+            }
+            return clone;
+        }
+        else {
+            return JSUS.clone(obj);
+        }
     };
 
     /**
@@ -3531,13 +3667,14 @@
 
 /**
  * # PARSE
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to parsing strings
  */
 (function(JSUS) {
+
+    "use strict";
 
     function PARSE() {}
 
@@ -3577,7 +3714,7 @@
      * @see http://stackoverflow.com/q/901115/3347292
      */
     PARSE.getQueryString = function(name, referer) {
-        var regex;
+        var regex, results;
         if (referer && 'string' !== typeof referer) {
             throw new TypeError('JSUS.getQueryString: referer must be string ' +
                                 'or undefined.');
@@ -3832,6 +3969,7 @@
      *       `expr`
      *  - array containing the available elements
      *  - object providing functions next, isFinished and attributes begin, end
+     *
      * @return {array} The array containing the specified values
      */
     // available can be an array, a string or a object.
@@ -3839,7 +3977,7 @@
         var i, x;
         var solution = [];
         var begin, end, lowerBound, numbers;
-        var invalidChars, invalidBeforeOpeningBracket;
+        var invalidChars, invalidBeforeOpeningBracket, invalidDot;
 
         if ("undefined" === typeof expr) {
             return [];
@@ -3858,6 +3996,9 @@
                 )
                 throw new Error('PARSE.range: available wrong type');
             }
+        }
+        else if (available.length === 0) {
+            return [];
         }
 
         // If the availble points are also only given implicitly, compute set
@@ -4068,19 +4209,21 @@
             return (res && res.length > 1) ? res[1].trim() : "";
         };
     };
+
     JSUS.extend(PARSE);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 
 /**
  * # QUEUE
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Handles a simple queue of operations
  */
 (function(JSUS) {
+
+    "use strict";
 
     var QUEUE = {};
 
@@ -4092,7 +4235,6 @@
 
     /**
      * ## Queue constructor
-     *
      */
     function Queue() {
 
@@ -4133,12 +4275,8 @@
         if ('function' !== typeof cb) {
             throw new TypeError('Queue.onReady: cb must be function.');
         }
-        if (JSUS.isEmpty(this.inProgress)) {
-            cb();
-        }
-        else {
-            this.queue.push(cb);
-        }
+        if (JSUS.isEmpty(this.inProgress)) cb();
+        else this.queue.push(cb);
     };
 
     /**
@@ -4221,14 +4359,14 @@
 
 /**
  * # RANDOM
- *
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
- * Collection of static functions related to the generation of
- * pseudo-random numbers
+ * Generates pseudo-random numbers
  */
 (function(JSUS) {
+
+    "use strict";
 
     function RANDOM() {}
 
@@ -4530,7 +4668,6 @@
 
 /**
  * # TIME
- *
  * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
@@ -4538,6 +4675,8 @@
  * manipulation, and formatting of time strings in JavaScript
  */
 (function (JSUS) {
+
+    "use strict";
 
     function TIME() {}
 

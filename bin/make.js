@@ -67,7 +67,7 @@ program
         }
         command = dockerDir + 'docker -i ' + rootDir +
             ' jsus.js lib/ -s true -o ' + rootDir + 'docs/ -u';
-        child = exec(command, function (error, stdout, stderr) {
+        child = exec(command, function(error, stdout, stderr) {
             if (stdout) console.log(stdout);
             if (stderr) console.log(stderr);
             if (error !== null) {

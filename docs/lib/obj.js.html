@@ -22,6 +22,9 @@
         <a href="#obj">OBJ</a>
       </div>
       <div class="heading h2">
+        <a href="#obj.createobj">OBJ.createObj</a>
+      </div>
+      <div class="heading h2">
         <a href="#obj.equals">OBJ.equals</a>
       </div>
       <div class="heading h2">
@@ -50,6 +53,9 @@
       </div>
       <div class="heading h2">
         <a href="#obj.clone">OBJ.clone</a>
+      </div>
+      <div class="heading h2">
+        <a href="#obj.classclone">OBJ.classClone</a>
       </div>
       <div class="heading h2">
         <a href="#obj.join">OBJ.join</a>
@@ -131,6 +137,8 @@ MIT Licensed</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
+    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
     <span class="kd">function</span> <span class="nx">OBJ</span><span class="p">()</span> <span class="p">{}</span>
 
     <span class="kd">var</span> <span class="nx">compatibility</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
@@ -138,6 +146,148 @@ MIT Licensed</p>
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">compatibility</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">compatibility</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">compatibility</span><span class="p">();</span>
     <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.createobj">
+  <h2>
+    <a href="#obj.createobj" class="pilcrow">&#182;</a>
+    OBJ.createObj
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Polyfill for Object.create (when missing)</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">createObj</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>From MDN Object.create (Polyfill)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">!==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Production steps of ECMA-262, Edition 5, 15.2.3.5
+Reference: <a href='http://es5.github.io/#x15.2.3.5'>http://es5.github.io/#x15.2.3.5</a></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">return</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>To save on memory, use a shared constructor</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="kd">function</span> <span class="nx">Temp</span><span class="p">()</span> <span class="p">{}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>make a safe reference to Object.prototype.hasOwnProperty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="kd">var</span> <span class="nx">hasOwn</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">;</span>
+
+                <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">O</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<ol>
+<li>If Type(O) is not Object or Null</li>
+</ol>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">O</span> <span class="o">!=</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;Object prototype may only &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39;be an Object or null&#39;</span><span class="p">);</span>
+                    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<ol>
+<li>Let obj be the result of creating a new object as if
+by the expression new Object() where Object is the
+standard built-in constructor with that name</li>
+<li>Set the [[Prototype]] internal property of obj to O.</li>
+</ol>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">Temp</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">O</span><span class="p">;</span>
+                    <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Temp</span><span class="p">();</span>
+                    <span class="nx">Temp</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<ol>
+<li>If the argument Properties is present and not
+undefined, add own properties to obj as if by calling
+the standard built-in function Object.defineProperties
+with arguments obj and Properties.</li>
+</ol>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Object.defineProperties does ToObject on
+its first argument.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                        <span class="kd">var</span> <span class="nx">Properties</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">Properties</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="nx">hasOwn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">Properties</span><span class="p">,</span> <span class="nx">prop</span><span class="p">))</span> <span class="p">{</span>
+                                <span class="nx">obj</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Properties</span><span class="p">[</span><span class="nx">prop</span><span class="p">];</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<ol>
+<li>Return obj</li>
+</ol>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+                <span class="p">};</span>
+            <span class="p">})();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span>
+    <span class="p">})();</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -210,7 +360,7 @@ one returns FALSE, otherwise TRUE.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>Check whether arguments are not objects</p>
         </td>
@@ -246,7 +396,7 @@ one returns FALSE, otherwise TRUE.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Check whether o2 has extra properties
 TODO: improve, some properties have already been checked!</p>
@@ -752,7 +902,7 @@ Properties of the prototype chain are copied as well.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>NaN and +-Infinity are numbers, so no check is necessary.</p>
         </td>
@@ -762,7 +912,7 @@ Properties of the prototype chain are copied as well.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 
 <div class="highlight"><pre><code>     <span class="n">clone</span> <span class="o">=</span> <span class="n">obj</span><span class="p">;</span>
@@ -785,7 +935,7 @@ Properties of the prototype chain are copied as well.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>TODO: index i is being updated, so apply is called on the
 last element, instead of the correct one.
@@ -800,7 +950,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>Is an array.</p>
         </td>
@@ -814,7 +964,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>Is an object.</p>
         </td>
@@ -835,7 +985,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>We know if object.defineProperty is available.</p>
         </td>
@@ -852,7 +1002,7 @@ It is not NULL and it is an object</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>or we try...</p>
         </td>
@@ -870,6 +1020,71 @@ It is not NULL and it is an object</p>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="obj.classclone">
+  <h2>
+    <a href="#obj.classclone" class="pilcrow">&#182;</a>
+    OBJ.classClone
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Creates a copy (keeping class) of the object passed as parameter</p>
+
+<p>Recursively scans all the properties of the object to clone.
+The clone is an instance of the type of obj.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj</span>
+      <span class="dox_type">object</span>
+      <span>The object to clone</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">depth</span>
+      <span class="dox_type">Number</span>
+      <span>how deep the copy should be</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>The clone of the object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">classClone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">depth</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">depth</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">clone</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span> <span class="o">?</span>
+                <span class="p">[]</span> <span class="o">:</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">createObj</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">classClone</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+        <span class="p">}</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1012,7 +1227,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Checking before starting the algorithm</p>
         </td>
@@ -1029,7 +1244,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
@@ -1039,7 +1254,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <p>If we are merging an object into
 a non-object, we need to cast the

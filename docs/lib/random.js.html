@@ -418,7 +418,7 @@ underlying gaussian distribution as input parameters.</p>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">sigma</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextLogNormal: sigma must be number.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">nextNormal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">));</span>
+        <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextNormal</span><span class="p">(</span><span class="nx">mu</span><span class="p">,</span> <span class="nx">sigma</span><span class="p">));</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -554,7 +554,7 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">nextGamma</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">alpha</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">intK</span><span class="p">,</span> <span class="nx">kDiv</span><span class="p">,</span> <span class="nx">alphaDiv</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">u1</span><span class="p">,</span> <span class="nx">u2</span><span class="p">,</span> <span class="nx">u3</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">tmp</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">tmp</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">alpha</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;nextGamma: alpha must be number.&#39;</span><span class="p">);</span>

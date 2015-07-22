@@ -16,10 +16,11 @@ install:
   - mkdir -p nodegame node_modules
   - ln -s ../node_modules nodegame/node_modules
   - ln -s .. node_modules/JSUS
-  - bin/install-nodegame-for-module.sh -g "nodegame-window nodegame-widgets NDDB shelf.js nodegame-client nodegame-server descil-mturk nodegame-requirements nodegame-monitor nodegame-db nodegame-mongodb"
 # If "install-nodegame-for-module.sh" is called before "npm install",
 # it gives an error.
   - npm install
+  - bin/install-nodegame-for-module.sh -g "nodegame-window nodegame-widgets NDDB shelf.js nodegame-client nodegame-server descil-mturk nodegame-requirements nodegame-monitor nodegame-db nodegame-mongodb"
+
 
 script:
 # Test JSUS.

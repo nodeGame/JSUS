@@ -121,11 +121,11 @@
   </h1>
 </div>
 
-  </div>
-  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
 
-<p>Collection of static functions to manipulate JavaScript objects</p>
+<p>Copyright(c) 2014 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of static functions to manipulate JavaScript objects</p>
   </div>
 </div>
         </td>
@@ -756,23 +756,23 @@ Properties of the prototype chain are copied as well.</p>
 </div>
 <p>NaN and +-Infinity are numbers, so no check is necessary.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
-</div>
-
-<div class="highlight"><pre><code>     <span class="n">clone</span> <span class="o">=</span> <span class="n">obj</span><span class="p">;</span>
-</code></pre></div>
-
-
-
-<!-- Check when and if we need this -->
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span> <span class="p">};</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">clone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">args</span><span class="p">;</span>
+                <span class="nx">len</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">len</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">clone</span><span class="p">);</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">args</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">len</span><span class="p">);</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
             <span class="nx">clone</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Array]&#39;</span> <span class="o">?</span>
@@ -785,7 +785,7 @@ Properties of the prototype chain are copied as well.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>It is not NULL and it is an object.
 Even if it is an array we need to use CLONE,
@@ -807,7 +807,7 @@ because <code>slice()</code> does not clone arrays of objects.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>We know if object.defineProperty is available.</p>
         </td>
@@ -818,31 +818,26 @@ because <code>slice()</code> does not clone arrays of objects.</p>
                         <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span>
                     <span class="p">});</span>
                 <span class="p">}</span>
-                <span class="k">else</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
-</div>
-<p>or we try...</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">try</span> <span class="p">{</span>
-                        <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="p">{</span>
-                            <span class="nx">value</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
-                            <span class="nx">writable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-                            <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span>
-                        <span class="p">});</span>
-                    <span class="p">}</span>
-                    <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-                    <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">setProp</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">clone</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+    <span class="kd">function</span> <span class="nx">setProp</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">clone</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
+                <span class="nx">writable</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">configurable</span><span class="o">:</span> <span class="kc">true</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">clone</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -984,7 +979,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>Checking before starting the algorithm</p>
         </td>
@@ -1001,7 +996,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>it is an object and it is not NULL</p>
         </td>
@@ -1011,7 +1006,7 @@ between obj1 and obj2, the values from obj2 are taken.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>If we are merging an object into
 a non-object, we need to cast the

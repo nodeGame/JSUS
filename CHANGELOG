@@ -1,6 +1,6 @@
 # ChangeLog
 
-## 0.9.10
+## 0.10.0
 - `#OBJ.clone()` fixed bug with cloning arrays of objects.
 - `#OBJ.classClone()` clones an object preserving its class type.
 - `#PARSE.funcName()` retrieves the name of a function.

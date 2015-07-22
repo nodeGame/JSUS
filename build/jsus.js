@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS.
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Collection of general purpose javascript functions. JSUS helps!
@@ -93,7 +93,7 @@
         // TODO: this is true also for {}
         if (additional.prototype) {
             JSUS.extend(additional.prototype, target.prototype || target);
-        };
+        }
 
         return target;
     };
@@ -133,9 +133,9 @@
      * @return {boolean} TRUE when executed inside Node.JS environment
      */
     JSUS.isNodeJS = function() {
-	return 'undefined' !== typeof module
-	    && 'undefined' !== typeof module.exports
-	    && 'function' === typeof require;
+        return 'undefined' !== typeof module &&
+            'undefined' !== typeof module.exports &&
+            'function' === typeof require;
     };
 
     // ## Node.JS includes
@@ -183,10 +183,9 @@
      */
     if (!Array.prototype.filter) {
         Array.prototype.filter = function(fun /*, thisp */) {
-            "use strict";
             if (this === void 0 || this === null) throw new TypeError();
 
-            var t = Object(this);
+            var t = new Object(this);
             var len = t.length >>> 0;
             if (typeof fun !== "function") throw new TypeError();
 
@@ -616,27 +615,26 @@
      * @see ARRAY.getGroupSizeN
      * @see ARRAY.getNGroups
      * @see ARRAY.matchN
+     *
+     * Kudos: http://rosettacode.org/wiki/Combinations#JavaScript
      */
-    ARRAY.generateCombinations = function(array, r) {
-        var i, j;
-        function values(i, a) {
-            var ret = [];
-            for (var j = 0; j < i.length; j++) ret.push(a[i[j]]);
-            return ret;
+    ARRAY.generateCombinations = function combinations(arr, k) {
+        var i, subI, ret, sub, next;
+        ret = [];
+        for (i = 0; i < arr.length; i++) {
+            if (k === 1) {
+                ret.push( [ arr[i] ] );
+            }
+            else {
+                sub = combinations(arr.slice(i+1, arr.length), k-1);
+                for (subI = 0; subI < sub.length; subI++ ){
+                    next = sub[subI];
+                    next.unshift(arr[i]);
+                    ret.push( next );
+                }
+            }
         }
-        var n = array.length;
-        var indices = [];
-        for (i = 0; i < r; i++) indices.push(i);
-        var final = [];
-        for (i = n - r; i < n; i++) final.push(i);
-        while (!JSUS.equals(indices, final)) {
-            callback(values(indices, array));
-            i = r - 1;
-            while (indices[i] == n - r + i) i -= 1;
-            indices[i] += 1;
-            for (j = i + 1; j < r; j++) indices[j] = indices[i] + j - i;
-        }
-        return values(indices, array);
+        return ret;
     };
 
     /**
@@ -663,7 +661,7 @@
      * @see ARRAY.generateCombinations
      */
     ARRAY.matchN = function(array, N, strict) {
-        var result, i, copy, group, len, found
+        var result, i, copy, group, len, found;
         if (!array) return;
         if (!N) return array;
 
@@ -1097,8 +1095,8 @@
      */
     DOM.sprintf = function(string, args, root) {
 
-        var text, textNode, span, idx_start, idx_finish, idx_replace, idxs;
-        var spans, key, i, returnElement;
+        var text, span, idx_start, idx_finish, idx_replace, idxs;
+        var spans, key, i;
 
         root = root || document.createElement('span');
         spans = {};
@@ -2508,7 +2506,7 @@
                     if (arguments.length > 1) {
                         // Object.defineProperties does ToObject on
                         // its first argument.
-                        var Properties = Object(arguments[1]);
+                        var Properties = new Object(arguments[1]);
                         for (var prop in Properties) {
                             if (hasOwn.call(Properties, prop)) {
                                 obj[prop] = Properties[prop];
@@ -2521,7 +2519,7 @@
                 };
             })();
         }
-        return Object.create
+        return Object.create;
     })();
 
     /**
@@ -2582,14 +2580,11 @@
 
                 if (!o2[p] && o1[p]) return false;
 
-                switch (typeof o1[p]) {
-                case 'function':
+                if ('function' === typeof o1[p]) {
                     if (o1[p].toString() !== o2[p].toString()) return false;
-
-                    /* falls through */
-                default:
-                    if (!OBJ.equals(o1[p], o2[p])) return false;
                 }
+                else
+                    if (!OBJ.equals(o1[p], o2[p])) return false;
             }
         }
 
@@ -2879,13 +2874,12 @@
                     }
                     return obj.apply(clone, args);
                 }
-            }
+            };
         }
         else {
             clone = Object.prototype.toString.call(obj) === '[object Array]' ?
                 [] : {};
         }
-
         for (i in obj) {
             // It is not NULL and it is an object.
             // Even if it is an array we need to use CLONE,
@@ -4208,7 +4202,7 @@
             res = (funcNameRegex).exec(func.toString());
             return (res && res.length > 1) ? res[1].trim() : "";
         };
-    };
+    }
 
     JSUS.extend(PARSE);
 
@@ -4226,8 +4220,6 @@
     "use strict";
 
     var QUEUE = {};
-
-    module.exports = QUEUE;
 
     QUEUE.getQueue = function() {
         return new Queue();
@@ -4543,7 +4535,7 @@
         if ('number' !== typeof sigma) {
             throw new TypeError('nextLogNormal: sigma must be number.');
         }
-        return Math.exp(nextNormal(mu, sigma));
+        return Math.exp(RANDOM.nextNormal(mu, sigma));
     };
 
     /**
@@ -4622,7 +4614,7 @@
     RANDOM.nextGamma = function(alpha, k) {
         var intK, kDiv, alphaDiv;
         var u1, u2, u3;
-        var x, i, len, tmp;
+        var x, i, tmp;
 
         if ('number' !== typeof alpha) {
             throw new TypeError('nextGamma: alpha must be number.');

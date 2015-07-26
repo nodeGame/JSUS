@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.1
+- `FS.resolveModuleDir()` fix for JSUS dir.
+
 ## 0.10.0
 - `#OBJ.clone()` fixed bug with cloning arrays of objects.
 - `#OBJ.classClone()` clones an object preserving its class type.

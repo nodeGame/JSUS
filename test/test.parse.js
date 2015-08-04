@@ -137,7 +137,7 @@ describe('PARSE: ', function() {
                 var range = JSUS.range('2...5, >8 & !11','[-2,2*6]');
                 range.should.eql([2,3,4,5,9,10,12]);
         });
-        it('should understand \'begin\' and \'end\', handle divisions and' +
+        it('should understand \'begin\' and \'end\', handle divisions and ' +
             'modulo operations.', function() {
             var range = JSUS.range('begin...end/2 | 3*end/4...3...end',
                 '[0,40) & %2 = 1');

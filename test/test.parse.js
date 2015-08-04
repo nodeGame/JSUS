@@ -174,6 +174,18 @@ describe('PARSE: ', function() {
             var range = JSUS.range('%7', [6,7,8,9,12,21,25,14]);
             range.should.eql([7,21,14]);
         });
+
+        it('should handle non-ambiguous multiple spaces', function() {
+            var range = JSUS.range('  < 2   ,    >= 2   ', [1,2,3]);
+            range.should.eql([1,2,3]);
+        });
+
+        it('should halt with ambigous spaces', function() {
+            (function() {
+                JSUS.range('  < 2   ,    > = 2   ', [1,2,3]);
+            }).should.throw();
+        });
+
     });
 
     describe('#parse()', function() {

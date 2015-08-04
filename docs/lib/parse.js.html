@@ -487,7 +487,7 @@ encoded by <code>PARSE.stringify</code></p>
 </div>
 
   </div>
-  <div class="body"><p>Decodes strings into an array of integers</p>
+  <div class="body"><p>Decodes semantic strings into an array of integers</p>
 
 <p>Let n, m  and l be integers, then the tokens of the string are
 interpreted in the following way:</p>
@@ -561,6 +561,11 @@ array which satisfy the expression defined by <code>expr</code>.</p>
       <span class="dox_tag_name"></span>
       <span class="dox_type">array</span>
       <span>The array containing the specified values</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSUS.eval
+  </span>
     </div>
   </div>
 </div>
@@ -837,6 +842,16 @@ compute set of available numbers by first guessing a bound.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
+<p>Remove spaces.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
 <p>a, b -> (a) || (b)</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\)[,] *(!*)\(/g</span><span class="p">,</span> <span class="s2">&quot;)||$1(&quot;</span><span class="p">);</span></pre></div>
@@ -845,7 +860,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>Validating the expression before eval"ing it.</p>
         </td>
@@ -855,7 +870,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Only &amp; | ! may be before an opening bracket.</p>
         </td>
@@ -865,7 +880,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>Only dot in floats.</p>
         </td>

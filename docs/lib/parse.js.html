@@ -705,7 +705,7 @@ compute set of available numbers by first guessing a bound.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \*\d&lt;&gt;=!\|&amp;\.\[\],\(\)\-\+%]/g</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;invalidChars:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -875,13 +875,14 @@ compute set of available numbers by first guessing a bound.</p>
         <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalidChars:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invaludBeforeOpeningBracket:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid character before opending &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39;bracket found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalidDot:&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid dot found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>

@@ -490,23 +490,27 @@ encoded by <code>PARSE.stringify</code></p>
   <div class="body"><p>Decodes strings into an array of integers</p>
 
 <p>Let n, m  and l be integers, then the tokens of the string are
-interpreted in the following way:
-- <code>*</code>: Any integer.
-- <code>n</code>: The integer <code>n</code>.
-- <code>begin</code>: The smallest integer in <code>available</code>.
-- <code>end</code>: The largest integer in <code>available</code>.
-- <code>&lt;n</code>, <code>&lt;=n</code>, <code>&gt;n</code>, <code>&gt;=n</code>: Any integer (strictly) smaller/larger than n.
-- <code>n..m</code>, <code>[n,m]</code>: Any integer between n and m (both inclusively).
-- <code>n..l..m</code>: Any i
-- <code>[n,m)</code>: Any integer between n (inclusively) and m (exclusively).
-- <code>(n,m]</code>: Any integer between n (exclusively) and m (inclusively).
-- <code>(n,m)</code>: Any integer between n and m (both exclusively).
-- <code>%n</code>: Divisible by n.
-- <code>%n = m</code>: Divisible with rest m.
-- <code>!</code>: Not.
-- <code>|</code>, <code>||</code>, <code>,</code>: Or.
-- <code>&amp;</code>, <code>&amp;&amp;</code>: And.
-The elements of the resulting array are all elements of the <code>available</code>
+interpreted in the following way:</p>
+
+<ul>
+<li><code>*</code>: Any integer.</li>
+<li><code>n</code>: The integer <code>n</code>.</li>
+<li><code>begin</code>: The smallest integer in <code>available</code>.</li>
+<li><code>end</code>: The largest integer in <code>available</code>.</li>
+<li><code>&lt;n</code>, <code>&lt;=n</code>, <code>&gt;n</code>, <code>&gt;=n</code>: Any integer strictly smaller/larger than n.</li>
+<li><code>n..m</code>, <code>[n,m]</code>: Any integer between n and m (both inclusively).</li>
+<li><code>n..l..m</code>: Any i</li>
+<li><code>[n,m)</code>: Any integer between n (inclusively) and m (exclusively).</li>
+<li><code>(n,m]</code>: Any integer between n (exclusively) and m (inclusively).</li>
+<li><code>(n,m)</code>: Any integer between n and m (both exclusively).</li>
+<li><code>%n</code>: Divisible by n.</li>
+<li><code>%n = m</code>: Divisible with rest m.</li>
+<li><code>!</code>: Not.</li>
+<li><code>|</code>, <code>||</code>, <code>,</code>: Or.</li>
+<li><code>&amp;</code>, <code>&amp;&amp;</code>: And.</li>
+</ul>
+
+<p>The elements of the resulting array are all elements of the <code>available</code>
 array which satisfy the expression defined by <code>expr</code>.</p>
 
 <p>Example:
@@ -566,13 +570,12 @@ PARSE.range('&lt;4', {
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">range</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">solution</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="kd">var</span> <span class="nx">solution</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">begin</span><span class="p">,</span> <span class="nx">end</span><span class="p">,</span> <span class="nx">lowerBound</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">invalidChars</span><span class="p">,</span> <span class="nx">invalidBeforeOpeningBracket</span><span class="p">,</span> <span class="nx">invalidDot</span><span class="p">;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="p">[];</span>
-        <span class="p">}</span></pre></div>
+        <span class="nx">solution</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -582,15 +585,15 @@ PARSE.range('&lt;4', {
 </div>
 <p>If no available numbers defined, assumes all possible are allowed.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;undefined&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">available</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;function&quot;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">next</span> <span class="o">||</span>
-                    <span class="s2">&quot;function&quot;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">isFinished</span> <span class="o">||</span>
-                    <span class="s2">&quot;number&quot;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">begin</span> <span class="o">||</span>
-                    <span class="s2">&quot;number&quot;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">end</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">next</span> <span class="o">||</span>
+                    <span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">isFinished</span> <span class="o">||</span>
+                    <span class="s1">&#39;number&#39;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">begin</span> <span class="o">||</span>
+                    <span class="s1">&#39;number&#39;</span>   <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">end</span>
                 <span class="p">)</span>
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available wrong type&#39;</span><span class="p">);</span>
             <span class="p">}</span>
@@ -608,7 +611,7 @@ PARSE.range('&lt;4', {
 <p>If the availble points are also only given implicitly, compute set
 of available numbers by first guessing a bound.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">available</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">available</span><span class="p">);</span>
 
             <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">);</span>

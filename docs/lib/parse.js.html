@@ -493,51 +493,53 @@ encoded by <code>PARSE.stringify</code></p>
 interpreted in the following way:</p>
 
 <ul>
-<li><code>*</code>: Any integer.</li>
-<li><code>n</code>: The integer <code>n</code>.</li>
-<li><code>begin</code>: The smallest integer in <code>available</code>.</li>
-<li><code>end</code>: The largest integer in <code>available</code>.</li>
-<li><code>&lt;n</code>, <code>&lt;=n</code>, <code>&gt;n</code>, <code>&gt;=n</code>: Any integer strictly smaller/larger than n.</li>
-<li><code>n..m</code>, <code>[n,m]</code>: Any integer between n and m (both inclusively).</li>
+<li><code>*</code>: Any integer</li>
+<li><code>n</code>: The integer <code>n</code></li>
+<li><code>begin</code>: The smallest integer in <code>available</code></li>
+<li><code>end</code>: The largest integer in <code>available</code></li>
+<li><code>&lt;n</code>, <code>&lt;=n</code>, <code>&gt;n</code>, <code>&gt;=n</code>: Any integer (strictly) smaller/larger than n</li>
+<li><code>n..m</code>, <code>[n,m]</code>: Any integer between n and m (both inclusively)</li>
 <li><code>n..l..m</code>: Any i</li>
-<li><code>[n,m)</code>: Any integer between n (inclusively) and m (exclusively).</li>
-<li><code>(n,m]</code>: Any integer between n (exclusively) and m (inclusively).</li>
-<li><code>(n,m)</code>: Any integer between n and m (both exclusively).</li>
-<li><code>%n</code>: Divisible by n.</li>
-<li><code>%n = m</code>: Divisible with rest m.</li>
-<li><code>!</code>: Not.</li>
-<li><code>|</code>, <code>||</code>, <code>,</code>: Or.</li>
-<li><code>&amp;</code>, <code>&amp;&amp;</code>: And.</li>
+<li><code>[n,m)</code>: Any integer between n (inclusively) and m (exclusively)</li>
+<li><code>(n,m]</code>: Any integer between n (exclusively) and m (inclusively)</li>
+<li><code>(n,m)</code>: Any integer between n and m (both exclusively)</li>
+<li><code>%n</code>: Divisible by n</li>
+<li><code>%n = m</code>: Divisible with rest m</li>
+<li><code>!</code>: Logical not</li>
+<li><code>|</code>, <code>||</code>, <code>,</code>: Logical or</li>
+<li><code>&amp;</code>, <code>&amp;&amp;</code>: Logical and</li>
 </ul>
 
 <p>The elements of the resulting array are all elements of the <code>available</code>
 array which satisfy the expression defined by <code>expr</code>.</p>
 
-<p>Example:
-PARSE.range('2..5, >8 &amp; !11', '[-2,12]');
-     // [2,3,4,5,9,10,12]
-PARSE.range('begin...end/2 | 3<em>end/4...3...end', '[0,40) &amp; %2 = 1');
-     // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)
-PARSE.range('&lt;=19, 22, %5', '>6 &amp; !>27');
-     // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]
-PARSE.range('</em>','(3,8) &amp; !%4, 22, (10,12]');
-     // [5,6,7,11,12,22]
-PARSE.range('&lt;4', {
-     begin: 0,
-     end: 21,
-     prev: 0,
-     cur: 1,
-     next: function() {
-         var temp = this.prev;
-         this.prev = this.cur;
-         this.cur += temp;
-         return this.cur;
-     },
-     isFinished: function() {
-         return this.cur + this.prev > this.end;
-     }
-});
-     // [5, 8, 13, 21]</p>
+<p>Examples:</p>
+
+<p>PARSE.range('2..5, >8 &amp; !11', '[-2,12]'); // [2,3,4,5,9,10,12]</p>
+
+<p>PARSE.range('begin...end/2 | 3*end/4...3...end', '[0,40) &amp; %2 = 1');
+       // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)</p>
+
+<p>PARSE.range('&lt;=19, 22, %5', '>6 &amp; !>27');
+       // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]</p>
+
+<p>PARSE.range('*','(3,8) &amp; !%4, 22, (10,12]'); // [5,6,7,11,12,22]</p>
+
+<p>PARSE.range('&lt;4', {
+      begin: 0,
+      end: 21,
+      prev: 0,
+      cur: 1,
+      next: function() {
+          var temp = this.prev;
+          this.prev = this.cur;
+          this.cur += temp;
+          return this.cur;
+      },
+      isFinished: function() {
+          return this.cur + this.prev > this.end;
+      }
+  }); // [5, 8, 13, 21]</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -547,15 +549,12 @@ PARSE.range('&lt;4', {
       <span>The string specifying the selection expression</span>
     </div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">available
-</span>
+      <span class="dox_tag_name">available</span>
       <span class="dox_type">mixed</span>
-      <span><ul>
-<li>string to be interpreted according to the same rules as
-  <code>expr</code>
-<ul><li>array containing the available elements</li>
-<li>object providing functions next, isFinished and attributes begin, end</li></ul></li>
-</ul></span>
+      <span>Optional. If undefined <code>expr</code> is used. If:
+ - string: it is interpreted according to the same rules as <code>expr</code>;
+ - array: it is used as it is;
+ - object: provide functions next, isFinished and attributes begin, end</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -565,8 +564,6 @@ PARSE.range('&lt;4', {
     </div>
   </div>
 </div>
-
-<p>available can be an array, a string or a object.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">range</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">x</span><span class="p">;</span>

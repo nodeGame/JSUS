@@ -238,4 +238,85 @@ describe('PARSE: ', function() {
         });
     });
 
+    describe('#isInt()', function() {
+        it('should parse and return the int number', function() {
+            JSUS.isInt('1').should.be.eql(1);
+        });
+        it('should return the int number', function() {
+            JSUS.isInt(1).should.be.eql(1);
+        });
+
+        it('should return false if a float is passed', function() {
+            JSUS.isInt(1.1).should.be.false;
+        });
+        it('should return false if the string is a float', function() {
+            JSUS.isInt('1.1').should.be.false;
+        });
+        it('should return false if the wrong value is passed', function() {
+            JSUS.isInt({}).should.be.false;
+            JSUS.isInt('a1').should.be.false;
+        });
+        it('should return false if Infinity or NaN is passed', function() {
+            JSUS.isInt(Infinity).should.be.false;
+            JSUS.isInt(NaN).should.be.false;
+        });
+        it('should parse and return int number (inteval ok)', function() {
+            JSUS.isInt('1', 0, 2).should.be.eql(1);
+        });
+        it('should parse and return int number (interval bad)', function() {
+            JSUS.isInt('1', 4, 5).should.be.false;
+        });
+    });
+
+    describe('#isFloat()', function() {
+        it('should parse and return the float number', function() {
+            JSUS.isFloat('1.1').should.be.eql(1.1);
+        });
+        it('should return the float number', function() {
+            JSUS.isFloat(1.1).should.be.eql(1.1);
+        });
+
+        it('should return false if an int is passed', function() {
+            JSUS.isFloat(1).should.be.false;
+        });
+        it('should return false if the string is an int', function() {
+            JSUS.isFloat('1').should.be.false;
+        });
+        it('should return false if the wrong value is passed', function() {
+            JSUS.isFloat({}).should.be.false;
+            JSUS.isFloat('a1').should.be.false;
+        });
+        it('should return false if Infinity or NaN is passed', function() {
+            JSUS.isFloat(Infinity).should.be.false;
+            JSUS.isFloat(NaN).should.be.false;
+        });
+        it('should parse and return float number (interval ok)', function() {
+            JSUS.isFloat('1.1', 0, 2).should.be.eql(1.1);
+        });
+        it('should parse and return  int number (interval bad)', function() {
+            JSUS.isFloat('1.1', 4, 5).should.be.false;
+        });
+    });
+
+    describe('#isNumber()', function() {
+        it('should parse and return the float number', function() {
+            JSUS.isNumber('1.1').should.be.eql(1.1);
+        });
+        it('should parse and return the int number', function() {
+            JSUS.isNumber('1').should.be.eql(1);
+        });
+        it('should parse and return int number (inteval ok)', function() {
+            JSUS.isNumber('1', 0, 2).should.be.eql(1);
+        });
+        it('should parse and return int number (interval bad)', function() {
+            JSUS.isNumber('1', 4, 5).should.be.false;
+        });
+        it('should parse and return float number (interval ok)', function() {
+            JSUS.isNumber('1.1', 0, 2).should.be.eql(1.1);
+        });
+        it('should parse and return  int number (interval bad)', function() {
+            JSUS.isNumber('1.1', 4, 5).should.be.false;
+        });
+
+    });
 });

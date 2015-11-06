@@ -40,6 +40,15 @@
         <a href="#parse.parse">PARSE.parse</a>
       </div>
       <div class="heading h2">
+        <a href="#parse.isint">PARSE.isInt</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.isfloat">PARSE.isFloat</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.isnumber">PARSE.isNumber</a>
+      </div>
+      <div class="heading h2">
         <a href="#parse.range">PARSE.range</a>
       </div>
       <div class="heading h2">
@@ -479,6 +488,157 @@ encoded by <code>PARSE.stringify</code></p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="parse.isint">
+  <h2>
+    <a href="#parse.isint" class="pilcrow">&#182;</a>
+    PARSE.isInt
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is an integer number or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN, and floats will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed integer, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isFloat</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isNumber
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isInt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">regex</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/^-?\d+$/</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!==</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.isfloat">
+  <h2>
+    <a href="#parse.isfloat" class="pilcrow">&#182;</a>
+    PARSE.isFloat
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is a float number or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN, and integers will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed float, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isInt</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isNumber
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isFloat</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">regex</span><span class="p">;</span>
+        <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/^-?\d*(\.\d+)?$/</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.isnumber">
+  <h2>
+    <a href="#parse.isnumber" class="pilcrow">&#182;</a>
+    PARSE.isNumber
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is a number (int or float) or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed number, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isInt</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isFloat
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">lower</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">&lt;</span> <span class="nx">lower</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">upper</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">&gt;</span> <span class="nx">upper</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="parse.range">
   <h2>
     <a href="#parse.range" class="pilcrow">&#182;</a>
@@ -583,7 +743,7 @@ array which satisfy the expression defined by <code>expr</code>.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>If no available numbers defined, assumes all possible are allowed.</p>
         </td>
@@ -622,7 +782,7 @@ array which satisfy the expression defined by <code>expr</code>.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>If the availble points are also only given implicitly,
 compute set of available numbers by first guessing a bound.</p>
@@ -659,7 +819,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>end -> maximal available value.</p>
         </td>
@@ -669,7 +829,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>begin -> minimal available value.</p>
         </td>
@@ -679,7 +839,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>Do all computations.</p>
         </td>
@@ -689,7 +849,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>Round all floats</p>
         </td>
@@ -701,7 +861,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Validate expression to only contain allowed symbols.</p>
         </td>
@@ -714,7 +874,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>&amp; -> &amp;&amp; and | -> ||.</p>
         </td>
@@ -725,7 +885,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>n -> (x == n).</p>
         </td>
@@ -735,7 +895,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>n has already been replaced by (x==n) so match for that from now on.</p>
         </td>
@@ -745,7 +905,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>%n -> !(x%n)</p>
         </td>
@@ -755,7 +915,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>%n has already been replaced by !(x%n) so match for that from now on.
 %n = m, %n == m -> (x%n == m).</p>
@@ -767,7 +927,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
         </td>
@@ -777,7 +937,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
         </td>
@@ -789,7 +949,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
         </td>
@@ -801,7 +961,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
         </td>
@@ -812,7 +972,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
         </td>
@@ -828,7 +988,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <ul>
 <li>-> true.</li>
@@ -840,7 +1000,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Remove spaces.</p>
         </td>
@@ -850,7 +1010,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>a, b -> (a) || (b)</p>
         </td>
@@ -860,7 +1020,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>Validating the expression before eval"ing it.</p>
         </td>
@@ -870,7 +1030,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>Only &amp; | ! may be before an opening bracket.</p>
         </td>
@@ -880,7 +1040,7 @@ compute set of available numbers by first guessing a bound.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Only dot in floats.</p>
         </td>

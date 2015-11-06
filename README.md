@@ -24,8 +24,8 @@ Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.j
 Create your customized build of JSUS.js using the make file in the bin directory
 
 ```javascript
-node make.js build -a // Full build, about 20Kb minified
-node make.js build -l obj,array -o jsus-oa.js // about 12Kb minified
+node make.js build -a // Full build
+node make.js build -l obj,array -o jsus-oa.js // Only object and array libs.
 ```
 
 ## Extend

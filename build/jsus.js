@@ -255,7 +255,7 @@
         if (start === end) return [start];
 
         if (increment === 0) return false;
-        if (!JSUS.in_array(typeof increment, ['undefined', 'number'])) {
+        if (!JSUS.inArray(typeof increment, ['undefined', 'number'])) {
             return false;
         }
 
@@ -3913,98 +3913,179 @@
     };
 
     /**
+     * ## PARSE.isInt
+     *
+     * Checks if a value is an integer number or a string containing one
+     *
+     * Non-numbers, Infinity, NaN, and floats will return FALSE
+     *
+     * @param {mixed} n The value to check
+     *
+     * @return {boolean|number} The parsed integer, or FALSE if none was found
+     *
+     * @see PARSE.isFloat
+     * @see PARSE.isNumber
+     */
+    PARSE.isInt = function(n, lower, upper) {
+        var regex, i;
+        regex = /^-?\d+$/;
+        if (!regex.test(n)) return false;
+        i = parseInt(n, 10);
+        if (i !== parseFloat(n)) return false;
+        return PARSE.isNumber(i, lower, upper);
+    };
+
+    /**
+     * ## PARSE.isFloat
+     *
+     * Checks if a value is a float number or a string containing one
+     *
+     * Non-numbers, Infinity, NaN, and integers will return FALSE
+     *
+     * @param {mixed} n The value to check
+     *
+     * @return {boolean|number} The parsed float, or FALSE if none was found
+     *
+     * @see PARSE.isInt
+     * @see PARSE.isNumber
+     */
+    PARSE.isFloat = function(n, lower, upper) {
+        var regex;
+        regex = /^-?\d*(\.\d+)?$/;
+        if (!regex.test(n)) return false;
+        if (n.toString().indexOf('.') === -1) return false;
+        return PARSE.isNumber(n, lower, upper);
+    };
+
+    /**
+     * ## PARSE.isNumber
+     *
+     * Checks if a value is a number (int or float) or a string containing one
+     *
+     * Non-numbers, Infinity, NaN will return FALSE
+     *
+     * @param {mixed} n The value to check
+     *
+     * @return {boolean|number} The parsed number, or FALSE if none was found
+     *
+     * @see PARSE.isInt
+     * @see PARSE.isFloat
+     */
+    PARSE.isNumber = function(n, lower, upper) {
+        if (isNaN(n) || !isFinite(n)) return false;
+        n = parseFloat(n);
+        if ('number' === typeof lower && n < lower) return false;
+        if ('number' === typeof upper && n > upper) return false;
+        return n;
+    };
+
+    /**
      * ## PARSE.range
      *
-     * Decodes strings into an array of integers
+     * Decodes semantic strings into an array of integers
      *
      * Let n, m  and l be integers, then the tokens of the string are
      * interpreted in the following way:
-     * - `*`: Any integer.
-     * - `n`: The integer `n`.
-     * - `begin`: The smallest integer in `available`.
-     * - `end`: The largest integer in `available`.
-     * - `<n`, `<=n`, `>n`, `>=n`: Any integer (strictly) smaller/larger than n.
-     * - `n..m`, `[n,m]`: Any integer between n and m (both inclusively).
-     * - `n..l..m`: Any i
-     * - `[n,m)`: Any integer between n (inclusively) and m (exclusively).
-     * - `(n,m]`: Any integer between n (exclusively) and m (inclusively).
-     * - `(n,m)`: Any integer between n and m (both exclusively).
-     * - `%n`: Divisible by n.
-     * - `%n = m`: Divisible with rest m.
-     * - `!`: Not.
-     * - `|`, `||`, `,`: Or.
-     * - `&`, `&&`: And.
+     *
+     *  - `*`: Any integer
+     *  - `n`: The integer `n`
+     *  - `begin`: The smallest integer in `available`
+     *  - `end`: The largest integer in `available`
+     *  - `<n`, `<=n`, `>n`, `>=n`: Any integer (strictly) smaller/larger than n
+     *  - `n..m`, `[n,m]`: Any integer between n and m (both inclusively)
+     *  - `n..l..m`: Any i
+     *  - `[n,m)`: Any integer between n (inclusively) and m (exclusively)
+     *  - `(n,m]`: Any integer between n (exclusively) and m (inclusively)
+     *  - `(n,m)`: Any integer between n and m (both exclusively)
+     *  - `%n`: Divisible by n
+     *  - `%n = m`: Divisible with rest m
+     *  - `!`: Logical not
+     *  - `|`, `||`, `,`: Logical or
+     *  - `&`, `&&`: Logical and
+     *
      * The elements of the resulting array are all elements of the `available`
      * array which satisfy the expression defined by `expr`.
      *
-     * Example:
-     * PARSE.range('2..5, >8 & !11', '[-2,12]');
-     *      // [2,3,4,5,9,10,12]
-     * PARSE.range('begin...end/2 | 3*end/4...3...end', '[0,40) & %2 = 1');
-     *      // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)
-     * PARSE.range('<=19, 22, %5', '>6 & !>27');
-     *      // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]
-     * PARSE.range('*','(3,8) & !%4, 22, (10,12]');
-     *      // [5,6,7,11,12,22]
-     * PARSE.range('<4', {
-     *      begin: 0,
-     *      end: 21,
-     *      prev: 0,
-     *      cur: 1,
-     *      next: function() {
-     *          var temp = this.prev;
-     *          this.prev = this.cur;
-     *          this.cur += temp;
-     *          return this.cur;
-     *      },
-     *      isFinished: function() {
-     *          return this.cur + this.prev > this.end;
-     *      }
-     * });
-     *      // [5, 8, 13, 21]
+     * Examples:
      *
+     *   PARSE.range('2..5, >8 & !11', '[-2,12]'); // [2,3,4,5,9,10,12]
+     *
+     *   PARSE.range('begin...end/2 | 3*end/4...3...end', '[0,40) & %2 = 1');
+     *        // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)
+     *
+     *   PARSE.range('<=19, 22, %5', '>6 & !>27');
+     *        // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]
+     *
+     *   PARSE.range('*','(3,8) & !%4, 22, (10,12]'); // [5,6,7,11,12,22]
+     *
+     *   PARSE.range('<4', {
+     *       begin: 0,
+     *       end: 21,
+     *       prev: 0,
+     *       cur: 1,
+     *       next: function() {
+     *           var temp = this.prev;
+     *           this.prev = this.cur;
+     *           this.cur += temp;
+     *           return this.cur;
+     *       },
+     *       isFinished: function() {
+     *           return this.cur + this.prev > this.end;
+     *       }
+     *   }); // [5, 8, 13, 21]
      *
      * @param {string} expr The string specifying the selection expression
-     * @param {mixed} available
-     *  - string to be interpreted according to the same rules as
-     *       `expr`
-     *  - array containing the available elements
-     *  - object providing functions next, isFinished and attributes begin, end
+     * @param {mixed} available Optional. If undefined `expr` is used. If:
+     *  - string: it is interpreted according to the same rules as `expr`;
+     *  - array: it is used as it is;
+     *  - object: provide functions next, isFinished and attributes begin, end
      *
      * @return {array} The array containing the specified values
+     *
+     * @see JSUS.eval
      */
-    // available can be an array, a string or a object.
     PARSE.range = function(expr, available) {
         var i, x;
-        var solution = [];
+        var solution;
         var begin, end, lowerBound, numbers;
         var invalidChars, invalidBeforeOpeningBracket, invalidDot;
 
-        if ("undefined" === typeof expr) {
-            return [];
-        }
+        solution = [];
+        if ('undefined' === typeof expr) return solution;
 
         // If no available numbers defined, assumes all possible are allowed.
-        if ("undefined" === typeof available) {
+        if ('undefined' === typeof available) {
             available = expr;
         }
-        if (!JSUS.isArray(available)) {
-            if ("string" !== typeof available) {
-                if ("function" !== typeof available.next ||
-                    "function" !== typeof available.isFinished ||
-                    "number"   !== typeof available.begin ||
-                    "number"   !== typeof available.end
-                )
-                throw new Error('PARSE.range: available wrong type');
+        else if (JSUS.isArray(available)) {
+            if (available.length === 0) return solution;
+            begin = Math.min.apply(null, available);
+            end = Math.max.apply(null, available);
+        }
+        else if ('object' === typeof available) {
+            if ('function' !== typeof available.next) {
+                throw new TypeError('PARSE.range: available.next must be ' +
+                                    'function.');
             }
-        }
-        else if (available.length === 0) {
-            return [];
-        }
+            if ('function' !== typeof available.isFinished) {
+                throw new TypeError('PARSE.range: available.isFinished must ' +
+                                    'be function.');
+            }
+            if ('number' !== typeof available.begin) {
+                throw new TypeError('PARSE.range: available.begin must be ' +
+                                    'number.');
+            }
+            if ('number' !== typeof available.end) {
+                throw new TypeError('PARSE.range: available.end must be ' +
+                                    'number.');
+            }
 
-        // If the availble points are also only given implicitly, compute set
-        // of available numbers by first guessing a bound.
-        if ("string" === typeof available) {
+            begin = available.begin;
+            end = available.end;
+        }
+        else if ('string' === typeof available) {
+            // If the availble points are also only given implicitly,
+            // compute set of available numbers by first guessing a bound.
             available = preprocessRange(available);
 
             numbers = available.match(/([-+]?\d+)/g);
@@ -4025,34 +4106,32 @@
                     return this.value > this.end;
                 }
             });
-        }
-        if (JSUS.isArray(available)) {
             begin = Math.min.apply(null, available);
             end = Math.max.apply(null, available);
         }
         else {
-            begin = available.begin;
-            end = available.end;
+            throw new TypeError('PARSE.range: available must be string, ' +
+                                'array, object or undefined.');
         }
 
         // end -> maximal available value.
-        expr = expr.replace(/end/g, parseInt(end));
+        expr = expr.replace(/end/g, parseInt(end, 10));
 
         // begin -> minimal available value.
-        expr = expr.replace(/begin/g, parseInt(begin));
+        expr = expr.replace(/begin/g, parseInt(begin, 10));
 
         // Do all computations.
         expr = preprocessRange(expr);
 
         // Round all floats
         expr = expr.replace(/([-+]?\d+\.\d+)/g, function(match, p1) {
-            return parseInt(p1);
+            return parseInt(p1, 10);
         });
 
         // Validate expression to only contain allowed symbols.
         invalidChars = /[^ \*\d<>=!\|&\.\[\],\(\)\-\+%]/g;
         if (expr.match(invalidChars)) {
-            throw new Error('invalidChars:' + expr);
+            throw new Error('PARSE.range: invalid characters found: ' + expr);
         }
 
         // & -> && and | -> ||.
@@ -4101,9 +4180,11 @@
         // * -> true.
         expr = expr.replace('*', 1);
 
+        // Remove spaces.
+        expr = expr.replace(/\s/g, '');
+
         // a, b -> (a) || (b)
         expr = expr.replace(/\)[,] *(!*)\(/g, ")||$1(");
-
 
         // Validating the expression before eval"ing it.
         invalidChars = /[^ \d<>=!\|&,\(\)\-\+%x\.]/g;
@@ -4113,19 +4194,20 @@
         invalidDot = /\.[^\d]|[^\d]\./;
 
         if (expr.match(invalidChars)) {
-            throw new Error('PARSE.range: invalidChars:' + expr);
+            throw new Error('PARSE.range: invalid characters found: ' + expr);
         }
         if (expr.match(invalidBeforeOpeningBracket)) {
-            throw new Error('PARSE.range: invaludBeforeOpeningBracket:' + expr);
+            throw new Error('PARSE.range: invalid character before opending ' +
+                            'bracket found: ' + expr);
         }
         if (expr.match(invalidDot)) {
-            throw new Error('PARSE.range: invalidDot:' + expr);
+            throw new Error('PARSE.range: invalid dot found: ' + expr);
         }
 
         if (JSUS.isArray(available)) {
             for (i in available) {
                 if (available.hasOwnProperty(i)) {
-                    x = parseInt(available[i]);
+                    x = parseInt(available[i], 10);
                     if (JSUS.eval(expr.replace(/x/g, x))) {
                         solution.push(x);
                     }
@@ -4134,7 +4216,7 @@
         }
         else {
             while (!available.isFinished()) {
-                x = parseInt(available.next());
+                x = parseInt(available.next(), 10);
                 if (JSUS.eval(expr.replace(/x/g, x))) {
                     solution.push(x);
                 }
@@ -4145,18 +4227,18 @@
 
     function preprocessRange(expr) {
         var mult = function(match, p1, p2, p3) {
-            var n1 = parseInt(p1);
-            var n3 = parseInt(p3);
+            var n1 = parseInt(p1, 10);
+            var n3 = parseInt(p3, 10);
             return p2 == '*' ? n1*n3 : n1/n3;
         };
         var add = function(match, p1, p2, p3) {
-            var n1 = parseInt(p1);
-            var n3 = parseInt(p3);
+            var n1 = parseInt(p1, 10);
+            var n3 = parseInt(p3, 10);
             return p2 == '-' ? n1 - n3 : n1 + n3;
         };
         var mod = function(match, p1, p2, p3) {
-            var n1 = parseInt(p1);
-            var n3 = parseInt(p3);
+            var n1 = parseInt(p1, 10);
+            var n3 = parseInt(p3, 10);
             return n1 % n3;
         };
 

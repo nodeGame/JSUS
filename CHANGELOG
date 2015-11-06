@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.2
+- `PARSE.isInt()`, `PARSE.isFloat()`, and `PARSE.isNumber()`.
+
 ## 0.10.1
 - `FS.resolveModuleDir()` fix for JSUS dir.
 

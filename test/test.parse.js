@@ -186,6 +186,10 @@ describe('PARSE: ', function() {
             }).should.throw();
         });
 
+        it('should accept numbers as expression', function() {
+            var range = JSUS.range(1, [1,2,3]);
+            range.should.eql([1]);
+        });
     });
 
     describe('#parse()', function() {

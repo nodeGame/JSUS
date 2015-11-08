@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.3
+- `PARSE.range()` accepts also numbers as expression.
+
 ## 0.10.2
 - `PARSE.isInt()`, `PARSE.isFloat()`, and `PARSE.isNumber()`.
 

@@ -706,7 +706,8 @@ array which satisfy the expression defined by <code>expr</code>.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">expr</span>
       <span class="dox_type">string</span>
-      <span>The string specifying the selection expression</span>
+      <span class="dox_type">number</span>
+      <span>The selection expression</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">available</span>
@@ -731,13 +732,12 @@ array which satisfy the expression defined by <code>expr</code>.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">range</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span><span class="nx">len</span><span class="p">,</span> <span class="nx">x</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">solution</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">solution</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">begin</span><span class="p">,</span> <span class="nx">end</span><span class="p">,</span> <span class="nx">lowerBound</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">invalidChars</span><span class="p">,</span> <span class="nx">invalidBeforeOpeningBracket</span><span class="p">,</span> <span class="nx">invalidDot</span><span class="p">;</span>
 
-        <span class="nx">solution</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span></pre></div>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">expr</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: expr must be string or number.&#39;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -821,242 +821,12 @@ compute set of available numbers by first guessing a bound.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
-<p>end -> maximal available value.</p>
+<p>Processing the string, or casting the number to string.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/end/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
-</div>
-<p>begin -> minimal available value.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/begin/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
-</div>
-<p>Do all computations.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
-</div>
-<p>Round all floats</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+\.\d+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-        <span class="p">});</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
-</div>
-<p>Validate expression to only contain allowed symbols.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \*\d&lt;&gt;=!\|&amp;\.\[\],\(\)\-\+%]/g</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
-        <span class="p">}</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
-</div>
-<p>&amp; -> &amp;&amp; and | -> ||.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^&amp; ]) *&amp; *([^&amp; ])/g</span><span class="p">,</span> <span class="s2">&quot;$1&amp;&amp;$2&quot;</span><span class="p">);</span>
-        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^| ]) *\| *([^| ])/g</span><span class="p">,</span> <span class="s2">&quot;$1||$2&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
-</div>
-<p>n -> (x == n).</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">,</span> <span class="s2">&quot;(x==$1)&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
-</div>
-<p>n has already been replaced by (x==n) so match for that from now on.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
-</div>
-<p>%n -> !(x%n)</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/% *\(x==([-+]?\d+)\)/</span><span class="p">,</span><span class="s2">&quot;!(x%$1)&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
-</div>
-<p>%n has already been replaced by !(x%n) so match for that from now on.
-%n = m, %n == m -> (x%n == m).</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/!\(x%([-+]?\d+)\) *={1,} *\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
-            <span class="s2">&quot;(x%$1==$2)&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
-</div>
-<p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&lt;&gt;]=?) *\(x==([-+]?\d+)\)/g</span><span class="p">,</span> <span class="s2">&quot;(x$1$2)&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
-</div>
-<p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
-            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(\+?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
-            <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
-</div>
-<p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
-            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(-\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
-            <span class="s2">&quot;(x&lt;=$1&amp;&amp;x&gt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
-</div>
-<p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
-                <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$2)&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
-</div>
-<p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
-            <span class="sr">/([(\[]) *\(x==([-+]?\d+)\) *, *\(x==([-+]?\d+)\) *([\])])/g</span><span class="p">,</span>
-                <span class="kd">function</span> <span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">,</span> <span class="nx">p4</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">return</span> <span class="s2">&quot;(x&gt;&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">p1</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span><span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p2</span> <span class="o">+</span> <span class="s2">&quot;&amp;&amp;x&lt;&quot;</span> <span class="o">+</span>
-                        <span class="p">(</span><span class="nx">p4</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p3</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
-</div>
-<ul>
-<li>-> true.</li>
-</ul>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
-</div>
-<p>Remove spaces.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
-</div>
-<p>a, b -> (a) || (b)</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\)[,] *(!*)\(/g</span><span class="p">,</span> <span class="s2">&quot;)||$1(&quot;</span><span class="p">);</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
-</div>
-<p>Validating the expression before eval"ing it.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \d&lt;&gt;=!\|&amp;,\(\)\-\+%x\.]/g</span><span class="p">;</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
-</div>
-<p>Only &amp; | ! may be before an opening bracket.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidBeforeOpeningBracket</span> <span class="o">=</span> <span class="sr">/[^ &amp;!|\(] *\(/g</span><span class="p">;</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
-</div>
-<p>Only dot in floats.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="nx">expr</span> <span class="o">=</span> <span class="nx">processRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">);</span>
+        <span class="k">else</span> <span class="nx">expre</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid character before opending &#39;</span> <span class="o">+</span>
-                            <span class="s1">&#39;bracket found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid dot found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
-        <span class="p">}</span>
-
+        <span class="nx">solution</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
             <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
@@ -1076,6 +846,487 @@ compute set of available numbers by first guessing a bound.</p>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span>
     <span class="p">};</span>
+
+    <span class="kd">function</span> <span class="nx">processRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">invalidChars</span><span class="p">,</span> <span class="nx">invalidBeforeOpeningBracket</span><span class="p">,</span> <span class="nx">invalidDot</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>end -> maximal available value.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/end/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>begin -> minimal available value.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/begin/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Do all computations.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Round all floats</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+\.\d+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>Validate expression to only contain allowed symbols.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \*\d&lt;&gt;=!\|&amp;\.\[\],\(\)\-\+%]/g</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>&amp; -> &amp;&amp; and | -> ||.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^&amp; ]) *&amp; *([^&amp; ])/g</span><span class="p">,</span> <span class="s2">&quot;$1&amp;&amp;$2&quot;</span><span class="p">);</span>
+        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^| ]) *\| *([^| ])/g</span><span class="p">,</span> <span class="s2">&quot;$1||$2&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>n -> (x == n).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">,</span> <span class="s2">&quot;(x==$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>n has already been replaced by (x==n) so match for that from now on.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>%n -> !(x%n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/% *\(x==([-+]?\d+)\)/</span><span class="p">,</span><span class="s2">&quot;!(x%$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>%n has already been replaced by !(x%n) so match for that from now on.
+%n = m, %n == m -> (x%n == m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/!\(x%([-+]?\d+)\) *={1,} *\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x%$1==$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&lt;&gt;]=?) *\(x==([-+]?\d+)\)/g</span><span class="p">,</span> <span class="s2">&quot;(x$1$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(\+?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(-\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&lt;=$1&amp;&amp;x&gt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+                <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/([(\[]) *\(x==([-+]?\d+)\) *, *\(x==([-+]?\d+)\) *([\])])/g</span><span class="p">,</span>
+                <span class="kd">function</span> <span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">,</span> <span class="nx">p4</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="s2">&quot;(x&gt;&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">p1</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span><span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p2</span> <span class="o">+</span> <span class="s2">&quot;&amp;&amp;x&lt;&quot;</span> <span class="o">+</span>
+                        <span class="p">(</span><span class="nx">p4</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p3</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<ul>
+<li>-> true.</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Remove spaces.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>a, b -> (a) || (b)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\)[,] *(!*)\(/g</span><span class="p">,</span> <span class="s2">&quot;)||$1(&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>Validating the expression before eval"ing it.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \d&lt;&gt;=!\|&amp;,\(\)\-\+%x\.]/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>Only &amp; | ! may be before an opening bracket.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidBeforeOpeningBracket</span> <span class="o">=</span> <span class="sr">/[^ &amp;!|\(] *\(/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Only dot in floats.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid character before opending &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39;bracket found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid dot found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>      <span class="c1">// end -&gt; maximal available value.</span>
+        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/end/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>begin -> minimal available value.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/begin/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>Do all computations.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>Round all floats</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+\.\d+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>Validate expression to only contain allowed symbols.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \*\d&lt;&gt;=!\|&amp;\.\[\],\(\)\-\+%]/g</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+</div>
+<p>&amp; -> &amp;&amp; and | -> ||.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^&amp; ]) *&amp; *([^&amp; ])/g</span><span class="p">,</span> <span class="s2">&quot;$1&amp;&amp;$2&quot;</span><span class="p">);</span>
+        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^| ]) *\| *([^| ])/g</span><span class="p">,</span> <span class="s2">&quot;$1||$2&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+</div>
+<p>n -> (x == n).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">,</span> <span class="s2">&quot;(x==$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>n has already been replaced by (x==n) so match for that from now on.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>%n -> !(x%n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/% *\(x==([-+]?\d+)\)/</span><span class="p">,</span><span class="s2">&quot;!(x%$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>%n has already been replaced by !(x%n) so match for that from now on.
+%n = m, %n == m -> (x%n == m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/!\(x%([-+]?\d+)\) *={1,} *\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x%$1==$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&lt;&gt;]=?) *\(x==([-+]?\d+)\)/g</span><span class="p">,</span> <span class="s2">&quot;(x$1$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+</div>
+<p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(\+?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+</div>
+<p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(-\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&lt;=$1&amp;&amp;x&gt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+</div>
+<p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+                <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/([(\[]) *\(x==([-+]?\d+)\) *, *\(x==([-+]?\d+)\) *([\])])/g</span><span class="p">,</span>
+                <span class="kd">function</span> <span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">,</span> <span class="nx">p4</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="s2">&quot;(x&gt;&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">p1</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span><span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p2</span> <span class="o">+</span> <span class="s2">&quot;&amp;&amp;x&lt;&quot;</span> <span class="o">+</span>
+                        <span class="p">(</span><span class="nx">p4</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p3</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<ul>
+<li>-> true.</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+</div>
+<p>Remove spaces.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>a, b -> (a) || (b)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\)[,] *(!*)\(/g</span><span class="p">,</span> <span class="s2">&quot;)||$1(&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+</div>
+<p>Validating the expression before eval"ing it.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \d&lt;&gt;=!\|&amp;,\(\)\-\+%x\.]/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+</div>
+<p>Only &amp; | ! may be before an opening bracket.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidBeforeOpeningBracket</span> <span class="o">=</span> <span class="sr">/[^ &amp;!|\(] *\(/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+</div>
+<p>Only dot in floats.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid character before opending &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39;bracket found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid dot found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">expr</span><span class="p">;</span>
+    <span class="p">}</span>
 
     <span class="kd">function</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">mult</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">)</span> <span class="p">{</span>

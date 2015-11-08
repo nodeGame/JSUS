@@ -131,7 +131,7 @@ describe('PARSE: ', function() {
     });
 
     describe('#range()', function() {
-        it('should handle multiplications of constants, intervals' +
+        it('should handle multiplications of constants, intervals, ' +
             'negations, range notation and greater than notation',
             function() {
                 var range = JSUS.range('2...5, >8 & !11','[-2,2*6]');

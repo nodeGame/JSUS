@@ -4034,7 +4034,7 @@
      *       }
      *   }); // [5, 8, 13, 21]
      *
-     * @param {string} expr The string specifying the selection expression
+     * @param {string|number} expr The selection expression
      * @param {mixed} available Optional. If undefined `expr` is used. If:
      *  - string: it is interpreted according to the same rules as `expr`;
      *  - array: it is used as it is;
@@ -4045,7 +4045,7 @@
      * @see JSUS.eval
      */
     PARSE.range = function(expr, available) {
-        var i, x;
+        var i,len, x;
         var solution;
         var begin, end, lowerBound, numbers;
         var invalidChars, invalidBeforeOpeningBracket, invalidDot;
@@ -4053,6 +4053,13 @@
         solution = [];
         if ('undefined' === typeof expr) return solution;
 
+        // TODO: this could be improved, i.e. if it is a number, many
+        // checks and regular expressions could be avoided.
+        if ('number' === typeof expr) expr = '' + expr;
+        else if ('string' !== typeof expr) {
+            throw new TypeError('PARSE.range: expr must be string, number, ' +
+                                'undefined.');
+        }
         // If no available numbers defined, assumes all possible are allowed.
         if ('undefined' === typeof available) {
             available = expr;
@@ -4205,12 +4212,11 @@
         }
 
         if (JSUS.isArray(available)) {
-            for (i in available) {
-                if (available.hasOwnProperty(i)) {
-                    x = parseInt(available[i], 10);
-                    if (JSUS.eval(expr.replace(/x/g, x))) {
-                        solution.push(x);
-                    }
+            i = -1, len = available.length;
+            for ( ; ++i < len ; ) {
+                x = parseInt(available[i], 10);
+                if (JSUS.eval(expr.replace(/x/g, x))) {
+                    solution.push(x);
                 }
             }
         }

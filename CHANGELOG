@@ -1,8 +1,38 @@
 # ChangeLog
 
+## 0.10.4
+- `DOM.getElementsByClassName()` fixed bug for elements with multiple classes.
+## 0.10.3
+- `PARSE.range()` accepts also numbers as expression.
+
+## 0.10.2
+- `PARSE.isInt()`, `PARSE.isFloat()`, and `PARSE.isNumber()`.
+
+## 0.10.1
+- `FS.resolveModuleDir()` fix for JSUS dir.
+
+## 0.10.0
+- `#OBJ.clone()` fixed bug with cloning arrays of objects.
+- `#OBJ.classClone()` clones an object preserving its class type.
+- `#PARSE.funcName()` retrieves the name of a function.
+- `#PARSE.range()` creates integer ranges based on specified criteria.
+- `#DOM.getButton()` does not add undefined id if none is passed.
+- `#DOM.addEvent()` and `#DOM.removeEvent()`.
+- `#DOM.isNode()` checks if input is object first, avoiding throwing unncessary errors.
+- `#DOM.write()` transforms null in empty strings.
+- `#DOM.getIFrameDocument` returns null if no iframe document is found.
+- `#OBJ.getKeyByValue` returns key/s in a object associated to a specific value.
+- 'use strict' directives have been added where missing.
+
+## 0.9.9
+- `#DOM.shuffleElements()` replaces `#DOM.shuffleNodes()`, still a copy of the former method. A bug on the number of elements in the order is fixed, and also the method is more reliable to detect the children elements also in old browsers.
+
+## 0.9.8
+- `#DOM.write()` accepts undefined as text, and adds an empty string.
+
 ## 0.9.7
-- `#DOM.sprintf()` has default %strong and %em styles
-- Polyfill for `#Date.getISOString()`
+- `#DOM.sprintf()` has default %strong and %em styles.
+- Polyfill for `#Date.getISOString()`.
 
 ## 0.9.5
 - An empty console and console.log objects are added if undefined. This avoids throwing errors in old browsers.
@@ -23,7 +53,7 @@
 
 ## 0.8.9
 - `#DOM.addClass()` extra space fix.
-- `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'
+- `#DOM.addAttributes2Elem()`: 'className' as an alternative to 'class'.
 
 ## 0.8.8
 - `#DOM.shuffleNodes()` correctly shuffles the nodes, and returns the id of the elements in the order used to append them.

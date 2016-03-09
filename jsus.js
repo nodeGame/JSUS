@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS.
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2015 Stefano Balietti
  * MIT Licensed
  *
  * Collection of general purpose javascript functions. JSUS helps!
@@ -93,7 +93,7 @@
         // TODO: this is true also for {}
         if (additional.prototype) {
             JSUS.extend(additional.prototype, target.prototype || target);
-        };
+        }
 
         return target;
     };
@@ -133,9 +133,9 @@
      * @return {boolean} TRUE when executed inside Node.JS environment
      */
     JSUS.isNodeJS = function() {
-	return 'undefined' !== typeof module
-	    && 'undefined' !== typeof module.exports
-	    && 'function' === typeof require;
+        return 'undefined' !== typeof module &&
+            'undefined' !== typeof module.exports &&
+            'function' === typeof require;
     };
 
     // ## Node.JS includes

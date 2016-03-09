@@ -39,6 +39,21 @@
       <div class="heading h2">
         <a href="#parse.parse">PARSE.parse</a>
       </div>
+      <div class="heading h2">
+        <a href="#parse.isint">PARSE.isInt</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.isfloat">PARSE.isFloat</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.isnumber">PARSE.isNumber</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.range">PARSE.range</a>
+      </div>
+      <div class="heading h2">
+        <a href="#parse.funcname">PARSE.funcName</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -55,15 +70,17 @@
   </h1>
 </div>
 
-  </div>
-  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
 
-<p>Collection of static functions related to parsing strings</p>
+<p>Copyright(c) 2015 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of static functions related to parsing strings</p>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
     <span class="kd">function</span> <span class="nx">PARSE</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
@@ -152,7 +169,7 @@ Kudos:</span>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">getQueryString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">referer</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">regex</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">regex</span><span class="p">,</span> <span class="nx">results</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">referer</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">referer</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.getQueryString: referer must be string &#39;</span> <span class="o">+</span>
                                 <span class="s1">&#39;or undefined.&#39;</span><span class="p">);</span>
@@ -465,7 +482,735 @@ encoded by <code>PARSE.stringify</code></p>
             <span class="p">}</span>
             <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
         <span class="p">}</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.isint">
+  <h2>
+    <a href="#parse.isint" class="pilcrow">&#182;</a>
+    PARSE.isInt
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is an integer number or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN, and floats will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lower</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be greater than lower</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">upper</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be smaller than upper</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed integer, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isFloat</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isNumber
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isInt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">regex</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/^-?\d+$/</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!==</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.isfloat">
+  <h2>
+    <a href="#parse.isfloat" class="pilcrow">&#182;</a>
+    PARSE.isFloat
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is a float number or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN, and integers will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lower</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be greater than lower</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">upper</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be smaller than upper</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed float, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isInt</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isNumber
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isFloat</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">regex</span><span class="p">;</span>
+        <span class="nx">regex</span> <span class="o">=</span> <span class="sr">/^-?\d*(\.\d+)?$/</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.isnumber">
+  <h2>
+    <a href="#parse.isnumber" class="pilcrow">&#182;</a>
+    PARSE.isNumber
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Checks if a value is a number (int or float) or a string containing one</p>
+
+<p>Non-numbers, Infinity, NaN will return FALSE</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">n</span>
+      <span class="dox_type">mixed</span>
+      <span>The value to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">lower</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be greater than lower</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">upper</span>
+      <span class="dox_type">number</span>
+      <span>Optional. If set, n must be smaller than upper</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">number</span>
+      <span>The parsed number, or FALSE if none was found</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isInt</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">PARSE.isFloat
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">isNumber</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">lower</span><span class="p">,</span> <span class="nx">upper</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">lower</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">&lt;</span> <span class="nx">lower</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">upper</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">&gt;</span> <span class="nx">upper</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.range">
+  <h2>
+    <a href="#parse.range" class="pilcrow">&#182;</a>
+    PARSE.range
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Decodes semantic strings into an array of integers</p>
+
+<p>Let n, m  and l be integers, then the tokens of the string are
+interpreted in the following way:</p>
+
+<ul>
+<li><code>*</code>: Any integer</li>
+<li><code>n</code>: The integer <code>n</code></li>
+<li><code>begin</code>: The smallest integer in <code>available</code></li>
+<li><code>end</code>: The largest integer in <code>available</code></li>
+<li><code>&lt;n</code>, <code>&lt;=n</code>, <code>&gt;n</code>, <code>&gt;=n</code>: Any integer (strictly) smaller/larger than n</li>
+<li><code>n..m</code>, <code>[n,m]</code>: Any integer between n and m (both inclusively)</li>
+<li><code>n..l..m</code>: Any i</li>
+<li><code>[n,m)</code>: Any integer between n (inclusively) and m (exclusively)</li>
+<li><code>(n,m]</code>: Any integer between n (exclusively) and m (inclusively)</li>
+<li><code>(n,m)</code>: Any integer between n and m (both exclusively)</li>
+<li><code>%n</code>: Divisible by n</li>
+<li><code>%n = m</code>: Divisible with rest m</li>
+<li><code>!</code>: Logical not</li>
+<li><code>|</code>, <code>||</code>, <code>,</code>: Logical or</li>
+<li><code>&amp;</code>, <code>&amp;&amp;</code>: Logical and</li>
+</ul>
+
+<p>The elements of the resulting array are all elements of the <code>available</code>
+array which satisfy the expression defined by <code>expr</code>.</p>
+
+<p>Examples:</p>
+
+<p>PARSE.range('2..5, >8 &amp; !11', '[-2,12]'); // [2,3,4,5,9,10,12]</p>
+
+<p>PARSE.range('begin...end/2 | 3*end/4...3...end', '[0,40) &amp; %2 = 1');
+       // [1,3,5,7,9,11,13,15,17,19,29,35] (end == 39)</p>
+
+<p>PARSE.range('&lt;=19, 22, %5', '>6 &amp; !>27');
+       // [7,8,9,10,11,12,13,14,15,16,17,18,19,20,22,25]</p>
+
+<p>PARSE.range('*','(3,8) &amp; !%4, 22, (10,12]'); // [5,6,7,11,12,22]</p>
+
+<p>PARSE.range('&lt;4', {
+      begin: 0,
+      end: 21,
+      prev: 0,
+      cur: 1,
+      next: function() {
+          var temp = this.prev;
+          this.prev = this.cur;
+          this.cur += temp;
+          return this.cur;
+      },
+      isFinished: function() {
+          return this.cur + this.prev > this.end;
+      }
+  }); // [5, 8, 13, 21]</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">expr</span>
+      <span class="dox_type">string</span>
+      <span class="dox_type">number</span>
+      <span>The selection expression</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">available</span>
+      <span class="dox_type">mixed</span>
+      <span>Optional. If undefined <code>expr</code> is used. If:
+ - string: it is interpreted according to the same rules as <code>expr</code>;
+ - array: it is used as it is;
+ - object: provide functions next, isFinished and attributes begin, end</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">array</span>
+      <span>The array containing the specified values</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSUS.eval
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">range</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span><span class="nx">len</span><span class="p">,</span> <span class="nx">x</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">solution</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">begin</span><span class="p">,</span> <span class="nx">end</span><span class="p">,</span> <span class="nx">lowerBound</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">invalidChars</span><span class="p">,</span> <span class="nx">invalidBeforeOpeningBracket</span><span class="p">,</span> <span class="nx">invalidDot</span><span class="p">;</span>
+
+        <span class="nx">solution</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>TODO: this could be improved, i.e. if it is a number, many
+checks and regular expressions could be avoided.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="nx">expr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: expr must be string, number, &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;undefined.&#39;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>If no available numbers defined, assumes all possible are allowed.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">available</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">available</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span>
+            <span class="nx">begin</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">available</span><span class="p">);</span>
+            <span class="nx">end</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">available</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available.next must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;function.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">isFinished</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available.isFinished must &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;be function.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">begin</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available.begin must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;number.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">.</span><span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available.end must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;number.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="nx">begin</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">begin</span><span class="p">;</span>
+            <span class="nx">end</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">end</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">available</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>If the availble points are also only given implicitly,
+compute set of available numbers by first guessing a bound.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">available</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">available</span><span class="p">);</span>
+
+            <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">numbers</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span>
+                    <span class="s1">&#39;PARSE.range: no numbers in available: &#39;</span> <span class="o">+</span> <span class="nx">available</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">lowerBound</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">);</span>
+
+            <span class="nx">available</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">range</span><span class="p">(</span><span class="nx">available</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">begin</span><span class="o">:</span> <span class="nx">lowerBound</span><span class="p">,</span>
+                <span class="nx">end</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">),</span>
+                <span class="nx">value</span><span class="o">:</span> <span class="nx">lowerBound</span><span class="p">,</span>
+                <span class="nx">next</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span><span class="p">;</span>
+                <span class="p">},</span>
+                <span class="nx">isFinished</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">end</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+            <span class="nx">begin</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">available</span><span class="p">);</span>
+            <span class="nx">end</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">available</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.range: available must be string, &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;array, object or undefined.&#39;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>end -> maximal available value.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/end/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>begin -> minimal available value.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/begin/g</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Do all computations.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Round all floats</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+\.\d+)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>Validate expression to only contain allowed symbols.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \*\d&lt;&gt;=!\|&amp;\.\[\],\(\)\-\+%]/g</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>&amp; -> &amp;&amp; and | -> ||.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^&amp; ]) *&amp; *([^&amp; ])/g</span><span class="p">,</span> <span class="s2">&quot;$1&amp;&amp;$2&quot;</span><span class="p">);</span>
+        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([^| ]) *\| *([^| ])/g</span><span class="p">,</span> <span class="s2">&quot;$1||$2&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>n -> (x == n).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+)/g</span><span class="p">,</span> <span class="s2">&quot;(x==$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>n has already been replaced by (x==n) so match for that from now on.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>%n -> !(x%n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/% *\(x==([-+]?\d+)\)/</span><span class="p">,</span><span class="s2">&quot;!(x%$1)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>%n has already been replaced by !(x%n) so match for that from now on.
+%n = m, %n == m -> (x%n == m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/!\(x%([-+]?\d+)\) *={1,} *\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x%$1==$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p><n, &lt;=n, >n, >=n -> (x &lt; n), (x &lt;= n), (x > n), (x >= n)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&lt;&gt;]=?) *\(x==([-+]?\d+)\)/g</span><span class="p">,</span> <span class="s2">&quot;(x$1$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>n..l..m -> (x >= n &amp;&amp; x &lt;= m &amp;&amp; !((x-n)%l)) for positive l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(\+?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>n..l..m -> (x &lt;= n &amp;&amp; x >= m &amp;&amp; !((x-n)%l)) for negative l.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==(-\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+            <span class="s2">&quot;(x&lt;=$1&amp;&amp;x&gt;=$3&amp;&amp;!((x- $1)%$2))&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>n..m -> (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\(x==([-+]?\d+)\)\.{2,}\(x==([-+]?\d+)\)/g</span><span class="p">,</span>
+                <span class="s2">&quot;(x&gt;=$1&amp;&amp;x&lt;=$2)&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>(n,m), ... ,[n,m] -> (x > n &amp;&amp; x &lt; m), ... , (x >= n &amp;&amp; x &lt;= m).</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+            <span class="sr">/([(\[]) *\(x==([-+]?\d+)\) *, *\(x==([-+]?\d+)\) *([\])])/g</span><span class="p">,</span>
+                <span class="kd">function</span> <span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">,</span> <span class="nx">p4</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="s2">&quot;(x&gt;&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">p1</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span><span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p2</span> <span class="o">+</span> <span class="s2">&quot;&amp;&amp;x&lt;&quot;</span> <span class="o">+</span>
+                        <span class="p">(</span><span class="nx">p4</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">p3</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<ul>
+<li>-> true.</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Remove spaces.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>a, b -> (a) || (b)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\)[,] *(!*)\(/g</span><span class="p">,</span> <span class="s2">&quot;)||$1(&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>Validating the expression before eval"ing it.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidChars</span> <span class="o">=</span> <span class="sr">/[^ \d&lt;&gt;=!\|&amp;,\(\)\-\+%x\.]/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>Only &amp; | ! may be before an opening bracket.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidBeforeOpeningBracket</span> <span class="o">=</span> <span class="sr">/[^ &amp;!|\(] *\(/g</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Only dot in floats.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">invalidDot</span> <span class="o">=</span> <span class="sr">/\.[^\d]|[^\d]\./</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidChars</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid characters found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidBeforeOpeningBracket</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid character before opending &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39;bracket found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">invalidDot</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;PARSE.range: invalid dot found: &#39;</span> <span class="o">+</span> <span class="nx">expr</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">available</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">available</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="nx">x</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">available</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="mi">10</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/x/g</span><span class="p">,</span> <span class="nx">x</span><span class="p">)))</span> <span class="p">{</span>
+                    <span class="nx">solution</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">available</span><span class="p">.</span><span class="nx">isFinished</span><span class="p">())</span> <span class="p">{</span>
+                <span class="nx">x</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">available</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="mi">10</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/x/g</span><span class="p">,</span> <span class="nx">x</span><span class="p">)))</span> <span class="p">{</span>
+                    <span class="nx">solution</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span>
     <span class="p">};</span>
+
+    <span class="kd">function</span> <span class="nx">preprocessRange</span><span class="p">(</span><span class="nx">expr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">mult</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">n1</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">n3</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p3</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">p2</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="o">?</span> <span class="nx">n1</span><span class="o">*</span><span class="nx">n3</span> <span class="o">:</span> <span class="nx">n1</span><span class="o">/</span><span class="nx">n3</span><span class="p">;</span>
+        <span class="p">};</span>
+        <span class="kd">var</span> <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">n1</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">n3</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p3</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">p2</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span> <span class="o">?</span> <span class="nx">n1</span> <span class="o">-</span> <span class="nx">n3</span> <span class="o">:</span> <span class="nx">n1</span> <span class="o">+</span> <span class="nx">n3</span><span class="p">;</span>
+        <span class="p">};</span>
+        <span class="kd">var</span> <span class="nx">mod</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">p3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">n1</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p1</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">n3</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">p3</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">n1</span> <span class="o">%</span> <span class="nx">n3</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+) *([*\/]) *([-+]?\d+)/g</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+) *([*\/]) *([-+]?\d+)/</span><span class="p">,</span> <span class="nx">mult</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+) *([-+]) *([-+]?\d+)/g</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+) *([-+]) *([-+]?\d+)/</span><span class="p">,</span> <span class="nx">add</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nx">expr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/([-+]?\d+) *% *([-+]?\d+)/g</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">expr</span> <span class="o">=</span> <span class="nx">expr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([-+]?\d+) *% *([-+]?\d+)/</span><span class="p">,</span> <span class="nx">mod</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">expr</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="parse.funcname">
+  <h2>
+    <a href="#parse.funcname" class="pilcrow">&#182;</a>
+    PARSE.funcName
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Returns the name of the function</p>
+
+<p>Function.name is a non-standard JavaScript property,
+although many browsers implement it. This is a cross-browser
+implementation for it.</p>
+
+<p>In case of anonymous functions, an empty string is returned.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">func</span>
+      <span class="dox_type">function</span>
+      <span>The function to check</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>The name of the function
+
+Kudos to:
+<a href='http://matt.scharley.me/2012/03/09/monkey-patch-name-ie.html'>http://matt.scharley.me/2012/03/09/monkey-patch-name-ie.html</a></span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">PARSE</span><span class="p">.</span><span class="nx">funcName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.funcName: func must be function.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">func</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">PARSE</span><span class="p">.</span><span class="nx">funcName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">funcNameRegex</span><span class="p">,</span> <span class="nx">res</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;PARSE.funcName: func must be function.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">funcNameRegex</span> <span class="o">=</span> <span class="sr">/function\s([^(]{1,})\(/</span><span class="p">;</span>
+            <span class="nx">res</span> <span class="o">=</span> <span class="p">(</span><span class="nx">funcNameRegex</span><span class="p">).</span><span class="nx">exec</span><span class="p">(</span><span class="nx">func</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nx">res</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="nx">res</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">trim</span><span class="p">()</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">PARSE</span><span class="p">);</span>
 

@@ -22,7 +22,7 @@
         <a href="#fs">FS</a>
       </div>
       <div class="heading h2">
-        <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
+        <a href="#fs.existssync">FS.existsSync</a>
       </div>
       <div class="heading h2">
         <a href="#fs.resolvemoduledir">FS.resolveModuleDir</a>
@@ -58,11 +58,11 @@
   </h1>
 </div>
 
-  </div>
-  <div class="body"><p>Copyright(c) 2014 Stefano Balietti
-MIT Licensed</p>
 
-<p>Collection of static functions related to file system operations</p>
+<p>Copyright(c) 2015 Stefano Balietti
+MIT Licensed</p>
+  </div>
+  <div class="body"><p>Collection of static functions related to file system operations</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">See</div>
@@ -83,6 +83,8 @@ MIT Licensed</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
+    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNodeJS</span><span class="p">()){</span>
         <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot load JSUS.FS outside of Node.JS.&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
@@ -100,10 +102,10 @@ MIT Licensed</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="fs.resolvemoduledir">
+<div class="pilwrap" id="fs.existssync">
   <h2>
-    <a href="#fs.resolvemoduledir" class="pilcrow">&#182;</a>
-    FS.resolveModuleDir
+    <a href="#fs.existssync" class="pilcrow">&#182;</a>
+    FS.existsSync
   </h2>
 </div>
 
@@ -165,8 +167,23 @@ module as installed by npm.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">FS</span><span class="p">.</span><span class="nx">resolveModuleDir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">basedir</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">str</span><span class="p">,</span> <span class="nx">stop</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">module</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">module</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;FS.resolveModuleDir: module must be string.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">basedir</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">basedir</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;FS.resolveModuleDir: basedir must be &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;string or undefined.&#39;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Added this line because it might fail.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">===</span> <span class="s1">&#39;JSUS&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
         <span class="nx">str</span> <span class="o">=</span> <span class="nx">resolve</span><span class="p">.</span><span class="nx">sync</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="p">{</span><span class="nx">basedir</span><span class="o">:</span> <span class="nx">basedir</span> <span class="o">||</span> <span class="nx">__dirname</span><span class="p">});</span>
         <span class="nx">stop</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">stop</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
@@ -289,7 +306,7 @@ The '.' (dot) must be included as part of the extension.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">FS</span><span class="p">.</span><span class="nx">cleanDir</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">ext</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">fileterFunc</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">filterFunc</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">dir</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;You must specify a directory to clean.&#39;</span><span class="p">);</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
@@ -300,7 +317,7 @@ The '.' (dot) must be included as part of the extension.</p>
             <span class="p">};</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">filterFunc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">filterFunc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
             <span class="p">};</span>
         <span class="p">}</span>
@@ -318,7 +335,7 @@ The '.' (dot) must be included as part of the extension.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
 </div>
 <p>Create async queue if a callback was specified.</p>
         </td>
@@ -328,7 +345,7 @@ The '.' (dot) must be included as part of the extension.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
 </div>
 <p>Create a nested callback for the async queue, if necessary.</p>
         </td>
@@ -446,7 +463,7 @@ are found, an error will occur.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
 </div>
 <p>Create async queue if a callback was specified.</p>
         </td>
@@ -460,7 +477,7 @@ are found, an error will occur.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <p>Create a nested callback for the asq, if necessary.</p>
         </td>

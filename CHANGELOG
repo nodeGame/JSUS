@@ -1,5 +1,7 @@
 # ChangeLog
 
+## 0.10.4
+- `DOM.getElementsByClassName()` fixed bug for elements with multiple classes.
 ## 0.10.3
 - `PARSE.range()` accepts also numbers as expression.
 

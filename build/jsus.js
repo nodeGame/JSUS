@@ -1918,9 +1918,7 @@
     /**
      * ### DOM.getElementsByClassName
      *
-     * Gets the first available child of an IFrame
-     *
-     * Tries head, body, lastChild and the HTML element
+     * Returns an array of elements with requested class name
      *
      * @param {object} document The document object of a window or iframe
      * @param {string} className The requested className
@@ -1930,13 +1928,17 @@
      * @return {array} Array of elements with the requested class name
      *
      * @see https://gist.github.com/E01T/6088383
+     * @see http://stackoverflow.com/
+     *      questions/8808921/selecting-a-css-class-with-xpath
      */
     DOM.getElementsByClassName = function(document, className, nodeName) {
         var result, node, tag, seek, i, rightClass;
         result = [];
         tag = nodeName || '*';
         if (document.evaluate) {
-            seek = '//'+ tag +'[@class="'+ className +'"]';
+            seek = '//' + tag +
+                '[contains(concat(" ", normalize-space(@class), " "), "' +
+                className + ' ")]';
             seek = document.evaluate(seek, document, null, 0, null );
             while ((node = seek.iterateNext())) {
                 result.push(node);
@@ -3920,6 +3922,8 @@
      * Non-numbers, Infinity, NaN, and floats will return FALSE
      *
      * @param {mixed} n The value to check
+     * @param {number} lower Optional. If set, n must be greater than lower
+     * @param {number} upper Optional. If set, n must be smaller than upper
      *
      * @return {boolean|number} The parsed integer, or FALSE if none was found
      *
@@ -3943,6 +3947,8 @@
      * Non-numbers, Infinity, NaN, and integers will return FALSE
      *
      * @param {mixed} n The value to check
+     * @param {number} lower Optional. If set, n must be greater than lower
+     * @param {number} upper Optional. If set, n must be smaller than upper
      *
      * @return {boolean|number} The parsed float, or FALSE if none was found
      *
@@ -3965,6 +3971,8 @@
      * Non-numbers, Infinity, NaN will return FALSE
      *
      * @param {mixed} n The value to check
+     * @param {number} lower Optional. If set, n must be greater than lower
+     * @param {number} upper Optional. If set, n must be smaller than upper
      *
      * @return {boolean|number} The parsed number, or FALSE if none was found
      *

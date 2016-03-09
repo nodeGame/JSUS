@@ -2064,9 +2064,7 @@ width, and type can be specified.</p>
 </div>
 
   </div>
-  <div class="body"><p>Gets the first available child of an IFrame</p>
-
-<p>Tries head, body, lastChild and the HTML element</p>
+  <div class="body"><p>Returns an array of elements with requested class name</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -2094,7 +2092,12 @@ width, and type can be specified.</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <a href=" ">https://gist.github.com/E01T/6088383
+      <a href="https://gist.github.com/E01T/6088383">https://gist.github.com/E01T/6088383</a>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href="    questions/8808921/selecting-a-css-class-with-xpath
+  ">http://stackoverflow.com/
 </a>
     </div>
   </div>
@@ -2105,7 +2108,9 @@ width, and type can be specified.</p>
         <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="nx">tag</span> <span class="o">=</span> <span class="nx">nodeName</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">seek</span> <span class="o">=</span> <span class="s1">&#39;//&#39;</span><span class="o">+</span> <span class="nx">tag</span> <span class="o">+</span><span class="s1">&#39;[@class=&quot;&#39;</span><span class="o">+</span> <span class="nx">className</span> <span class="o">+</span><span class="s1">&#39;&quot;]&#39;</span><span class="p">;</span>
+            <span class="nx">seek</span> <span class="o">=</span> <span class="s1">&#39;//&#39;</span> <span class="o">+</span> <span class="nx">tag</span> <span class="o">+</span>
+                <span class="s1">&#39;[contains(concat(&quot; &quot;, normalize-space(@class), &quot; &quot;), &quot;&#39;</span> <span class="o">+</span>
+                <span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39; &quot;)]&#39;</span><span class="p">;</span>
             <span class="nx">seek</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">seek</span><span class="p">,</span> <span class="nb">document</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span> <span class="p">);</span>
             <span class="k">while</span> <span class="p">((</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">seek</span><span class="p">.</span><span class="nx">iterateNext</span><span class="p">()))</span> <span class="p">{</span>
                 <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>

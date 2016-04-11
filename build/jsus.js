@@ -2096,6 +2096,95 @@
         else return element.removeEventListener(event, func, capture);
     };
 
+    /**
+     * ### DOM.playSound
+     *
+     * Plays a sound
+     *
+     * @param {various} sound Audio tag or path to audio file to be played
+     */
+    DOM.playSound = function(sound) {
+        var audio;
+        if ("string" === typeof(sound)) {
+            audio = new Audio(sound);
+        }
+        else if ("object" === typeof(sound)
+            && "function" === typeof(sound.play)) {
+            audio = sound;
+        }
+        else {
+            throw new TypeError("JSUS.playSound: sound must be string" +
+               " or audio element.");
+        }
+        audio.play();
+    };
+
+    /**
+     * ### DOM.changeTitle
+     *
+     * Changes title of page
+     *
+     * @param {string} title New title of the page
+     */
+    DOM.changeTitle = function(title) {
+        if ("string" === typeof(title)) {
+            document.title = title;
+        }
+        else {
+            throw new TypeError("JSUS.changeTitle: title must be string.");
+        }
+    };
+
+    /**
+     * ### DOM.blinkTitle
+     *
+     * Alternates between two titles
+     *
+     * Calling the function a second time clears the current
+     * blinking. If called without arguments the current title
+     * blinking is cleared.
+     *
+     * @param {string} title New title to blink
+     * @param {string} alternateTitle Title to alternate
+     */
+    DOM.blinkTitle = function(id) {
+        return function(title, alternateTitle, options) {
+            var frequency;
+
+            options = options || {};
+            frequency = options.frequency || 2000;
+
+            if (options.stopOnFocus) {
+                window.onfocus = function() {
+                    JSUS.blinkTitle()
+                };
+            }
+            if (options.startOnBlur) {
+                options.startOnBlur = null;
+                window.onblur = function() {
+                    JSUS.blinkTitle(title, alternateTitle, options);
+                }
+                return;
+            }
+            if (!alternateTitle) {
+                alternateTitle = '!!!';
+            }
+            if (null !== id) {
+                clearInterval(id);
+                id = null;
+            }
+            if ('undefined' !== typeof title) {
+                JSUS.changeTitle(title);
+                id = setInterval(function() {
+                    JSUS.changeTitle(alternateTitle);
+                    setTimeout(function() {
+                        JSUS.changeTitle(title);
+                    },frequency/2);
+                },frequency);
+            }
+        };
+    }(null);
+
     JSUS.extend(DOM);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);

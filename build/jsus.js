@@ -1237,9 +1237,10 @@
     /**
      * ### DOM.shuffleElements
      *
-     * Shuffles the children element nodes
+     * Shuffles the order of children of a parent Element
      *
-     * All children must have the id attribute.
+     * All children *must* have the id attribute (live list elements cannot
+     * be identified by position).
      *
      * Notice the difference between Elements and Nodes:
      *
@@ -1253,6 +1254,7 @@
      */
     DOM.shuffleElements = function(parent, order) {
         var i, len, idOrder, children, child;
+        var id, forceId, missId;
         if (!JSUS.isNode(parent)) {
             throw new TypeError('DOM.shuffleElements: parent must node.');
         }
@@ -1284,18 +1286,23 @@
         }
 
         len = children.length;
-        idOrder = [];
+        idOrder = new Array(len);
         if (!order) order = JSUS.sample(0, (len-1));
         for (i = 0 ; i < len; i++) {
-            idOrder.push(children[order[i]].id);
+            id = children[order[i]].id;
+            if ('string' !== typeof id || id === "") {
+                throw new Error('DOM.shuffleElements: no id found on ' +
+                                'child n. ' + order[i] + '.');
+            }
+            idOrder[i] = id;
         }
-        // Two fors are necessary to follow the real sequence.
-        // However parent.children is a special object, so the sequence
+
+        // Two fors are necessary to follow the real sequence (Live List).
+        // However, parent.children is a special object, so the sequence
         // could be unreliable.
         for (i = 0 ; i < len; i++) {
             parent.appendChild(children[idOrder[i]]);
         }
-
         return idOrder;
     };
 

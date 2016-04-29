@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.6
+- `DOM.isNode()` and `DOM.isElement()`.
+
 ## 0.10.5
 - `DOM.shuffleElements()` improved type checking and error message.
 

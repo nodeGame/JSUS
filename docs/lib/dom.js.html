@@ -199,9 +199,6 @@
         <a href="#dom.onfocusout">DOM.onFocusOut</a>
       </div>
       <div class="heading h3">
-        <a href="#dom.changetitle">DOM.changeTitle</a>
-      </div>
-      <div class="heading h3">
         <a href="#dom.blinktitle">DOM.blinkTitle</a>
       </div>
       <div class="heading h2">
@@ -209,6 +206,9 @@
       </div>
       <div class="heading h3">
         <a href="#onfocuschange">onFocusChange</a>
+      </div>
+      <div class="heading h3">
+        <a href="#changetitle">changeTitle</a>
       </div>
     </div>
   </div>
@@ -263,7 +263,7 @@ will receive further explanation.</p>
 
     <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-    <span class="kd">var</span> <span class="nx">onFocusChange</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">onFocusChange</span><span class="p">,</span> <span class="nx">changeTitle</span><span class="p">;</span>
 
     <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
@@ -2497,18 +2497,23 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">playSound</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">playSound</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Audio</span> <span class="o">?</span>
+        <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;JSUS.playSound: Audio tag not supported in your&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39; browser. Cannot play sound.&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="o">:</span>
+        <span class="kd">function</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">audio</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">sound</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">audio</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Audio</span><span class="p">(</span><span class="nx">sound</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;object&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span>
-            <span class="o">&amp;&amp;</span> <span class="s2">&quot;function&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">sound</span><span class="p">.</span><span class="nx">play</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span> <span class="o">&amp;&amp;</span>
+            <span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span><span class="p">.</span><span class="nx">play</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">audio</span> <span class="o">=</span> <span class="nx">sound</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;JSUS.playSound: sound must be string&quot;</span> <span class="o">+</span>
-               <span class="s2">&quot; or audio element.&quot;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.playSound: sound must be string&#39;</span> <span class="o">+</span>
+               <span class="s1">&#39; or audio element.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="nx">audio</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
     <span class="p">};</span></pre></div>
@@ -2621,39 +2626,6 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="dom.changetitle">
-  <h3>
-    <a href="#dom.changetitle" class="pilcrow">&#182;</a>
-    DOM.changeTitle
-  </h3>
-</div>
-
-  </div>
-  <div class="body"><p>Changes title of page</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">Params</div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">title</span>
-      <span class="dox_type">string</span>
-      <span>New title of the page</span>
-    </div>
-  </div>
-</div>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">title</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;JSUS.changeTitle: title must be string.&quot;</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">};</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
 <div class="pilwrap" id="dom.blinktitle">
   <h3>
     <a href="#dom.blinktitle" class="pilcrow">&#182;</a>
@@ -2684,39 +2656,72 @@ blinking is cleared.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">alternateTitle</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">frequency</span><span class="p">;</span>
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">period</span><span class="p">,</span> <span class="nx">where</span><span class="p">,</span> <span class="nx">rotation</span><span class="p">;</span>
+            <span class="nx">where</span> <span class="o">=</span> <span class="s1">&#39;JSUS.blinkTitle: &#39;</span><span class="p">;</span>
 
             <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-            <span class="nx">frequency</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">frequency</span> <span class="o">||</span> <span class="mi">2000</span><span class="p">;</span>
+            <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nb">window</span><span class="p">.</span><span class="nx">onfocus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">()</span>
-                <span class="p">};</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">();</span>
+                <span class="p">});</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-                <span class="nb">window</span><span class="p">.</span><span class="nx">onblur</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">alternateTitle</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
-                <span class="p">}</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusOut</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+                <span class="p">});</span>
                 <span class="k">return</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">alternateTitle</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">alternateTitle</span> <span class="o">=</span> <span class="s1">&#39;!!!&#39;</span><span class="p">;</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="kc">null</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
                 <span class="nx">id</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
             <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">changeTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
-                <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">changeTitle</span><span class="p">(</span><span class="nx">alternateTitle</span><span class="p">);</span>
-                    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                        <span class="nx">JSUS</span><span class="p">.</span><span class="nx">changeTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
-                    <span class="p">},</span><span class="nx">frequency</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
-                <span class="p">},</span><span class="nx">frequency</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">titles</span> <span class="o">=</span> <span class="p">[</span><span class="nx">titles</span><span class="p">,</span> <span class="s1">&#39;!!!&#39;</span><span class="p">];</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
+                            <span class="s1">&#39; array of strings or undefined.&#39;</span><span class="p">);</span>
+                <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+</div>
+<p>Function to be executed every period.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+</div>
+<p>For every title wait some time, then change title.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">titles</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                            <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+                        <span class="p">},</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">period</span><span class="o">/</span><span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+                    <span class="p">});</span>
+                <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+</div>
+<p>Perform first rotation right now.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span><span class="p">();</span>
+                <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span><span class="nx">period</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">};</span>
     <span class="p">}(</span><span class="kc">null</span><span class="p">);</span></pre></div>
@@ -2813,7 +2818,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
 </div>
 <p>If event is defined as one from event Map.</p>
         </td>
@@ -2823,7 +2828,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>Or use the hidden property.</p>
         </td>
@@ -2833,7 +2838,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
 </div>
 <p>Call the callback, if defined.</p>
         </td>
@@ -2853,7 +2858,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>Visibility standard detected.</p>
         </td>
@@ -2863,7 +2868,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>Remove any pre-existing listeners.</p>
         </td>
@@ -2879,7 +2884,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>All others.</p>
         </td>
@@ -2888,7 +2893,40 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
                     <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onfocus</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onblur</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">};</span>
-    <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">?</span> <span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">?</span> <span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="changetitle">
+  <h3>
+    <a href="#changetitle" class="pilcrow">&#182;</a>
+    changeTitle
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Changes title of page</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">title</span>
+      <span class="dox_type">string</span>
+      <span>New title of the page</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">title</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;JSUS.changeTitle: title must be string.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">DOM</span><span class="p">);</span>
 

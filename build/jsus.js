@@ -1006,7 +1006,7 @@
 
     "use strict";
 
-    var onFocusChange;
+    var onFocusChange, changeTitle;
 
     function DOM() {}
 
@@ -1254,19 +1254,19 @@
     DOM.shuffleElements = function(parent, order) {
         var i, len, idOrder, children, child;
         if (!JSUS.isNode(parent)) {
-            throw new TypeError('DOM.shuffleNodes: parent must node.');
+            throw new TypeError('DOM.shuffleElements: parent must node.');
         }
         if (!parent.children || !parent.children.length) {
-            JSUS.log('DOM.shuffleNodes: parent has no children.', 'ERR');
+            JSUS.log('DOM.shuffleElements: parent has no children.', 'ERR');
             return false;
         }
         if (order) {
             if (!JSUS.isArray(order)) {
-                throw new TypeError('DOM.shuffleNodes: order must array.');
+                throw new TypeError('DOM.shuffleElements: order must array.');
             }
             if (order.length !== parent.children.length) {
-                throw new Error('DOM.shuffleNodes: order length must match ' +
-                                'the number of children nodes.');
+                throw new Error('DOM.shuffleElements: order length must ' +
+                                'match the number of children nodes.');
             }
         }
 
@@ -1306,7 +1306,11 @@
      *
      * @deprecated
      */
-    DOM.shuffleNodes = DOM.shuffleElements;
+    DOM.shuffleNodes = function(parent, order) {
+        console.log('***DOM.shuffleNodes is deprecated. ' +
+                    'Use Dom.shuffleElements instead.***');
+        return DOM.shuffleElements(parent, order);
+    };
 
     /**
      * ### DOM.getElement
@@ -2105,18 +2109,23 @@
      *
      * @param {various} sound Audio tag or path to audio file to be played
      */
-    DOM.playSound = function(sound) {
+    DOM.playSound = 'undefined' === typeof Audio ?
+        function() {
+            console.log('JSUS.playSound: Audio tag not supported in your' +
+                    ' browser. Cannot play sound.');
+        } :
+        function(sound) {
         var audio;
-        if ("string" === typeof(sound)) {
+        if ('string' === typeof sound) {
             audio = new Audio(sound);
         }
-        else if ("object" === typeof(sound)
-            && "function" === typeof(sound.play)) {
+        else if ('object' === typeof sound &&
+            'function' === typeof sound.play) {
             audio = sound;
         }
         else {
-            throw new TypeError("JSUS.playSound: sound must be string" +
-               " or audio element.");
+            throw new TypeError('JSUS.playSound: sound must be string' +
+               ' or audio element.');
         }
         audio.play();
     };
@@ -2175,21 +2184,6 @@
         onFocusChange(undefined, cb);
     };
 
-    /**
-     * ### DOM.changeTitle
-     *
-     * Changes title of page
-     *
-     * @param {string} title New title of the page
-     */
-    DOM.changeTitle = function(title) {
-        if ("string" === typeof(title)) {
-            document.title = title;
-        }
-        else {
-            throw new TypeError("JSUS.changeTitle: title must be string.");
-        }
-    };
 
     /**
      * ### DOM.blinkTitle
@@ -2204,39 +2198,48 @@
      * @param {string} alternateTitle Title to alternate
      */
     DOM.blinkTitle = function(id) {
-        return function(title, alternateTitle, options) {
-            var frequency;
+        return function(titles, options) {
+            var period, where, rotation;
+            where = 'JSUS.blinkTitle: ';
 
             options = options || {};
-            frequency = options.frequency || 2000;
+            period = options.period || 1000 * titles.length;
 
             if (options.stopOnFocus) {
-                window.onfocus = function() {
-                    JSUS.blinkTitle()
-                };
+                JSUS.onFocusIn(function() {
+                    JSUS.blinkTitle();
+                });
             }
             if (options.startOnBlur) {
                 options.startOnBlur = null;
-                window.onblur = function() {
-                    JSUS.blinkTitle(title, alternateTitle, options);
-                }
+                JSUS.onFocusOut(function() {
+                    JSUS.blinkTitle(titles, options);
+                });
                 return;
-            }
-            if (!alternateTitle) {
-                alternateTitle = '!!!';
             }
             if (null !== id) {
                 clearInterval(id);
                 id = null;
             }
-            if ('undefined' !== typeof title) {
-                JSUS.changeTitle(title);
-                id = setInterval(function() {
-                    JSUS.changeTitle(alternateTitle);
-                    setTimeout(function() {
-                        JSUS.changeTitle(title);
-                    },frequency/2);
-                },frequency);
+            if ('undefined' !== typeof titles) {
+                if ('string' === typeof titles) {
+                    titles = [titles, '!!!'];
+                } else if (!JSUS.isArray(titles)) {
+                    throw new TypeError(where + 'titles must be string, ' +
+                            ' array of strings or undefined.');
+                }
+                // Function to be executed every period.
+                rotation = function() {
+                    // For every title wait some time, then change title.
+                    titles.forEach(function(title,i) {
+                        setTimeout(function() {
+                            changeTitle(title);
+                        }, i * period/titles.length);
+                    });
+                };
+                // Perform first rotation right now.
+                rotation();
+                id = setInterval(rotation,period);
             }
         };
     }(null);
@@ -2328,6 +2331,22 @@
             }
         };
     })('undefined' !== typeof document ? document : null);
+
+    /**
+     * ### changeTitle
+     *
+     * Changes title of page
+     *
+     * @param {string} title New title of the page
+     */
+    changeTitle = function(title) {
+        if ("string" === typeof(title)) {
+            document.title = title;
+        }
+        else {
+            throw new TypeError("JSUS.changeTitle: title must be string.");
+        }
+    };
 
     JSUS.extend(DOM);
 

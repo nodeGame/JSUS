@@ -41,15 +41,15 @@ describe('ARRAY: ', function(){
         });
     });
 
-    // in_array
-    describe('#in_array()', function(){
+    // inArray
+    describe('#inArray()', function(){
         var test_arr = ['element1', 'element2', 'element3', 'element4'];
 
         it('should return TRUE when looking for element1', function() {
-            JSUS.in_array('element2', test_arr).should.be.true;
+            JSUS.inArray('element2', test_arr).should.be.true;
         });
         it('should return FALSE when looking for element5', function() {
-            JSUS.in_array('element5', test_arr).should.be.false;
+            JSUS.inArray('element5', test_arr).should.be.false;
         });
 
     });

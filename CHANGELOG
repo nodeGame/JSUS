@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.8
+- Fixed bug introduced in previous version DOM.highlight()
+
 ## 0.10.7
 - `FS.copyFile()`
 

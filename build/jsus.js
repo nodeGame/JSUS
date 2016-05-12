@@ -1819,10 +1819,13 @@
      * highlight(myDiv, '#CCC'); // grey border
      * ```
      *
+     * @param {HTMLElement} elem The element to highlight
+     * @param {string} code The type of highlight
+     *
      * @see DOM.addBorder
      * @see DOM.style
      */
-    DOM.highlight = function(elem) {
+    DOM.highlight = function(elem, code) {
         var color;
         if (!elem) return;
 
@@ -2328,10 +2331,8 @@
 
             // Visibility standard detected.
             if (event) {
-                // Remove any pre-existing listeners.
-                document.removeEventListener(event);
-                if (onchangeCb) document.addEventListener(event, onchangeCb);
-
+                if (onchangeCb) document.addEventListener(event, onchange);
+                else document.removeEventListener(event, onchange);
             }
             else if ('onfocusin' in document) {
                 document.onfocusin = document.onfocusout = onchangeCb;

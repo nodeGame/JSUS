@@ -2880,19 +2880,9 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>Visibility standard detected.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
-</div>
-<p>Remove any pre-existing listeners.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">onchangeCb</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchangeCb</span><span class="p">);</span>
-
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">onchangeCb</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
+                <span class="k">else</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;onfocusin&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusin</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusout</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
@@ -2902,7 +2892,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>All others.</p>
         </td>

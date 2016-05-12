@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.7
+- `FS.copyFile()`
+
 ## 0.10.6
 - `DOM.isNode()` and `DOM.isElement()`.
 

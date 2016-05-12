@@ -410,7 +410,7 @@
      *
      * @return {boolean} TRUE, if the element is contained in the array
      *
-     *  @see JSUS.equals
+     * @see JSUS.equals
      */
     ARRAY.inArray = function(needle, haystack) {
         var func, i, len;
@@ -1822,7 +1822,7 @@
      * @see DOM.addBorder
      * @see DOM.style
      */
-     DOM.highlight = function(elem, code) {
+    DOM.highlight = function(elem) {
         var color;
         if (!elem) return;
 
@@ -2663,7 +2663,7 @@
                     asq.add(i);
                     mycb = asq.getRemoveCb(i);
                 }
-                copyFile(dirIn + files[i], dirOut + files[i], mycb);
+                FS.copyFile(dirIn + files[i], dirOut + files[i], mycb);
             }
 
             if (cb) {
@@ -2675,7 +2675,7 @@
     };
 
     /**
-     * ## copyFile
+     * ## FS.copyFile
      *
      * Copies a file into another path
      *
@@ -2683,15 +2683,13 @@
      * @param {string} destFile The destination file
      * @param {function} cb Optional. If set, the callback will be executed
      *   upon success
-     * @param {function} cb Optional. A callback function to call if
-     *   no error is raised
      *
      * @return {boolean} TRUE, if the operation is successful
      *
      * @see
      *   https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
      */
-    var copyFile = function(srcFile, destFile, cb) {
+    FS.copyFile = function(srcFile, destFile, cb) {
         var fdr, fdw;
         fdr = fs.createReadStream(srcFile);
         fdw = fs.createWriteStream(destFile);

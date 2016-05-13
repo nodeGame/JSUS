@@ -190,6 +190,9 @@
         <a href="#dom.removeevent">DOM.removeEvent</a>
       </div>
       <div class="heading h3">
+        <a href="#dom.disablebackbutton">DOM.disableBackButton</a>
+      </div>
+      <div class="heading h3">
         <a href="#dom.playsound">DOM.playSound</a>
       </div>
       <div class="heading h3">
@@ -2495,6 +2498,65 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="dom.disablebackbutton">
+  <h3>
+    <a href="#dom.disablebackbutton" class="pilcrow">&#182;</a>
+    DOM.disableBackButton
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Disables/re-enables backward navigation in history of browsed pages</p>
+
+<p>When disabling, it inserts twice the current url.</p>
+
+<p>It will still be possible to manually select the uri in the
+history pane and nagivate to it.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">disable</span>
+      <span class="dox_type">boolean</span>
+      <span>Optional. If TRUE disables back button,
+  if FALSE, re-enables it. Default: TRUE.</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>The state of the back button (TRUE = disabled),
+  or NULL if the method is not supported by browser.</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableBackButton</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">disable</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">disable</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">disable</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="nx">disable</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">disable</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">||</span> <span class="o">!</span><span class="nx">history</span><span class="p">.</span><span class="nx">go</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">node</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;DOM.disableBackButton: method not &#39;</span> <span class="o">+</span>
+                              <span class="s1">&#39;supported by browser.&#39;</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">onpopstate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">history</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                <span class="p">};</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">onpopstate</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">isDisabled</span> <span class="o">=</span> <span class="nx">disable</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">disable</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">})(</span><span class="kc">false</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="dom.playsound">
   <h3>
     <a href="#dom.playsound" class="pilcrow">&#182;</a>
@@ -2709,7 +2771,7 @@ blinking is cleared.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
 </div>
 <p>Function to be executed every period.</p>
         </td>
@@ -2719,7 +2781,7 @@ blinking is cleared.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
 <p>For every title wait some time, then change title.</p>
         </td>
@@ -2734,7 +2796,7 @@ blinking is cleared.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
 </div>
 <p>Perform first rotation right now.</p>
         </td>
@@ -2836,7 +2898,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>If event is defined as one from event Map.</p>
         </td>
@@ -2846,7 +2908,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
 </div>
 <p>Or use the hidden property.</p>
         </td>
@@ -2856,7 +2918,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>Call the callback, if defined.</p>
         </td>
@@ -2876,7 +2938,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>Visibility standard detected.</p>
         </td>
@@ -2892,7 +2954,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>All others.</p>
         </td>

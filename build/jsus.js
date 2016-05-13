@@ -2118,6 +2118,41 @@
     };
 
     /**
+     * ### DOM.disableBackButton
+     *
+     * Disables/re-enables backward navigation in history of browsed pages
+     *
+     * When disabling, it inserts twice the current url.
+     *
+     * @param {boolean} disable Optional. If TRUE disables back button,
+     *   if FALSE, re-enables it. Default: TRUE.
+     *
+     * @return {boolean} The state of the back button (TRUE = disabled),
+     *   or NULL if the method is not supported by browser.
+     */
+    DOM.disableBackButton = (function(isDisabled) {
+        return function(disable) {
+            disable = 'undefined' === typeof disable ? true : disable;
+            if (disable && !isDisabled) {
+                if (!history.pushState || !history.go) {
+                    node.warn('DOM.disableBackButton: method not ' +
+                              'supported by browser.');
+                    return null;
+                }
+                history.pushState(null, null, location.href);
+                window.onpopstate = function(event) {
+                    history.go(1);
+                };
+            }
+            else if (isDisabled) {
+                window.onpopstate = null;
+            }
+            isDisabled = disable;
+            return disable;
+        };
+    })(false);
+
+    /**
      * ### DOM.playSound
      *
      * Plays a sound

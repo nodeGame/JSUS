@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.10
+- `DOM.disableBackButton()`
+
 ## 0.10.9
 - Fixed bug onFocusChange for recent Chrome.
 

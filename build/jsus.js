@@ -2124,6 +2124,9 @@
      *
      * When disabling, it inserts twice the current url.
      *
+     * It will still be possible to manually select the uri in the
+     * history pane and nagivate to it.
+     *
      * @param {boolean} disable Optional. If TRUE disables back button,
      *   if FALSE, re-enables it. Default: TRUE.
      *

@@ -1,16 +1,19 @@
 # ChangeLog
 
+## 0.10.11
+- `TIME.getTimeM()`.
+
 ## 0.10.10
-- `DOM.disableBackButton()`
+- `DOM.disableBackButton()`.
 
 ## 0.10.9
 - Fixed bug onFocusChange for recent Chrome.
 
 ## 0.10.8
-- Fixed bug introduced in previous version DOM.highlight()
+- Fixed bug introduced in previous version DOM.highlight().
 
 ## 0.10.7
-- `FS.copyFile()`
+- `FS.copyFile()`.
 
 ## 0.10.6
 - `DOM.isNode()` and `DOM.isElement()`.

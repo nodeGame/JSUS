@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = '../', thisFile = 'lib/dom.js', defaultSidebar = true;
+    var relativeDir = "../", thisFile = "lib/dom.js", defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
 </head>
@@ -67,7 +67,7 @@
         <a href="#dom.generateuniqueid">DOM.generateUniqueId</a>
       </div>
       <div class="heading h2">
-        <a href="#get-add">GET/ADD</a>
+        <a href="#get%2Fadd">GET/ADD</a>
       </div>
       <div class="heading h3">
         <a href="#dom.getbutton">DOM.getButton</a>
@@ -139,7 +139,7 @@
         <a href="#dom.adddiv">DOM.addDiv</a>
       </div>
       <div class="heading h2">
-        <a href="#css---js">CSS / JS</a>
+        <a href="#css%20%2F%20js">CSS / JS</a>
       </div>
       <div class="heading h3">
         <a href="#dom.addcss">DOM.addCSS</a>
@@ -205,7 +205,7 @@
         <a href="#dom.blinktitle">DOM.blinkTitle</a>
       </div>
       <div class="heading h2">
-        <a href="#helper-methods">Helper methods</a>
+        <a href="#helper%20methods">Helper methods</a>
       </div>
       <div class="heading h3">
         <a href="#onfocuschange">onFocusChange</a>
@@ -224,7 +224,7 @@
   <div class="summary">
 <div class="pilwrap" id="dom">
   <h1>
-    <a href="#dom" class="pilcrow">&#182;</a>
+    <a href="#dom" name="dom" class="pilcrow">&#182;</a>
     DOM
   </h1>
 </div>
@@ -268,20 +268,26 @@ will receive further explanation.</p>
 
     <span class="kd">var</span> <span class="nx">onFocusChange</span><span class="p">,</span> <span class="nx">changeTitle</span><span class="p">;</span>
 
-    <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{}</span></pre></div>
+    <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap" id="general">
   <h2>
-    <a href="#general" class="pilcrow">&#182;</a>
+    <a href="#general" name="general" class="pilcrow">&#182;</a>
     GENERAL
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -289,7 +295,7 @@ will receive further explanation.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.write">
   <h3>
-    <a href="#dom.write" class="pilcrow">&#182;</a>
+    <a href="#dom.write" name="dom.write" class="pilcrow">&#182;</a>
     DOM.write
   </h3>
 </div>
@@ -318,19 +324,23 @@ will receive further explanation.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.writeln
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">content</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">text</span> <span class="o">||</span> <span class="nx">text</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="o">||</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">text</span><span class="p">;</span>
         <span class="k">else</span> <span class="nx">content</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
         <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -338,7 +348,7 @@ will receive further explanation.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.writeln">
   <h3>
-    <a href="#dom.writeln" class="pilcrow">&#182;</a>
+    <a href="#dom.writeln" name="dom.writeln" class="pilcrow">&#182;</a>
     DOM.writeln
   </h3>
 </div>
@@ -378,17 +388,21 @@ will receive further explanation.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.addBreak
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">writeln</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">rc</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">writeln</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">rc</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">content</span><span class="p">;</span>
         <span class="nx">content</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">text</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">addBreak</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">rc</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -396,7 +410,7 @@ will receive further explanation.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.sprintf">
   <h3>
-    <a href="#dom.sprintf" class="pilcrow">&#182;</a>
+    <a href="#dom.sprintf" name="dom.sprintf" class="pilcrow">&#182;</a>
     DOM.sprintf
   </h3>
 </div>
@@ -462,13 +476,17 @@ respectively a <em>strong</em> and <em>em</em> tag instead of the default
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">sprintf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">root</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">sprintf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">root</span><span class="p">)</span> <span class="p">{</span>
 
         <span class="kd">var</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">span</span><span class="p">,</span> <span class="nx">idx_start</span><span class="p">,</span> <span class="nx">idx_finish</span><span class="p">,</span> <span class="nx">idx_replace</span><span class="p">,</span> <span class="nx">idxs</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">spans</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
 
         <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span>
-        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span></pre></div>
+        <span class="nx">spans</span> <span class="o">=</span> <span class="p">{};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -479,9 +497,13 @@ respectively a <em>strong</em> and <em>em</em> tag instead of the default
 <p>Create an args object, if none is provided.
 Defaults %em and %strong are added.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">args</span> <span class="o">=</span> <span class="nx">args</span> <span class="o">||</span> <span class="p">{};</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">args</span> <span class="o">=</span> <span class="nx">args</span> <span class="o">||</span> <span class="p">{};</span>
         <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%strong&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%em&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
+        <span class="nx">args</span><span class="p">[</span><span class="s1">&#39;%em&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -491,14 +513,18 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Transform arguments before inserting them.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
 
                 <span class="k">switch</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
 
                 <span class="k">case</span> <span class="s1">&#39;%&#39;</span><span class="o">:</span> <span class="c1">// Span/Strong/Emph .</span>
 
-                    <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span></pre></div>
+                    <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -508,7 +534,8 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Pattern not found. No error.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="nx">idx_start</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">idx_start</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
 
                     <span class="nx">idx_replace</span> <span class="o">=</span> <span class="nx">idx_start</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
                     <span class="nx">idx_finish</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">idx_replace</span><span class="p">);</span>
@@ -516,7 +543,10 @@ Defaults %em and %strong are added.</p>
                     <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                         <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error. Could not find closing key: &#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">);</span>
                         <span class="k">continue</span><span class="p">;</span>
-                    <span class="p">}</span></pre></div>
+                    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -526,7 +556,8 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Can be strong, emph or a generic span.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="nx">spans</span><span class="p">[</span><span class="nx">idx_start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
 
                     <span class="k">break</span><span class="p">;</span>
 
@@ -543,7 +574,10 @@ Defaults %em and %strong are added.</p>
 
                 <span class="p">}</span>
             <span class="p">}</span>
-        <span class="p">}</span></pre></div>
+        <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -553,9 +587,13 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>No span to create, return what we have.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="nx">spans</span><span class="p">))</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="nx">spans</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">string</span><span class="p">));</span>
-        <span class="p">}</span></pre></div>
+        <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -565,9 +603,14 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Re-assamble the string.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">idxs</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">spans</span><span class="p">).</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span><span class="p">;</span> <span class="p">});</span>
+        <td class="code highlight"><div class="highlight"><pre>
+
+        <span class="nx">idxs</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">spans</span><span class="p">).</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span><span class="p">;</span> <span class="p">});</span>
         <span class="nx">idx_finish</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">idxs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">idxs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -577,8 +620,12 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Add span.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">key</span> <span class="o">=</span> <span class="nx">spans</span><span class="p">[</span><span class="nx">idxs</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
-            <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="nx">key</span> <span class="o">=</span> <span class="nx">spans</span><span class="p">[</span><span class="nx">idxs</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+            <span class="nx">idx_start</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -588,7 +635,8 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Add fragments of string.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">!==</span> <span class="nx">idx_start</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">!==</span> <span class="nx">idx_start</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span>
                     <span class="nx">string</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">idx_finish</span><span class="p">,</span> <span class="nx">idx_start</span><span class="p">)));</span>
             <span class="p">}</span>
@@ -612,7 +660,10 @@ Defaults %em and %strong are added.</p>
 
             <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">span</span><span class="p">);</span>
             <span class="nx">idx_finish</span> <span class="o">=</span> <span class="nx">idx_finish</span> <span class="o">+</span> <span class="nx">key</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="p">}</span></pre></div>
+        <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -622,13 +673,17 @@ Defaults %em and %strong are added.</p>
 </div>
 <p>Add the final part of the string.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">!==</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">idx_finish</span> <span class="o">!==</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span>
                 <span class="nx">string</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">idx_finish</span><span class="p">)));</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">root</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -636,7 +691,7 @@ Defaults %em and %strong are added.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.isnode">
   <h3>
-    <a href="#dom.isnode" class="pilcrow">&#182;</a>
+    <a href="#dom.isnode" name="dom.isnode" class="pilcrow">&#182;</a>
     DOM.isNode
   </h3>
 </div>
@@ -660,12 +715,16 @@ Defaults %em and %strong are added.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Node</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Node</span> <span class="o">:</span>
             <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -673,7 +732,7 @@ Defaults %em and %strong are added.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.iselement">
   <h3>
-    <a href="#dom.iselement" class="pilcrow">&#182;</a>
+    <a href="#dom.iselement" name="dom.iselement" class="pilcrow">&#182;</a>
     DOM.isElement
   </h3>
 </div>
@@ -700,10 +759,14 @@ the method is defined.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -711,7 +774,7 @@ the method is defined.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.shuffleelements">
   <h3>
-    <a href="#dom.shuffleelements" class="pilcrow">&#182;</a>
+    <a href="#dom.shuffleelements" name="dom.shuffleelements" class="pilcrow">&#182;</a>
     DOM.shuffleElements
   </h3>
 </div>
@@ -748,7 +811,8 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">idOrder</span><span class="p">,</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">child</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">forceId</span><span class="p">,</span> <span class="nx">missId</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">parent</span><span class="p">))</span> <span class="p">{</span>
@@ -766,7 +830,10 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: order length must &#39;</span> <span class="o">+</span>
                                 <span class="s1">&#39;match the number of children nodes.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">}</span></pre></div>
+        <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -776,7 +843,11 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
 </div>
 <p>DOM4 compliant browsers.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">children</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">children</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -787,7 +858,8 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
 <p><a href='https://developer.mozilla.org/en/DOM/Element.children'>https://developer.mozilla.org/en/DOM/Element.children</a>
 [IE lt 9] IE &lt; 9</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">child</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">;</span>
             <span class="k">while</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">children</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">child</span><span class="p">);</span>
@@ -805,7 +877,10 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
                                 <span class="s1">&#39;child n. &#39;</span> <span class="o">+</span> <span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
-        <span class="p">}</span></pre></div>
+        <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -817,11 +892,15 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
 However, parent.children is a special object, so the sequence
 could be unreliable.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">idOrder</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -829,7 +908,7 @@ could be unreliable.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.shufflenodes">
   <h3>
-    <a href="#dom.shufflenodes" class="pilcrow">&#182;</a>
+    <a href="#dom.shufflenodes" name="dom.shufflenodes" class="pilcrow">&#182;</a>
     DOM.shuffleNodes
   </h3>
 </div>
@@ -838,14 +917,28 @@ could be unreliable.</p>
   <div class="body"><p>It actually shuffles Elements.</p>
   </div>
   <div class="details">
-  </div>
+    <div class="dox_tag_title">deprecated
 </div>
+
+
+<div class="highlight"><pre><code><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;dox_tag_detail&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="err">/div&gt;</span>
+</code></pre></div>
+
+
+
+<p></div>
+</div></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;***DOM.shuffleNodes is deprecated. &#39;</span> <span class="o">+</span>
                     <span class="s1">&#39;Use Dom.shuffleElements instead.***&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -853,7 +946,7 @@ could be unreliable.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getelement">
   <h3>
-    <a href="#dom.getelement" class="pilcrow">&#182;</a>
+    <a href="#dom.getelement" name="dom.getelement" class="pilcrow">&#182;</a>
     DOM.getElement
   </h3>
 </div>
@@ -888,18 +981,22 @@ could be unreliable.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.addAttributes2Elem
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">elem</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">e</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -907,7 +1004,7 @@ could be unreliable.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addelement">
   <h3>
-    <a href="#dom.addelement" class="pilcrow">&#182;</a>
+    <a href="#dom.addelement" name="dom.addelement" class="pilcrow">&#182;</a>
     DOM.addElement
   </h3>
 </div>
@@ -952,15 +1049,19 @@ could be unreliable.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.addAttributes2Elem
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -968,7 +1069,7 @@ could be unreliable.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addattributes2elem">
   <h3>
-    <a href="#dom.addattributes2elem" class="pilcrow">&#182;</a>
+    <a href="#dom.addattributes2elem" name="dom.addattributes2elem" class="pilcrow">&#182;</a>
     DOM.addAttributes2Elem
   </h3>
 </div>
@@ -1009,12 +1110,13 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.style
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addAttributes2Elem</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addAttributes2Elem</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">a</span><span class="p">)</span> <span class="k">return</span> <span class="nx">e</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!=</span> <span class="k">typeof</span> <span class="nx">a</span><span class="p">)</span> <span class="k">return</span> <span class="nx">e</span><span class="p">;</span>
@@ -1029,7 +1131,9 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
                 <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;style&#39;</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
                 <span class="p">}</span>
-                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="p">{</span></pre></div>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">===</span> <span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1039,12 +1143,17 @@ Attributes 'label' is ignored, attribute 'className' ('class') and
 </div>
 <p>Handle the case.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DOM.addAttributes2Elem: label attribute is not &#39;</span> <span class="o">+</span>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DOM.addAttributes2Elem: label attribute is not &#39;</span> <span class="o">+</span>
                              <span class="s1">&#39;supported. Use DOM.addLabel instead.&#39;</span><span class="p">);</span>
                 <span class="p">}</span>
                 <span class="k">else</span> <span class="p">{</span>
                     <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
-                <span class="p">}</span></pre></div>
+                <span class="p">}</span>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1068,10 +1177,14 @@ else {
 }
 -->
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">e</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1079,7 +1192,7 @@ else {
   <div class="summary">
 <div class="pilwrap" id="dom.populateselect">
   <h3>
-    <a href="#dom.populateselect" class="pilcrow">&#182;</a>
+    <a href="#dom.populateselect" name="dom.populateselect" class="pilcrow">&#182;</a>
     DOM.populateSelect
   </h3>
 </div>
@@ -1105,7 +1218,8 @@ the option.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">populateSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">select</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">populateSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">select</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">opt</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">select</span> <span class="o">||</span> <span class="o">!</span><span class="nx">list</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
@@ -1116,7 +1230,10 @@ the option.</p>
                 <span class="nx">select</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">opt</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1124,7 +1241,7 @@ the option.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.removechildrenfromnode">
   <h3>
-    <a href="#dom.removechildrenfromnode" class="pilcrow">&#182;</a>
+    <a href="#dom.removechildrenfromnode" name="dom.removechildrenfromnode" class="pilcrow">&#182;</a>
     DOM.removeChildrenFromNode
   </h3>
 </div>
@@ -1142,11 +1259,15 @@ the option.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeChildrenFromNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeChildrenFromNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">while</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">hasChildNodes</span><span class="p">())</span> <span class="p">{</span>
             <span class="nx">e</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1154,7 +1275,7 @@ the option.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.insertafter">
   <h3>
-    <a href="#dom.insertafter" class="pilcrow">&#182;</a>
+    <a href="#dom.insertafter" name="dom.insertafter" class="pilcrow">&#182;</a>
     DOM.insertAfter
   </h3>
 </div>
@@ -1166,9 +1287,13 @@ the option.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">insertAfter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">referenceNode</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">insertAfter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">referenceNode</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">referenceNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">referenceNode</span><span class="p">.</span><span class="nx">nextSibling</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1176,7 +1301,7 @@ the option.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.generateuniqueid">
   <h3>
-    <a href="#dom.generateuniqueid" class="pilcrow">&#182;</a>
+    <a href="#dom.generateuniqueid" name="dom.generateuniqueid" class="pilcrow">&#182;</a>
     DOM.generateUniqueId
   </h3>
 </div>
@@ -1189,7 +1314,8 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">generateUniqueId</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">generateUniqueId</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">search</span> <span class="o">=</span> <span class="p">[</span><span class="nb">window</span><span class="p">];</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">frames</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">search</span> <span class="o">=</span> <span class="nx">search</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">frames</span><span class="p">);</span>
@@ -1210,7 +1336,9 @@ check if the string exists.</p>
         <span class="p">}</span>
 
 
-        <span class="k">return</span> <span class="nx">scanDocuments</span><span class="p">(</span><span class="nx">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">randomInt</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">));</span></pre></div>
+        <span class="k">return</span> <span class="nx">scanDocuments</span><span class="p">(</span><span class="nx">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">randomInt</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">));</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1220,20 +1348,27 @@ check if the string exists.</p>
 </div>
 <p>return scanDocuments(prefix);</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
-<div class="pilwrap" id="get-add">
+<div class="pilwrap" id="get%2Fadd">
   <h2>
-    <a href="#get-add" class="pilcrow">&#182;</a>
+    <a href="#get%2Fadd" name="get%2Fadd" class="pilcrow">&#182;</a>
     GET/ADD
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1241,7 +1376,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getbutton">
   <h3>
-    <a href="#dom.getbutton" class="pilcrow">&#182;</a>
+    <a href="#dom.getbutton" name="dom.getbutton" class="pilcrow">&#182;</a>
     DOM.getButton
   </h3>
 </div>
@@ -1251,13 +1386,17 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">sb</span><span class="p">;</span>
         <span class="nx">sb</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">sb</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="nx">sb</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">text</span> <span class="o">||</span> <span class="s1">&#39;Send&#39;</span><span class="p">));</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">sb</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1265,7 +1404,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addbutton">
   <h3>
-    <a href="#dom.addbutton" class="pilcrow">&#182;</a>
+    <a href="#dom.addbutton" name="dom.addbutton" class="pilcrow">&#182;</a>
     DOM.addButton
   </h3>
 </div>
@@ -1275,10 +1414,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getButton</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1286,7 +1429,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getfieldset">
   <h3>
-    <a href="#dom.getfieldset" class="pilcrow">&#182;</a>
+    <a href="#dom.getfieldset" name="dom.getfieldset" class="pilcrow">&#182;</a>
     DOM.getFieldset
   </h3>
 </div>
@@ -1296,13 +1439,17 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getFieldset</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">legend</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getFieldset</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">legend</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;Legend&#39;</span><span class="p">);</span>
         <span class="nx">l</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="nx">legend</span><span class="p">));</span>
         <span class="nx">f</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">l</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">f</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1310,7 +1457,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addfieldset">
   <h3>
-    <a href="#dom.addfieldset" class="pilcrow">&#182;</a>
+    <a href="#dom.addfieldset" name="dom.addfieldset" class="pilcrow">&#182;</a>
     DOM.addFieldset
   </h3>
 </div>
@@ -1320,10 +1467,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addFieldset</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">legend</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addFieldset</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">legend</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldset</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">legend</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1331,7 +1482,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.gettextinput">
   <h3>
-    <a href="#dom.gettextinput" class="pilcrow">&#182;</a>
+    <a href="#dom.gettextinput" name="dom.gettextinput" class="pilcrow">&#182;</a>
     DOM.getTextInput
   </h3>
 </div>
@@ -1341,12 +1492,16 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getTextInput</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getTextInput</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">ti</span> <span class="o">=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">ti</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="nx">ti</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">ti</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1354,7 +1509,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addtextinput">
   <h3>
-    <a href="#dom.addtextinput" class="pilcrow">&#182;</a>
+    <a href="#dom.addtextinput" name="dom.addtextinput" class="pilcrow">&#182;</a>
     DOM.addTextInput
   </h3>
 </div>
@@ -1364,10 +1519,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addTextInput</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addTextInput</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">ti</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getTextInput</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">ti</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1375,7 +1534,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.gettextarea">
   <h3>
-    <a href="#dom.gettextarea" class="pilcrow">&#182;</a>
+    <a href="#dom.gettextarea" name="dom.gettextarea" class="pilcrow">&#182;</a>
     DOM.getTextArea
   </h3>
 </div>
@@ -1385,11 +1544,15 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getTextArea</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getTextArea</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">ta</span> <span class="o">=</span>  <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;textarea&#39;</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">ta</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">ta</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1397,7 +1560,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addtextarea">
   <h3>
-    <a href="#dom.addtextarea" class="pilcrow">&#182;</a>
+    <a href="#dom.addtextarea" name="dom.addtextarea" class="pilcrow">&#182;</a>
     DOM.addTextArea
   </h3>
 </div>
@@ -1407,10 +1570,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addTextArea</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addTextArea</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">ta</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getTextArea</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">ta</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1418,7 +1585,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getcanvas">
   <h3>
-    <a href="#dom.getcanvas" class="pilcrow">&#182;</a>
+    <a href="#dom.getcanvas" name="dom.getcanvas" class="pilcrow">&#182;</a>
     DOM.getCanvas
   </h3>
 </div>
@@ -1428,7 +1595,8 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getCanvas</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getCanvas</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
 
@@ -1439,7 +1607,10 @@ check if the string exists.</p>
 
         <span class="nx">canvas</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1447,7 +1618,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addcanvas">
   <h3>
-    <a href="#dom.addcanvas" class="pilcrow">&#182;</a>
+    <a href="#dom.addcanvas" name="dom.addcanvas" class="pilcrow">&#182;</a>
     DOM.addCanvas
   </h3>
 </div>
@@ -1457,10 +1628,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addCanvas</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addCanvas</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getCanvas</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1468,7 +1643,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getslider">
   <h3>
-    <a href="#dom.getslider" class="pilcrow">&#182;</a>
+    <a href="#dom.getslider" name="dom.getslider" class="pilcrow">&#182;</a>
     DOM.getSlider
   </h3>
 </div>
@@ -1478,12 +1653,16 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getSlider</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getSlider</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">slider</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
         <span class="nx">slider</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="nx">slider</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;range&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">slider</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1491,7 +1670,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addslider">
   <h3>
-    <a href="#dom.addslider" class="pilcrow">&#182;</a>
+    <a href="#dom.addslider" name="dom.addslider" class="pilcrow">&#182;</a>
     DOM.addSlider
   </h3>
 </div>
@@ -1501,10 +1680,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addSlider</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addSlider</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSlider</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1512,7 +1695,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getradiobutton">
   <h3>
-    <a href="#dom.getradiobutton" class="pilcrow">&#182;</a>
+    <a href="#dom.getradiobutton" name="dom.getradiobutton" class="pilcrow">&#182;</a>
     DOM.getRadioButton
   </h3>
 </div>
@@ -1522,12 +1705,16 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getRadioButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getRadioButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">radio</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
         <span class="nx">radio</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="nx">radio</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;radio&#39;</span><span class="p">);</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">radio</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1535,7 +1722,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addradiobutton">
   <h3>
-    <a href="#dom.addradiobutton" class="pilcrow">&#182;</a>
+    <a href="#dom.addradiobutton" name="dom.addradiobutton" class="pilcrow">&#182;</a>
     DOM.addRadioButton
   </h3>
 </div>
@@ -1545,10 +1732,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addRadioButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addRadioButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">rb</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRadioButton</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">rb</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1556,7 +1747,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getlabel">
   <h3>
-    <a href="#dom.getlabel" class="pilcrow">&#182;</a>
+    <a href="#dom.getlabel" name="dom.getlabel" class="pilcrow">&#182;</a>
     DOM.getLabel
   </h3>
 </div>
@@ -1566,7 +1757,8 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getLabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">forElem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">labelText</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getLabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">forElem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">labelText</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">forElem</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">);</span>
         <span class="nx">label</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
@@ -1579,7 +1771,10 @@ check if the string exists.</p>
         <span class="nx">label</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="nx">forElem</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">addAttributes2Elem</span><span class="p">(</span><span class="nx">label</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">label</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1587,7 +1782,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addlabel">
   <h3>
-    <a href="#dom.addlabel" class="pilcrow">&#182;</a>
+    <a href="#dom.addlabel" name="dom.addlabel" class="pilcrow">&#182;</a>
     DOM.addLabel
   </h3>
 </div>
@@ -1597,12 +1792,16 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addLabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">forElem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">labelText</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addLabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">forElem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">labelText</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span> <span class="o">||</span> <span class="o">!</span><span class="nx">forElem</span> <span class="o">||</span> <span class="o">!</span><span class="nx">labelText</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">(</span><span class="nx">forElem</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">labelText</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="nx">root</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">l</span><span class="p">,</span> <span class="nx">forElem</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">l</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1610,7 +1809,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getselect">
   <h3>
-    <a href="#dom.getselect" class="pilcrow">&#182;</a>
+    <a href="#dom.getselect" name="dom.getselect" class="pilcrow">&#182;</a>
     DOM.getSelect
   </h3>
 </div>
@@ -1620,9 +1819,13 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1630,7 +1833,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addselect">
   <h3>
-    <a href="#dom.addselect" class="pilcrow">&#182;</a>
+    <a href="#dom.addselect" name="dom.addselect" class="pilcrow">&#182;</a>
     DOM.addSelect
   </h3>
 </div>
@@ -1640,9 +1843,13 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addSelect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addElement</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1650,7 +1857,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getiframe">
   <h3>
-    <a href="#dom.getiframe" class="pilcrow">&#182;</a>
+    <a href="#dom.getiframe" name="dom.getiframe" class="pilcrow">&#182;</a>
     DOM.getIFrame
   </h3>
 </div>
@@ -1660,13 +1867,17 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">attributes</span> <span class="o">=</span> <span class="nx">attributes</span> <span class="o">||</span> <span class="p">{};</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span> <span class="c1">// For Firefox</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;iframe&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1674,7 +1885,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addiframe">
   <h3>
-    <a href="#dom.addiframe" class="pilcrow">&#182;</a>
+    <a href="#dom.addiframe" name="dom.addiframe" class="pilcrow">&#182;</a>
     DOM.addIFrame
   </h3>
 </div>
@@ -1684,10 +1895,14 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addIFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addIFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">ifr</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getIFrame</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">ifr</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1695,7 +1910,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addbreak">
   <h3>
-    <a href="#dom.addbreak" class="pilcrow">&#182;</a>
+    <a href="#dom.addbreak" name="dom.addbreak" class="pilcrow">&#182;</a>
     DOM.addBreak
   </h3>
 </div>
@@ -1705,10 +1920,13 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addBreak</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">rc</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addBreak</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">rc</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">RC</span> <span class="o">=</span> <span class="nx">rc</span> <span class="o">||</span> <span class="s1">&#39;br&#39;</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">br</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">RC</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">br</span><span class="p">);</span></pre></div>
+        <span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">br</span><span class="p">);</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1718,7 +1936,11 @@ check if the string exists.</p>
 </div>
 <p>return this.insertAfter(br,root);</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1726,7 +1948,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getdiv">
   <h3>
-    <a href="#dom.getdiv" class="pilcrow">&#182;</a>
+    <a href="#dom.getdiv" name="dom.getdiv" class="pilcrow">&#182;</a>
     DOM.getDiv
   </h3>
 </div>
@@ -1736,9 +1958,13 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getDiv</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getDiv</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1746,7 +1972,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.adddiv">
   <h3>
-    <a href="#dom.adddiv" class="pilcrow">&#182;</a>
+    <a href="#dom.adddiv" name="dom.adddiv" class="pilcrow">&#182;</a>
     DOM.addDiv
   </h3>
 </div>
@@ -1756,22 +1982,29 @@ check if the string exists.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addDiv</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addDiv</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
-<div class="pilwrap" id="css---js">
+<div class="pilwrap" id="css%20%2F%20js">
   <h2>
-    <a href="#css---js" class="pilcrow">&#182;</a>
+    <a href="#css%20%2F%20js" name="css%20%2F%20js" class="pilcrow">&#182;</a>
     CSS / JS
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1779,7 +2012,7 @@ check if the string exists.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addcss">
   <h3>
-    <a href="#dom.addcss" class="pilcrow">&#182;</a>
+    <a href="#dom.addcss" name="dom.addcss" class="pilcrow">&#182;</a>
     DOM.addCSS
   </h3>
 </div>
@@ -1791,7 +2024,8 @@ finally document. If it fails, returns FALSE.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addCSS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">css</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addCSS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">css</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
@@ -1803,7 +2037,10 @@ finally document. If it fails, returns FALSE.</p>
                                             <span class="p">});</span>
 
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addElement</span><span class="p">(</span><span class="s1">&#39;link&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1811,7 +2048,7 @@ finally document. If it fails, returns FALSE.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addjs">
   <h3>
-    <a href="#dom.addjs" class="pilcrow">&#182;</a>
+    <a href="#dom.addjs" name="dom.addjs" class="pilcrow">&#182;</a>
     DOM.addJS
   </h3>
 </div>
@@ -1821,7 +2058,8 @@ finally document. If it fails, returns FALSE.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addJS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">js</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addJS</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">js</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">root</span> <span class="o">=</span> <span class="nx">root</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">root</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
@@ -1833,7 +2071,10 @@ finally document. If it fails, returns FALSE.</p>
                                             <span class="p">});</span>
 
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addElement</span><span class="p">(</span><span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">attributes</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1841,7 +2082,7 @@ finally document. If it fails, returns FALSE.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.highlight">
   <h3>
-    <a href="#dom.highlight" class="pilcrow">&#182;</a>
+    <a href="#dom.highlight" name="dom.highlight" class="pilcrow">&#182;</a>
     DOM.highlight
   </h3>
 </div>
@@ -1888,14 +2129,18 @@ color as HEX value. Examples:</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.style
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">color</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1905,7 +2150,8 @@ color as HEX value. Examples:</p>
 </div>
 <p>default value is ERR</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="k">switch</span> <span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">case</span> <span class="s1">&#39;OK&#39;</span><span class="o">:</span>
             <span class="nx">color</span> <span class="o">=</span>  <span class="s1">&#39;green&#39;</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
@@ -1925,7 +2171,10 @@ color as HEX value. Examples:</p>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addBorder</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1933,7 +2182,7 @@ color as HEX value. Examples:</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addborder">
   <h3>
-    <a href="#dom.addborder" class="pilcrow">&#182;</a>
+    <a href="#dom.addborder" name="dom.addborder" class="pilcrow">&#182;</a>
     DOM.addBorder
   </h3>
 </div>
@@ -1944,7 +2193,8 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addBorder</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addBorder</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">properties</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 
@@ -1954,7 +2204,10 @@ width, and type can be specified.</p>
 
         <span class="nx">properties</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">border</span><span class="o">:</span> <span class="nx">width</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">color</span> <span class="p">};</span>
         <span class="k">return</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">properties</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1962,7 +2215,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.style">
   <h3>
-    <a href="#dom.style" class="pilcrow">&#182;</a>
+    <a href="#dom.style" name="dom.style" class="pilcrow">&#182;</a>
     DOM.style
   </h3>
 </div>
@@ -1993,7 +2246,8 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span> <span class="o">||</span> <span class="o">!</span><span class="nx">properties</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">elem</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
@@ -2004,7 +2258,10 @@ width, and type can be specified.</p>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">elem</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2012,7 +2269,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.removeclass">
   <h3>
-    <a href="#dom.removeclass" class="pilcrow">&#182;</a>
+    <a href="#dom.removeclass" name="dom.removeclass" class="pilcrow">&#182;</a>
     DOM.removeClass
   </h3>
 </div>
@@ -2043,13 +2300,17 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">regexpr</span><span class="p">,</span> <span class="nx">o</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span> <span class="o">||</span> <span class="o">!</span><span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="nx">regexpr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;(?:^|\\s)&#39;</span> <span class="o">+</span> <span class="nx">c</span> <span class="o">+</span> <span class="s1">&#39;(?!\\S)&#39;</span><span class="p">);</span>
         <span class="nx">o</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span> <span class="nx">regexpr</span><span class="p">,</span> <span class="s1">&#39;&#39;</span> <span class="p">);</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2057,7 +2318,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addclass">
   <h3>
-    <a href="#dom.addclass" class="pilcrow">&#182;</a>
+    <a href="#dom.addclass" name="dom.addclass" class="pilcrow">&#182;</a>
     DOM.addClass
   </h3>
 </div>
@@ -2091,14 +2352,18 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
         <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">||</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
         <span class="k">else</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2106,7 +2371,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getelementsbyclassname">
   <h3>
-    <a href="#dom.getelementsbyclassname" class="pilcrow">&#182;</a>
+    <a href="#dom.getelementsbyclassname" name="dom.getelementsbyclassname" class="pilcrow">&#182;</a>
     DOM.getElementsByClassName
   </h3>
 </div>
@@ -2145,13 +2410,14 @@ width, and type can be specified.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <a href="    questions/8808921/selecting-a-css-class-with-xpath
-  ">http://stackoverflow.com/
+">http://stackoverflow.com/
 </a>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getElementsByClassName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="nx">className</span><span class="p">,</span> <span class="nx">nodeName</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getElementsByClassName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="nx">className</span><span class="p">,</span> <span class="nx">nodeName</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">tag</span><span class="p">,</span> <span class="nx">seek</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">rightClass</span><span class="p">;</span>
         <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
         <span class="nx">tag</span> <span class="o">=</span> <span class="nx">nodeName</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="p">;</span>
@@ -2173,20 +2439,26 @@ width, and type can be specified.</p>
                 <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap" id="iframe">
   <h2>
-    <a href="#iframe" class="pilcrow">&#182;</a>
+    <a href="#iframe" name="iframe" class="pilcrow">&#182;</a>
     IFRAME
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2194,7 +2466,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getiframedocument">
   <h3>
-    <a href="#dom.getiframedocument" class="pilcrow">&#182;</a>
+    <a href="#dom.getiframedocument" name="dom.getiframedocument" class="pilcrow">&#182;</a>
     DOM.getIFrameDocument
   </h3>
 </div>
@@ -2220,11 +2492,15 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrameDocument</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrameDocument</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">iframe</span><span class="p">)</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
         <span class="k">return</span> <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentDocument</span> <span class="o">||</span>
             <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span> <span class="o">?</span> <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2232,7 +2508,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.getiframeanychild">
   <h3>
-    <a href="#dom.getiframeanychild" class="pilcrow">&#182;</a>
+    <a href="#dom.getiframeanychild" name="dom.getiframeanychild" class="pilcrow">&#182;</a>
     DOM.getIFrameAnyChild
   </h3>
 </div>
@@ -2259,27 +2535,34 @@ width, and type can be specified.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrameAnyChild</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">getIFrameAnyChild</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">iframe</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">contentDocument</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">iframe</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="nx">contentDocument</span> <span class="o">=</span> <span class="nx">W</span><span class="p">.</span><span class="nx">getIFrameDocument</span><span class="p">(</span><span class="nx">iframe</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span>
             <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">lastChild</span> <span class="o">||</span>
             <span class="nx">contentDocument</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap" id="right-click">
   <h2>
-    <a href="#right-click" class="pilcrow">&#182;</a>
+    <a href="#right-click" name="right-click" class="pilcrow">&#182;</a>
     RIGHT-CLICK
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2287,7 +2570,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.disablerightclick">
   <h3>
-    <a href="#dom.disablerightclick" class="pilcrow">&#182;</a>
+    <a href="#dom.disablerightclick" name="dom.disablerightclick" class="pilcrow">&#182;</a>
     DOM.disableRightClick
   </h3>
 </div>
@@ -2305,12 +2588,13 @@ width, and type can be specified.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.enableRightClick
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">layers</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">captureEvents</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">MOUSEDOWN</span><span class="p">);</span>
@@ -2330,7 +2614,10 @@ width, and type can be specified.</p>
             <span class="p">};</span>
         <span class="p">}</span>
         <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="s2">&quot;return false&quot;</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2338,7 +2625,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.enablerightclick">
   <h3>
-    <a href="#dom.enablerightclick" class="pilcrow">&#182;</a>
+    <a href="#dom.enablerightclick" name="dom.enablerightclick" class="pilcrow">&#182;</a>
     DOM.enableRightClick
   </h3>
 </div>
@@ -2358,12 +2645,13 @@ width, and type can be specified.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.disableRightClick
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">enableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">enableRightClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doc</span> <span class="o">=</span> <span class="nx">doc</span> <span class="o">||</span> <span class="nb">document</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">layers</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">releaseEvents</span><span class="p">(</span><span class="nx">Event</span><span class="p">.</span><span class="nx">MOUSEDOWN</span><span class="p">);</span>
@@ -2373,7 +2661,10 @@ width, and type can be specified.</p>
             <span class="nx">doc</span><span class="p">.</span><span class="nx">onmousedown</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="nx">doc</span><span class="p">.</span><span class="nx">oncontextmenu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2381,7 +2672,7 @@ width, and type can be specified.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.addevent">
   <h3>
-    <a href="#dom.addevent" class="pilcrow">&#182;</a>
+    <a href="#dom.addevent" name="dom.addevent" class="pilcrow">&#182;</a>
     DOM.addEvent
   </h3>
 </div>
@@ -2421,7 +2712,11 @@ width, and type can be specified.</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <a href=" ">DOM.removeEvent
+      <a href="DOM.removeEvent
+
+Kudos:
+http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
+">DOM.removeEvent
 
 Kudos:
 http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
@@ -2430,11 +2725,15 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">addEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">capture</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">capture</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">)</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
         <span class="k">else</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2442,7 +2741,7 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
   <div class="summary">
 <div class="pilwrap" id="dom.removeevent">
   <h3>
-    <a href="#dom.removeevent" class="pilcrow">&#182;</a>
+    <a href="#dom.removeevent" name="dom.removeevent" class="pilcrow">&#182;</a>
     DOM.removeEvent
   </h3>
 </div>
@@ -2483,16 +2782,20 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.addEvent
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">removeEvent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">capture</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">capture</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">)</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
         <span class="k">else</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2500,7 +2803,7 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
   <div class="summary">
 <div class="pilwrap" id="dom.disablebackbutton">
   <h3>
-    <a href="#dom.disablebackbutton" class="pilcrow">&#182;</a>
+    <a href="#dom.disablebackbutton" name="dom.disablebackbutton" class="pilcrow">&#182;</a>
     DOM.disableBackButton
   </h3>
 </div>
@@ -2531,7 +2834,8 @@ history pane and nagivate to it.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableBackButton</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableBackButton</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">disable</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">disable</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">disable</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="nx">disable</span><span class="p">;</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">disable</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
@@ -2551,7 +2855,10 @@ history pane and nagivate to it.</p>
             <span class="nx">isDisabled</span> <span class="o">=</span> <span class="nx">disable</span><span class="p">;</span>
             <span class="k">return</span> <span class="nx">disable</span><span class="p">;</span>
         <span class="p">};</span>
-    <span class="p">})(</span><span class="kc">false</span><span class="p">);</span></pre></div>
+    <span class="p">})(</span><span class="kc">false</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2559,7 +2866,7 @@ history pane and nagivate to it.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.playsound">
   <h3>
-    <a href="#dom.playsound" class="pilcrow">&#182;</a>
+    <a href="#dom.playsound" name="dom.playsound" class="pilcrow">&#182;</a>
     DOM.playSound
   </h3>
 </div>
@@ -2577,7 +2884,8 @@ history pane and nagivate to it.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">playSound</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Audio</span> <span class="o">?</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">playSound</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Audio</span> <span class="o">?</span>
         <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;JSUS.playSound: Audio tag not supported in your&#39;</span> <span class="o">+</span>
                     <span class="s1">&#39; browser. Cannot play sound.&#39;</span><span class="p">);</span>
@@ -2596,7 +2904,10 @@ history pane and nagivate to it.</p>
                <span class="s1">&#39; or audio element.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="nx">audio</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2604,7 +2915,7 @@ history pane and nagivate to it.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.onfocusin">
   <h3>
-    <a href="#dom.onfocusin" class="pilcrow">&#182;</a>
+    <a href="#dom.onfocusin" name="dom.onfocusin" class="pilcrow">&#182;</a>
     DOM.onFocusIn
   </h3>
 </div>
@@ -2628,12 +2939,13 @@ history pane and nagivate to it.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">onFocusChange
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusIn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusIn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">origCb</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="kc">null</span> <span class="o">!==</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusIn: cb must be function or null.&#39;</span><span class="p">);</span>
@@ -2648,7 +2960,10 @@ history pane and nagivate to it.</p>
         <span class="p">}</span>
 
         <span class="nx">onFocusChange</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2656,7 +2971,7 @@ history pane and nagivate to it.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.onfocusout">
   <h3>
-    <a href="#dom.onfocusout" class="pilcrow">&#182;</a>
+    <a href="#dom.onfocusout" name="dom.onfocusout" class="pilcrow">&#182;</a>
     DOM.onFocusOut
   </h3>
 </div>
@@ -2680,12 +2995,13 @@ history pane and nagivate to it.</p>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">onFocusChange
-  </span>
+</span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusOut</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusOut</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">origCb</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="kc">null</span> <span class="o">!==</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusOut: cb must be &#39;</span> <span class="o">+</span>
@@ -2700,7 +3016,11 @@ history pane and nagivate to it.</p>
             <span class="nx">cb</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">origCb</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span> <span class="p">};</span>
         <span class="p">}</span>
         <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2708,7 +3028,7 @@ history pane and nagivate to it.</p>
   <div class="summary">
 <div class="pilwrap" id="dom.blinktitle">
   <h3>
-    <a href="#dom.blinktitle" class="pilcrow">&#182;</a>
+    <a href="#dom.blinktitle" name="dom.blinktitle" class="pilcrow">&#182;</a>
     DOM.blinkTitle
   </h3>
 </div>
@@ -2735,13 +3055,13 @@ blinking is cleared.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">period</span><span class="p">,</span> <span class="nx">where</span><span class="p">,</span> <span class="nx">rotation</span><span class="p">;</span>
             <span class="nx">where</span> <span class="o">=</span> <span class="s1">&#39;JSUS.blinkTitle: &#39;</span><span class="p">;</span>
 
             <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-            <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -2765,7 +3085,10 @@ blinking is cleared.</p>
                 <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span> <span class="p">{</span>
                     <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
                             <span class="s1">&#39; array of strings or undefined.&#39;</span><span class="p">);</span>
-                <span class="p">}</span></pre></div>
+                <span class="p">}</span>
+                <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2775,7 +3098,10 @@ blinking is cleared.</p>
 </div>
 <p>Function to be executed every period.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2785,12 +3111,15 @@ blinking is cleared.</p>
 </div>
 <p>For every title wait some time, then change title.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">titles</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="nx">titles</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
                         <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
                             <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
                         <span class="p">},</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">period</span><span class="o">/</span><span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
                     <span class="p">});</span>
-                <span class="p">};</span></pre></div>
+                <span class="p">};</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2800,24 +3129,32 @@ blinking is cleared.</p>
 </div>
 <p>Perform first rotation right now.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="nx">rotation</span><span class="p">();</span>
                 <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span><span class="nx">period</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">};</span>
-    <span class="p">}(</span><span class="kc">null</span><span class="p">);</span></pre></div>
+    <span class="p">}(</span><span class="kc">null</span><span class="p">);</span>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
-<div class="pilwrap" id="helper-methods">
+<div class="pilwrap" id="helper%20methods">
   <h2>
-    <a href="#helper-methods" class="pilcrow">&#182;</a>
+    <a href="#helper%20methods" name="helper%20methods" class="pilcrow">&#182;</a>
     Helper methods
   </h2>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2825,7 +3162,7 @@ blinking is cleared.</p>
   <div class="summary">
 <div class="pilwrap" id="onfocuschange">
   <h3>
-    <a href="#onfocuschange" class="pilcrow">&#182;</a>
+    <a href="#onfocuschange" name="onfocuschange" class="pilcrow">&#182;</a>
     onFocusChange
   </h3>
 </div>
@@ -2852,13 +3189,15 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <a href=" ">http://www.w3.org/TR/page-visibility/
+      <a href="http://www.w3.org/TR/page-visibility/
+">http://www.w3.org/TR/page-visibility/
 </a>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">onFocusChange</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">onFocusChange</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">inFocusCb</span><span class="p">,</span> <span class="nx">outFocusCb</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">hidden</span><span class="p">,</span> <span class="nx">evtMap</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
@@ -2892,7 +3231,9 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 
         <span class="kd">function</span> <span class="nx">onchange</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">isHidden</span><span class="p">;</span>
-            <span class="nx">evt</span> <span class="o">=</span> <span class="nx">evt</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+            <span class="nx">evt</span> <span class="o">=</span> <span class="nx">evt</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2902,7 +3243,10 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>If event is defined as one from event Map.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span> <span class="k">in</span> <span class="nx">evtMap</span><span class="p">)</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="nx">evtMap</span><span class="p">[</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span><span class="p">];</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span> <span class="k">in</span> <span class="nx">evtMap</span><span class="p">)</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="nx">evtMap</span><span class="p">[</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span><span class="p">];</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2912,7 +3256,10 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>Or use the hidden property.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">else</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">hidden</span><span class="p">]</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">else</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">hidden</span><span class="p">]</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2922,7 +3269,8 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>Call the callback, if defined.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isHidden</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">inFocusCb</span><span class="p">)</span> <span class="nx">inFocusCb</span><span class="p">();</span> <span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isHidden</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">inFocusCb</span><span class="p">)</span> <span class="nx">inFocusCb</span><span class="p">();</span> <span class="p">}</span>
             <span class="k">else</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">outFocusCb</span><span class="p">)</span> <span class="nx">outFocusCb</span><span class="p">();</span> <span class="p">}</span>
         <span class="p">}</span>
 
@@ -2932,7 +3280,10 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">inCb</span><span class="p">)</span> <span class="nx">inFocusCb</span> <span class="o">=</span> <span class="nx">inCb</span><span class="p">;</span>
             <span class="k">else</span> <span class="nx">outFocusCb</span> <span class="o">=</span> <span class="nx">outCb</span><span class="p">;</span>
 
-            <span class="nx">onchangeCb</span> <span class="o">=</span> <span class="o">!</span><span class="nx">inFocusCb</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">outFocusCb</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nx">onchange</span><span class="p">;</span></pre></div>
+            <span class="nx">onchangeCb</span> <span class="o">=</span> <span class="o">!</span><span class="nx">inFocusCb</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">outFocusCb</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nx">onchange</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2942,13 +3293,16 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>Visibility standard detected.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">onchangeCb</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
                 <span class="k">else</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;onfocusin&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusin</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusout</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
-            <span class="p">}</span></pre></div>
+            <span class="p">}</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2958,12 +3312,16 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
 <p>All others.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="k">else</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">else</span> <span class="p">{</span>
                 <span class="nb">window</span><span class="p">.</span><span class="nx">onpageshow</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onpagehide</span>
                     <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onfocus</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onblur</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">};</span>
-    <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">?</span> <span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span></pre></div>
+    <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">?</span> <span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -2971,7 +3329,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
   <div class="summary">
 <div class="pilwrap" id="changetitle">
   <h3>
-    <a href="#changetitle" class="pilcrow">&#182;</a>
+    <a href="#changetitle" name="changetitle" class="pilcrow">&#182;</a>
     changeTitle
   </h3>
 </div>
@@ -2989,7 +3347,8 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">title</span><span class="p">))</span> <span class="p">{</span>
             <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
         <span class="p">}</span>

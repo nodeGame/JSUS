@@ -3034,23 +3034,29 @@ history pane and nagivate to it.</p>
 </div>
 
   </div>
-  <div class="body"><p>Alternates between two titles</p>
+  <div class="body"><p>Changes the title of the page in regular intervals</p>
 
-<p>Calling the function a second time clears the current
-blinking. If called without arguments the current title
-blinking is cleared.</p>
+<p>Calling the function without any arguments stops the blinking
+If an array of strings is provided, that array will be cycled through.
+If a signle string is provided, the title will alternate between '!!!'
+  and that string.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">title</span>
-      <span class="dox_type">string</span>
+      <span class="dox_tag_name">titles</span>
+      <span class="dox_type">mixed</span>
       <span>New title to blink</span>
     </div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">alternateTitle</span>
-      <span class="dox_type">string</span>
-      <span>Title to alternate</span>
+      <span class="dox_tag_name">options</span>
+      <span class="dox_type">object</span>
+      <span>Configuration object. Default:
+ {
+   stopOnFocus: false, // Stop blinking if tab is switched to
+   startOnBlur: false, // Start blinking if switching away from tab
+   period: 1000 * titles.length, // How much time to complete a cycle
+ }</span>
     </div>
   </div>
 </div>

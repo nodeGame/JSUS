@@ -125,6 +125,7 @@ describe('PARSE: ', function() {
         it('should stringify also properties of the prototype', function() {
             var strMethod;
             str_obj_proto = JSUS.stringifyAll(obj_with_proto);
+            console.log('-------- ' , str_obj_proto);
             strMethod = '{"iamamethod":"!?_function (a){\\n    return a;\\n}"}';
             str_obj_proto.should.be.eql(strMethod);
         });

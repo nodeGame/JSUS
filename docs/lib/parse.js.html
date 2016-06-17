@@ -365,12 +365,11 @@ strinfifies also functions, undefined, and null values.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringifyAll</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">spaces</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">||</span> <span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">debugger</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">||</span>
-                        <span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
-
+                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                         <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringifyAll</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
                     <span class="p">}</span>
                     <span class="k">else</span> <span class="p">{</span>

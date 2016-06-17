@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.10.12
+- `PARSE.parse()` refactor.
+
 ## 0.10.11
 - `TIME.getTimeM()`.
 

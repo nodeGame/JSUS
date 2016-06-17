@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.12.13 (current)
+- `PARSE.stringifyAll()` checks for type (fix bug with strings).
+
 ## 0.10.12
 - `PARSE.parse()` refactor.
 

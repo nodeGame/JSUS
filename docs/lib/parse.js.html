@@ -71,7 +71,7 @@
 </div>
 
 
-<p>Copyright(c) 2015 Stefano Balietti
+<p>Copyright(c) 2016 Stefano Balietti
 MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions related to parsing strings</p>
@@ -419,7 +419,7 @@ encoded by <code>PARSE.stringify</code></p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">parse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">PARSE</span><span class="p">.</span><span class="nx">parse</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
         <span class="kd">var</span> <span class="nx">len_prefix</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
             <span class="nx">len_func</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">marker_func</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
@@ -429,29 +429,21 @@ encoded by <code>PARSE.stringify</code></p>
             <span class="nx">len_inf</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">marker_inf</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
             <span class="nx">len_minus_inf</span> <span class="o">=</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">marker_minus_inf</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
-
-        <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
-
         <span class="kd">function</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
-
-            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
-                        <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-                    <span class="p">}</span>
-                    <span class="k">else</span> <span class="p">{</span>
-                        <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-                    <span class="p">}</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+                    <span class="k">else</span> <span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">o</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
                 <span class="p">}</span>
             <span class="p">}</span>
-
             <span class="k">return</span> <span class="nx">o</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="kd">function</span> <span class="nx">reviver</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">type</span><span class="p">;</span>
+            <span class="nx">type</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">len_prefix</span><span class="p">)</span> <span class="o">!==</span> <span class="nx">PARSE</span><span class="p">.</span><span class="nx">stringify_prefix</span><span class="p">)</span> <span class="p">{</span>
@@ -482,7 +474,12 @@ encoded by <code>PARSE.stringify</code></p>
             <span class="p">}</span>
             <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
         <span class="p">}</span>
-    <span class="p">};</span></pre></div>
+
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">walker</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">));</span>
+        <span class="p">};</span>
+
+    <span class="p">})();</span></pre></div>
         </td>
       </tr>
       <tr>

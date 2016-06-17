@@ -2241,14 +2241,20 @@
     /**
      * ### DOM.blinkTitle
      *
-     * Alternates between two titles
+     * Changes the title of the page in regular intervals
      *
-     * Calling the function a second time clears the current
-     * blinking. If called without arguments the current title
-     * blinking is cleared.
+     * Calling the function without any arguments stops the blinking
+     * If an array of strings is provided, that array will be cycled through.
+     * If a signle string is provided, the title will alternate between '!!!'
+     *   and that string.
      *
-     * @param {string} title New title to blink
-     * @param {string} alternateTitle Title to alternate
+     * @param {mixed} titles New title to blink
+     * @param {object} options Configuration object. Default:
+     *  {
+     *    stopOnFocus: false, // Stop blinking if tab is switched to
+     *    startOnBlur: false, // Start blinking if switching away from tab
+     *    period: 1000 * titles.length, // How much time to complete a cycle
+     *  }
      */
     DOM.blinkTitle = function(id) {
         return function(titles, options) {
@@ -2256,7 +2262,6 @@
             where = 'JSUS.blinkTitle: ';
 
             options = options || {};
-            period = options.period || 1000 * titles.length;
 
             if (options.stopOnFocus) {
                 JSUS.onFocusIn(function() {
@@ -2281,6 +2286,7 @@
                     throw new TypeError(where + 'titles must be string, ' +
                             ' array of strings or undefined.');
                 }
+                period = options.period || 1000 * titles.length;
                 // Function to be executed every period.
                 rotation = function() {
                     // For every title wait some time, then change title.
@@ -4123,13 +4129,18 @@
      * @see PARSE.stringify
      */
     PARSE.stringifyAll = function(o, spaces) {
-        for (var i in o) {
-            if (!o.hasOwnProperty(i)) {
-                if ('object' === typeof o[i]) {
-                    o[i] = PARSE.stringifyAll(o[i]);
-                }
-                else {
-                    o[i] = o[i];
+        var i;
+        if ('object' === typeof o || 'function' === typeof o) {
+            for (i in o) {
+                if (!o.hasOwnProperty(i)) {
+                    if ('object' === typeof o[i] ||
+                        'function' === typeof o[i]) {
+
+                        o[i] = PARSE.stringifyAll(o[i]);
+                    }
+                    else {
+                        o[i] = o[i];
+                    }
                 }
             }
         }

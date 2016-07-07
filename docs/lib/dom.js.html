@@ -2620,7 +2620,9 @@ history pane and nagivate to it.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
-      <span>Executed if page acquires focus</span>
+      <span class="dox_type">null</span>
+      <span>Callback executed if page acquires focus,
+  or NULL, to delete an existing callback.</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">ctx</span>
@@ -2672,7 +2674,8 @@ history pane and nagivate to it.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
-      <span>Executed if page loses focus</span>
+      <span>Callback executed if page loses focus,
+  or NULL, to delete an existing callback.</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">ctx</span>
@@ -2735,25 +2738,40 @@ If a signle string is provided, the title will alternate between '!!!'
       <span class="dox_tag_name">options</span>
       <span class="dox_type">object</span>
       <span>Optional. Configuration object. Default:
- {
-   stopOnFocus: false, // Stop blinking if tab is switched to
-   startOnBlur: false, // Start blinking if switching away from tab
-   period: 1000 * titles.length, // How much time to complete a cycle
+
+{
+   stopOnFocus: false, // Stop blinking if user switched to tab
+   stopOnTitle: document.title // The title to set after blinking is done
+   startOnBlur: false, // Start blinking if user switched  away from tab
+   period: 1000 // How much time between two blinking texts in the title
  }</span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">rotationId</span><span class="p">;</span>
         <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">period</span><span class="p">,</span> <span class="nx">where</span><span class="p">,</span> <span class="nx">rotation</span><span class="p">;</span>
             <span class="nx">where</span> <span class="o">=</span> <span class="s1">&#39;JSUS.blinkTitle: &#39;</span><span class="p">;</span>
 
             <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
 
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.stopOnTitle must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;string or undefined. Found: &#39;</span> <span class="o">+</span>
+                                    <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">);</span>
+            <span class="p">}</span>
+
             <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
                     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">();</span>
+                    <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">;</span>
+                    <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
                 <span class="p">});</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span><span class="p">)</span> <span class="p">{</span>
@@ -2775,7 +2793,8 @@ If a signle string is provided, the title will alternate between '!!!'
                     <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
                                         <span class="s1">&#39;array of strings or undefined.&#39;</span><span class="p">);</span>
                 <span class="p">}</span>
-                <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+                <span class="nx">rotationId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -2785,7 +2804,10 @@ If a signle string is provided, the title will alternate between '!!!'
 </div>
 <p>Function to be executed every period.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">[</span><span class="nx">rotationId</span><span class="p">]);</span>
+                    <span class="nx">rotationId</span> <span class="o">=</span> <span class="p">(</span><span class="nx">rotationId</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+                <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -2793,25 +2815,10 @@ If a signle string is provided, the title will alternate between '!!!'
 <div class="pilwrap">
   <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
-<p>For every title wait some time, then change title.</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>                    <span class="nx">titles</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                            <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
-                        <span class="p">},</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">period</span><span class="o">/</span><span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-                    <span class="p">});</span>
-                <span class="p">};</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
-</div>
 <p>Perform first rotation right now.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span><span class="p">();</span>
-                <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span><span class="nx">period</span><span class="p">);</span>
+                <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span> <span class="nx">period</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">};</span>
     <span class="p">})(</span><span class="kc">null</span><span class="p">);</span></pre></div>
@@ -2902,12 +2909,16 @@ Kudos: <a href='http://stackoverflow.com/questions/2167310/'>http://stackoverflo
     <div class="dox_tag_detail">
       <span class="dox_tag_name">inCb</span>
       <span class="dox_type">function</span>
-      <span>Optional. Executed if page acquires focus</span>
+      <span class="dox_type">null</span>
+      <span>Optional. Executed if page acquires focus,
+  or NULL, to delete an existing callback.</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">outCb</span>
       <span class="dox_type">function</span>
-      <span>Optional. Executed if page loses focus
+      <span class="dox_type">null</span>
+      <span>Optional. Executed if page loses focus,
+  or NULL, to delete an existing callback.
 
 Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflow.com/questions/1060008/</a>
   is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active</span>
@@ -2960,7 +2971,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>If event is defined as one from event Map.</p>
         </td>
@@ -2970,7 +2981,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
 </div>
 <p>Or use the hidden property.</p>
         </td>
@@ -2980,7 +2991,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>Call the callback, if defined.</p>
         </td>
@@ -3000,7 +3011,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>Visibility standard detected.</p>
         </td>
@@ -3016,7 +3027,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>All others.</p>
         </td>
@@ -3052,11 +3063,12 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;string&quot;</span> <span class="o">===</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">title</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
             <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;JSUS.changeTitle: title must be string.&quot;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.changeTitle: title must be string. &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;Found: &#39;</span> <span class="o">+</span> <span class="nx">title</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span>
 

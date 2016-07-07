@@ -2188,7 +2188,8 @@
      *
      * Registers a callback to be executed when the page acquires focus
      *
-     * @param {function} cb Executed if page acquires focus
+     * @param {function|null} cb Callback executed if page acquires focus,
+     *   or NULL, to delete an existing callback.
      * @param {object|function} ctx Optional. Context of execution for cb
      *
      * @see onFocusChange
@@ -2215,7 +2216,8 @@
      *
      * Registers a callback to be executed when the page loses focus
      *
-     * @param {function} cb Executed if page loses focus
+     * @param {function} cb Callback executed if page loses focus,
+     *   or NULL, to delete an existing callback.
      * @param {object|function} ctx Optional. Context of execution for cb
      *
      * @see onFocusChange
@@ -2249,23 +2251,38 @@
      *   and that string.
      *
      * @param {mixed} titles New title to blink
-     * @param {object} options Configuration object. Default:
+     * @param {object} options Optional. Configuration object. Default:
+     *
      *  {
-     *    stopOnFocus: false, // Stop blinking if tab is switched to
-     *    startOnBlur: false, // Start blinking if switching away from tab
-     *    period: 1000 * titles.length, // How much time to complete a cycle
+     *    stopOnFocus: false, // Stop blinking if user switched to tab
+     *    stopOnTitle: document.title // The title to set after blinking is done
+     *    startOnBlur: false, // Start blinking if user switched  away from tab
+     *    period: 1000 // How much time between two blinking texts in the title
      *  }
      */
-    DOM.blinkTitle = function(id) {
+    DOM.blinkTitle = (function(id) {
+        var rotationId;
         return function(titles, options) {
             var period, where, rotation;
             where = 'JSUS.blinkTitle: ';
 
             options = options || {};
 
+            if ('undefined' === typeof options.stopOnTitle) {
+                options.stopOnTitle = document.title;
+            }
+            else if ('string' !== typeof options.stopOnTitle) {
+
+                throw new TypeError(where + 'options.stopOnTitle must be ' +
+                                    'string or undefined. Found: ' +
+                                    options.stopOnTitle);
+            }
+
             if (options.stopOnFocus) {
                 JSUS.onFocusIn(function() {
                     JSUS.blinkTitle();
+                    document.title = options.stopOnTitle;
+                    onFocusChange(null, null);
                 });
             }
             if (options.startOnBlur) {
@@ -2282,27 +2299,64 @@
             if ('undefined' !== typeof titles) {
                 if ('string' === typeof titles) {
                     titles = [titles, '!!!'];
-                } else if (!JSUS.isArray(titles)) {
-                    throw new TypeError(where + 'titles must be string, ' +
-                            ' array of strings or undefined.');
                 }
-                period = options.period || 1000 * titles.length;
+                else if (!JSUS.isArray(titles)) {
+                    throw new TypeError(where + 'titles must be string, ' +
+                                        'array of strings or undefined.');
+                }
+                rotationId = 0;
+                period = options.period || 1000;
                 // Function to be executed every period.
                 rotation = function() {
-                    // For every title wait some time, then change title.
-                    titles.forEach(function(title,i) {
-                        setTimeout(function() {
-                            changeTitle(title);
-                        }, i * period/titles.length);
-                    });
+                    changeTitle(titles[rotationId]);
+                    rotationId = (rotationId+1) % titles.length;
+
+//                     // For every title wait some time, then change title.
+//                     titles.forEach(function(title, i) {
+//                         idTimeout = setTimeout(function() {
+//                             changeTitle(title);
+//                         }, i * period/titles.length);
+//                    });
                 };
                 // Perform first rotation right now.
                 rotation();
-                id = setInterval(rotation,period);
+                id = setInterval(rotation, period);
             }
         };
-    }(null);
+    })(null);
 
+
+    /**
+     * ### DOM.cookieSupport
+     *
+     * Tests for cookie support
+     *
+     * @return {boolean|null} The type of support for cookies. Values:
+     *
+     *   - null: no cookies
+     *   - false: only session cookies
+     *   - true: session cookies and persistent cookies (although
+     *       the browser might clear them on exit)
+     *
+     * Kudos: http://stackoverflow.com/questions/2167310/
+     *        how-to-show-a-message-only-if-cookies-are-disabled-in-browser
+     */
+    DOM.cookieSupport = function() {
+        var c, persist;
+        persist = true;
+        do {
+            c = 'gCStest=' + Math.floor(Math.random()*100000000);
+            document.cookie = persist ? c +
+                ';expires=Tue, 01-Jan-2030 00:00:00 GMT' : c;
+
+            if (document.cookie.indexOf(c) !== -1) {
+                document.cookie= c + ';expires=Sat, 01-Jan-2000 00:00:00 GMT';
+                return persist;
+            }
+        } while (!(persist = !persist));
+
+        return null;
+    };
 
     // ## Helper methods
 
@@ -2313,8 +2367,10 @@
      *
      * Expects only one callback, either inCb, or outCb.
      *
-     * @param {function} inCb Optional. Executed if page acquires focus
-     * @param {function} outCb Optional. Executed if page loses focus
+     * @param {function|null} inCb Optional. Executed if page acquires focus,
+     *   or NULL, to delete an existing callback.
+     * @param {function|null} outCb Optional. Executed if page loses focus,
+     *   or NULL, to delete an existing callback.
      *
      * Kudos: http://stackoverflow.com/questions/1060008/
      *   is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active
@@ -2397,11 +2453,12 @@
      * @param {string} title New title of the page
      */
     changeTitle = function(title) {
-        if ("string" === typeof(title)) {
+        if ('string' === typeof title) {
             document.title = title;
         }
         else {
-            throw new TypeError("JSUS.changeTitle: title must be string.");
+            throw new TypeError('JSUS.changeTitle: title must be string. ' +
+                                'Found: ' + title);
         }
     };
 

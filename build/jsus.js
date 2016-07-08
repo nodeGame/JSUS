@@ -2264,6 +2264,9 @@
      *          away from tab
      *     - period (1000) How much time between two blinking texts in the title
      *
+     * @return {function|null} A function to clear the blinking of texts,
+     *    or NULL, if the interval was not created yet (e.g. with startOnBlur
+     *    option), or just destroyed.
      */
     DOM.blinkTitle = (function(id) {
         var clearBlinkInterval, finalTitle, elem;
@@ -2284,7 +2287,7 @@
             var rotationId, nRepeats;
 
             if (null !== id) clearBlinkInterval();
-            if ('undefined' === typeof titles) return;
+            if ('undefined' === typeof titles) return null;
 
             where = 'JSUS.blinkTitle: ';
             options = options || {};
@@ -2340,7 +2343,7 @@
                 JSUS.onFocusOut(function() {
                     JSUS.blinkTitle(titles, options);
                 });
-                return;
+                return null;
             }
 
             // Prepare the rotation.
@@ -2368,9 +2371,11 @@
             // Perform first rotation right now.
             rotation();
             id = setInterval(rotation, period);
+
+            // Return clear function.
+            return clearBlinkInterval;
         };
     })(null);
-
 
     /**
      * ### DOM.cookieSupport

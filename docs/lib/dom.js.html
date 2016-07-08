@@ -2737,64 +2737,58 @@ If a signle string is provided, the title will alternate between '!!!'
     <div class="dox_tag_detail">
       <span class="dox_tag_name">options</span>
       <span class="dox_type">object</span>
-      <span>Optional. Configuration object. Default:
+      <span>Optional. Configuration object.
+  Accepted values and default in parenthesis:
 
-{
-   stopOnFocus: false, // Stop blinking if user switched to tab
-   stopOnTitle: document.title // The title to set after blinking is done
-   startOnBlur: false, // Start blinking if user switched  away from tab
-   period: 1000 // How much time between two blinking texts in the title
- }</span>
+
+<div class="highlight"><pre><code><span class="o">-</span> <span class="n">stopOnFocus</span> <span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Stop</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">switched</span> <span class="n">to</span> <span class="n">tab</span>
+<span class="o">-</span> <span class="n">stopOnClick</span> <span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Stop</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">clicks</span> <span class="n">on</span> <span class="n">the</span>
+    <span class="n">specified</span> <span class="n">element</span>
+<span class="o">-</span> <span class="n">finalTitle</span> <span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">title</span><span class="p">):</span> <span class="n">Title</span> <span class="n">to</span> <span class="n">set</span> <span class="n">after</span> <span class="n">blinking</span> <span class="n">is</span> <span class="n">done</span>
+<span class="o">-</span> <span class="n">repeatFor</span> <span class="p">(</span><span class="n">undefined</span><span class="p">):</span> <span class="n">Show</span> <span class="nb">each</span> <span class="n">element</span> <span class="n">in</span> <span class="n">titles</span> <span class="n">at</span> <span class="n">most</span>
+    <span class="n">N</span> <span class="nb">times</span> <span class="o">--</span> <span class="n">might</span> <span class="n">be</span> <span class="n">stopped</span> <span class="n">earlier</span> <span class="n">by</span> <span class="n">other</span> <span class="n">events</span><span class="o">.</span>
+<span class="o">-</span> <span class="n">startOnBlur</span><span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Start</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">switches</span>
+     <span class="n">away</span> <span class="n">from</span> <span class="n">tab</span>
+<span class="o">-</span> <span class="n">period</span> <span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="n">How</span> <span class="n">much</span> <span class="nb">time</span> <span class="n">between</span> <span class="n">two</span> <span class="n">blinking</span> <span class="n">texts</span> <span class="n">in</span> <span class="n">the</span> <span class="n">title</span>
+</code></pre></div>
+
+</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">null</span>
+      <span>An anchor to the interval blinking the texts,
+   or NULL, if the interval was not created yet (e.g. with startOnBlur
+   option), or just destroyed.</span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">rotationId</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">clearBlinkInterval</span><span class="p">,</span> <span class="nx">finalTitle</span><span class="p">,</span> <span class="nx">elem</span><span class="p">;</span>
+        <span class="nx">clearBlinkInterval</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="nx">id</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">elem</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clearBlinkInterval</span><span class="p">);</span>
+                <span class="nx">elem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">finalTitle</span><span class="p">;</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
         <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">period</span><span class="p">,</span> <span class="nx">where</span><span class="p">,</span> <span class="nx">rotation</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">rotationId</span><span class="p">,</span> <span class="nx">nRepeats</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="kc">null</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+
             <span class="nx">where</span> <span class="o">=</span> <span class="s1">&#39;JSUS.blinkTitle: &#39;</span><span class="p">;</span>
-
-            <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">)</span> <span class="p">{</span>
-
-                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.stopOnTitle must be &#39;</span> <span class="o">+</span>
-                                    <span class="s1">&#39;string or undefined. Found: &#39;</span> <span class="o">+</span>
-                                    <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">);</span>
-            <span class="p">}</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">();</span>
-                    <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnTitle</span><span class="p">;</span>
-                    <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
-                <span class="p">});</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusOut</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
-                <span class="p">});</span>
-                <span class="k">return</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="kc">null</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-                <span class="nx">id</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">titles</span> <span class="o">=</span> <span class="p">[</span><span class="nx">titles</span><span class="p">,</span> <span class="s1">&#39;!!!&#39;</span><span class="p">];</span>
-                <span class="p">}</span>
-                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span> <span class="p">{</span>
-                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
-                                        <span class="s1">&#39;array of strings or undefined.&#39;</span><span class="p">);</span>
-                <span class="p">}</span>
-                <span class="nx">rotationId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span><span class="p">;</span></pre></div>
+            <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -2802,12 +2796,19 @@ If a signle string is provided, the title will alternate between '!!!'
 <div class="pilwrap">
   <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
 </div>
-<p>Function to be executed every period.</p>
+<p>Option finalTitle.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                    <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">[</span><span class="nx">rotationId</span><span class="p">]);</span>
-                    <span class="nx">rotationId</span> <span class="o">=</span> <span class="p">(</span><span class="nx">rotationId</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-                <span class="p">};</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.finalTitle must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;string or undefined. Found: &#39;</span> <span class="o">+</span>
+                                    <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">);</span>
+            <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -2815,11 +2816,126 @@ If a signle string is provided, the title will alternate between '!!!'
 <div class="pilwrap">
   <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
+<p>Option repeatFor.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">nRepeats</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">isInt</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="kc">false</span> <span class="o">===</span> <span class="nx">nRepeats</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.repeatFor must be &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;a positive integer. Found: &#39;</span> <span class="o">+</span>
+                                        <span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+</div>
+<p>Option stopOnFocus.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+                    <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
+</div>
+<p>Option stopOnClick.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span> <span class="o">||</span>
+                    <span class="o">!</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)</span> <span class="p">{</span>
+
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.stopOnClick must be &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;an HTML element with method &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;addEventListener. Found: &#39;</span> <span class="o">+</span>
+                                        <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="nx">elem</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">;</span>
+                <span class="nx">elem</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clearBlinkInterval</span><span class="p">);</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+</div>
+<p>Option startOnBlur.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusOut</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+</div>
+<p>Prepare the rotation.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">titles</span> <span class="o">=</span> <span class="p">[</span><span class="nx">titles</span><span class="p">,</span> <span class="s1">&#39;!!!&#39;</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;array of strings or undefined.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">rotationId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+</div>
+<p>Function to be executed every period.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">[</span><span class="nx">rotationId</span><span class="p">]);</span>
+                <span class="nx">rotationId</span> <span class="o">=</span> <span class="p">(</span><span class="nx">rotationId</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+</div>
+<p>Control the number of times it should be cycled through.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">nRepeats</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">rotationId</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">nRepeats</span><span class="o">--</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">nRepeats</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+</div>
 <p>Perform first rotation right now.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">rotation</span><span class="p">();</span>
-                <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span> <span class="nx">period</span><span class="p">);</span>
-            <span class="p">}</span>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">rotation</span><span class="p">();</span>
+            <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span> <span class="nx">period</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">id</span><span class="p">;</span>
         <span class="p">};</span>
     <span class="p">})(</span><span class="kc">null</span><span class="p">);</span></pre></div>
         </td>
@@ -2971,7 +3087,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
 </div>
 <p>If event is defined as one from event Map.</p>
         </td>
@@ -2981,7 +3097,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
 </div>
 <p>Or use the hidden property.</p>
         </td>
@@ -2991,7 +3107,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-94" id="section-94">&#182;</a>
 </div>
 <p>Call the callback, if defined.</p>
         </td>
@@ -3011,7 +3127,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
 </div>
 <p>Visibility standard detected.</p>
         </td>
@@ -3027,7 +3143,7 @@ Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflo
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
 </div>
 <p>All others.</p>
         </td>

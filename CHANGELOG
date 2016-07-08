@@ -1,8 +1,11 @@
 # ChangeLog
 
-## 0.12.13 (current)
+## 0.11.0
 - `PARSE.stringifyAll()` checks for type (fix bug with strings).
 - `DOM.cookieSupport()` checks for cookie support in browser.
+- `DOM.blinkTitle()`
+- `DOM.playSound()`
+- `DOM.onFocusIn()` and DOM.onFocusOut()` replace onFocusChange.
 
 ## 0.10.12
 - `PARSE.parse()` refactor.

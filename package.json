@@ -22,7 +22,6 @@
     "url": "https://github.com/nodeGame/JSUS.git"
   },
   "scripts": {
-    "test": "make test",
-    "prepublish": "node bin/make.js build -a"
+    "test": "make test"
   }
 }

@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.12.0
+- Removed prepublish script in package.json that might cause errors in some systems on install.
+
 ## 0.11.0
 - `PARSE.stringifyAll()` checks for type (fix bug with strings).
 - `DOM.cookieSupport()` checks for cookie support in browser.

@@ -2031,12 +2031,12 @@ in the object, but it just returns the name.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">uniqueKey</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">prefixName</span><span class="p">,</span> <span class="nx">stop</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">name</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">duplicateCounter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">duplicateCounter</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Cannot find unique name in undefined object&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
+        <span class="nx">duplicateCounter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
         <span class="nx">prefixName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">prefixName</span> <span class="o">||</span>
                            <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000000000000000</span><span class="p">));</span>
         <span class="nx">stop</span> <span class="o">=</span> <span class="nx">stop</span> <span class="o">||</span> <span class="mi">1000000</span><span class="p">;</span>

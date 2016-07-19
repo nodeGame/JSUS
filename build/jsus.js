@@ -2575,7 +2575,7 @@
 
 /**
  * # FS
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations
@@ -2851,6 +2851,27 @@
         });
         return fdr.pipe(fdw);
     };
+
+// List of methods in FS, before removing wrench.
+// TODO: make it work!
+
+//   existsSync: [Function],
+//   resolveModuleDir: [Function],
+//   deleteIfExists: [Function],
+//   cleanDir: [Function],
+//   copyFromDir: [Function],
+//   copyFile: [Function],
+//   readdirSyncRecursive: [Function],
+//   readdirRecursive: [Function],
+//   rmdirSyncRecursive: [Function],
+//   copyDirSyncRecursive: [Function],
+//   chmodSyncRecursive: [Function],
+//   chownSyncRecursive: [Function],
+//   rmdirRecursive: [Function: rmdirRecursive],
+//   copyDirRecursive: [Function: copyDirRecursive],
+//   mkdirSyncRecursive: [Function],
+//   LineReader: [Function] }
+
 
     /**
       * ## wrench
@@ -3922,12 +3943,12 @@
      *   not found
      */
     OBJ.uniqueKey = function(obj, prefixName, stop) {
-        var name;
-        var duplicateCounter = 1;
+        var name, duplicateCounter;
         if (!obj) {
             JSUS.log('Cannot find unique name in undefined object', 'ERR');
             return;
         }
+        duplicateCounter = 1;
         prefixName = '' + (prefixName ||
                            Math.floor(Math.random()*1000000000000000));
         stop = stop || 1000000;
@@ -4869,7 +4890,7 @@
 
 /**
  * # RANDOM
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Generates pseudo-random numbers
@@ -5171,6 +5192,75 @@
 
         return x + tmp;
     };
+
+    /**
+     * ### RANDOM.randomString
+     *
+     * Creates a parametric random string
+     *
+     * @param {number} len The length of string (must be > 0). Default, 6.
+     * @param {string} chars A code specifying which sets of characters
+     *   to use. Available symbols (default 'a'):
+     *      - 'a': lower case letters
+     *      - 'A': upper case letters
+     *      - '1': digits
+     *      - '!': all remaining symbols
+     * @param {boolean} useChars If TRUE, the characters of the chars
+     *   parameter are used as they are instead of interpreted as
+     *   special symbols. Default FALSE.
+     *
+     * @return {string} result The random string
+     *
+     * Kudos to: http://stackoverflow.com/questions/10726909/
+     *           random-alpha-numeric-string-in-javascript
+     */
+    RANDOM.randomString = function(len, chars, useChars) {
+        var mask, result, i;
+        if ('undefined' !== typeof len) {
+            if ('number' !== typeof len || len < 1) {
+                throw new Error('randomString: len must a number > 0 or ' +
+                                'undefined. Found: ' + len);
+
+            }
+        }
+        if ('undefined' !== typeof chars) {
+            if ('string' !== typeof chars || chars.trim() === '') {
+                throw new Error('randomString: chars must a non-empty string ' +
+                                'or undefined. Found: ' + chars);
+
+            }
+        }
+        else if (useChars) {
+            throw new Error('randomString: useChars is TRUE, but chars ' +
+                            'is undefined.');
+
+        }
+
+        // Defaults.
+        len = len || 6;
+        chars = chars || 'a';
+
+        // Create/use mask from chars.
+        mask = '';
+        if (!useChars) {
+            if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+            if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (chars.indexOf('1') > -1) mask += '0123456789';
+            if (chars.indexOf('!') > -1) {
+                mask += '!~`@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+            }
+        }
+        else {
+            mask = chars;
+        }
+
+        i = -1, result = '';
+        for ( ; ++i < len ; ) {
+            result += mask[Math.floor(Math.random() * mask.length)];
+        }
+        return result;
+    };
+
 
     JSUS.extend(RANDOM);
 

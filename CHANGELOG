@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.13.0
+- `RANDOM.randomString()`
+
 ## 0.12.0
 - Removed prepublish script in package.json that might cause errors in some systems on install.
 

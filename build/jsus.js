@@ -5204,7 +5204,9 @@
      *      - 'a': lower case letters
      *      - 'A': upper case letters
      *      - '1': digits
-     *      - '!': all remaining symbols
+     *      - '!': all remaining symbols (excluding spaces)
+     *      - '_': spaces (it can be followed by an integer number > 0
+     *             controlling the frequency of spaces, default = 1)
      * @param {boolean} useChars If TRUE, the characters of the chars
      *   parameter are used as they are instead of interpreted as
      *   special symbols. Default FALSE.
@@ -5215,7 +5217,7 @@
      *           random-alpha-numeric-string-in-javascript
      */
     RANDOM.randomString = function(len, chars, useChars) {
-        var mask, result, i;
+        var mask, result, i, nSpaces;
         if ('undefined' !== typeof len) {
             if ('number' !== typeof len || len < 1) {
                 throw new Error('randomString: len must a number > 0 or ' +
@@ -5248,6 +5250,22 @@
             if (chars.indexOf('1') > -1) mask += '0123456789';
             if (chars.indexOf('!') > -1) {
                 mask += '!~`@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+            }
+            // Check how many spaces we should add.
+            nSpaces = chars.indexOf('_');
+            if (nSpaces > -1) {
+                nSpaces = chars.charAt(nSpaces + 1);
+                // nSpaces is integer > 0 or 1.
+                nSpaces = JSUS.isInt(nSpaces, 0) || 1;
+                if (nSpaces === 1) mask += ' ';
+                else if (nSpaces === 2) mask += '  ';
+                else if (nSpaces === 3) mask += '   ';
+                else {
+                    i = -1;
+                    for ( ; ++i < nSpaces ; ) {
+                        mask += ' ';
+                    }
+                }
             }
         }
         else {

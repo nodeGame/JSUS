@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.13.1
+- `RANDOM.randomString()` can use spaces.
+
 ## 0.13.0
 - `RANDOM.randomString()`
 

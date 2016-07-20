@@ -626,7 +626,9 @@ The expected mean of the distribution is equal to <code>Math.pow(lamba, -1)</cod
      - 'a': lower case letters
      - 'A': upper case letters
      - '1': digits
-     - '!': all remaining symbols</span>
+     - '!': all remaining symbols (excluding spaces)
+     - '_': spaces (it can be followed by an integer > 0
+            controlling the frequency of spaces, default = 1)</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">useChars</span>
@@ -648,7 +650,7 @@ Kudos to: <a href='http://stackoverflow.com/questions/10726909/'>http://stackove
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">RANDOM</span><span class="p">.</span><span class="nx">randomString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">len</span><span class="p">,</span> <span class="nx">chars</span><span class="p">,</span> <span class="nx">useChars</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">mask</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">mask</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">nSpaces</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">len</span> <span class="o">||</span> <span class="nx">len</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;randomString: len must a number &gt; 0 or &#39;</span> <span class="o">+</span>
@@ -695,6 +697,38 @@ Kudos to: <a href='http://stackoverflow.com/questions/10726909/'>http://stackove
             <span class="k">if</span> <span class="p">(</span><span class="nx">chars</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39;0123456789&#39;</span><span class="p">;</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">chars</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39;!~`@#$%^&amp;*()_+-={}[]:&quot;;\&#39;&lt;&gt;?,./|\\&#39;</span><span class="p">;</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Check how many spaces we should add.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">nSpaces</span> <span class="o">=</span> <span class="nx">chars</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">nSpaces</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">nSpaces</span> <span class="o">=</span> <span class="nx">chars</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">nSpaces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>nSpaces is integer > 0 or 1.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="nx">nSpaces</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">isInt</span><span class="p">(</span><span class="nx">nSpaces</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">nSpaces</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="p">;</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nSpaces</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39;  &#39;</span><span class="p">;</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">nSpaces</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span> <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39;   &#39;</span><span class="p">;</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+                    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">nSpaces</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">mask</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>

@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.15.0
+- `DOM.viewportSize()`.
+
 ## 0.14.0
 - Removed deprecated wrench methods. Users of FS lib should use 'fs-extra' for their purposes.
 

@@ -2409,6 +2409,38 @@
         return null;
     };
 
+    /**
+     * ### DOM.viewportSize
+     *
+     * Returns the current size of the viewport in pixels
+     *
+     * The viewport's size is the actual visible part of the browser's
+     * window. This excludes, for example, the area occupied by the
+     * JavaScript console.
+     *
+     * @param {string} dim Optional. Controls the return value ('x', or 'y')
+     *
+     * @return {object|number} An object containing x and y property, or
+     *   number specifying the value for x or y
+     *
+     * Kudos: http://stackoverflow.com/questions/3437786/
+     *        get-the-size-of-the-screen-current-web-page-and-browser-window
+     */
+    DOM.viewportSize = function(dim) {
+        var w, d, e, g, x, y;
+        if (dim && dim !== 'x' && dim !== 'y') {
+            throw new TypeError('DOM.viewportSize: dim must be "x","y" or ' +
+                                'undefined. Found: ' + dim);
+        }
+        w = window;
+        d = document;
+        e = d.documentElement;
+        g = d.getElementsByTagName('body')[0];
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+        return !dim ? {x: x, y: y} : dim === 'x' ? x : y;
+    };
+
     // ## Helper methods
 
     /**
@@ -2581,7 +2613,7 @@
  * Collection of static functions related to file system operations
  *
  * @see http://nodejs.org/api/fs.html
- * @see https://github.com/ryanmcgrath/wrench-js
+ * @see https://github.com/jprichardson/node-fs-extra
  * @see https://github.com/substack/node-resolve
  */
 (function(JSUS) {
@@ -2595,8 +2627,7 @@
 
     var resolve = require('resolve'),
     path = require('path'),
-    fs = require('fs'),
-    wrench = require('wrench');
+    fs = require('fs')
 
 
     function FS() {}
@@ -2851,43 +2882,6 @@
         });
         return fdr.pipe(fdw);
     };
-
-// List of methods in FS, before removing wrench.
-// TODO: make it work!
-
-//   existsSync: [Function],
-//   resolveModuleDir: [Function],
-//   deleteIfExists: [Function],
-//   cleanDir: [Function],
-//   copyFromDir: [Function],
-//   copyFile: [Function],
-//   readdirSyncRecursive: [Function],
-//   readdirRecursive: [Function],
-//   rmdirSyncRecursive: [Function],
-//   copyDirSyncRecursive: [Function],
-//   chmodSyncRecursive: [Function],
-//   chownSyncRecursive: [Function],
-//   rmdirRecursive: [Function: rmdirRecursive],
-//   copyDirRecursive: [Function: copyDirRecursive],
-//   mkdirSyncRecursive: [Function],
-//   LineReader: [Function] }
-
-
-    /**
-      * ## wrench
-      *
-      * FS exposes the properties of the great package wrench for
-      * performing recursive operations on directories
-      *
-      * @see https://github.com/ryanmcgrath/wrench-js
-      */
-//    (function() {
-//        for (var w in wrench) {
-//            if (wrench.hasOwnProperty(w)) {
-//                FS[w] = wrench[w];
-//            }
-//        }
-//    })();
 
     JSUS.extend(FS);
 

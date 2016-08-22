@@ -86,9 +86,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of a simple object should not affect original',
            function() {
 
-            copy_simple[0] = 'foo';
-            copy_simple[0].should.not.be.equal(array_simple[0]);
-        });
+               copy_simple[0] = 'foo';
+               copy_simple[0].should.not.be.equal(array_simple[0]);
+           });
 
         // COMPLEX
         it('should return the copy of a complex object', function() {
@@ -98,9 +98,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of a complex object should not affect original',
            function() {
 
-            copy_complex[0] = 'foo';
-            copy_complex[0].should.not.be.equal(array_complex[0]);
-        });
+               copy_complex[0] = 'foo';
+               copy_complex[0].should.not.be.equal(array_complex[0]);
+           });
 
         // NULL
         it('should return the copy of an object with NULL values', function() {
@@ -110,9 +110,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of object with NULLs should not affect original',
            function() {
 
-            copy_with_null[0] = 'foo';
-            copy_with_null[0].should.not.be.equal(array_with_null[0]);
-        });
+               copy_with_null[0] = 'foo';
+               copy_with_null[0].should.not.be.equal(array_with_null[0]);
+           });
 
         // FALSY
         it('should return the copy of an object with FALSY values', function() {
@@ -122,9 +122,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of object with FALSYs should not affect original',
            function() {
 
-            copy_falsy[0] = 'foo';
-            copy_falsy[0].should.not.be.equal(array_falsy[0]);
-        });
+               copy_falsy[0] = 'foo';
+               copy_falsy[0].should.not.be.equal(array_falsy[0]);
+           });
 
         it('cloned functions should return the same value', function() {
             copy_func[1](1,1).should.be.eql(array_func[1](1,1));
@@ -133,9 +133,9 @@ describe('OBJ: ', function() {
         it('modifying copy of object with functions should not affect original',
            function() {
 
-            copy_func[1] = 'foo';
-            copy_func[1].should.not.be.equal(array_func[1]);
-        });
+               copy_func[1] = 'foo';
+               copy_func[1].should.not.be.equal(array_func[1]);
+           });
 
 
     });
@@ -158,9 +158,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of a simple object should not affect original',
            function() {
 
-            copy_simple.a = 'foo';
-            copy_simple.a.should.not.be.equal(obj_simple.a);
-        });
+               copy_simple.a = 'foo';
+               copy_simple.a.should.not.be.equal(obj_simple.a);
+           });
 
         // COMPLEX
         it('should return the copy of a complex object', function() {
@@ -170,9 +170,9 @@ describe('OBJ: ', function() {
         it('modifying a copy of a complex object should not affect original',
            function() {
 
-            copy_complex.a = 'foo';
-            copy_complex.a.should.not.be.equal(obj_complex.a);
-        });
+               copy_complex.a = 'foo';
+               copy_complex.a.should.not.be.equal(obj_complex.a);
+           });
 
         // NULL
         it('should return the copy of an object with NULL values', function() {
@@ -182,9 +182,9 @@ describe('OBJ: ', function() {
         it('modifying copy of object with NULLs should not affect original',
            function() {
 
-            copy_with_null.a = 'foo';
-            copy_with_null.a.should.not.be.equal(obj_with_null.a);
-        });
+               copy_with_null.a = 'foo';
+               copy_with_null.a.should.not.be.equal(obj_with_null.a);
+           });
 
         // FALSY
         it('should return the copy of an object with FALSY values', function() {
@@ -194,16 +194,16 @@ describe('OBJ: ', function() {
         it('modifying copy of an object with FALSYs should not affect original',
            function() {
 
-            copy_falsy.a = 'foo';
-            copy_falsy.a.should.not.be.equal(obj_falsy.a);
-        });
+               copy_falsy.a = 'foo';
+               copy_falsy.a.should.not.be.equal(obj_falsy.a);
+           });
 
         // FUNC
         it('should return the copy of an object containing functions',
            function() {
 
-            copy_func.should.eql(obj_func);
-        });
+               copy_func.should.eql(obj_func);
+           });
 
         it('cloned functions should return the same value', function() {
             copy_func.b(1,1).should.be.eql(obj_func.b(1,1));
@@ -212,15 +212,15 @@ describe('OBJ: ', function() {
         it('modifying copy of object with functions should not affect original',
            function() {
 
-            copy_func.b = 'foo';
-            copy_func.b.should.not.be.equal(obj_func.b);
-        });
+               copy_func.b = 'foo';
+               copy_func.b.should.not.be.equal(obj_func.b);
+           });
 
         // ARRAY
         it('should return the copy of an object containing array of objs',
            function() {
                copy_with_array.should.eql(obj_with_array);
-        });
+           });
 
         it('cloned obj with array of obj should be the same', function() {
             copy_with_array.b[0].should.be.eql(obj_with_array.b[0]);
@@ -231,13 +231,13 @@ describe('OBJ: ', function() {
 
                copy_with_array.b[0] = -1;
                copy_with_array.b[0].should.not.be.equal(obj_with_array.b[0]);
-        });
+           });
 
         // ARRAY OF OBJ
         it('should return the copy of an object containing array of objs',
            function() {
                copy_with_array_of_obj.should.eql(obj_with_array_of_obj);
-        });
+           });
 
         it('cloned obj with array of obj should be the same', function() {
             copy_with_array_of_obj.b[0].a
@@ -250,7 +250,7 @@ describe('OBJ: ', function() {
                copy_with_array_of_obj.b[0].a = -1;
                copy_with_array_of_obj.b[0].a
                    .should.not.be.equal(obj_with_array_of_obj.b[0].a);
-        });
+           });
 
     });
 
@@ -265,9 +265,9 @@ describe('OBJ: ', function() {
         it('modifying copy of object with functions should not affect original',
            function() {
 
-            clone_func = function(a,b) {return a-b;};
-            clone_func.should.not.be.equal(obj_func.b);
-        });
+               clone_func = function(a,b) {return a-b;};
+               clone_func.should.not.be.equal(obj_func.b);
+           });
 
 
     });
@@ -289,8 +289,8 @@ describe('OBJ: ', function() {
         it('modifying merged object should affect any of the merging ones',
            function() {
 
-            checkClone(simple_complex, obj_simple, obj_complex);
-        });
+               checkClone(simple_complex, obj_simple, obj_complex);
+           });
     });
 
     describe('#merge() obj with NULL in SIMPLE', function() {
@@ -305,8 +305,8 @@ describe('OBJ: ', function() {
         it('modifying merged object should affect any of the merging ones',
            function() {
 
-            checkClone(simple_null, obj_simple, obj_with_null);
-        });
+               checkClone(simple_null, obj_simple, obj_with_null);
+           });
 
     });
 
@@ -322,8 +322,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(simple_array, obj_simple, obj_with_array);
-        });
+               checkClone(simple_array, obj_simple, obj_with_array);
+           });
 
     });
 
@@ -339,8 +339,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(simple_falsy, obj_simple, obj_falsy);
-        });
+               checkClone(simple_falsy, obj_simple, obj_falsy);
+           });
 
     });
 
@@ -351,8 +351,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(simple_func, obj_simple, obj_func);
-        });
+               checkClone(simple_func, obj_simple, obj_func);
+           });
 
         it('merged functions should return the same value', function() {
             simple_func.b(1,1).should.be.eql(obj_func.b(1,1));
@@ -375,8 +375,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(complex_simple, obj_complex, obj_simple);
-        });
+               checkClone(complex_simple, obj_complex, obj_simple);
+           });
     });
 
     describe('#merge() SIMPLE in obj with NULL', function() {
@@ -391,8 +391,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(null_simple, obj_with_null, obj_simple);
-        });
+               checkClone(null_simple, obj_with_null, obj_simple);
+           });
 
     });
 
@@ -408,8 +408,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(falsy_simple, obj_falsy, obj_simple);
-        });
+               checkClone(falsy_simple, obj_falsy, obj_simple);
+           });
 
     });
 
@@ -428,8 +428,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(null_complex, obj_with_null, obj_complex);
-        });
+               checkClone(null_complex, obj_with_null, obj_complex);
+           });
     });
 
     describe('#merge() COMPLEX obj in obj with FALSY values', function() {
@@ -444,8 +444,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(falsy_complex, obj_falsy, obj_complex);
-        });
+               checkClone(falsy_complex, obj_falsy, obj_complex);
+           });
     });
 
     describe('#mergeOnKey()', function() {
@@ -487,15 +487,15 @@ describe('OBJ: ', function() {
         it('should merge the second in the first object in the key value',
            function() {
 
-            o.f.should.exist;
-            o.c.value.should.exist;
-            o.a.value.should.be.eql(merge_out.a);
-            o.b.value.should.be.eql(merge_out.b);
-            o.c.value.should.be.eql(merge_out.c);
-            o.d.value.should.be.eql(merge_out.d);
-            o.e.value.should.be.eql(merge_out.e);
-            o.f.value.should.be.eql(merge_out.f);
-        });
+               o.f.should.exist;
+               o.c.value.should.exist;
+               o.a.value.should.be.eql(merge_out.a);
+               o.b.value.should.be.eql(merge_out.b);
+               o.c.value.should.be.eql(merge_out.c);
+               o.d.value.should.be.eql(merge_out.d);
+               o.e.value.should.be.eql(merge_out.e);
+               o.f.value.should.be.eql(merge_out.f);
+           });
 
         it('should not overwrite other properties', function() {
             o.a.max.should.exist;
@@ -506,8 +506,8 @@ describe('OBJ: ', function() {
         it('modifying the merged object should affect any of the merging ones',
            function() {
 
-            checkClone(o, merge_in, merge_out);
-        });
+               checkClone(o, merge_in, merge_out);
+           });
     });
 
     describe('#keys()', function() {
@@ -519,15 +519,15 @@ describe('OBJ: ', function() {
         it('should returns all the first level keys with negative number',
            function() {
 
-            JSUS.keys(obj_complex, -1).should.be.eql(['a','b','c']);
-        });
+               JSUS.keys(obj_complex, -1).should.be.eql(['a','b','c']);
+           });
 
         it('should returns all first and second level keys ("nested option")',
            function() {
 
-            JSUS.keys(obj_complex, 1)
+               JSUS.keys(obj_complex, 1)
                    .should.be.eql([ 'a', 'b', 'a', 'b', 'c', 'c' ]);
-        });
+           });
 
     });
 
@@ -557,9 +557,9 @@ describe('OBJ: ', function() {
         it('should say that "blah blah!" and "blah blah!" are equal',
            function() {
 
-            JSUS.equals('blah blah!', 'blah blah!').should.be.true;
-            JSUS.equals("blah blah!", "blah blah!").should.be.true;
-        });
+               JSUS.equals('blah blah!', 'blah blah!').should.be.true;
+               JSUS.equals("blah blah!", "blah blah!").should.be.true;
+           });
 
         it('should say that undefined and undefined are equal', function() {
             JSUS.equals(undefined, undefined).should.be.true;
@@ -663,14 +663,14 @@ describe('OBJ: ', function() {
         it('should delete first-level property from complex object',
            function() {
 
-            JSUS.deleteNestedKey('b', copy_complex);
-            copy_complex.should.be.eql({a:1, c:3});
-        });
+               JSUS.deleteNestedKey('b', copy_complex);
+               copy_complex.should.be.eql({a:1, c:3});
+           });
         it('should return FALSE when nested property does not exist',
            function() {
 
-            JSUS.deleteNestedKey('b.c.a.g', copy_complex).should.be.false;
-        });
+               JSUS.deleteNestedKey('b.c.a.g', copy_complex).should.be.false;
+           });
     });
 
     describe('#setNestedValue()', function() {
@@ -689,17 +689,19 @@ describe('OBJ: ', function() {
         it('should create new property when nested property does not exist #1',
            function() {
 
-            JSUS.setNestedValue('b.c.a', 'foo', copy_complex);
-            copy_complex.should.be.eql({a:1, b:{a:1, b:2, c: {a: 'foo'}}, c:3});
-        });
+               JSUS.setNestedValue('b.c.a', 'foo', copy_complex);
+               copy_complex.should.be.eql(
+                   {a:1, b:{a:1, b:2, c: {a: 'foo'}}, c:3}
+               );
+           });
         it('should create new property when nested property does not exist #2',
            function() {
 
-            JSUS.setNestedValue('b.c.a.g', 'foo', copy_complex);
-            copy_complex.should.be.eql(
-                {a:1, b:{a:1, b:2, c: {a: {g: 'foo'}}}, c:3}
-            );
-        });
+               JSUS.setNestedValue('b.c.a.g', 'foo', copy_complex);
+               copy_complex.should.be.eql(
+                   {a:1, b:{a:1, b:2, c: {a: {g: 'foo'}}}, c:3}
+               );
+           });
         it('should create a new object when none is passed', function() {
             JSUS.setNestedValue('b.c.a.g', 'foo')
                 .should.be.eql({b:{c: {a: {g: 'foo'}}}});
@@ -722,52 +724,52 @@ describe('OBJ: ', function() {
         it('should return undefined when a nested property does not exist',
            function() {
 
-            (JSUS.getNestedValue('b.c.a', copy_complex) === undefined)
+               (JSUS.getNestedValue('b.c.a', copy_complex) === undefined)
                    .should.be.true;
-            (JSUS.getNestedValue('b.c.a.g.h', copy_complex) === undefined)
+               (JSUS.getNestedValue('b.c.a.g.h', copy_complex) === undefined)
                    .should.be.true;
-        });
+           });
     });
 
     describe('#subboj()', function() {
         it('should return subset of first-level properties of complex object',
            function() {
 
-            JSUS.subobj(obj_complex, ['a','b']).should.be.eql({
-                a:1, b: { a:1, b:2, c: 3 }
-            });
-        });
+               JSUS.subobj(obj_complex, ['a','b']).should.be.eql({
+                   a:1, b: { a:1, b:2, c: 3 }
+               });
+           });
         it('should return subset of nested properties of complex object',
            function() {
 
-            JSUS.subobj(obj_complex,['b.c']).should.be.eql({b: {c: 3}});
-        });
+               JSUS.subobj(obj_complex,['b.c']).should.be.eql({b: {c: 3}});
+           });
         it('should return an empty object when no selected property exists',
            function() {
 
-            JSUS.subobj(obj_complex, ['b.c.a']).should.be.eql({});
-            JSUS.subobj(obj_complex, ['aa']).should.be.eql({})
-        });
+               JSUS.subobj(obj_complex, ['b.c.a']).should.be.eql({});
+               JSUS.subobj(obj_complex, ['aa']).should.be.eql({})
+           });
     });
 
     describe('#skim()', function() {
         it('should remove first-level properties from a complex object',
            function() {
 
-            JSUS.skim(obj_complex, ['a','b']).should.be.eql({c: 3});
-        });
+               JSUS.skim(obj_complex, ['a','b']).should.be.eql({c: 3});
+           });
         it('should remove nested properties from a complex object',
            function() {
 
-            JSUS.skim(obj_complex,['b.c','c'])
+               JSUS.skim(obj_complex,['b.c','c'])
                    .should.be.eql({a:1, b:{a:1, b:2}});
-        });
+           });
         it('should return copy of object when no selected property exists',
            function() {
 
-            JSUS.skim(obj_complex, ['b.c.a']).should.be.eql(obj_complex);
-            JSUS.skim(obj_complex, ['aa']).should.be.eql(obj_complex)
-        });
+               JSUS.skim(obj_complex, ['b.c.a']).should.be.eql(obj_complex);
+               JSUS.skim(obj_complex, ['aa']).should.be.eql(obj_complex)
+           });
     });
 
     describe('#mixin() complex object in simple', function() {
@@ -794,9 +796,9 @@ describe('OBJ: ', function() {
         it('modifying the properties of one object should affect the other one',
            function() {
 
-            obj_simple.b.a = 'foo';
-            obj_simple.should.eql(obj_complex);
-        });
+               obj_simple.b.a = 'foo';
+               obj_simple.should.eql(obj_complex);
+           });
 
     });
 
@@ -821,9 +823,9 @@ describe('OBJ: ', function() {
         it('should not merge overlapping keys of second into first object',
            function() {
 
-            obj_complex.should.not.eql(obj_simple);
-            obj_complex.b.should.eql({a: 1, b: 2});
-        });
+               obj_complex.should.not.eql(obj_simple);
+               obj_complex.b.should.eql({a: 1, b: 2});
+           });
 
         JSUS.mixout(obj_simple, obj_complex);
 
@@ -831,8 +833,8 @@ describe('OBJ: ', function() {
         it('should merge non-overlapping keys of second into first object',
            function() {
 
-            obj_simple.d.should.eql(obj_complex.d);
-        });
+               obj_simple.d.should.eql(obj_complex.d);
+           });
 
     });
 
@@ -857,9 +859,9 @@ describe('OBJ: ', function() {
         it('should merge overlapping keys of second into first object',
            function() {
 
-            obj_complex.should.not.eql(obj_simple);
-            obj_simple.b.should.eql(obj_complex.b);
-        });
+               obj_complex.should.not.eql(obj_simple);
+               obj_simple.b.should.eql(obj_complex.b);
+           });
 
     });
 
@@ -867,15 +869,15 @@ describe('OBJ: ', function() {
         it('should merge properties and values together, recycling the values',
            function() {
 
-            var o = JSUS.melt(['a','b','c'], [1,2]);
-            o.should.eql({ a: 1, b: 2, c: 1 });
-        });
+               var o = JSUS.melt(['a','b','c'], [1,2]);
+               o.should.eql({ a: 1, b: 2, c: 1 });
+           });
         it('should merge properties and values together, ignoring extra values',
            function() {
 
-            var o = JSUS.melt(['a','b','c'], [1,2,3,4]);
-            o.should.eql({ a: 1, b: 2, c: 3 });
-        });
+               var o = JSUS.melt(['a','b','c'], [1,2,3,4]);
+               o.should.eql({ a: 1, b: 2, c: 3 });
+           });
 
     });
 
@@ -899,9 +901,9 @@ describe('OBJ: ', function() {
         it('should return undefined if the limit of tries has been reached',
            function() {
 
-            var key = JSUS.uniqueKey({ a: 1, a1: 2, a2: 1 }, 'a', 2);
-            (key === undefined).should.be.true;
-        });
+               var key = JSUS.uniqueKey({ a: 1, a1: 2, a2: 1 }, 'a', 2);
+               (key === undefined).should.be.true;
+           });
     });
 
     describe('#augment()', function() {
@@ -914,10 +916,58 @@ describe('OBJ: ', function() {
         it('should augment properties of obj1 with obj2 on specified keys only',
            function() {
 
-            var a = { a:1, b:2, c:3 };
-            var b = { a:10, b:2, c:100, d:4 };
-            JSUS.augment(a, b, ['b', 'c', 'd']);
-            a.should.eql({ a: 1, b: [2, 2], c: [3, 100], d: [4]});
+               var a = { a:1, b:2, c:3 };
+               var b = { a:10, b:2, c:100, d:4 };
+               JSUS.augment(a, b, ['b', 'c', 'd']);
+               a.should.eql({ a: 1, b: [2, 2], c: [3, 100], d: [4]});
+           });
+    });
+
+    describe('#split()', function() {
+        it('should split an object along the dimension (level 1)', function() {
+            var a = { a:1, b:2, c: { a:10, b:2, c:100, d: { f: 1, g: 2 } } };
+            var res = JSUS.split(a, 'c');
+            res.should.eql([
+                { a: 1, b: 2, c: { a: 10 } },
+                { a: 1, b: 2, c: { b: 2 } },
+                { a: 1, b: 2, c: { c: 100 } },
+                { a: 1, b: 2, c: { d: { f: 1, g: 2 } } }
+            ]);
+        });
+        it('should split an object along the dimension (level 1)', function() {
+            var a = { a:1, b:2, c: { a:10, b:2, c: { b: { f: 1, g: 2 } } } };
+            var res = JSUS.split(a, 'c');
+            res.should.eql([
+                { a: 1, b: 2, c: { a: 10 } },
+                { a: 1, b: 2, c: { b: 2 } },
+                { a: 1, b: 2, c: { c: { b: { f: 1, g: 2 } } } }
+            ]);
+        });
+
+        it('should split an object along the dimension (level 2)', function() {
+            var a = {
+                a:1,
+                b:2,
+                c: {
+                    a:10,
+                    b:2,
+                    c: {
+                        b: {
+                            f: 1,
+                            g: 2
+                        },
+                        p: 1
+                    }
+                }
+            };
+
+            var res = JSUS.split(a, 'c', 2);
+            res.should.eql([
+                { a: 1, b: 2, c: { a: 10 } },
+                { a: 1, b: 2, c: { b: 2 } },
+                { a: 1, b: 2, c: { c: { b: { f: 1, g: 2 } } } },
+                { a: 1, b: 2, c: { c: { p: 1 } } }
+            ]);
         });
     });
 

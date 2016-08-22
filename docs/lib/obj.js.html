@@ -1935,7 +1935,6 @@ contained in the specified dimension. E.g.</p>
                 <span class="p">}</span>
                 <span class="nx">tmp</span><span class="p">[</span><span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
             <span class="p">}</span>
-
             <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">copy</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">};</span>
@@ -1952,7 +1951,7 @@ contained in the specified dimension. E.g.</p>
 <p>level == 0 means no limit.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">level</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">curLevel</span> <span class="o">&gt;=</span> <span class="nx">level</span><span class="p">))</span> <span class="p">{</span>
-                <span class="nx">makeClone</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">curLevel</span><span class="p">);</span>
+                <span class="nx">makeClone</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">keysArray</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="p">{</span>
 
@@ -1963,7 +1962,6 @@ contained in the specified dimension. E.g.</p>
 
                         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">value</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
                             <span class="p">(</span><span class="nx">level</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="nx">curLevel</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nx">level</span><span class="p">)))</span> <span class="p">{</span>
-
 
                             <span class="nx">splitValue</span><span class="p">(</span><span class="nx">value</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">out</span><span class="p">,</span> <span class="o">++</span><span class="nx">curLevel</span><span class="p">,</span> <span class="nx">curPosAsKey</span> <span class="o">?</span>
                                        <span class="nx">keysArray</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">:</span> <span class="nx">keysArray</span><span class="p">);</span>

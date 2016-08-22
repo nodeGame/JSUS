@@ -934,6 +934,7 @@ describe('OBJ: ', function() {
                 { a: 1, b: 2, c: { d: { f: 1, g: 2 } } }
             ]);
         });
+
         it('should split an object along the dimension (level 1)', function() {
             var a = { a:1, b:2, c: { a:10, b:2, c: { b: { f: 1, g: 2 } } } };
             var res = JSUS.split(a, 'c');
@@ -969,6 +970,150 @@ describe('OBJ: ', function() {
                 { a: 1, b: 2, c: { c: { p: 1 } } }
             ]);
         });
+
+        it('should split an object along the dimension (level 3)', function() {
+            var a = {
+                a:1,
+                b:2,
+                c: {
+                    a:10,
+                    b:2,
+                    c: {
+                        b: {
+                            f: 1,
+                            g: 2
+                        },
+                        p: 1
+                    }
+                }
+            };
+
+            var res = JSUS.split(a, 'c', 3);
+            res.should.eql([
+                { a: 1, b: 2, c: { a: 10 } },
+                { a: 1, b: 2, c: { b: 2 } },
+                { a: 1, b: 2, c: { c: { b: { f: 1 } } } },
+                { a: 1, b: 2, c: { c: { b: { g: 2 } } } },
+                { a: 1, b: 2, c: { c: { p: 1 } } }
+            ]);
+        });
+
+        it('should split an object along the dimension (level 1 array keys!)',
+           function() {
+
+               var a = { a:1, b:2, c: [ 10, 2, 100, { f: 1, g: 2 } ] };
+               var res = JSUS.split(a, 'c', undefined, true);
+               res.should.eql([
+                   { a: 1, b: 2, c: { '0': 10  } },
+                   { a: 1, b: 2, c: { '1': 2  } },
+                   { a: 1, b: 2, c: { '2': 100 } },
+                   { a: 1, b: 2, c: { '3': { f: 1, g: 2 } } }
+               ]);
+        });
+
+
+        it('should split an object along the dimension (level 2 array keys!)',
+           function() {
+
+               var a = { a:1, b:2, c: [ 10, 2, 100, { f: 1, g: 2 } ] };
+               var res = JSUS.split(a, 'c', 2, true);
+               res.should.eql([
+                   { a: 1, b: 2, c: { '0': 10  } },
+                   { a: 1, b: 2, c: { '1': 2  } },
+                   { a: 1, b: 2, c: { '2': 100 } },
+                   { a: 1, b: 2, c: { '3': { f: 1 } } },
+                   { a: 1, b: 2, c: { '3': { g: 2 } } }
+               ]);
+        });
+
+
+        it('should split an object along the dimension (level 3 array keys!)',
+           function() {
+               var a = {
+                   a:1,
+                   b:2,
+                   c: [
+                       10,
+                       2,
+                       {
+                           b: {
+                               f: 1,
+                               g: 2
+                           },
+                           p: 1
+                       },
+                       'a'
+                   ]
+               };
+               var res = JSUS.split(a, 'c', 3, true);
+               res.should.eql([
+                   { a: 1, b: 2, c: { '0': 10 } },
+                   { a: 1, b: 2, c: { '1': 2 } },
+                   { a: 1, b: 2, c: { '2': { b: { f: 1 } } } },
+                   { a: 1, b: 2, c: { '2': { b: { g: 2 } } } },
+                   { a: 1, b: 2, c: { '2': { p: 1 } } },
+                   { a: 1, b: 2, c: { '3': 'a' } }
+               ]);
+           });
+
+        it('should split an object along the dimension (level 1 array nokeys)',
+           function() {
+
+               var a = { a:1, b:2, c: [ 10, 2, 100, { f: 1, g: 2 } ] };
+               var res = JSUS.split(a, 'c');
+               res.should.eql([
+                   { a: 1, b: 2, c: 10  },
+                   { a: 1, b: 2, c: 2  },
+                   { a: 1, b: 2, c: 100 },
+                   { a: 1, b: 2, c: { f: 1, g: 2 } }
+               ]);
+        });
+
+
+        it('should split an object along the dimension (level 2 array nokeys)',
+           function() {
+
+               var a = { a:1, b:2, c: [ 10, 2, 100, { f: 1, g: 2 } ] };
+               var res = JSUS.split(a, 'c', 2);
+               res.should.eql([
+                   { a: 1, b: 2, c: 10  },
+                   { a: 1, b: 2, c: 2  },
+                   { a: 1, b: 2, c: 100 },
+                   { a: 1, b: 2, c: { f: 1 } },
+                   { a: 1, b: 2, c: { g: 2 } }
+               ]);
+        });
+
+
+        it('should split an object along the dimension (level 3 array nokeys)',
+           function() {
+               var a = {
+                   a:1,
+                   b:2,
+                   c: [
+                       10,
+                       2,
+                       {
+                           b: {
+                               f: 1,
+                               g: 2
+                           },
+                           p: 1
+                       }
+                   ]
+               };
+
+               var res = JSUS.split(a, 'c', 3);
+               res.should.eql([
+                   { a: 1, b: 2, c: 10 },
+                   { a: 1, b: 2, c: 2 },
+                   { a: 1, b: 2, c: { b: { f: 1 } } },
+                   { a: 1, b: 2, c: { b: { g: 2 } } },
+                   { a: 1, b: 2, c: { p: 1 } }
+               ]);
+           });
+
+
     });
 
     describe('#obj2Array()', function() {

@@ -13,7 +13,7 @@ Collection of general purpose javascript functions. JSUS helps!
 5. DOM
 6. RANDOM
 7. PARSE
-8. FS (+wrench)
+8. FS
 9. COMPATIBILITY
 10. QUEUE
 

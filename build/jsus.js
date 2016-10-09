@@ -161,7 +161,7 @@
 
 /**
  * # ARRAY
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate arrays
@@ -405,16 +405,14 @@
      * For objects, deep equality comparison is performed
      * through JSUS.equals.
      *
-     * Alias ARRAY.in_array (deprecated)
-     *
      * @param {mixed} needle The element to search in the array
      * @param {array} haystack The array to search in
      *
      * @return {boolean} TRUE, if the element is contained in the array
      *
-     *  @see JSUS.equals
+     * @see JSUS.equals
      */
-    ARRAY.inArray = ARRAY.in_array = function(needle, haystack) {
+    ARRAY.inArray = function(needle, haystack) {
         var func, i, len;
         if (!haystack) return false;
         func = JSUS.equals;
@@ -425,6 +423,12 @@
             }
         }
         return false;
+    };
+
+    ARRAY.in_array = function(needle, haystack) {
+        console.log('***ARRAY.in_array is deprecated. ' +
+                    'Use ARRAY.inArray instead.***');
+        return ARRAY.inArray(needle, haystack);
     };
 
     /**
@@ -544,7 +548,7 @@
             do {
                 idx = JSUS.randomInt(start,limit);
             }
-            while (JSUS.in_array(idx, extracted));
+            while (JSUS.inArray(idx, extracted));
             extracted.push(idx);
 
             if (idx == 1) {
@@ -785,7 +789,7 @@
      */
     ARRAY.arrayIntersect = function(a1, a2) {
         return a1.filter( function(i) {
-            return JSUS.in_array(i, a2);
+            return JSUS.inArray(i, a2);
         });
     };
 
@@ -803,7 +807,7 @@
      */
     ARRAY.arrayDiff = function(a1, a2) {
         return a1.filter( function(i) {
-            return !(JSUS.in_array(i, a2));
+            return !(JSUS.inArray(i, a2));
         });
     };
 
@@ -868,7 +872,7 @@
         if (!array) return out;
 
         ARRAY.each(array, function(e) {
-            if (!ARRAY.in_array(e, out)) {
+            if (!ARRAY.inArray(e, out)) {
                 out.push(e);
             }
         });
@@ -976,7 +980,7 @@
 /**
  * # DOM
  *
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to DOM manipulation
@@ -1005,6 +1009,8 @@
 (function(JSUS) {
 
     "use strict";
+
+    var onFocusChange, changeTitle;
 
     function DOM() {}
 
@@ -1209,7 +1215,7 @@
      * @return {boolean} TRUE, if the the object is a DOM node
      */
     DOM.isNode = function(o) {
-        if ('object' !== typeof o) return false;
+        if (!o || 'object' !== typeof o) return false;
         return 'object' === typeof Node ? o instanceof Node :
             'number' === typeof o.nodeType &&
             'string' === typeof o.nodeName;
@@ -1228,16 +1234,17 @@
      * @return {boolean} TRUE, if the the object is a DOM element
      */
     DOM.isElement = function(o) {
-        return 'object' === typeof o && o.nodeType === 1 &&
+        return o && 'object' === typeof o && o.nodeType === 1 &&
             'string' === typeof o.nodeName;
     };
 
     /**
      * ### DOM.shuffleElements
      *
-     * Shuffles the children element nodes
+     * Shuffles the order of children of a parent Element
      *
-     * All children must have the id attribute.
+     * All children *must* have the id attribute (live list elements cannot
+     * be identified by position).
      *
      * Notice the difference between Elements and Nodes:
      *
@@ -1251,20 +1258,21 @@
      */
     DOM.shuffleElements = function(parent, order) {
         var i, len, idOrder, children, child;
+        var id, forceId, missId;
         if (!JSUS.isNode(parent)) {
-            throw new TypeError('DOM.shuffleNodes: parent must node.');
+            throw new TypeError('DOM.shuffleElements: parent must node.');
         }
         if (!parent.children || !parent.children.length) {
-            JSUS.log('DOM.shuffleNodes: parent has no children.', 'ERR');
+            JSUS.log('DOM.shuffleElements: parent has no children.', 'ERR');
             return false;
         }
         if (order) {
             if (!JSUS.isArray(order)) {
-                throw new TypeError('DOM.shuffleNodes: order must array.');
+                throw new TypeError('DOM.shuffleElements: order must array.');
             }
             if (order.length !== parent.children.length) {
-                throw new Error('DOM.shuffleNodes: order length must match ' +
-                                'the number of children nodes.');
+                throw new Error('DOM.shuffleElements: order length must ' +
+                                'match the number of children nodes.');
             }
         }
 
@@ -1282,18 +1290,23 @@
         }
 
         len = children.length;
-        idOrder = [];
+        idOrder = new Array(len);
         if (!order) order = JSUS.sample(0, (len-1));
         for (i = 0 ; i < len; i++) {
-            idOrder.push(children[order[i]].id);
+            id = children[order[i]].id;
+            if ('string' !== typeof id || id === "") {
+                throw new Error('DOM.shuffleElements: no id found on ' +
+                                'child n. ' + order[i] + '.');
+            }
+            idOrder[i] = id;
         }
-        // Two fors are necessary to follow the real sequence.
-        // However parent.children is a special object, so the sequence
+
+        // Two fors are necessary to follow the real sequence (Live List).
+        // However, parent.children is a special object, so the sequence
         // could be unreliable.
         for (i = 0 ; i < len; i++) {
             parent.appendChild(children[idOrder[i]]);
         }
-
         return idOrder;
     };
 
@@ -1304,7 +1317,11 @@
      *
      * @deprecated
      */
-    DOM.shuffleNodes = DOM.shuffleElements;
+    DOM.shuffleNodes = function(parent, order) {
+        console.log('***DOM.shuffleNodes is deprecated. ' +
+                    'Use Dom.shuffleElements instead.***');
+        return DOM.shuffleElements(parent, order);
+    };
 
     /**
      * ### DOM.getElement
@@ -1802,10 +1819,13 @@
      * highlight(myDiv, '#CCC'); // grey border
      * ```
      *
+     * @param {HTMLElement} elem The element to highlight
+     * @param {string} code The type of highlight
+     *
      * @see DOM.addBorder
      * @see DOM.style
      */
-     DOM.highlight = function(elem, code) {
+    DOM.highlight = function(elem, code) {
         var color;
         if (!elem) return;
 
@@ -1911,7 +1931,8 @@
         if (!el) return;
         if (c instanceof Array) c = c.join(' ');
         else if ('string' !== typeof c) return;
-        el.className = el.className ? el.className + ' ' + c : c;
+        if (!el.className || el.className === '') el.className = c;
+        else el.className += (' ' + c);
         return el;
     };
 
@@ -2096,6 +2117,434 @@
         else return element.removeEventListener(event, func, capture);
     };
 
+    /**
+     * ### DOM.disableBackButton
+     *
+     * Disables/re-enables backward navigation in history of browsed pages
+     *
+     * When disabling, it inserts twice the current url.
+     *
+     * It will still be possible to manually select the uri in the
+     * history pane and nagivate to it.
+     *
+     * @param {boolean} disable Optional. If TRUE disables back button,
+     *   if FALSE, re-enables it. Default: TRUE.
+     *
+     * @return {boolean} The state of the back button (TRUE = disabled),
+     *   or NULL if the method is not supported by browser.
+     */
+    DOM.disableBackButton = (function(isDisabled) {
+        return function(disable) {
+            disable = 'undefined' === typeof disable ? true : disable;
+            if (disable && !isDisabled) {
+                if (!history.pushState || !history.go) {
+                    node.warn('DOM.disableBackButton: method not ' +
+                              'supported by browser.');
+                    return null;
+                }
+                history.pushState(null, null, location.href);
+                window.onpopstate = function(event) {
+                    history.go(1);
+                };
+            }
+            else if (isDisabled) {
+                window.onpopstate = null;
+            }
+            isDisabled = disable;
+            return disable;
+        };
+    })(false);
+
+    /**
+     * ### DOM.playSound
+     *
+     * Plays a sound
+     *
+     * @param {various} sound Audio tag or path to audio file to be played
+     */
+    DOM.playSound = 'undefined' === typeof Audio ?
+        function() {
+            console.log('JSUS.playSound: Audio tag not supported in your' +
+                    ' browser. Cannot play sound.');
+        } :
+        function(sound) {
+        var audio;
+        if ('string' === typeof sound) {
+            audio = new Audio(sound);
+        }
+        else if ('object' === typeof sound &&
+            'function' === typeof sound.play) {
+            audio = sound;
+        }
+        else {
+            throw new TypeError('JSUS.playSound: sound must be string' +
+               ' or audio element.');
+        }
+        audio.play();
+    };
+
+    /**
+     * ### DOM.onFocusIn
+     *
+     * Registers a callback to be executed when the page acquires focus
+     *
+     * @param {function|null} cb Callback executed if page acquires focus,
+     *   or NULL, to delete an existing callback.
+     * @param {object|function} ctx Optional. Context of execution for cb
+     *
+     * @see onFocusChange
+     */
+    DOM.onFocusIn = function(cb, ctx) {
+        var origCb;
+        if ('function' !== typeof cb && null !== cb) {
+            throw new TypeError('JSUS.onFocusIn: cb must be function or null.');
+        }
+        if (ctx) {
+            if ('object' !== typeof ctx && 'function' !== typeof ctx) {
+                throw new TypeError('JSUS.onFocusIn: ctx must be object, ' +
+                                    'function or undefined.');
+            }
+            origCb = cb;
+            cb = function() { origCb.call(ctx); };
+        }
+
+        onFocusChange(cb);
+    };
+
+    /**
+     * ### DOM.onFocusOut
+     *
+     * Registers a callback to be executed when the page loses focus
+     *
+     * @param {function} cb Callback executed if page loses focus,
+     *   or NULL, to delete an existing callback.
+     * @param {object|function} ctx Optional. Context of execution for cb
+     *
+     * @see onFocusChange
+     */
+    DOM.onFocusOut = function(cb, ctx) {
+        var origCb;
+        if ('function' !== typeof cb && null !== cb) {
+            throw new TypeError('JSUS.onFocusOut: cb must be ' +
+                                'function or null.');
+        }
+        if (ctx) {
+            if ('object' !== typeof ctx && 'function' !== typeof ctx) {
+                throw new TypeError('JSUS.onFocusIn: ctx must be object, ' +
+                                    'function or undefined.');
+            }
+            origCb = cb;
+            cb = function() { origCb.call(ctx); };
+        }
+        onFocusChange(undefined, cb);
+    };
+
+
+    /**
+     * ### DOM.blinkTitle
+     *
+     * Changes the title of the page in regular intervals
+     *
+     * Calling the function without any arguments stops the blinking
+     * If an array of strings is provided, that array will be cycled through.
+     * If a signle string is provided, the title will alternate between '!!!'
+     *   and that string.
+     *
+     * @param {mixed} titles New title to blink
+     * @param {object} options Optional. Configuration object.
+     *   Accepted values and default in parenthesis:
+     *
+     *     - stopOnFocus (false): Stop blinking if user switched to tab
+     *     - stopOnClick (false): Stop blinking if user clicks on the
+     *         specified element
+     *     - finalTitle (document.title): Title to set after blinking is done
+     *     - repeatFor (undefined): Show each element in titles at most
+     *         N times -- might be stopped earlier by other events.
+     *     - startOnBlur(false): Start blinking if user switches
+     *          away from tab
+     *     - period (1000) How much time between two blinking texts in the title
+     *
+     * @return {function|null} A function to clear the blinking of texts,
+     *    or NULL, if the interval was not created yet (e.g. with startOnBlur
+     *    option), or just destroyed.
+     */
+    DOM.blinkTitle = (function(id) {
+        var clearBlinkInterval, finalTitle, elem;
+        clearBlinkInterval = function(opts) {
+            clearInterval(id);
+            id = null;
+            if (elem) {
+                elem.removeEventListener('click', clearBlinkInterval);
+                elem = null;
+            }
+            if (finalTitle) {
+                document.title = finalTitle;
+                finalTitle = null;
+            }
+        };
+        return function(titles, options) {
+            var period, where, rotation;
+            var rotationId, nRepeats;
+
+            if (null !== id) clearBlinkInterval();
+            if ('undefined' === typeof titles) return null;
+
+            where = 'JSUS.blinkTitle: ';
+            options = options || {};
+
+            // Option finalTitle.
+            if ('undefined' === typeof options.finalTitle) {
+                finalTitle = document.title;
+            }
+            else if ('string' === typeof options.finalTitle) {
+                finalTitle = options.finalTitle;
+            }
+            else {
+                throw new TypeError(where + 'options.finalTitle must be ' +
+                                    'string or undefined. Found: ' +
+                                    options.finalTitle);
+            }
+
+            // Option repeatFor.
+            if ('undefined' !== typeof options.repeatFor) {
+                nRepeats = JSUS.isInt(options.repeatFor, 0);
+                if (false === nRepeats) {
+                    throw new TypeError(where + 'options.repeatFor must be ' +
+                                        'a positive integer. Found: ' +
+                                        options.repeatFor);
+                }
+            }
+
+            // Option stopOnFocus.
+            if (options.stopOnFocus) {
+                JSUS.onFocusIn(function() {
+                    clearBlinkInterval();
+                    onFocusChange(null, null);
+                });
+            }
+
+            // Option stopOnClick.
+            if ('undefined' !== typeof options.stopOnClick) {
+                if ('object' !== typeof options.stopOnClick ||
+                    !options.stopOnClick.addEventListener) {
+
+                    throw new TypeError(where + 'options.stopOnClick must be ' +
+                                        'an HTML element with method ' +
+                                        'addEventListener. Found: ' +
+                                        options.stopOnClick);
+                }
+                elem = options.stopOnClick;
+                elem.addEventListener('click', clearBlinkInterval);
+            }
+
+            // Option startOnBlur.
+            if (options.startOnBlur) {
+                options.startOnBlur = null;
+                JSUS.onFocusOut(function() {
+                    JSUS.blinkTitle(titles, options);
+                });
+                return null;
+            }
+
+            // Prepare the rotation.
+            if ('string' === typeof titles) {
+                titles = [titles, '!!!'];
+            }
+            else if (!JSUS.isArray(titles)) {
+                throw new TypeError(where + 'titles must be string, ' +
+                                    'array of strings or undefined.');
+            }
+            rotationId = 0;
+            period = options.period || 1000;
+            // Function to be executed every period.
+            rotation = function() {
+                changeTitle(titles[rotationId]);
+                rotationId = (rotationId+1) % titles.length;
+                // Control the number of times it should be cycled through.
+                if ('number' === typeof nRepeats) {
+                    if (rotationId === 0) {
+                        nRepeats--;
+                        if (nRepeats === 0) clearBlinkInterval();
+                    }
+                }
+            };
+            // Perform first rotation right now.
+            rotation();
+            id = setInterval(rotation, period);
+
+            // Return clear function.
+            return clearBlinkInterval;
+        };
+    })(null);
+
+    /**
+     * ### DOM.cookieSupport
+     *
+     * Tests for cookie support
+     *
+     * @return {boolean|null} The type of support for cookies. Values:
+     *
+     *   - null: no cookies
+     *   - false: only session cookies
+     *   - true: session cookies and persistent cookies (although
+     *       the browser might clear them on exit)
+     *
+     * Kudos: http://stackoverflow.com/questions/2167310/
+     *        how-to-show-a-message-only-if-cookies-are-disabled-in-browser
+     */
+    DOM.cookieSupport = function() {
+        var c, persist;
+        persist = true;
+        do {
+            c = 'gCStest=' + Math.floor(Math.random()*100000000);
+            document.cookie = persist ? c +
+                ';expires=Tue, 01-Jan-2030 00:00:00 GMT' : c;
+
+            if (document.cookie.indexOf(c) !== -1) {
+                document.cookie= c + ';expires=Sat, 01-Jan-2000 00:00:00 GMT';
+                return persist;
+            }
+        } while (!(persist = !persist));
+
+        return null;
+    };
+
+    /**
+     * ### DOM.viewportSize
+     *
+     * Returns the current size of the viewport in pixels
+     *
+     * The viewport's size is the actual visible part of the browser's
+     * window. This excludes, for example, the area occupied by the
+     * JavaScript console.
+     *
+     * @param {string} dim Optional. Controls the return value ('x', or 'y')
+     *
+     * @return {object|number} An object containing x and y property, or
+     *   number specifying the value for x or y
+     *
+     * Kudos: http://stackoverflow.com/questions/3437786/
+     *        get-the-size-of-the-screen-current-web-page-and-browser-window
+     */
+    DOM.viewportSize = function(dim) {
+        var w, d, e, g, x, y;
+        if (dim && dim !== 'x' && dim !== 'y') {
+            throw new TypeError('DOM.viewportSize: dim must be "x","y" or ' +
+                                'undefined. Found: ' + dim);
+        }
+        w = window;
+        d = document;
+        e = d.documentElement;
+        g = d.getElementsByTagName('body')[0];
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+        return !dim ? {x: x, y: y} : dim === 'x' ? x : y;
+    };
+
+    // ## Helper methods
+
+    /**
+     * ### onFocusChange
+     *
+     * Helper function for DOM.onFocusIn and DOM.onFocusOut (cross-browser)
+     *
+     * Expects only one callback, either inCb, or outCb.
+     *
+     * @param {function|null} inCb Optional. Executed if page acquires focus,
+     *   or NULL, to delete an existing callback.
+     * @param {function|null} outCb Optional. Executed if page loses focus,
+     *   or NULL, to delete an existing callback.
+     *
+     * Kudos: http://stackoverflow.com/questions/1060008/
+     *   is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active
+     *
+     * @see http://www.w3.org/TR/page-visibility/
+     */
+    onFocusChange = (function(document) {
+        var inFocusCb, outFocusCb, event, hidden, evtMap;
+
+        if (!document) {
+            return function() {
+                JSUS.log('onFocusChange: no document detected.');
+                return;
+            };
+        }
+
+        if ('hidden' in document) {
+            hidden = 'hidden';
+            event = 'visibilitychange';
+        }
+        else if ('mozHidden' in document) {
+            hidden = 'mozHidden';
+            event = 'mozvisibilitychange';
+        }
+        else if ('webkitHidden' in document) {
+            hidden = 'webkitHidden';
+            event = 'webkitvisibilitychange';
+        }
+        else if ('msHidden' in document) {
+            hidden = 'msHidden';
+            event = 'msvisibilitychange';
+        }
+
+        evtMap = {
+            focus: true, focusin: true, pageshow: true,
+            blur: false, focusout: false, pagehide: false
+        };
+
+        function onchange(evt) {
+            var isHidden;
+            evt = evt || window.event;
+            // If event is defined as one from event Map.
+            if (evt.type in evtMap) isHidden = evtMap[evt.type];
+            // Or use the hidden property.
+            else isHidden = this[hidden] ? true : false;
+            // Call the callback, if defined.
+            if (!isHidden) { if (inFocusCb) inFocusCb(); }
+            else { if (outFocusCb) outFocusCb(); }
+        }
+
+        return function(inCb, outCb) {
+            var onchangeCb;
+
+            if ('undefined' !== typeof inCb) inFocusCb = inCb;
+            else outFocusCb = outCb;
+
+            onchangeCb = !inFocusCb && !outFocusCb ? null : onchange;
+
+            // Visibility standard detected.
+            if (event) {
+                if (onchangeCb) document.addEventListener(event, onchange);
+                else document.removeEventListener(event, onchange);
+            }
+            else if ('onfocusin' in document) {
+                document.onfocusin = document.onfocusout = onchangeCb;
+            }
+            // All others.
+            else {
+                window.onpageshow = window.onpagehide
+                    = window.onfocus = window.onblur = onchangeCb;
+            }
+        };
+    })('undefined' !== typeof document ? document : null);
+
+    /**
+     * ### changeTitle
+     *
+     * Changes title of page
+     *
+     * @param {string} title New title of the page
+     */
+    changeTitle = function(title) {
+        if ('string' === typeof title) {
+            document.title = title;
+        }
+        else {
+            throw new TypeError('JSUS.changeTitle: title must be string. ' +
+                                'Found: ' + title);
+        }
+    };
+
     JSUS.extend(DOM);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
@@ -2158,13 +2607,13 @@
 
 /**
  * # FS
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations
  *
  * @see http://nodejs.org/api/fs.html
- * @see https://github.com/ryanmcgrath/wrench-js
+ * @see https://github.com/jprichardson/node-fs-extra
  * @see https://github.com/substack/node-resolve
  */
 (function(JSUS) {
@@ -2178,8 +2627,7 @@
 
     var resolve = require('resolve'),
     path = require('path'),
-    fs = require('fs'),
-    wrench = require('wrench');
+    fs = require('fs')
 
 
     function FS() {}
@@ -2399,7 +2847,7 @@
                     asq.add(i);
                     mycb = asq.getRemoveCb(i);
                 }
-                copyFile(dirIn + files[i], dirOut + files[i], mycb);
+                FS.copyFile(dirIn + files[i], dirOut + files[i], mycb);
             }
 
             if (cb) {
@@ -2411,7 +2859,7 @@
     };
 
     /**
-     * ## copyFile
+     * ## FS.copyFile
      *
      * Copies a file into another path
      *
@@ -2419,15 +2867,13 @@
      * @param {string} destFile The destination file
      * @param {function} cb Optional. If set, the callback will be executed
      *   upon success
-     * @param {function} cb Optional. A callback function to call if
-     *   no error is raised
      *
      * @return {boolean} TRUE, if the operation is successful
      *
      * @see
      *   https://github.com/jprichardson/node-fs-extra/blob/master/lib/copy.js
      */
-    var copyFile = function(srcFile, destFile, cb) {
+    FS.copyFile = function(srcFile, destFile, cb) {
         var fdr, fdw;
         fdr = fs.createReadStream(srcFile);
         fdw = fs.createWriteStream(destFile);
@@ -2437,29 +2883,13 @@
         return fdr.pipe(fdw);
     };
 
-    /**
-      * ## wrench
-      *
-      * FS exposes the properties of the great package wrench for
-      * performing recursive operations on directories
-      *
-      * @see https://github.com/ryanmcgrath/wrench-js
-      */
-    (function() {
-        for (var w in wrench) {
-            if (wrench.hasOwnProperty(w)) {
-                FS[w] = wrench[w];
-            }
-        }
-    })();
-
     JSUS.extend(FS);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
 
 /**
  * # OBJ
- * Copyright(c) 2014 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects
@@ -3396,12 +3826,12 @@
     /**
      * ## OBJ.split
      *
-     * Splits an object along a specified dimension, and returns
-     * all the copies in an array.
+     * Splits an object along a specified dimension
+     *
+     * All fragments are returned in an array (as copies).
      *
      * It creates as many new objects as the number of properties
-     * contained in the specified dimension. The object are identical,
-     * but for the given dimension, which was split. E.g.
+     * contained in the specified dimension. E.g.
      *
      * ```javascript
      *  var o = { a: 1,
@@ -3426,40 +3856,108 @@
      * ```
      *
      * @param {object} o The object to split
-     * @param {sting} key The name of the property to split
+     * @param {string} key The name of the property to split
+     * @param {number} l Optional. The recursion level. Default: 1.
+     * @param {boolean} positionAsKey Optional. If TRUE, the position
+     *   of an element in the array to split will be used as key.
      *
-     * @return {object} A copy of the object with split values
+     * @return {array} A list of copies of the object with split values
      */
-    OBJ.split = function(o, key) {
-        var out, model, splitValue;
-        if (!o) return;
-        if (!key || 'object' !== typeof o[key]) {
-            return JSUS.clone(o);
-        }
+    OBJ.split = (function() {
+        var makeClone, splitValue;
+        var model, level, _key, posAsKeys;
 
-        out = [];
-        model = JSUS.clone(o);
-        model[key] = {};
+        makeClone = function(value, out, keys) {
+            var i, len, tmp, copy;
+            copy = JSUS.clone(model);
 
-        splitValue = function(value) {
-            var i, copy;
-            for (i in value) {
-                copy = JSUS.clone(model);
-                if (value.hasOwnProperty(i)) {
-                    if ('object' === typeof value[i]) {
-                        out = out.concat(splitValue(value[i]));
-                    }
-                    else {
-                        copy[key][i] = value[i];
-                        out.push(copy);
+            switch(keys.length) {
+            case 0:
+                copy[_key] = JSUS.clone(value);
+                break;
+            case 1:
+                copy[_key][keys[0]] = JSUS.clone(value);
+                break;
+            case 2:
+                copy[_key][keys[0]] = {};
+                copy[_key][keys[0]][keys[1]] = JSUS.clone(value);
+                break;
+            default:
+                i = -1, len = keys.length-1;
+                tmp = copy[_key];
+                for ( ; ++i < len ; ) {
+                    tmp[keys[i]] = {};
+                    tmp = tmp[keys[i]];
+                }
+                tmp[keys[keys.length-1]] = JSUS.clone(value);
+            }
+            out.push(copy);
+            return;
+        };
+
+        splitValue = function(value, out, curLevel, keysArray) {
+            var i, curPosAsKey;
+
+            // level == 0 means no limit.
+            if (level && (curLevel >= level)) {
+                makeClone(value, out, keysArray);
+            }
+            else {
+
+                curPosAsKey = posAsKeys || !JSUS.isArray(value);
+
+                for (i in value) {
+                    if (value.hasOwnProperty(i)) {
+
+                        if ('object' === typeof value[i] &&
+                            (level && ((curLevel+1) <= level))) {
+
+                            splitValue(value[i], out, (curLevel+1),
+                                       curPosAsKey ?
+                                       keysArray.concat(i) : keysArray);
+                        }
+                        else {
+                            makeClone(value[i], out, curPosAsKey ?
+                                      keysArray.concat(i) : keysArray);
+                        }
                     }
                 }
             }
-            return out;
         };
 
-        return splitValue(o[key]);
-    };
+        return function(o, key, l, positionAsKey) {
+            var out;
+            if ('object' !== typeof o) {
+                throw new TypeError('JSUS.split: o must be object. Found: ' +
+                                    o);
+            }
+            if ('string' !== typeof key || key.trim() === '') {
+                throw new TypeError('JSUS.split: key must a non-empty ' +
+                                    'string. Found: ' + key);
+            }
+            if (l && ('number' !== typeof l || l < 0)) {
+                throw new TypeError('JSUS.split: l must a non-negative ' +
+                                    'number or undefined. Found: ' + l);
+            }
+            model = JSUS.clone(o);
+            if ('object' !== typeof o[key]) return [model];
+            // Init.
+            out = [];
+            _key = key;
+            model[key] = {};
+            level = 'undefined' === typeof l ? 1 : l;
+            posAsKeys = positionAsKey;
+            // Recursively compute split.
+            splitValue(o[key], out, 0, []);
+            // Cleanup.
+            _key = undefined;
+            model = undefined;
+            level = undefined;
+            posAsKeys = undefined;
+            // Return.
+            return out;
+        };
+    })();
 
     /**
      * ## OBJ.melt
@@ -3507,12 +4005,12 @@
      *   not found
      */
     OBJ.uniqueKey = function(obj, prefixName, stop) {
-        var name;
-        var duplicateCounter = 1;
+        var name, duplicateCounter;
         if (!obj) {
             JSUS.log('Cannot find unique name in undefined object', 'ERR');
             return;
         }
+        duplicateCounter = 1;
         prefixName = '' + (prefixName ||
                            Math.floor(Math.random()*1000000000000000));
         stop = stop || 1000000;
@@ -3670,7 +4168,7 @@
 
 /**
  * # PARSE
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to parsing strings
@@ -3822,13 +4320,16 @@
      * @see PARSE.stringify
      */
     PARSE.stringifyAll = function(o, spaces) {
-        for (var i in o) {
-            if (!o.hasOwnProperty(i)) {
-                if ('object' === typeof o[i]) {
-                    o[i] = PARSE.stringifyAll(o[i]);
-                }
-                else {
-                    o[i] = o[i];
+        var i;
+        if ('object' === typeof o) {
+            for (i in o) {
+                if (!o.hasOwnProperty(i)) {
+                    if ('object' === typeof o[i]) {
+                        o[i] = PARSE.stringifyAll(o[i]);
+                    }
+                    else {
+                        o[i] = o[i];
+                    }
                 }
             }
         }
@@ -3849,7 +4350,7 @@
      * @see JSON.parse
      * @see PARSE.stringify_prefix
      */
-    PARSE.parse = function(str) {
+    PARSE.parse = (function() {
 
         var len_prefix = PARSE.stringify_prefix.length,
             len_func = PARSE.marker_func.length,
@@ -3859,29 +4360,21 @@
             len_inf = PARSE.marker_inf.length,
             len_minus_inf = PARSE.marker_minus_inf.length;
 
-
-        var o = JSON.parse(str);
-        return walker(o);
-
         function walker(o) {
+            var i;
             if ('object' !== typeof o) return reviver(o);
-
-            for (var i in o) {
+            for (i in o) {
                 if (o.hasOwnProperty(i)) {
-                    if ('object' === typeof o[i]) {
-                        walker(o[i]);
-                    }
-                    else {
-                        o[i] = reviver(o[i]);
-                    }
+                    if ('object' === typeof o[i]) walker(o[i]);
+                    else o[i] = reviver(o[i]);
                 }
             }
-
             return o;
         }
 
         function reviver(value) {
-            var type = typeof value;
+            var type;
+            type = typeof value;
 
             if (type === 'string') {
                 if (value.substring(0, len_prefix) !== PARSE.stringify_prefix) {
@@ -3912,7 +4405,12 @@
             }
             return value;
         }
-    };
+
+        return function(str) {
+            return walker(JSON.parse(str));
+        };
+
+    })();
 
     /**
      * ## PARSE.isInt
@@ -4454,7 +4952,7 @@
 
 /**
  * # RANDOM
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
  * Generates pseudo-random numbers
@@ -4757,6 +5255,93 @@
         return x + tmp;
     };
 
+    /**
+     * ### RANDOM.randomString
+     *
+     * Creates a parametric random string
+     *
+     * @param {number} len The length of string (must be > 0). Default, 6.
+     * @param {string} chars A code specifying which sets of characters
+     *   to use. Available symbols (default 'a'):
+     *      - 'a': lower case letters
+     *      - 'A': upper case letters
+     *      - '1': digits
+     *      - '!': all remaining symbols (excluding spaces)
+     *      - '_': spaces (it can be followed by an integer > 0
+     *             controlling the frequency of spaces, default = 1)
+     * @param {boolean} useChars If TRUE, the characters of the chars
+     *   parameter are used as they are instead of interpreted as
+     *   special symbols. Default FALSE.
+     *
+     * @return {string} result The random string
+     *
+     * Kudos to: http://stackoverflow.com/questions/10726909/
+     *           random-alpha-numeric-string-in-javascript
+     */
+    RANDOM.randomString = function(len, chars, useChars) {
+        var mask, result, i, nSpaces;
+        if ('undefined' !== typeof len) {
+            if ('number' !== typeof len || len < 1) {
+                throw new Error('randomString: len must a number > 0 or ' +
+                                'undefined. Found: ' + len);
+
+            }
+        }
+        if ('undefined' !== typeof chars) {
+            if ('string' !== typeof chars || chars.trim() === '') {
+                throw new Error('randomString: chars must a non-empty string ' +
+                                'or undefined. Found: ' + chars);
+
+            }
+        }
+        else if (useChars) {
+            throw new Error('randomString: useChars is TRUE, but chars ' +
+                            'is undefined.');
+
+        }
+
+        // Defaults.
+        len = len || 6;
+        chars = chars || 'a';
+
+        // Create/use mask from chars.
+        mask = '';
+        if (!useChars) {
+            if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+            if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (chars.indexOf('1') > -1) mask += '0123456789';
+            if (chars.indexOf('!') > -1) {
+                mask += '!~`@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+            }
+            // Check how many spaces we should add.
+            nSpaces = chars.indexOf('_');
+            if (nSpaces > -1) {
+                nSpaces = chars.charAt(nSpaces + 1);
+                // nSpaces is integer > 0 or 1.
+                nSpaces = JSUS.isInt(nSpaces, 0) || 1;
+                if (nSpaces === 1) mask += ' ';
+                else if (nSpaces === 2) mask += '  ';
+                else if (nSpaces === 3) mask += '   ';
+                else {
+                    i = -1;
+                    for ( ; ++i < nSpaces ; ) {
+                        mask += ' ';
+                    }
+                }
+            }
+        }
+        else {
+            mask = chars;
+        }
+
+        i = -1, result = '';
+        for ( ; ++i < len ; ) {
+            result += mask[Math.floor(Math.random() * mask.length)];
+        }
+        return result;
+    };
+
+
     JSUS.extend(RANDOM);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
@@ -4824,42 +5409,63 @@
      * hh:mm:ss
      *
      * @return {string} Formatted time string hh:mm:ss
+     *
+     * @see TIME.getTimeM
      */
     TIME.getTime = function() {
-        var d = new Date();
-        var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        var d;
+        d = new Date();
+        return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    };
 
-        return time;
+    /**
+     * ## TIME.getTimeM
+     *
+     * Like TIME.getTime, but with millisecondsx
+     *
+     * String is ormatted as follows:
+     *
+     * hh:mm:ss:mls
+     *
+     * @return {string} Formatted time string hh:mm:ss:mls
+     *
+     * @see TIME.getTime
+     */
+    TIME.getTimeM = function() {
+        var d;
+        d = new Date();
+        return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() +
+            ':' + d.getMilliseconds();
     };
 
     /**
      * ## TIME.parseMilliseconds
      *
-     * Parses an integer number representing milliseconds,
-     * and returns an array of days, hours, minutes and seconds
+     * Parses milliseconds into an array of days, hours, minutes and seconds
      *
      * @param {number} ms Integer representing milliseconds
      *
      * @return {array} Milleconds parsed in days, hours, minutes, and seconds
      */
-    TIME.parseMilliseconds = function (ms) {
-        if ('number' !== typeof ms) return;
-
-        var result = [];
-        var x = ms / 1000;
+    TIME.parseMilliseconds = function(ms) {
+        var result, x, seconds, minutes, hours, days;
+        if ('number' !== typeof ms) {
+            throw new TypeError('TIME.parseMilliseconds: ms must be number.');
+        }
+        result = [];
+        x = ms / 1000;
         result[4] = x;
-        var seconds = x % 60;
+        seconds = x % 60;
         result[3] = Math.floor(seconds);
         x = x / 60;
-        var minutes = x % 60;
+        minutes = x % 60;
         result[2] = Math.floor(minutes);
         x = x / 60;
-        var hours = x % 24;
+        hours = x % 24;
         result[1] = Math.floor(hours);
         x = x / 24;
-        var days = x;
+        days = x;
         result[1] = Math.floor(days);
-
         return result;
     };
 

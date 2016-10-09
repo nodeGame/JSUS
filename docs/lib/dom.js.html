@@ -189,6 +189,36 @@
       <div class="heading h3">
         <a href="#dom.removeevent">DOM.removeEvent</a>
       </div>
+      <div class="heading h3">
+        <a href="#dom.disablebackbutton">DOM.disableBackButton</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.playsound">DOM.playSound</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.onfocusin">DOM.onFocusIn</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.onfocusout">DOM.onFocusOut</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.blinktitle">DOM.blinkTitle</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.cookiesupport">DOM.cookieSupport</a>
+      </div>
+      <div class="heading h3">
+        <a href="#dom.viewportsize">DOM.viewportSize</a>
+      </div>
+      <div class="heading h2">
+        <a href="#helper-methods">Helper methods</a>
+      </div>
+      <div class="heading h3">
+        <a href="#onfocuschange">onFocusChange</a>
+      </div>
+      <div class="heading h3">
+        <a href="#changetitle">changeTitle</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -206,7 +236,7 @@
 </div>
 
   </div>
-  <div class="body"><p>Copyright(c) 2015 Stefano Balietti
+  <div class="body"><p>Copyright(c) 2016 Stefano Balietti
 MIT Licensed</p>
 
 <p>Collection of static functions related to DOM manipulation</p>
@@ -241,6 +271,8 @@ will receive further explanation.</p>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">onFocusChange</span><span class="p">,</span> <span class="nx">changeTitle</span><span class="p">;</span>
 
     <span class="kd">function</span> <span class="nx">DOM</span><span class="p">()</span> <span class="p">{}</span></pre></div>
         </td>
@@ -635,7 +667,7 @@ Defaults %em and %strong are added.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Node</span> <span class="o">?</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Node</span> <span class="o">:</span>
             <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
@@ -675,7 +707,7 @@ the method is defined.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">isElement</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
+        <span class="k">return</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
             <span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">.</span><span class="nx">nodeName</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -691,9 +723,10 @@ the method is defined.</p>
 </div>
 
   </div>
-  <div class="body"><p>Shuffles the children element nodes</p>
+  <div class="body"><p>Shuffles the order of children of a parent Element</p>
 
-<p>All children must have the id attribute.</p>
+<p>All children <em>must</em> have the id attribute (live list elements cannot
+be identified by position).</p>
 
 <p>Notice the difference between Elements and Nodes:</p>
 
@@ -723,20 +756,21 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">idOrder</span><span class="p">,</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">child</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">forceId</span><span class="p">,</span> <span class="nx">missId</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isNode</span><span class="p">(</span><span class="nx">parent</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: parent must node.&#39;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: parent must node.&#39;</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span> <span class="o">||</span> <span class="o">!</span><span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: parent has no children.&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
+            <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: parent has no children.&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR&#39;</span><span class="p">);</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">order</span><span class="p">))</span> <span class="p">{</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order must array.&#39;</span><span class="p">);</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: order must array.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleNodes: order length must match &#39;</span> <span class="o">+</span>
-                                <span class="s1">&#39;the number of children nodes.&#39;</span><span class="p">);</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: order length must &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;match the number of children nodes.&#39;</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">}</span></pre></div>
         </td>
@@ -768,10 +802,15 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
         <span class="p">}</span>
 
         <span class="nx">len</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="nx">idOrder</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">idOrder</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">len</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">order</span><span class="p">)</span> <span class="nx">order</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">idOrder</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">);</span>
+            <span class="nx">id</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">id</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">id</span> <span class="o">||</span> <span class="nx">id</span> <span class="o">===</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;DOM.shuffleElements: no id found on &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;child n. &#39;</span> <span class="o">+</span> <span class="nx">order</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
         <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -780,14 +819,13 @@ what-is-the-difference-between-children-and-childnodes-in-javascript</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
-<p>Two fors are necessary to follow the real sequence.
-However parent.children is a special object, so the sequence
+<p>Two fors are necessary to follow the real sequence (Live List).
+However, parent.children is a special object, so the sequence
 could be unreliable.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">idOrder</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
         <span class="p">}</span>
-
         <span class="k">return</span> <span class="nx">idOrder</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -809,7 +847,11 @@ could be unreliable.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleNodes</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;***DOM.shuffleNodes is deprecated. &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;Use Dom.shuffleElements instead.***&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">shuffleElements</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">order</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1834,6 +1876,17 @@ color as HEX value. Examples:</p>
 
   </div>
   <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">elem</span>
+      <span class="dox_type">HTMLElement</span>
+      <span>The element to highlight</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">code</span>
+      <span class="dox_type">string</span>
+      <span>The type of highlight</span>
+    </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
       <span class="dox_type">DOM.addBorder</span>
@@ -1846,7 +1899,7 @@ color as HEX value. Examples:</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>     <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">color</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
         </td>
@@ -2048,7 +2101,8 @@ width, and type can be specified.</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">)</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
         <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">c</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">?</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span> <span class="o">:</span> <span class="nx">c</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">||</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
+        <span class="k">else</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -2444,6 +2498,760 @@ http://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick
         <span class="nx">capture</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">capture</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">)</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
         <span class="k">else</span> <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">capture</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.disablebackbutton">
+  <h3>
+    <a href="#dom.disablebackbutton" class="pilcrow">&#182;</a>
+    DOM.disableBackButton
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Disables/re-enables backward navigation in history of browsed pages</p>
+
+<p>When disabling, it inserts twice the current url.</p>
+
+<p>It will still be possible to manually select the uri in the
+history pane and nagivate to it.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">disable</span>
+      <span class="dox_type">boolean</span>
+      <span>Optional. If TRUE disables back button,
+  if FALSE, re-enables it. Default: TRUE.</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span>The state of the back button (TRUE = disabled),
+  or NULL if the method is not supported by browser.</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">disableBackButton</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">disable</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">disable</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">disable</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="nx">disable</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">disable</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">||</span> <span class="o">!</span><span class="nx">history</span><span class="p">.</span><span class="nx">go</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">node</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;DOM.disableBackButton: method not &#39;</span> <span class="o">+</span>
+                              <span class="s1">&#39;supported by browser.&#39;</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">onpopstate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">history</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                <span class="p">};</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">isDisabled</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">onpopstate</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">isDisabled</span> <span class="o">=</span> <span class="nx">disable</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">disable</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">})(</span><span class="kc">false</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.playsound">
+  <h3>
+    <a href="#dom.playsound" class="pilcrow">&#182;</a>
+    DOM.playSound
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Plays a sound</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">sound</span>
+      <span class="dox_type">various</span>
+      <span>Audio tag or path to audio file to be played</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">playSound</span> <span class="o">=</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">Audio</span> <span class="o">?</span>
+        <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;JSUS.playSound: Audio tag not supported in your&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39; browser. Cannot play sound.&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="o">:</span>
+        <span class="kd">function</span><span class="p">(</span><span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">audio</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">audio</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Audio</span><span class="p">(</span><span class="nx">sound</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span> <span class="o">&amp;&amp;</span>
+            <span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">sound</span><span class="p">.</span><span class="nx">play</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">audio</span> <span class="o">=</span> <span class="nx">sound</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.playSound: sound must be string&#39;</span> <span class="o">+</span>
+               <span class="s1">&#39; or audio element.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">audio</span><span class="p">.</span><span class="nx">play</span><span class="p">();</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.onfocusin">
+  <h3>
+    <a href="#dom.onfocusin" class="pilcrow">&#182;</a>
+    DOM.onFocusIn
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Registers a callback to be executed when the page acquires focus</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb</span>
+      <span class="dox_type">function</span>
+      <span class="dox_type">null</span>
+      <span>Callback executed if page acquires focus,
+  or NULL, to delete an existing callback.</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ctx</span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">function</span>
+      <span>Optional. Context of execution for cb</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">onFocusChange
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusIn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">origCb</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="kc">null</span> <span class="o">!==</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusIn: cb must be function or null.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ctx</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusIn: ctx must be object, &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;function or undefined.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">origCb</span> <span class="o">=</span> <span class="nx">cb</span><span class="p">;</span>
+            <span class="nx">cb</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">origCb</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span> <span class="p">};</span>
+        <span class="p">}</span>
+
+        <span class="nx">onFocusChange</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.onfocusout">
+  <h3>
+    <a href="#dom.onfocusout" class="pilcrow">&#182;</a>
+    DOM.onFocusOut
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Registers a callback to be executed when the page loses focus</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb</span>
+      <span class="dox_type">function</span>
+      <span>Callback executed if page loses focus,
+  or NULL, to delete an existing callback.</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ctx</span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">function</span>
+      <span>Optional. Context of execution for cb</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">onFocusChange
+  </span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">onFocusOut</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">origCb</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="kc">null</span> <span class="o">!==</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusOut: cb must be &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;function or null.&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ctx</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.onFocusIn: ctx must be object, &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;function or undefined.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">origCb</span> <span class="o">=</span> <span class="nx">cb</span><span class="p">;</span>
+            <span class="nx">cb</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">origCb</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span> <span class="p">};</span>
+        <span class="p">}</span>
+        <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.blinktitle">
+  <h3>
+    <a href="#dom.blinktitle" class="pilcrow">&#182;</a>
+    DOM.blinkTitle
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Changes the title of the page in regular intervals</p>
+
+<p>Calling the function without any arguments stops the blinking
+If an array of strings is provided, that array will be cycled through.
+If a signle string is provided, the title will alternate between '!!!'
+  and that string.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">titles</span>
+      <span class="dox_type">mixed</span>
+      <span>New title to blink</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">options</span>
+      <span class="dox_type">object</span>
+      <span>Optional. Configuration object.
+  Accepted values and default in parenthesis:
+
+
+<div class="highlight"><pre><code><span class="o">-</span> <span class="n">stopOnFocus</span> <span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Stop</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">switched</span> <span class="n">to</span> <span class="n">tab</span>
+<span class="o">-</span> <span class="n">stopOnClick</span> <span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Stop</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">clicks</span> <span class="n">on</span> <span class="n">the</span>
+    <span class="n">specified</span> <span class="n">element</span>
+<span class="o">-</span> <span class="n">finalTitle</span> <span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">title</span><span class="p">):</span> <span class="n">Title</span> <span class="n">to</span> <span class="n">set</span> <span class="n">after</span> <span class="n">blinking</span> <span class="n">is</span> <span class="n">done</span>
+<span class="o">-</span> <span class="n">repeatFor</span> <span class="p">(</span><span class="n">undefined</span><span class="p">):</span> <span class="n">Show</span> <span class="nb">each</span> <span class="n">element</span> <span class="n">in</span> <span class="n">titles</span> <span class="n">at</span> <span class="n">most</span>
+    <span class="n">N</span> <span class="nb">times</span> <span class="o">--</span> <span class="n">might</span> <span class="n">be</span> <span class="n">stopped</span> <span class="n">earlier</span> <span class="n">by</span> <span class="n">other</span> <span class="n">events</span><span class="o">.</span>
+<span class="o">-</span> <span class="n">startOnBlur</span><span class="p">(</span><span class="n">false</span><span class="p">):</span> <span class="n">Start</span> <span class="n">blinking</span> <span class="k">if</span> <span class="n">user</span> <span class="n">switches</span>
+     <span class="n">away</span> <span class="n">from</span> <span class="n">tab</span>
+<span class="o">-</span> <span class="n">period</span> <span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="n">How</span> <span class="n">much</span> <span class="nb">time</span> <span class="n">between</span> <span class="n">two</span> <span class="n">blinking</span> <span class="n">texts</span> <span class="n">in</span> <span class="n">the</span> <span class="n">title</span>
+</code></pre></div>
+
+</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">function</span>
+      <span class="dox_type">null</span>
+      <span>A function to clear the blinking of texts,
+   or NULL, if the interval was not created yet (e.g. with startOnBlur
+   option), or just destroyed.</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">blinkTitle</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">clearBlinkInterval</span><span class="p">,</span> <span class="nx">finalTitle</span><span class="p">,</span> <span class="nx">elem</span><span class="p">;</span>
+        <span class="nx">clearBlinkInterval</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="nx">id</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">elem</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clearBlinkInterval</span><span class="p">);</span>
+                <span class="nx">elem</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">finalTitle</span><span class="p">;</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">period</span><span class="p">,</span> <span class="nx">where</span><span class="p">,</span> <span class="nx">rotation</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">rotationId</span><span class="p">,</span> <span class="nx">nRepeats</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="kc">null</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">)</span> <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+
+            <span class="nx">where</span> <span class="o">=</span> <span class="s1">&#39;JSUS.blinkTitle: &#39;</span><span class="p">;</span>
+            <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+</div>
+<p>Option finalTitle.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">finalTitle</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.finalTitle must be &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;string or undefined. Found: &#39;</span> <span class="o">+</span>
+                                    <span class="nx">options</span><span class="p">.</span><span class="nx">finalTitle</span><span class="p">);</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+</div>
+<p>Option repeatFor.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">nRepeats</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">isInt</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="kc">false</span> <span class="o">===</span> <span class="nx">nRepeats</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.repeatFor must be &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;a positive integer. Found: &#39;</span> <span class="o">+</span>
+                                        <span class="nx">options</span><span class="p">.</span><span class="nx">repeatFor</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+</div>
+<p>Option stopOnFocus.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnFocus</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusIn</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+                    <span class="nx">onFocusChange</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
+</div>
+<p>Option stopOnClick.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;object&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span> <span class="o">||</span>
+                    <span class="o">!</span><span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)</span> <span class="p">{</span>
+
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;options.stopOnClick must be &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;an HTML element with method &#39;</span> <span class="o">+</span>
+                                        <span class="s1">&#39;addEventListener. Found: &#39;</span> <span class="o">+</span>
+                                        <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="nx">elem</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stopOnClick</span><span class="p">;</span>
+                <span class="nx">elem</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clearBlinkInterval</span><span class="p">);</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+</div>
+<p>Option startOnBlur.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">options</span><span class="p">.</span><span class="nx">startOnBlur</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">onFocusOut</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">JSUS</span><span class="p">.</span><span class="nx">blinkTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+</div>
+<p>Prepare the rotation.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">titles</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">titles</span> <span class="o">=</span> <span class="p">[</span><span class="nx">titles</span><span class="p">,</span> <span class="s1">&#39;!!!&#39;</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="nx">where</span> <span class="o">+</span> <span class="s1">&#39;titles must be string, &#39;</span> <span class="o">+</span>
+                                    <span class="s1">&#39;array of strings or undefined.&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">rotationId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">period</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">period</span> <span class="o">||</span> <span class="mi">1000</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+</div>
+<p>Function to be executed every period.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">rotation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">changeTitle</span><span class="p">(</span><span class="nx">titles</span><span class="p">[</span><span class="nx">rotationId</span><span class="p">]);</span>
+                <span class="nx">rotationId</span> <span class="o">=</span> <span class="p">(</span><span class="nx">rotationId</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+</div>
+<p>Control the number of times it should be cycled through.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">nRepeats</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">rotationId</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">nRepeats</span><span class="o">--</span><span class="p">;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">nRepeats</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">clearBlinkInterval</span><span class="p">();</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+</div>
+<p>Perform first rotation right now.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">rotation</span><span class="p">();</span>
+            <span class="nx">id</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">rotation</span><span class="p">,</span> <span class="nx">period</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+</div>
+<p>Return clear function.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">return</span> <span class="nx">clearBlinkInterval</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">})(</span><span class="kc">null</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.cookiesupport">
+  <h3>
+    <a href="#dom.cookiesupport" class="pilcrow">&#182;</a>
+    DOM.cookieSupport
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Tests for cookie support</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">boolean</span>
+      <span class="dox_type">null</span>
+      <span>The type of support for cookies. Values:
+
+<ul>
+<li>null: no cookies</li>
+<li>false: only session cookies</li>
+<li>true: session cookies and persistent cookies (although
+  the browser might clear them on exit)</li>
+</ul>
+
+Kudos: <a href='http://stackoverflow.com/questions/2167310/'>http://stackoverflow.com/questions/2167310/</a>
+       how-to-show-a-message-only-if-cookies-are-disabled-in-browser</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">cookieSupport</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">persist</span><span class="p">;</span>
+        <span class="nx">persist</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="nx">c</span> <span class="o">=</span> <span class="s1">&#39;gCStest=&#39;</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100000000</span><span class="p">);</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span> <span class="o">=</span> <span class="nx">persist</span> <span class="o">?</span> <span class="nx">c</span> <span class="o">+</span>
+                <span class="s1">&#39;;expires=Tue, 01-Jan-2030 00:00:00 GMT&#39;</span> <span class="o">:</span> <span class="nx">c</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="o">=</span> <span class="nx">c</span> <span class="o">+</span> <span class="s1">&#39;;expires=Sat, 01-Jan-2000 00:00:00 GMT&#39;</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">persist</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">persist</span> <span class="o">=</span> <span class="o">!</span><span class="nx">persist</span><span class="p">));</span>
+
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dom.viewportsize">
+  <h3>
+    <a href="#dom.viewportsize" class="pilcrow">&#182;</a>
+    DOM.viewportSize
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Returns the current size of the viewport in pixels</p>
+
+<p>The viewport's size is the actual visible part of the browser's
+window. This excludes, for example, the area occupied by the
+JavaScript console.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">dim</span>
+      <span class="dox_type">string</span>
+      <span>Optional. Controls the return value ('x', or 'y')</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span class="dox_type">number</span>
+      <span>An object containing x and y property, or
+  number specifying the value for x or y
+
+Kudos: <a href='http://stackoverflow.com/questions/3437786/'>http://stackoverflow.com/questions/3437786/</a>
+       get-the-size-of-the-screen-current-web-page-and-browser-window</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">DOM</span><span class="p">.</span><span class="nx">viewportSize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dim</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">d</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">g</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">dim</span> <span class="o">&amp;&amp;</span> <span class="nx">dim</span> <span class="o">!==</span> <span class="s1">&#39;x&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">dim</span> <span class="o">!==</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;DOM.viewportSize: dim must be &quot;x&quot;,&quot;y&quot; or &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;undefined. Found: &#39;</span> <span class="o">+</span> <span class="nx">dim</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">w</span> <span class="o">=</span> <span class="nb">window</span><span class="p">;</span>
+        <span class="nx">d</span> <span class="o">=</span> <span class="nb">document</span><span class="p">;</span>
+        <span class="nx">e</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">;</span>
+        <span class="nx">g</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="nx">x</span> <span class="o">=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">||</span> <span class="nx">g</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">,</span>
+        <span class="nx">y</span> <span class="o">=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">innerHeight</span><span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">clientHeight</span><span class="o">||</span> <span class="nx">g</span><span class="p">.</span><span class="nx">clientHeight</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">!</span><span class="nx">dim</span> <span class="o">?</span> <span class="p">{</span><span class="nx">x</span><span class="o">:</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">y</span><span class="p">}</span> <span class="o">:</span> <span class="nx">dim</span> <span class="o">===</span> <span class="s1">&#39;x&#39;</span> <span class="o">?</span> <span class="nx">x</span> <span class="o">:</span> <span class="nx">y</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="helper-methods">
+  <h2>
+    <a href="#helper-methods" class="pilcrow">&#182;</a>
+    Helper methods
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="onfocuschange">
+  <h3>
+    <a href="#onfocuschange" class="pilcrow">&#182;</a>
+    onFocusChange
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Helper function for DOM.onFocusIn and DOM.onFocusOut (cross-browser)</p>
+
+<p>Expects only one callback, either inCb, or outCb.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inCb</span>
+      <span class="dox_type">function</span>
+      <span class="dox_type">null</span>
+      <span>Optional. Executed if page acquires focus,
+  or NULL, to delete an existing callback.</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">outCb</span>
+      <span class="dox_type">function</span>
+      <span class="dox_type">null</span>
+      <span>Optional. Executed if page loses focus,
+  or NULL, to delete an existing callback.
+
+Kudos: <a href='http://stackoverflow.com/questions/1060008/'>http://stackoverflow.com/questions/1060008/</a>
+  is-there-a-way-to-detect-if-a-browser-window-is-not-currently-active</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <a href=" ">http://www.w3.org/TR/page-visibility/
+</a>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">onFocusChange</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">inFocusCb</span><span class="p">,</span> <span class="nx">outFocusCb</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">hidden</span><span class="p">,</span> <span class="nx">evtMap</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">JSUS</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;onFocusChange: no document detected.&#39;</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">};</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;hidden&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hidden</span> <span class="o">=</span> <span class="s1">&#39;hidden&#39;</span><span class="p">;</span>
+            <span class="nx">event</span> <span class="o">=</span> <span class="s1">&#39;visibilitychange&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;mozHidden&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hidden</span> <span class="o">=</span> <span class="s1">&#39;mozHidden&#39;</span><span class="p">;</span>
+            <span class="nx">event</span> <span class="o">=</span> <span class="s1">&#39;mozvisibilitychange&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;webkitHidden&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hidden</span> <span class="o">=</span> <span class="s1">&#39;webkitHidden&#39;</span><span class="p">;</span>
+            <span class="nx">event</span> <span class="o">=</span> <span class="s1">&#39;webkitvisibilitychange&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;msHidden&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hidden</span> <span class="o">=</span> <span class="s1">&#39;msHidden&#39;</span><span class="p">;</span>
+            <span class="nx">event</span> <span class="o">=</span> <span class="s1">&#39;msvisibilitychange&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">evtMap</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">focus</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">focusin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">pageshow</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">blur</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">focusout</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">pagehide</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">};</span>
+
+        <span class="kd">function</span> <span class="nx">onchange</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">isHidden</span><span class="p">;</span>
+            <span class="nx">evt</span> <span class="o">=</span> <span class="nx">evt</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-94" id="section-94">&#182;</a>
+</div>
+<p>If event is defined as one from event Map.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span> <span class="k">in</span> <span class="nx">evtMap</span><span class="p">)</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="nx">evtMap</span><span class="p">[</span><span class="nx">evt</span><span class="p">.</span><span class="nx">type</span><span class="p">];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
+</div>
+<p>Or use the hidden property.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">else</span> <span class="nx">isHidden</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">hidden</span><span class="p">]</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
+</div>
+<p>Call the callback, if defined.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isHidden</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">inFocusCb</span><span class="p">)</span> <span class="nx">inFocusCb</span><span class="p">();</span> <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">outFocusCb</span><span class="p">)</span> <span class="nx">outFocusCb</span><span class="p">();</span> <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">inCb</span><span class="p">,</span> <span class="nx">outCb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">onchangeCb</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">inCb</span><span class="p">)</span> <span class="nx">inFocusCb</span> <span class="o">=</span> <span class="nx">inCb</span><span class="p">;</span>
+            <span class="k">else</span> <span class="nx">outFocusCb</span> <span class="o">=</span> <span class="nx">outCb</span><span class="p">;</span>
+
+            <span class="nx">onchangeCb</span> <span class="o">=</span> <span class="o">!</span><span class="nx">inFocusCb</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">outFocusCb</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nx">onchange</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-97" id="section-97">&#182;</a>
+</div>
+<p>Visibility standard detected.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">onchangeCb</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
+                <span class="k">else</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">onchange</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;onfocusin&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusin</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">onfocusout</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
+            <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
+</div>
+<p>All others.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="k">else</span> <span class="p">{</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">onpageshow</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onpagehide</span>
+                    <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onfocus</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">onblur</span> <span class="o">=</span> <span class="nx">onchangeCb</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">})(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nb">document</span> <span class="o">?</span> <span class="nb">document</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="changetitle">
+  <h3>
+    <a href="#changetitle" class="pilcrow">&#182;</a>
+    changeTitle
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Changes title of page</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">title</span>
+      <span class="dox_type">string</span>
+      <span>New title of the page</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">changeTitle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.changeTitle: title must be string. &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;Found: &#39;</span> <span class="o">+</span> <span class="nx">title</span><span class="p">);</span>
+        <span class="p">}</span>
     <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">DOM</span><span class="p">);</span>

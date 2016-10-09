@@ -1,7 +1,57 @@
 # ChangeLog
 
+## 0.16.0
+- `DOM.split()` refactored. Supports custom level of recursion, and arrays keys can be inserted (omitted by default).
+
+## 0.15.0
+- `DOM.viewportSize()`.
+
+## 0.14.0
+- Removed deprecated wrench methods. Users of FS lib should use 'fs-extra' for their purposes.
+
+## 0.13.1
+- `RANDOM.randomString()` can use spaces.
+
+## 0.13.0
+- `RANDOM.randomString()`
+
+## 0.12.0
+- Removed prepublish script in package.json that might cause errors in some systems on install.
+
+## 0.11.0
+- `PARSE.stringifyAll()` checks for type (fix bug with strings).
+- `DOM.cookieSupport()` checks for cookie support in browser.
+- `DOM.blinkTitle()`
+- `DOM.playSound()`
+- `DOM.onFocusIn()` and DOM.onFocusOut()` replace onFocusChange.
+
+## 0.10.12
+- `PARSE.parse()` refactor.
+
+## 0.10.11
+- `TIME.getTimeM()`.
+
+## 0.10.10
+- `DOM.disableBackButton()`.
+
+## 0.10.9
+- Fixed bug onFocusChange for recent Chrome.
+
+## 0.10.8
+- Fixed bug introduced in previous version DOM.highlight().
+
+## 0.10.7
+- `FS.copyFile()`.
+
+## 0.10.6
+- `DOM.isNode()` and `DOM.isElement()`.
+
+## 0.10.5
+- `DOM.shuffleElements()` improved type checking and error message.
+
 ## 0.10.4
 - `DOM.getElementsByClassName()` fixed bug for elements with multiple classes.
+
 ## 0.10.3
 - `PARSE.range()` accepts also numbers as expression.
 

@@ -1,7 +1,7 @@
 {
   "name": "JSUS",
   "description": "JavaScript UtilS. Extended functional programming support. JSUS helps!",
-  "version": "0.10.4",
+  "version": "0.16.0",
   "keywords": [ "functional", "functional programming", "util", "general", "array", "eval", "time", "date", "object", "nodeGame"],
   "main": "jsus.js",
   "author": "Stefano Balietti <futur.dorko@gmail.com>",
@@ -9,8 +9,8 @@
   "dependencies": {
     "commander": ">= 2.8.1",
     "smoosh": "0.4.0",
-    "resolve": "0.2.3",
-    "wrench": "1.4.4"
+    "resolve": "1.1.7",
+    "fs-extra": "*"
   },
   "devDependencies": {
     "mocha": ">= 0.3.0",
@@ -22,7 +22,6 @@
     "url": "https://github.com/nodeGame/JSUS.git"
   },
   "scripts": {
-    "test": "make test",
-    "prepublish": "node bin/make.js build -a"
+    "test": "make test"
   }
 }

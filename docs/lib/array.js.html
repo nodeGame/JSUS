@@ -104,7 +104,7 @@
 </div>
 
 
-<p>Copyright(c) 2015 Stefano Balietti
+<p>Copyright(c) 2016 Stefano Balietti
 MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions to manipulate arrays</p>
@@ -504,8 +504,6 @@ FALSE otherwise</p>
 
 <p>For objects, deep equality comparison is performed
 through JSUS.equals.</p>
-
-<p>Alias ARRAY.in_array (deprecated)</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -523,14 +521,17 @@ through JSUS.equals.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
       <span class="dox_type">boolean</span>
-      <span>TRUE, if the element is contained in the array
-
-@see JSUS.equals</span>
+      <span>TRUE, if the element is contained in the array</span>
+    </div>
+    <div class="dox_tag_title">See</div>
+    <div class="dox_tag_detail">
+      <span class="dox_type">JSUS.equals
+  </span>
     </div>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="nx">func</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">;</span>
@@ -541,6 +542,12 @@ through JSUS.equals.</p>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;***ARRAY.in_array is deprecated. &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;Use ARRAY.inArray instead.***&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -801,7 +808,7 @@ is found or not in in column "i".</p>
             <span class="k">do</span> <span class="p">{</span>
                 <span class="nx">idx</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">randomInt</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span><span class="nx">limit</span><span class="p">);</span>
             <span class="p">}</span>
-            <span class="k">while</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="nx">extracted</span><span class="p">));</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="nx">extracted</span><span class="p">));</span>
             <span class="nx">extracted</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
@@ -1273,7 +1280,7 @@ is applied.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">arrayIntersect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a1</span><span class="p">,</span> <span class="nx">a2</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">a1</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">a2</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">a2</span><span class="p">);</span>
         <span class="p">});</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -1317,7 +1324,7 @@ is applied.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">arrayDiff</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a1</span><span class="p">,</span> <span class="nx">a2</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">a1</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">a2</span><span class="p">));</span>
+            <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">a2</span><span class="p">));</span>
         <span class="p">});</span>
     <span class="p">};</span></pre></div>
         </td>
@@ -1450,7 +1457,7 @@ is applied.</p>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
 
         <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">out</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">out</span><span class="p">))</span> <span class="p">{</span>
                 <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">});</span>

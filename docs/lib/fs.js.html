@@ -37,10 +37,7 @@
         <a href="#fs.copyfromdir">FS.copyFromDir</a>
       </div>
       <div class="heading h2">
-        <a href="#copyfile">copyFile</a>
-      </div>
-      <div class="heading h2">
-        <a href="#wrench">wrench</a>
+        <a href="#fs.copyfile">FS.copyFile</a>
       </div>
     </div>
   </div>
@@ -59,7 +56,7 @@
 </div>
 
 
-<p>Copyright(c) 2015 Stefano Balietti
+<p>Copyright(c) 2016 Stefano Balietti
 MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions related to file system operations</p>
@@ -71,7 +68,7 @@ MIT Licensed</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <a href="https://github.com/ryanmcgrath/wrench-js">https://github.com/ryanmcgrath/wrench-js</a>
+      <a href="https://github.com/jprichardson/node-fs-extra">https://github.com/jprichardson/node-fs-extra</a>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
@@ -92,8 +89,7 @@ MIT Licensed</p>
 
     <span class="kd">var</span> <span class="nx">resolve</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;resolve&#39;</span><span class="p">),</span>
     <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
-    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
-    <span class="nx">wrench</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;wrench&#39;</span><span class="p">);</span>
+    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
 
 
     <span class="kd">function</span> <span class="nx">FS</span><span class="p">()</span> <span class="p">{}</span></pre></div>
@@ -485,7 +481,7 @@ are found, an error will occur.</p>
                     <span class="nx">asq</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
                     <span class="nx">mycb</span> <span class="o">=</span> <span class="nx">asq</span><span class="p">.</span><span class="nx">getRemoveCb</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
                 <span class="p">}</span>
-                <span class="nx">copyFile</span><span class="p">(</span><span class="nx">dirIn</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">dirOut</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">mycb</span><span class="p">);</span>
+                <span class="nx">FS</span><span class="p">.</span><span class="nx">copyFile</span><span class="p">(</span><span class="nx">dirIn</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">dirOut</span> <span class="o">+</span> <span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">mycb</span><span class="p">);</span>
             <span class="p">}</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
@@ -500,10 +496,10 @@ are found, an error will occur.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="copyfile">
+<div class="pilwrap" id="fs.copyfile">
   <h2>
-    <a href="#copyfile" class="pilcrow">&#182;</a>
-    copyFile
+    <a href="#fs.copyfile" class="pilcrow">&#182;</a>
+    FS.copyFile
   </h2>
 </div>
 
@@ -528,12 +524,6 @@ are found, an error will occur.</p>
       <span>Optional. If set, the callback will be executed
   upon success</span>
     </div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">cb</span>
-      <span class="dox_type">function</span>
-      <span>Optional. A callback function to call if
-  no error is raised</span>
-    </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name"></span>
@@ -543,7 +533,7 @@ are found, an error will occur.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">copyFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">srcFile</span><span class="p">,</span> <span class="nx">destFile</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">FS</span><span class="p">.</span><span class="nx">copyFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">srcFile</span><span class="p">,</span> <span class="nx">destFile</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">fdr</span><span class="p">,</span> <span class="nx">fdw</span><span class="p">;</span>
         <span class="nx">fdr</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">srcFile</span><span class="p">);</span>
         <span class="nx">fdw</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="nx">destFile</span><span class="p">);</span>
@@ -551,39 +541,7 @@ are found, an error will occur.</p>
             <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
         <span class="p">});</span>
         <span class="k">return</span> <span class="nx">fdr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">fdw</span><span class="p">);</span>
-    <span class="p">};</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
-<div class="pilwrap" id="wrench">
-  <h2>
-    <a href="#wrench" class="pilcrow">&#182;</a>
-    wrench
-  </h2>
-</div>
-
-  </div>
-  <div class="body"><p>FS exposes the properties of the great package wrench for
-performing recursive operations on directories</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">See</div>
-    <div class="dox_tag_detail">
-      <a href=" ">https://github.com/ryanmcgrath/wrench-js
-</a>
-    </div>
-  </div>
-</div>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">w</span> <span class="k">in</span> <span class="nx">wrench</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">wrench</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">w</span><span class="p">))</span> <span class="p">{</span>
-                <span class="nx">FS</span><span class="p">[</span><span class="nx">w</span><span class="p">]</span> <span class="o">=</span> <span class="nx">wrench</span><span class="p">[</span><span class="nx">w</span><span class="p">];</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">})();</span>
+    <span class="p">};</span>
 
     <span class="nx">JSUS</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">FS</span><span class="p">);</span>
 

@@ -1,41 +1,33 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>JSUS by nodeGame</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>JSUS</h1>
-        <p>JavaScript UtilS. Collection of general purpose functions. JSUS helps!</p>
-        <p class="view"><a href="https://github.com/nodeGame/JSUS">View the Project on GitHub <small>nodeGame/JSUS</small></a></p>
-        <ul>
-          <li><a href="https://github.com/nodeGame/JSUS/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nodeGame/JSUS/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nodeGame/JSUS">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a id="jsus-javascript-utils" class="anchor" href="#jsus-javascript-utils" aria-hidden="true"><span class="octicon octicon-link"></span></a>JSUS: JavaScript UtilS.</h1>
+    <section class="page-header">
+      <h1 class="project-name">JSUS</h1>
+      <h2 class="project-tagline">JavaScript UtilS. Collection of general purpose functions. JSUS helps!</h2>
+      <a href="https://github.com/nodeGame/JSUS" class="btn">View on GitHub</a>
+      <a href="https://github.com/nodeGame/JSUS/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/nodeGame/JSUS/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="jsus-javascript-utils" class="anchor" href="#jsus-javascript-utils" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JSUS: JavaScript UtilS.</h1>
 
 <p><a href="https://travis-ci.org/nodeGame/JSUS"><img src="https://travis-ci.org/nodeGame/JSUS.png?branch=master" alt="Build Status"></a></p>
 
 <p>Collection of general purpose javascript functions. JSUS helps!</p>
 
 <h2>
-<a id="libraries" class="anchor" href="#libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Libraries</h2>
+<a id="libraries" class="anchor" href="#libraries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Libraries</h2>
 
 <ol>
 <li>OBJ</li>
@@ -53,21 +45,21 @@
 <p>Full API description available <a href="http://nodegame.github.io/JSUS/docs/jsus.js.html">here</a>.</p>
 
 <h2>
-<a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build</h2>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h2>
 
 <p>Create your customized build of JSUS.js using the make file in the bin directory</p>
 
-<div class="highlight highlight-javascript"><pre>node make.js build <span class="pl-k">-</span>a <span class="pl-c">// Full build, about 20Kb minified</span>
-node make.js build <span class="pl-k">-</span>l obj,array <span class="pl-k">-</span>o jsus<span class="pl-k">-</span>oa.js <span class="pl-c">// about 12Kb minified</span></pre></div>
+<div class="highlight highlight-source-js"><pre>node <span class="pl-smi">make</span>.<span class="pl-smi">js</span> build <span class="pl-k">-</span>a <span class="pl-c">// Full build, about 20Kb minified</span>
+node <span class="pl-smi">make</span>.<span class="pl-smi">js</span> build <span class="pl-k">-</span>l obj,array <span class="pl-k">-</span>o jsus<span class="pl-k">-</span><span class="pl-smi">oa</span>.<span class="pl-smi">js</span> <span class="pl-c">// about 12Kb minified</span></pre></div>
 
 <h2>
-<a id="extend" class="anchor" href="#extend" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extend</h2>
+<a id="extend" class="anchor" href="#extend" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extend</h2>
 
 <p>JSUS is designed to be modular and easy to extend.</p>
 
 <p>Just use:</p>
 
-<div class="highlight highlight-javascript"><pre>JSUS.extend(myClass);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-c1">JSUS</span>.<span class="pl-en">extend</span>(myClass);</pre></div>
 
 <p>to extend the functionalities of JSUS. All the methods of myClass
 are immediately added to JSUS, and a reference to myClass is stored
@@ -77,24 +69,24 @@ in <code>JSUS._classes</code>.</p>
 
 <p>JSUS can also extend other objects. Just pass a second parameter:</p>
 
-<div class="highlight highlight-javascript"><pre>JSUS.extend(myClass, mySecondClass);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-c1">JSUS</span>.<span class="pl-en">extend</span>(myClass, mySecondClass);</pre></div>
 
 <p>and <code>mySecondClass</code> will receive all the methods of <code>myClass</code>. In this case,
 no reference of myClass is stored.</p>
 
 <p>To get a copy of one of the registered JSUS libraries do:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> myClass <span class="pl-k">=</span> JSUS.require(<span class="pl-s1"><span class="pl-pds">'</span>myClass<span class="pl-pds">'</span></span>);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> myClass <span class="pl-k">=</span> <span class="pl-c1">JSUS</span>.<span class="pl-en">require</span>(<span class="pl-s"><span class="pl-pds">'</span>myClass<span class="pl-pds">'</span></span>);</pre></div>
 
 <h2>
-<a id="api-documentation" class="anchor" href="#api-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>API Documentation</h2>
+<a id="api-documentation" class="anchor" href="#api-documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Documentation</h2>
 
 <p>Create html API documentation using the make file in the bin directory</p>
 
-<div class="highlight highlight-javascript"><pre>node make.js doc</pre></div>
+<div class="highlight highlight-source-js"><pre>node <span class="pl-smi">make</span>.<span class="pl-smi">js</span> doc</pre></div>
 
 <h2>
-<a id="make-help" class="anchor" href="#make-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Make help</h2>
+<a id="make-help" class="anchor" href="#make-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Make help</h2>
 
 <pre><code>Usage: make.jsus.js [options] [command]
 
@@ -124,7 +116,7 @@ Options:
 </code></pre>
 
 <h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
 <p>Copyright (C) 2014 Stefano Balietti</p>
 
@@ -146,14 +138,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/nodeGame">nodeGame</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-              <script type="text/javascript">
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/nodeGame/JSUS">JSUS</a> is maintained by <a href="https://github.com/nodeGame">nodeGame</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>

@@ -507,11 +507,12 @@ through JSUS.equals.</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns TRUE if the element is contained in the array,
-FALSE otherwise</p>
+  <div class="body"><p>Returns TRUE if the element is contained in the array</p>
 
 <p>For objects, deep equality comparison is performed
 through JSUS.equals.</p>
+
+<p>Notice: it is a little faster than Array.prototype.indexOf().</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -540,16 +541,35 @@ through JSUS.equals.</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">haystack</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="nx">func</span> <span class="o">=</span> <span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">;</span>
-        <span class="nx">len</span> <span class="o">=</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-            <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">haystack</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.inArray: haystack must be &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;array. Found: &#39;</span> <span class="o">+</span> <span class="nx">haystack</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="nx">len</span> <span class="o">=</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">needle</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
+                 <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
+                 <span class="kc">null</span> <span class="o">===</span> <span class="nx">needle</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">needle</span> <span class="o">===</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
     <span class="p">};</span>
 
     <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">in_array</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">)</span> <span class="p">{</span>
@@ -1437,7 +1457,7 @@ is applied.</p>
 
 <p>Does not modify original array.</p>
 
-<p>Comparison is done with <code>JSUS.equals</code>.</p>
+<p>Comparison is done with <code>JSUS.inArray</code>.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1454,21 +1474,25 @@ is applied.</p>
     </div>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
-      <span class="dox_type">JSUS.equals
+      <span class="dox_type">JSUS.inArray
   </span>
     </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">distinct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">array</span><span class="p">)</span> <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
-
-        <span class="nx">ARRAY</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">out</span><span class="p">))</span> <span class="p">{</span>
-                <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">len</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">array</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.distinct: array must be an array. &#39;</span> <span class="o">+</span>
+                                <span class="s1">&#39;Found: &#39;</span> <span class="o">+</span> <span class="nx">array</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="o">++</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span> <span class="p">;</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ARRAY</span><span class="p">.</span><span class="nx">inArray</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">out</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
             <span class="p">}</span>
-        <span class="p">});</span>
+        <span class="p">}</span>
         <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>

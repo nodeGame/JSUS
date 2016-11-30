@@ -212,12 +212,16 @@
      * but it works on a larger share of browsers.
      *
      * @param {object} o The variable to check.
+     *
      * @see Array.isArray
      */
-    ARRAY.isArray = function(o) {
-        if (!o) return false;
-        return Object.prototype.toString.call(o) === '[object Array]';
-    };
+    ARRAY.isArray = (function(f) {
+        if ('function' === typeof f) return f;
+        else return function(o) {
+            if (!o) return false;
+            return Object.prototype.toString.call(o) === '[object Array]';
+        };
+    })(Array.isArray);
 
     /**
      * ## ARRAY.seq
@@ -3821,7 +3825,6 @@
         k = keys.shift();
         return OBJ.hasOwnNestedProperty(keys.join('.'), obj[k]);
     };
-
 
     /**
      * ## OBJ.split

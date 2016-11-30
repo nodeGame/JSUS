@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 0.16.1
+- `Array.isArray` fallbacks on native code.
+
 ## 0.16.0
 - `DOM.split()` refactored. Supports custom level of recursion, and arrays keys can be inserted (omitted by default).
 

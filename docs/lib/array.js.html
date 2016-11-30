@@ -556,7 +556,9 @@ through JSUS.equals.</p>
         <span class="p">}</span>
         <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
                  <span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
+                 <span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
                  <span class="kc">null</span> <span class="o">===</span> <span class="nx">needle</span><span class="p">)</span> <span class="p">{</span>
+
             <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">needle</span> <span class="o">===</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
             <span class="p">}</span>

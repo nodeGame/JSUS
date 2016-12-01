@@ -422,22 +422,16 @@ TODO: improve, some properties have already been checked!</p>
 </div>
 
   </div>
-  <div class="body"><p>Returns TRUE if an object  has no own properties</p>
+  <div class="body"><p>Returns TRUE if an object has no own properties</p>
 
 <p>Does not check properties of the prototype chain.</p>
-
-<p>Supports other types: undefined, null, string, number
-are always false. Functions and array are checked.</p>
-
-<p>Notice: this is much faster than Object.keys(o).length === 0;
-because it does pull out all keys.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">o</span>
-      <span class="dox_type">mixed</span>
-      <span>The object (or other type) to check</span>
+      <span class="dox_type">object</span>
+      <span>The object to check</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
@@ -445,22 +439,16 @@ because it does pull out all keys.</p>
       <span class="dox_type">boolean</span>
       <span>TRUE, if the object has no properties</span>
     </div>
-    <div class="dox_tag_title">See</div>
-    <div class="dox_tag_detail">
-      <span class="dox_type">Object.keys
-  </span>
-    </div>
   </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">OBJ</span><span class="p">.</span><span class="nx">isEmpty</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">key</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="kc">null</span> <span class="o">===</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">o</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">};</span></pre></div>

@@ -1,6 +1,6 @@
 var util = require('util');
 should = require('should'),
-JSUS = require('./../jsus').JSUS;
+J = require('./../jsus').JSUS;
 
 var obj_simple = {
     a: 1,
@@ -31,37 +31,244 @@ describe('ARRAY: ', function(){
 
     // removeElement
     describe('#removeElement()', function(){
-        var test_arr = ['element1', 'element2', 'element3', 'element4'];
+        var testArray = ['element1', 'element2', 'element3', 'element4'];
 
         it('should return element3 when removing it from the array', function(){
-            JSUS.removeElement('element3', test_arr).should.eql(['element3']);
+            J.removeElement('element3', testArray).should.eql(['element3']);
         });
         it('should return false when removing element5 from array', function(){
-            JSUS.removeElement('element5', test_arr).should.equal(false);
+            J.removeElement('element5', testArray).should.equal(false);
         });
     });
 
     // inArray
     describe('#inArray()', function(){
-        var test_arr = ['element1', 'element2', 'element3', 'element4'];
+        var testArray = ['element1', 'element2', 'element3', 'element4'];
 
-        it('should return TRUE when looking for element1', function() {
-            JSUS.inArray('element2', test_arr).should.be.true;
+        it('should return TRUE when looking for element2', function() {
+            J.inArray('element2', testArray).should.be.true;
         });
         it('should return FALSE when looking for element5', function() {
-            JSUS.inArray('element5', test_arr).should.be.false;
+            J.inArray('element5', testArray).should.be.false;
         });
 
     });
 
+    // indexOf strings
+    describe('#indexOf()', function(){
+        var testArray = [
+            'element1', 'element2', 'element3', 'element4',
+            'element1', 'element2', 'element3', 'element4',
+            'element1', 'element2', 'element3', 'element4'
+        ];
+
+        // First default.
+        it('should return 1 for element2 (first default)', function() {
+            J.indexOf('element2', testArray).should.be.eql(1);
+        });
+        it('should return 2 for element3 (first default)', function() {
+            J.indexOf('element3', testArray).should.be.eql(2);
+        });
+        it('should return -1 when for element5 (first default)', function() {
+            J.indexOf('element5', testArray).should.be.eql(-1);
+        });
+
+        // First.
+        it('should return 1 for element2 (first)', function() {
+            J.indexOf('element2', testArray, 'first').should.be.eql(1);
+        });
+
+        it('should return 2 for element3 (first)', function() {
+            J.indexOf('element3', testArray, 'first').should.be.eql(2);
+        });
+        it('should return -1 when for element5 (first)', function() {
+            J.indexOf('element5', testArray, 'first').should.be.eql(-1);
+        });
+
+        // Last.
+        it('should return 9 for element2 (last)', function() {
+            J.indexOf('element2', testArray, 'last').should.be.eql(9);
+        });
+
+        it('should return 10 for element3 (last)', function() {
+            J.indexOf('element3', testArray, 'last').should.be.eql(10);
+        });
+        it('should return -1 when for element5 (last)', function() {
+            J.indexOf('element5', testArray, 'last').should.be.eql(-1);
+        });
+
+        // All.
+        it('should return [1,5,9] for element2 (all)', function() {
+            J.indexOf('element2', testArray, 'all').should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for element3 (all)', function() {
+            J.indexOf('element3', testArray, 'all').should.be.eql([2,6,10]);
+        });
+        it('should return [] when for element5 (all)', function() {
+            J.indexOf('element5', testArray, 'all').should.be.eql([]);
+        });
+
+        // All (expected N = 3).
+        it('should return [1,5,9] for element2 (all N=3)', function() {
+            J.indexOf('element2', testArray, 'all', 3).should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for element3 (all N=3)', function() {
+            J.indexOf('element3', testArray, 'all', 3).should.be.eql([2,6,10]);
+        });
+        it('should return [] when for element5 (all N=3)', function() {
+            J.indexOf('element5', testArray, 'all', 3).should.be.eql([]);
+        });
+
+    });
+
+    // indexOf numbers
+    describe('#indexOf()', function(){
+        var testArray = [
+            1, 2, 3, 4,
+            1, 2, 3, 4,
+            1, 2, 3, 4
+        ];
+
+        // First default.
+        it('should return 1 for number 2 (first default)', function() {
+            J.indexOf(2, testArray).should.be.eql(1);
+        });
+        it('should return 2 for number 3 (first default)', function() {
+            J.indexOf(3, testArray).should.be.eql(2);
+        });
+        it('should return -1 when for number 5 (first default)', function() {
+            J.indexOf(5, testArray).should.be.eql(-1);
+        });
+
+        // First.
+        it('should return 1 for number 2 (first)', function() {
+            J.indexOf(2, testArray, 'first').should.be.eql(1);
+        });
+
+        it('should return 2 for number 3 (first)', function() {
+            J.indexOf(3, testArray, 'first').should.be.eql(2);
+        });
+        it('should return -1 when for number 5 (first)', function() {
+            J.indexOf(5, testArray, 'first').should.be.eql(-1);
+        });
+
+        // Last.
+        it('should return 9 for number 2 (last)', function() {
+            J.indexOf(2, testArray, 'last').should.be.eql(9);
+        });
+
+        it('should return 10 for number 3 (last)', function() {
+            J.indexOf(3, testArray, 'last').should.be.eql(10);
+        });
+        it('should return -1 when for number 5 (last)', function() {
+            J.indexOf(5, testArray, 'last').should.be.eql(-1);
+        });
+
+        // All.
+        it('should return [1,5,9] for number 2 (all)', function() {
+            J.indexOf(2, testArray, 'all').should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for number 3 (all)', function() {
+            J.indexOf(3, testArray, 'all').should.be.eql([2,6,10]);
+        });
+        it('should return [] when for number 5 (all)', function() {
+            J.indexOf(5, testArray, 'all').should.be.eql([]);
+        });
+
+        // All (expected N = 3).
+        it('should return [1,5,9] for number 2 (all N=3)', function() {
+            J.indexOf(2, testArray, 'all', 3).should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for number 3 (all N=3)', function() {
+            J.indexOf(3, testArray, 'all', 3).should.be.eql([2,6,10]);
+        });
+        it('should return [] when for number 5 (all N=3)', function() {
+            J.indexOf(5, testArray, 'all', 3).should.be.eql([]);
+        });
+
+    });
+
+    // indexOf objects
+    describe('#indexOf()', function(){
+        var testArray = [
+            {}, {a: 1}, {b: 2, c: 3}, {d: 4},
+            {}, {a: 1}, {b: 2, c: 3}, {d: 4},
+            {}, {a: 1}, {b: 2, c: 3}, {d: 4}
+        ];
+
+        // First default.
+        it('should return 1 for {a: 1} (first default)', function() {
+            J.indexOf({a: 1}, testArray).should.be.eql(1);
+        });
+        it('should return 2 for {b: 2, c: 3} (first default)', function() {
+            J.indexOf({b: 2, c: 3}, testArray).should.be.eql(2);
+        });
+        it('should return -1 when for 5 (first default)', function() {
+            J.indexOf(5, testArray).should.be.eql(-1);
+        });
+
+        // First.
+        it('should return 1 for {a: 1} (first)', function() {
+            J.indexOf({a: 1}, testArray, 'first').should.be.eql(1);
+        });
+
+        it('should return 2 for {b: 2, c: 3} (first)', function() {
+            J.indexOf({b: 2, c: 3}, testArray, 'first').should.be.eql(2);
+        });
+        it('should return -1 when for 5 (first)', function() {
+            J.indexOf(5, testArray, 'first').should.be.eql(-1);
+        });
+
+        // Last.
+        it('should return 9 for {a: 1} (last)', function() {
+            J.indexOf({a: 1}, testArray, 'last').should.be.eql(9);
+        });
+
+        it('should return 10 for {b: 2, c: 3} (last)', function() {
+            J.indexOf({b: 2, c: 3}, testArray, 'last').should.be.eql(10);
+        });
+        it('should return -1 when for 5 (last)', function() {
+            J.indexOf(5, testArray, 'last').should.be.eql(-1);
+        });
+
+        // All.
+        it('should return [1,5,9] for {a: 1} (all)', function() {
+            J.indexOf({a: 1}, testArray, 'all').should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for {b: 2, c: 3} (all)', function() {
+            J.indexOf({b: 2, c: 3}, testArray, 'all').should.be.eql([2,6,10]);
+        });
+        it('should return [] when for 5 (all)', function() {
+            J.indexOf(5, testArray, 'all').should.be.eql([]);
+        });
+
+        // All (expected N = 3).
+        it('should return [1,5,9] for {a: 1} (all N=3)', function() {
+            J.indexOf({a: 1}, testArray, 'all', 3).should.be.eql([1,5,9]);
+        });
+
+        it('should return [2,6,10] for {b: 2, c: 3} (all N=3)', function() {
+            J.indexOf({b: 2, c: 3}, testArray, 'all', 3)
+                .should.be.eql([2,6,10]);
+        });
+        it('should return [] when for 5 (all N=3)', function() {
+            J.indexOf(5, testArray, 'all', 3).should.be.eql([]);
+        });
+
+    });
 
     describe('#latinSquare()', function() {
-        var S = JSUS.randomInt(3,10); // start
-        var L = JSUS.randomInt(3,S); // limit
+        var S = J.randomInt(3,10); // start
+        var L = J.randomInt(3,S); // limit
         var ls = null
 
         before(function(){
-            ls = JSUS.latinSquare(S,L);
+            ls = J.latinSquare(S,L);
         });
 
         it('The size of latin square should be correct', function() {
@@ -101,12 +308,12 @@ describe('ARRAY: ', function(){
 
 
     describe('#latinSquareNoSelf()', function() {
-        var S = JSUS.randomInt(3,10); // start
-        var L = JSUS.randomInt(3,(S-1)); // limit
+        var S = J.randomInt(3,10); // start
+        var L = J.randomInt(3,(S-1)); // limit
         var ls = null
 
         before(function(){
-            ls = JSUS.latinSquareNoSelf(S,L);
+            ls = J.latinSquareNoSelf(S,L);
         });
 
         it('Column "j" should not contain "j" as index', function(){
@@ -134,11 +341,11 @@ describe('ARRAY: ', function(){
         ];
 
         it('should distinguish between array and not array', function() {
-            JSUS.isArray([]).should.be.true;
-            JSUS.isArray(tests).should.be.true;
+            J.isArray([]).should.be.true;
+            J.isArray(tests).should.be.true;
 
-            JSUS.each(tests, function(e) {
-                JSUS.isArray(e).should.not.be.true;
+            J.each(tests, function(e) {
+                J.isArray(e).should.not.be.true;
             });
         });
 
@@ -149,49 +356,49 @@ describe('ARRAY: ', function(){
     describe('#seq()', function() {
 
         it('should reproduce the sequence 0:5', function() {
-            JSUS.seq(0,5).should.be.eql([0,1,2,3,4,5]);
+            J.seq(0,5).should.be.eql([0,1,2,3,4,5]);
         });
 
         it('should reproduce the sequence 5:0', function() {
-            JSUS.seq(5,0).should.be.eql([5,4,3,2,1,0]);
+            J.seq(5,0).should.be.eql([5,4,3,2,1,0]);
         });
 
         it('should reproduce the sequence -5:0', function() {
-            JSUS.seq(-5,0).should.be.eql([-5,-4,-3,-2,-1,0]);
+            J.seq(-5,0).should.be.eql([-5,-4,-3,-2,-1,0]);
         });
 
         it('should reproduce the sequence 0:-5', function() {
-            JSUS.seq(0,-5).should.be.eql([0,-1,-2,-3,-4,-5]);
+            J.seq(0,-5).should.be.eql([0,-1,-2,-3,-4,-5]);
         });
 
         it('should reproduce the sequence -2:-2', function() {
-            JSUS.seq(-2,2).should.be.eql([-2,-1,0,1,2]);
+            J.seq(-2,2).should.be.eql([-2,-1,0,1,2]);
         });
 
         it('should reproduce return a single number array when start = end',
            function() {
 
-               JSUS.seq(2,2).should.be.eql([2]);
+               J.seq(2,2).should.be.eql([2]);
         });
 
         it('should reproduce the sequence 0:5 with increment 2', function() {
-            JSUS.seq(0,5,2).should.be.eql([0,2,4]);
+            J.seq(0,5,2).should.be.eql([0,2,4]);
         });
 
         it('should reproduce the sequence 5:0 with increment 2', function() {
-            JSUS.seq(5,0,2).should.be.eql([5,3,1]);
+            J.seq(5,0,2).should.be.eql([5,3,1]);
         });
 
         it('should return false if parameters are missing or wrong',
            function() {
 
-               JSUS.seq(-2).should.be.false;
-               JSUS.seq('a',0).should.be.false;
-               JSUS.seq().should.be.false;
-               JSUS.seq(null, 0).should.be.false;
-               JSUS.seq(undefined, 2).should.be.false;
-               JSUS.seq(Infinity, 5).should.be.false;
-               JSUS.seq(5,0,0).should.be.false;
+               J.seq(-2).should.be.false;
+               J.seq('a',0).should.be.false;
+               J.seq().should.be.false;
+               J.seq(null, 0).should.be.false;
+               J.seq(undefined, 2).should.be.false;
+               J.seq(Infinity, 5).should.be.false;
+               J.seq(5,0,0).should.be.false;
         });
 
         it('should reproduce the sequence 5:0 and execute the callback',
@@ -202,7 +409,7 @@ describe('ARRAY: ', function(){
                    }
                    return 'R_' + e;
                };
-               JSUS.seq(1,4,1,func)
+               J.seq(1,4,1,func)
                    .should.be.eql(['R_01','R_02','R_03','R_04']);
 
         });
@@ -217,23 +424,23 @@ describe('ARRAY: ', function(){
             if (m) e = e + m;
             if (e > 5) return e;
         };
-        var array = JSUS.seq(1,10);
+        var array = J.seq(1,10);
 
 
         it('should return [6,7,8,9,10]', function() {
-            JSUS.map(array, func).should.eql([6,7,8,9,10]);
+            J.map(array, func).should.eql([6,7,8,9,10]);
         });
 
         it('should return [6,7,8,9,10,11]', function() {
-            JSUS.map(array, func, 1).should.eql([6,7,8,9,10,11]);
+            J.map(array, func, 1).should.eql([6,7,8,9,10,11]);
         });
 
         it('should return [6,7,8,9,10,11,12]', function() {
-            JSUS.map(array, func, 1, 1).should.eql([6,7,8,9,10,11,12]);
+            J.map(array, func, 1, 1).should.eql([6,7,8,9,10,11,12]);
         });
 
         it('should return [6,7,8,9,10,11,12,13]', function() {
-            JSUS.map(array, func, 1, 1, 1).should.eql([6,7,8,9,10,11,12,13]);
+            J.map(array, func, 1, 1, 1).should.eql([6,7,8,9,10,11,12,13]);
         });
 
 
@@ -241,20 +448,20 @@ describe('ARRAY: ', function(){
 
     describe('#rep()', function() {
 
-        var array = JSUS.seq(1,5);
+        var array = J.seq(1,5);
 
 
         it('should replicate an array twice', function() {
-            JSUS.rep(array, 2).should.eql([1,2,3,4,5,1,2,3,4,5]);
+            J.rep(array, 2).should.eql([1,2,3,4,5,1,2,3,4,5]);
         });
 
         it('should return the same array', function(){
-            JSUS.rep(array, 1).should.be.eql(array);
-            JSUS.rep(array).should.be.eql(array);
+            J.rep(array, 1).should.be.eql(array);
+            J.rep(array).should.be.eql(array);
         });
 
         it('should replicate an array three times', function(){
-            JSUS.rep(array, 3).should.eql([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]);
+            J.rep(array, 3).should.eql([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]);
         });
 
     });
@@ -263,23 +470,23 @@ describe('ARRAY: ', function(){
 
         it('should eliminate duplicated strings', function(){
             var array = ["a", "a", "b", "b", "c"];
-            JSUS.distinct(array).should.eql(["a","b","c"]);
+            J.distinct(array).should.eql(["a","b","c"]);
         });
 
         it('should eliminate duplicated numbers', function(){
             var array = [1,2,3,1,2,3,4,5,1,8];
-            JSUS.distinct(array).should.eql([1,2,3,4,5,8]);
+            J.distinct(array).should.eql([1,2,3,4,5,8]);
         });
 
         it('should eliminate duplicated special values', function(){
             var array = [null,null,{},{},0,0, undefined,Infinity,
                          Infinity, undefined];
-            JSUS.distinct(array).should.be.eql([null,{},0,undefined,Infinity]);
+            J.distinct(array).should.be.eql([null,{},0,undefined,Infinity]);
         });
 
         it('should eliminate duplicated special values (NaN)', function(){
             var array = [NaN, NaN];
-            var distinct = JSUS.distinct(array);
+            var distinct = J.distinct(array);
             distinct.length.should.be.eql(1);
             distinct[0].should.be.NaN;
         });
@@ -293,22 +500,22 @@ describe('ARRAY: ', function(){
 
 
         it('should repeat each element of the array twice', function(){
-            JSUS.stretch(array, 2).should.eql([1,1,2,2,3,3]);
+            J.stretch(array, 2).should.eql([1,1,2,2,3,3]);
         });
 
         it('should return the same array', function(){
-            JSUS.stretch(array, 1).should.be.eql(array);
-            JSUS.stretch(array).should.be.eql(array);
+            J.stretch(array, 1).should.be.eql(array);
+            J.stretch(array).should.be.eql(array);
         });
 
         it('should repeat each element a custom number of times',
            function(){
-               JSUS.stretch(array, [1,2,3]).should.eql([1,2,2,3,3,3]);
+               J.stretch(array, [1,2,3]).should.eql([1,2,2,3,3,3]);
         });
 
         it('should repeat each element a custom number of times (Recycling)',
            function(){
-               JSUS.stretch(array, [2,1]).should.eql([1,1,2,3,3]);
+               J.stretch(array, [2,1]).should.eql([1,1,2,3,3]);
         });
 
     });
@@ -319,7 +526,7 @@ describe('ARRAY: ', function(){
         var t = [ [1,4], [2,5], [3,6] ];
 
         it('should transpose a 2D matrix', function(){
-            JSUS.transpose(array).should.eql(t);
+            J.transpose(array).should.eql(t);
         });
     });
 

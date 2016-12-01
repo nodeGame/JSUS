@@ -1630,7 +1630,8 @@ returned.</p>
   </div>
   <div class="body"><p>Returns all the indexes at which an element is found in an array</p>
 
-<p>Notice: it is a little faster than Array.prototype.indexOf().</p>
+<p>It is optimized to check types.
+Notice: it is a little faster than Array.prototype.indexOf().</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -1652,11 +1653,11 @@ returned.</p>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">mod</span>
       <span class="dox_type">string</span>
-      <span>The type of of search to perform. Valid values:
-  'first', 'last', 'all'.</span>
+      <span>Optional. The type of of search to perform.
+   Valid values: 'first', 'last', 'all'.</span>
     </div>
     <div class="dox_tag_detail">
-      <span class="dox_tag_name">Optional</span>
+      <span class="dox_tag_name">Optional.</span>
       <span class="dox_type">number</span>
       <span>expectedN The expected number of elements
   to find in the array (used to pre-initialized return array)</span>
@@ -1679,8 +1680,7 @@ returned.</p>
             <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;JSUS.&#39;</span> <span class="o">+</span> <span class="nx">method</span> <span class="o">+</span> <span class="s1">&#39;: haystack must be &#39;</span> <span class="o">+</span>
                                 <span class="s1">&#39;array. Found: &#39;</span> <span class="o">+</span> <span class="nx">haystack</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">expectedN</span><span class="p">);</span>
+        <span class="nx">mod</span> <span class="o">=</span> <span class="nx">mod</span> <span class="o">||</span> <span class="s1">&#39;first&#39;</span><span class="p">;</span>
         <span class="nx">len</span> <span class="o">=</span> <span class="nx">haystack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;number&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">needle</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">mod</span> <span class="o">===</span> <span class="s1">&#39;first&#39;</span><span class="p">)</span> <span class="p">{</span>
@@ -1696,11 +1696,12 @@ returned.</p>
                 <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">mod</span> <span class="o">===</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">expectedN</span><span class="p">);</span>
+                <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">expectedN</span> <span class="o">||</span> <span class="mi">0</span><span class="p">);</span>
                 <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="nx">out</span><span class="p">[</span><span class="nx">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
                 <span class="p">}</span>
-                <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">idx</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">[]</span> <span class="o">:</span> <span class="nx">out</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">needle</span> <span class="o">||</span>
@@ -1721,10 +1722,12 @@ returned.</p>
                 <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">mod</span> <span class="o">===</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">expectedN</span> <span class="o">||</span> <span class="mi">0</span><span class="p">);</span>
                 <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="nx">needle</span> <span class="o">===</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">out</span><span class="p">[</span><span class="nx">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
                 <span class="p">}</span>
-                <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">idx</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">[]</span> <span class="o">:</span> <span class="nx">out</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
         <span class="k">else</span> <span class="p">{</span>
@@ -1744,11 +1747,15 @@ returned.</p>
                 <span class="p">}</span>
                 <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
             <span class="p">}</span>
-            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
-                    <span class="nx">out</span><span class="p">[</span><span class="nx">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">mod</span> <span class="o">===</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">expectedN</span> <span class="o">||</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="nx">needle</span><span class="p">,</span> <span class="nx">haystack</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span>
+                        <span class="nx">out</span><span class="p">[</span><span class="nx">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+                    <span class="p">}</span>
                 <span class="p">}</span>
-                <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">idx</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">[]</span> <span class="o">:</span> <span class="nx">out</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>

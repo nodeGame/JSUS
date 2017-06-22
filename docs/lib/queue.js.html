@@ -34,7 +34,7 @@
         <a href="#queue.isready">Queue.isReady</a>
       </div>
       <div class="heading h3">
-        <a href="#queue.ready">Queue.ready</a>
+        <a href="#queue.onready">Queue.onReady</a>
       </div>
       <div class="heading h3">
         <a href="#queue.add">Queue.add</a>
@@ -169,15 +169,20 @@ MIT Licensed</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="queue.ready">
+<div class="pilwrap" id="queue.onready">
   <h3>
-    <a href="#queue.ready" class="pilcrow">&#182;</a>
-    Queue.ready
+    <a href="#queue.onready" class="pilcrow">&#182;</a>
+    Queue.onReady
   </h3>
 </div>
 
   </div>
-  <div class="body"><p>Executes the specified callback once the server is fully loaded</p>
+  <div class="body"><p>Executes the specified callback once the queue has been cleared</p>
+
+<p>Multiple functions to execute can be added, and they are executed
+sequentially once the queue is cleared.</p>
+
+<p>If the queue is already cleared, the function is executed immediately.</p>
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -191,7 +196,8 @@ MIT Licensed</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="nx">Queue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onReady</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;Queue.onReady: cb must be function.&#39;</span><span class="p">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;Queue.onReady: cb must be function. Found: &#39;</span> <span class="o">+</span>
+                               <span class="nx">cb</span><span class="p">);</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">JSUS</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inProgress</span><span class="p">))</span> <span class="nx">cb</span><span class="p">();</span>
         <span class="k">else</span> <span class="k">this</span><span class="p">.</span><span class="nx">queue</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>

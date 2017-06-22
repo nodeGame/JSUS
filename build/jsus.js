@@ -609,7 +609,6 @@
         return ARRAY._latinSquare(S, N, false);
     };
 
-
     /**
      * ## ARRAY.generateCombinations
      *
@@ -1264,7 +1263,8 @@
         var i, len, idOrder, children, child;
         var id, forceId, missId;
         if (!JSUS.isNode(parent)) {
-            throw new TypeError('DOM.shuffleElements: parent must node.');
+            throw new TypeError('DOM.shuffleElements: parent must be a node. ' +
+                               'Found: ' + parent);
         }
         if (!parent.children || !parent.children.length) {
             JSUS.log('DOM.shuffleElements: parent has no children.', 'ERR');
@@ -1272,7 +1272,8 @@
         }
         if (order) {
             if (!JSUS.isArray(order)) {
-                throw new TypeError('DOM.shuffleElements: order must array.');
+                throw new TypeError('DOM.shuffleElements: order must array.' +
+                                   'Found: ' + order);
             }
             if (order.length !== parent.children.length) {
                 throw new Error('DOM.shuffleElements: order length must ' +
@@ -3048,22 +3049,32 @@
     /**
      * ## OBJ.isEmpty
      *
-     * Returns TRUE if an object has no own properties
+     * Returns TRUE if an object has no own properties (supports other types)
      *
-     * Does not check properties of the prototype chain.
+     * Map of input-type and return values:
      *
-     * @param {object} o The object to check
+     *   - undefined: TRUE
+     *   - null: TRUE
+     *   - string: TRUE if string === '' or if contains only spaces
+     *   - number: FALSE if different from 0
+     *   - function: FALSE
+     *   - array: TRUE, if it contains zero elements
+     *   - object: TRUE, if it does not contain **own** properties
      *
-     * @return {boolean} TRUE, if the object has no properties
+     * Notice: for object, it is much faster than Object.keys(o).length === 0,
+     * because it does not pull out all keys. Own properties must be enumerable.
+     *
+     * @param {mixed} o The object (or other type) to check
+     *
+     * @return {boolean} TRUE, if the object is empty
      */
     OBJ.isEmpty = function(o) {
         var key;
-        if ('undefined' === typeof o) return true;
-        for (key in o) {
-            if (o.hasOwnProperty(key)) {
-                return false;
-            }
-        }
+        if (!o) return true;
+        if ('string' === typeof o) return o.trim() === '';
+        if ('number' === typeof o) return false;
+        if ('function' === typeof o) return false;
+        for (key in o) if (o.hasOwnProperty(key)) return false;
         return true;
     };
 
@@ -4489,6 +4500,28 @@
     };
 
     /**
+     * ## PARSE.isEmail
+     *
+     * Returns TRUE if the email's format is valid
+     *
+     * @param {string} The email to check
+     *
+     * @return {boolean} TRUE, if the email format is valid
+     */
+    PARSE.isEmail = function(email) {
+        var idx;
+        if ('string' !== typeof email) return false;
+        if (email.trim().length < 5) return false;
+        idx = email.indexOf('@');
+        if (idx === -1 || idx === 0 || idx === (email.length-1)) return false;
+        idx = email.lastIndexOf('.');
+        if (idx === -1 || idx === (email.length-1) || idx > (idx+1)) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
      * ## PARSE.range
      *
      * Decodes semantic strings into an array of integers
@@ -4861,15 +4894,21 @@
     };
 
     /**
-     * ### Queue.ready
+     * ### Queue.onReady
      *
-     * Executes the specified callback once the server is fully loaded
+     * Executes the specified callback once the queue has been cleared
+     *
+     * Multiple functions to execute can be added, and they are executed
+     * sequentially once the queue is cleared.
+     *
+     * If the queue is already cleared, the function is executed immediately.
      *
      * @param {function} cb The callback to execute
      */
     Queue.prototype.onReady = function(cb) {
         if ('function' !== typeof cb) {
-            throw new TypeError('Queue.onReady: cb must be function.');
+            throw new TypeError('Queue.onReady: cb must be function. Found: ' +
+                               cb);
         }
         if (JSUS.isEmpty(this.inProgress)) cb();
         else this.queue.push(cb);
@@ -5471,6 +5510,17 @@
         result[1] = Math.floor(days);
         return result;
     };
+
+    
+    /**
+     * ## TIME.now
+     *
+     * Shortcut to Date.now (when existing), or its polyfill
+     *
+     * @return {number} The timestamp now
+     */
+    TIME.now = 'function' === typeof Date.now ?
+        Date.now : function() { return new Date().getTime(); }
 
     JSUS.extend(TIME);
 

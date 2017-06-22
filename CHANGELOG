@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 0.18.0
+- `#OBJ.mixin|mixout|mixcommon` return the mixed object.
+- `#PARSE.isEmail`.
+- `#RANDOM.randomEmail`.
+- `#Time.now`.
+
 ## 0.17.0
 - `ARRAY.indexOf`
 - Several improvements in the ARRAY module.

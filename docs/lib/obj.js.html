@@ -128,7 +128,7 @@
 </div>
 
 
-<p>Copyright(c) 2016 Stefano Balietti
+<p>Copyright(c) 2017 Stefano Balietti
 MIT Licensed</p>
   </div>
   <div class="body"><p>Collection of static functions to manipulate JavaScript objects</p>
@@ -1283,6 +1283,12 @@ type of obj1</p>
       <span class="dox_type">object</span>
       <span>The mixin-in object</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>obj1</span>
+    </div>
   </div>
 </div>
         </td>
@@ -1294,6 +1300,7 @@ type of obj1</p>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1325,6 +1332,12 @@ Original object is modified.</p>
       <span class="dox_type">object</span>
       <span>The mixin-in object</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>obj1</span>
+    </div>
   </div>
 </div>
         </td>
@@ -1336,6 +1349,7 @@ Original object is modified.</p>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1367,6 +1381,12 @@ Original object is modified.</p>
       <span class="dox_type">object</span>
       <span>The mixin-in object</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>obj1</span>
+    </div>
   </div>
 </div>
         </td>
@@ -1378,6 +1398,7 @@ Original object is modified.</p>
         <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="nx">obj2</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;undefined&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="nx">obj1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj2</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">obj1</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
         </td>
       </tr>

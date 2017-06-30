@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS.
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of general purpose javascript functions. JSUS helps!
@@ -151,6 +151,10 @@
         require('./lib/parse');
         require('./lib/queue');
         require('./lib/fs');
+    }
+    else {
+        // Also exports J in the browser.
+        exports.J = exports.JSUS;
     }
     // end node
 

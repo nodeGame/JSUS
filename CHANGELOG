@@ -1,5 +1,8 @@
 # ChangeLog
 
+## Current
+- `J` is exported as a top level object in the browser's window.
+
 ## 0.18.0
 - `#OBJ.mixin|mixout|mixcommon` return the mixed object.
 - `#PARSE.isEmail`.

@@ -1,6 +1,6 @@
 /**
  * # JSUS: JavaScript UtilS.
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of general purpose javascript functions. JSUS helps!
@@ -151,6 +151,10 @@
         require('./lib/parse');
         require('./lib/queue');
         require('./lib/fs');
+    }
+    else {
+        // Also exports J in the browser.
+        exports.J = exports.JSUS;
     }
     // end node
 
@@ -2894,7 +2898,7 @@
 
 /**
  * # OBJ
- * Copyright(c) 2016 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects
@@ -3534,6 +3538,8 @@
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
+     *
+     * @return {object} obj1
      */
     OBJ.mixin = function(obj1, obj2) {
         var i;
@@ -3543,6 +3549,7 @@
         for (i in obj2) {
             obj1[i] = obj2[i];
         }
+        return obj1;
     };
 
     /**
@@ -3555,6 +3562,8 @@
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
+     *
+     * @return {object} obj1
      */
     OBJ.mixout = function(obj1, obj2) {
         var i;
@@ -3564,6 +3573,7 @@
         for (i in obj2) {
             if ('undefined' === typeof obj1[i]) obj1[i] = obj2[i];
         }
+        return obj1;
     };
 
     /**
@@ -3576,6 +3586,8 @@
      *
      * @param {object} obj1 The object to which the new properties will be added
      * @param {object} obj2 The mixin-in object
+     *
+     * @return {object} obj1
      */
     OBJ.mixcommon = function(obj1, obj2) {
         var i;
@@ -3585,6 +3597,7 @@
         for (i in obj2) {
             if ('undefined' !== typeof obj1[i]) obj1[i] = obj2[i];
         }
+        return obj1;
     };
 
     /**
@@ -5383,6 +5396,20 @@
         return result;
     };
 
+    /**
+     * ### RANDOM.randomEmail
+     *
+     * Creates a random email address
+     *
+     * @TODO: add options.
+     *
+     * @return {string} result The random email
+     */
+    RANDOM.randomEmail = function() {
+        return RANDOM.randomString(RANDOM.randomInt(5,15), '!Aa0') + '@' +
+            RANDOM.randomString(RANDOM.randomInt(3,10))  + '.' +
+            RANDOM.randomString(RANDOM.randomInt(2,3));
+    };
 
     JSUS.extend(RANDOM);
 
@@ -5390,7 +5417,7 @@
 
 /**
  * # TIME
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the generation,
@@ -5511,7 +5538,7 @@
         return result;
     };
 
-    
+
     /**
      * ## TIME.now
      *

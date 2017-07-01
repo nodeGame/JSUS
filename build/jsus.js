@@ -112,7 +112,7 @@
      * @return {function|boolean} The copy of the JSUS library, or
      *   FALSE if the library does not exist
      */
-    JSUS.require = JSUS.get = function(className) {
+    JSUS.require = function(className) {
         if ('undefined' === typeof JSUS.clone) {
             JSUS.log('JSUS.clone not found. Cannot continue.');
             return false;
@@ -139,7 +139,6 @@
     };
 
     // ## Node.JS includes
-    // if node
     if (JSUS.isNodeJS()) {
         require('./lib/compatibility');
         require('./lib/obj');
@@ -153,10 +152,9 @@
         require('./lib/fs');
     }
     else {
-        // Also exports J in the browser.
+        // Exports J in the browser.
         exports.J = exports.JSUS;
     }
-    // end node
 
 })(
     'undefined' !== typeof module && 'undefined' !== typeof module.exports ?
@@ -1028,8 +1026,9 @@
      *
      * Write a text, or append an HTML element or node, into a root element
      *
-     * @param {Element} root The HTML element where to write into
-     * @param {mixed} text The text to write. Default, an ampty string
+     * @param {HTMLElement} root The HTML element where to write into
+     * @param {string|HTMLElement} text The text to write or an element
+     *    to append. Default: an ampty string
      *
      * @return {TextNode} The text node inserted in the root element
      *
@@ -1051,19 +1050,19 @@
      *
      * Default break element is <br> tag
      *
-     * @param {Element} root The HTML element where to write into
-     * @param {mixed} text The text to write. Default, an ampty string
+     * @param {HTMLElement} root The HTML element where to write into
+     * @param {string|HTMLElement} text The text to write or an element
+     *    to append. Default: an ampty string
      * @param {string} rc the name of the tag to use as a break element
      *
      * @return {TextNode} The text node inserted in the root element
      *
      * @see DOM.write
-     * @see DOM.addBreak
      */
     DOM.writeln = function(root, text, rc) {
         var content;
         content = DOM.write(root, text);
-        this.addBreak(root, rc);
+        this.add(rc || 'br', root);
         return content;
     };
 
@@ -1333,50 +1332,6 @@
     };
 
     /**
-     * ### DOM.getElement
-     *
-     * Creates a generic HTML element with id and attributes as specified
-     *
-     * @param {string} elem The name of the tag
-     * @param {string} id Optional. The id of the tag
-     * @param {object} attributes Optional. Object containing attributes for
-     *   the newly created element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.addAttributes2Elem
-     */
-    DOM.getElement = function(elem, id, attributes) {
-        var e = document.createElement(elem);
-        if ('undefined' !== typeof id) {
-            e.id = id;
-        }
-        return this.addAttributes2Elem(e, attributes);
-    };
-
-    /**
-     * ### DOM.addElement
-     *
-     * Creates and appends a generic HTML element with specified attributes
-     *
-     * @param {string} elem The name of the tag
-     * @param {HTMLElement} root The root element to which the new element will
-     *   be appended
-     * @param {string} id Optional. The id of the tag
-     * @param {object} attributes Optional. Object containing attributes for
-     *   the newly created element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.getElement
-     * @see DOM.addAttributes2Elem
-     */
-    DOM.addElement = function(elem, root, id, attributes) {
-        var el = this.getElement(elem, id, attributes);
-        return root.appendChild(el);
-    };
-
-    /**
      * ### DOM.addAttributes2Elem
      *
      * Adds attributes to an HTML element and returns it.
@@ -1518,8 +1473,100 @@
         }
 
 
-        return scanDocuments(prefix + '_' + JSUS.randomInt(0, 10000000));
-        //return scanDocuments(prefix);
+        return scanDocuments(prefix + '_' + JSUS.randomInt(10000000));
+    };
+
+    /**
+     * ### DOM.get
+     *
+     * Creates a generic HTML element with specified attributes
+     *
+     * @param {string} elem The name of the tag
+     * @param {object|string} attributes Optional. Object containing
+     *   attributes for the element. If string, the id of the element
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.add
+     * @see DOM.addAttributes2Elem
+     */
+    DOM.get = function(name, attributes) {
+        var el;
+        el = document.createElement(name);
+        if ('string' === typeof attributes) el.id = attributes;
+        else if (attributes) this.addAttributes2Elem(el, attributes);
+        return el;
+    };
+
+    /**
+     * ### DOM.add|append
+     *
+     * Creates and append an element with specified attributes to a root
+     *
+     * @param {string} name The name of the HTML tag
+     * @param {HTMLElement} root The root element to which the new element
+     *   will be appended
+     * @param {object|string} attributes Optional. Object containing
+     *   attributes for the element. If string, the id of the element
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.get
+     */
+    DOM.add = DOM.append = function(name, root, attributes) {
+        var el;
+        el = this.get(name, attributes);
+        return root.appendChild(el);
+    };
+
+    /**
+     * ### DOM.getElement
+     *
+     * Creates a generic HTML element with id and attributes as specified
+     *
+     * @param {string} elem The name of the tag
+     * @param {string} id Optional. The id of the tag
+     * @param {object} attributes Optional. Object containing attributes for
+     *   the newly created element
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.addAttributes2Elem
+     *
+     * @deprecated
+     */
+    DOM.getElement = function(elem, id, attributes) {
+        var e;
+        console.log('***DOM.getElement is deprecated. Use DOM.get instead.***');
+        e = document.createElement(elem);
+        if ('undefined' !== typeof id) e.id = id;
+        return this.addAttributes2Elem(e, attributes);
+    };
+
+    /**
+     * ### DOM.addElement
+     *
+     * Creates and appends a generic HTML element with specified attributes
+     *
+     * @param {string} elem The name of the tag
+     * @param {HTMLElement} root The root element to which the new element will
+     *   be appended
+     * @param {string} id Optional. The id of the tag
+     * @param {object} attributes Optional. Object containing attributes for
+     *   the newly created element
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.getElement
+     * @see DOM.addAttributes2Elem
+     *
+     * @deprecated
+     */
+    DOM.addElement = function(elem, root, id, attributes) {
+        var el;
+        console.log('***DOM.addElement is deprecated. Use DOM.add instead.***');
+        el = this.getElement(elem, id, attributes);
+        return root.appendChild(el);
     };
 
     /**

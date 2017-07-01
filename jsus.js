@@ -112,7 +112,7 @@
      * @return {function|boolean} The copy of the JSUS library, or
      *   FALSE if the library does not exist
      */
-    JSUS.require = JSUS.get = function(className) {
+    JSUS.require = function(className) {
         if ('undefined' === typeof JSUS.clone) {
             JSUS.log('JSUS.clone not found. Cannot continue.');
             return false;
@@ -139,7 +139,6 @@
     };
 
     // ## Node.JS includes
-    // if node
     if (JSUS.isNodeJS()) {
         require('./lib/compatibility');
         require('./lib/obj');
@@ -153,10 +152,9 @@
         require('./lib/fs');
     }
     else {
-        // Also exports J in the browser.
+        // Exports J in the browser.
         exports.J = exports.JSUS;
     }
-    // end node
 
 })(
     'undefined' !== typeof module && 'undefined' !== typeof module.exports ?

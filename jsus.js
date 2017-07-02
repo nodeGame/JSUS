@@ -29,9 +29,7 @@
      *
      * @param {string} txt Text to output
      */
-    JSUS.log = function(txt) {
-        console.log(txt);
-    };
+    JSUS.log = function(txt) { console.log(txt); };
 
     /**
      * ## JSUS.extend
@@ -49,8 +47,6 @@
      * @param {object|function} target The object to extend
      *
      * @return {object|function} target The extended object
-     *
-     * @see JSUS.get
      */
     JSUS.extend = function(additional, target) {
         var name, prop;

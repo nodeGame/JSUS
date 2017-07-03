@@ -3,7 +3,7 @@
 ## 1.0.0
 - `J` is exported as a top level object in the browser's window.
 - `#JSUS.get` alias of `JSUS.require` removed. `#JSUS.get` is now a method of the DOM library.
-- DOM library rewritten. Several methods removed and code optimized. Methods removed: getElement, addElement, addAttributes2Elem, getButton, addButton, getFieldset, addFieldset, getTextInput, addTextInput, getTextArea, addTextArea, getCanvas, addCanvas, getSlider, addSlider, getRadioButton, addRadioButton, getLabel, addLabel, getSelect, addSelect, getIFrame, addIFrame ... [CONTINUE HERE]
+- DOM library rewritten. Several methods removed and code optimized. Methods _added_: get, add|append, addAttributes. Methods _modified_: generateUniqueId, addCSS, addJS. Methods _removed_: getElement, addElement, addAttributes2Elem, getButton, addButton, getFieldset, addFieldset, getTextInput, addTextInput, getTextArea, addTextArea, getCanvas, addCanvas, getSlider, addSlider, getRadioButton, addRadioButton, getLabel, addLabel, getSelect, addSelect, getIFrame, addIFrame, addBreak, getDiv, addDiv. 
 
 ## 0.18.0
 - `#OBJ.mixin|mixout|mixcommon` return the mixed object.

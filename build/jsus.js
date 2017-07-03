@@ -993,7 +993,148 @@
 
     function DOM() {}
 
-    // ## GENERAL
+    // ## GET/ADD
+
+    /**
+     * ### DOM.get
+     *
+     * Creates a generic HTML element with specified attributes
+     *
+     * @param {string} elem The name of the tag
+     * @param {object|string} attributes Optional. Object containing
+     *   attributes for the element. If string, the id of the element
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.add
+     * @see DOM.addAttributes
+     */
+    DOM.get = function(name, attributes) {
+        var el;
+        el = document.createElement(name);
+        if ('string' === typeof attributes) el.id = attributes;
+        else if (attributes) this.addAttributes(el, attributes);
+        // For firefox, name of iframe must be set as well.
+        if (name === 'iframe' && el.id && !el.name) el.name = el.id;
+        return el;
+    };
+
+    /**
+     * ### DOM.add|append
+     *
+     * Creates and append an element with specified attributes to a root
+     *
+     * @param {string} name The name of the HTML tag
+     * @param {HTMLElement} root The root element to which the new element
+     *   will be appended
+     * @param {object|string} options Optional. Object containing
+     *   attributes for the element and rules about how to insert it relative
+     *   to root. Available options: insertAfter, insertBefore (default:
+     *   child of root). If string, it is the id of the element. Examples:
+     *
+     * ```javascript
+     * // Appends a new new to the body.
+     * var div = DOM.add('div', document.body);
+     * // Appends a new new to the body with id 'myid'.
+     * var div1 = DOM.add('div', document.body, 'myid');
+     * // Appends a new new to the body with id 'myid2' and class name 'c'.
+     * var div2 = DOM.add('div', document.body, { id: 'myid2', className: 'c'});
+     * // Appends a new div after div1 with id 'myid'.
+     * var div3 = DOM.add('div', div1, { id: 'myid3', insertAfter: true });
+     * // Appends a new div before div2 with id 'myid'.
+     * var div3 = DOM.add('div', div2, { id: 'myid3', insertBefore: true });
+     * ```
+     *
+     * @return {HTMLElement} The newly created HTML element
+     *
+     * @see DOM.get
+     * @see DOM.addAttributes
+     */
+    DOM.add = DOM.append = function(name, root, options) {
+        var el;
+        el = this.get(name, options);
+        if (options && options.insertBefore) {
+            if (options.insertAfter) {
+                throw new Error('DOM.add: options.insertBefore and ' +
+                                'options.insertBefore cannot be ' +
+                                'both set.');
+            }
+            if (!root.parentNode) {
+                throw new Error('DOM.add: root.parentNode not found. ' +
+                                'Cannot insert before.');
+            }
+            root.parentNode.insertBefore(el, root);
+        }
+        else if (options && options.insertAfter) {
+            if (!root.parentNode) {
+                throw new Error('DOM.add: root.parentNode not found. ' +
+                                'Cannot insert after.');
+            }
+            DOM.insertAfter(el, root);
+        }
+        else {
+            root.appendChild(el);
+        }
+        return el;
+    };
+
+    /**
+     * ### DOM.addAttributes
+     *
+     * Adds attributes to an HTML element and returns it
+     *
+     * Attributes are defined as key-values pairs and added
+     *
+     * Special cases:
+     *
+     *   - 'className': alias for class
+     *   - 'class': add a class to the className property (does not overwrite)
+     *   - 'style': adds property to the style property (see DOM.style)
+     *   - 'id': the id of the element
+     *   - 'innerHTML': the innerHTML property of the element (overwrites)
+     *   - 'insertBefore': ignored
+     *   - 'insertAfter': ignored
+     *
+     * @param {HTMLElement} elem The element to decorate
+     * @param {object} attributes Object containing attributes to
+     *   add to the element
+     *
+     * @return {HTMLElement} The element with speficied attributes added
+     *
+     * @see DOM.addClass
+     * @see DOM.style
+     */
+     DOM.addAttributes = function(elem, attributes) {
+        var key;
+        if (!DOM.isElement(elem)) {
+            throw new TypeError('DOM.addAttributes: elem must be ' +
+                                'HTMLElement. Found: ' + elem);
+        }
+        if ('undefined' === typeof attributes) return elem;
+        if ('object' !== typeof attributes) {
+            throw new TypeError('DOM.addAttributes: attributes must be ' +
+                                'object or undefined. Found: ' + attributes);
+        }
+        for (key in attributes) {
+            if (attributes.hasOwnProperty(key)) {
+                if (key === 'id' || key === 'innerHTML') {
+                    elem[key] = attributes[key];
+                }
+                else if (key === 'class' || key === 'className') {
+                    DOM.addClass(elem, attributes[key]);
+                }
+                else if (key === 'style') {
+                    DOM.style(elem, attributes[key]);
+                }
+                else if (key !== 'insertBefore' && key !== 'insertAfter') {
+                    elem.setAttribute(key, attributes[key]);
+                }
+            }
+        }
+        return elem;
+    };
+
+    // ## WRITE
 
     /**
      * ### DOM.write
@@ -1165,7 +1306,7 @@
                 span = document.createElement('em');
             }
             else {
-                span = JSUS.getElement('span', null, args[key]);
+                span = DOM.get('span', args[key]);
             }
 
             text = string.substring(idx_replace, idx_finish);
@@ -1184,6 +1325,8 @@
 
         return root;
     };
+
+    // ## ELEMENTS
 
     /**
      * ### DOM.isNode
@@ -1238,7 +1381,7 @@
      */
     DOM.shuffleElements = function(parent, order) {
         var i, len, idOrder, children, child;
-        var id, forceId, missId;
+        var id;
         if (!JSUS.isNode(parent)) {
             throw new TypeError('DOM.shuffleElements: parent must be a node. ' +
                                'Found: ' + parent);
@@ -1293,91 +1436,38 @@
     };
 
     /**
-     * ### DOM.addAttributes2Elem
-     *
-     * Adds attributes to an HTML element and returns it
-     *
-     * Attributes are defined as key-values pairs.
-     * Attributes 'label' is ignored, attribute 'className' ('class') and
-     * 'style' are special and are delegated to special methods.
-     *
-     * @param {HTMLElement} e The element to decorate
-     * @param {object} a Object containing attributes to add to the element
-     *
-     * @return {HTMLElement} The decorated element
-     *
-     * @see DOM.addLabel
-     * @see DOM.addClass
-     * @see DOM.style
-     */
-    DOM.addAttributes2Elem = function(e, a) {
-        var key;
-        if (!e || !a) return e;
-        if ('object' != typeof a) return e;
-        for (key in a) {
-            if (a.hasOwnProperty(key)) {
-                if (key === 'id') {
-                    e.id = a[key];
-                }
-                else if (key === 'class' || key === 'className') {
-                    DOM.addClass(e, a[key]);
-                }
-                else if (key === 'style') {
-                    DOM.style(e, a[key]);
-                }
-                else if (key === 'label') {
-                    // Handle the case.
-                    JSUS.log('DOM.addAttributes2Elem: label attribute is not ' +
-                             'supported. Use DOM.addLabel instead.');
-                }
-                else {
-                    e.setAttribute(key, a[key]);
-                }
-
-
-                // TODO: handle special cases
-                // <!--
-                //else {
-                //
-                //    // If there is no parent node,
-                //    // the legend cannot be created
-                //    if (!e.parentNode) {
-                //        node.log('Cannot add label: ' +
-                //                 'no parent element found', 'ERR');
-                //        continue;
-                //    }
-                //
-                //    this.addLabel(e.parentNode, e, a[key]);
-                //}
-                // -->
-            }
-        }
-        return e;
-    };
-
-    /**
      * ### DOM.populateSelect
      *
      * Appends a list of options into a HTML select element
      *
-     * The second parameter list is an object containing
-     * a list of key-values pairs as text-value attributes for
-     * the option.
-     *
      * @param {HTMLElement} select HTML select element
-     * @param {object} list Options to add to the select element
+     * @param {object} options Optional. List of options to add to
+     *   the select element. List is in the format of key-values pairs
+     *   as innerHTML and value attributes of the option.
+     *
+     * @return {HTMLElement} select The updated select element
      */
-    DOM.populateSelect = function(select, list) {
+    DOM.populateSelect = function(select, options) {
         var key, opt;
-        if (!select || !list) return;
-        for (key in list) {
-            if (list.hasOwnProperty(key)) {
-                opt = document.createElement('option');
-                opt.value = list[key];
-                opt.appendChild(document.createTextNode(key));
-                select.appendChild(opt);
+        if (!DOM.isElement(select)) {
+            throw new TypeError('DOM.populateSelect: select must be ' +
+                                'HTMLElement. Found: ' + select);
+        }
+        if (options) {
+            if ('object' !== typeof options) {
+                throw new TypeError('DOM.populateSelect: options must be ' +
+                                    'object or undefined. Found: ' + options);
+            }
+            for (key in options) {
+                if (options.hasOwnProperty(key)) {
+                    opt = document.createElement('option');
+                    opt.value = key;
+                    opt.innerHTML = options[key];
+                    select.appendChild(opt);
+                }
             }
         }
+        return select;
     };
 
     /**
@@ -1385,11 +1475,11 @@
      *
      * Removes all children from a node
      *
-     * @param {HTMLElement} e HTML element.
+     * @param {HTMLNode} node HTML node.
      */
-    DOM.removeChildrenFromNode = function(elem) {
-        while (elem.hasChildNodes()) {
-            elem.removeChild(elem.firstChild);
+    DOM.removeChildrenFromNode = function(node) {
+        while (node.hasChildNodes()) {
+            node.removeChild(node.firstChild);
         }
     };
 
@@ -1408,251 +1498,79 @@
         return referenceNode.insertBefore(node, referenceNode.nextSibling);
     };
 
-    /**
-     * ### DOM.generateUniqueId
-     *
-     * Generates a unique id for the whole page, frames included
-     * 
-     * The resulting id is of the type: prefix_randomdigits.
-     *
-     * @param {string} prefix Optional. A given prefix. Default: a random
-     *   string of 8 characters.
-     * @param {boolean} checkFrames Optional. If TRUE, the id will be unique
-     *   all frames as well. Default: TRUE
-     *
-     * @return {string} id The unique id
-     */
-    DOM.generateUniqueId = (function() {
-        var limit;
-        limit = 100;
-
-        // Returns TRUE if id is NOT found in all docs (optimized).
-        function scanDocuments(docs, id) {
-            var i, len;
-            len = docs.length
-            if (len === 1) {
-                return !docs[0].document.getElementById(id);
-            }
-            if (len === 2) {
-                return !!(docs[0].document.getElementById(id) &&
-                          docs[1].document.getElementById(id));
-            }
-            i = -1;
-            for ( ; ++i < len ; ) {
-                if (docs[i].document.getElementById(id)) return false;
-            }
-            return true;
-        }
-        
-        return function(prefix, checkFrames) {
-            var id, windows;
-            var found, i, len, counter;
-
-            if (prefix) {
-                if ('string' !== typeof prefix && 'number' !== typeof prefix) {
-                    throw new TypeError('DOM.generateUniqueId: prefix must ' +
-                                        'be string or number. Found: ' +
-                                        prefix);
-                }
-            }
-            else {
-                prefix = JSUS.randomString(8, 'a');
-            }
-            id = prefix + '_';
-            
-            windows = [ window ];
-            if ((checkFrames || 'undefined' === typeof checkFrames) &&
-                window.frames) {
-                
-                windows = windows.concat(window.frames);
-            }
-
-            found = true;
-            counter = -1;
-            while (found) {
-                id = prefix + '_' + JSUS.randomInt(1000);
-                found = scanDocuments(windows, id);
-                if (++counter > limit) {
-                    throw new Error('DOM.generateUniqueId: could not ' +
-                                    'find unique id within ' + limit +
-                                    ' trials.');
-                }
-            }
-            return id;
-        };
-    })();
-        
-    /**
-     * ### DOM.get
-     *
-     * Creates a generic HTML element with specified attributes
-     *
-     * @param {string} elem The name of the tag
-     * @param {object|string} attributes Optional. Object containing
-     *   attributes for the element. If string, the id of the element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.add
-     * @see DOM.addAttributes2Elem
-     */
-    DOM.get = function(name, attributes) {
-        var el;
-        el = document.createElement(name);
-        if ('string' === typeof attributes) el.id = attributes;
-        else if (attributes) this.addAttributes2Elem(el, attributes);
-        return el;
-    };
-
-    /**
-     * ### DOM.add|append
-     *
-     * Creates and append an element with specified attributes to a root
-     *
-     * @param {string} name The name of the HTML tag
-     * @param {HTMLElement} root The root element to which the new element
-     *   will be appended
-     * @param {object|string} attributes Optional. Object containing
-     *   attributes for the element. If string, the id of the element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.get
-     */
-    DOM.add = DOM.append = function(name, root, attributes) {
-        var el;
-        el = this.get(name, attributes);
-        return root.appendChild(el);
-    };
-
-    /**
-     * ### DOM.getElement
-     *
-     * Creates a generic HTML element with id and attributes as specified
-     *
-     * @param {string} elem The name of the tag
-     * @param {string} id Optional. The id of the tag
-     * @param {object} attributes Optional. Object containing attributes for
-     *   the newly created element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.addAttributes2Elem
-     *
-     * @deprecated
-     */
-    DOM.getElement = function(elem, id, attributes) {
-        var e;
-        console.log('***DOM.getElement is deprecated. Use DOM.get instead.***');
-        e = document.createElement(elem);
-        if ('undefined' !== typeof id) e.id = id;
-        return this.addAttributes2Elem(e, attributes);
-    };
-
-    /**
-     * ### DOM.addElement
-     *
-     * Creates and appends a generic HTML element with specified attributes
-     *
-     * @param {string} elem The name of the tag
-     * @param {HTMLElement} root The root element to which the new element will
-     *   be appended
-     * @param {string} id Optional. The id of the tag
-     * @param {object} attributes Optional. Object containing attributes for
-     *   the newly created element
-     *
-     * @return {HTMLElement} The newly created HTML element
-     *
-     * @see DOM.getElement
-     * @see DOM.addAttributes2Elem
-     *
-     * @deprecated
-     */
-    DOM.addElement = function(elem, root, id, attributes) {
-        var el;
-        console.log('***DOM.addElement is deprecated. Use DOM.add instead.***');
-        el = this.getElement(elem, id, attributes);
-        return root.appendChild(el);
-    };
-
-    /**
-     * ### DOM.getLabel
-     *
-     */
-    DOM.getLabel = function(forElem, id, labelText, attributes) {
-        if (!forElem) return false;
-        var label = document.createElement('label');
-        label.id = id;
-        label.appendChild(document.createTextNode(labelText));
-
-        if ('undefined' === typeof forElem.id) {
-            forElem.id = this.generateUniqueId();
-        }
-
-        label.setAttribute('for', forElem.id);
-        this.addAttributes2Elem(label, attributes);
-        return label;
-    };
-
-    /**
-     * ### DOM.addLabel
-     *
-     */
-    DOM.addLabel = function(root, forElem, id, labelText, attributes) {
-        if (!root || !forElem || !labelText) return false;
-        var l = this.getLabel(forElem, id, labelText, attributes);
-        root.insertBefore(l, forElem);
-        return l;
-    };
-
     // ## CSS / JS
 
     /**
      * ### DOM.addCSS
      *
-     * If no root element is passed, it tries to add the CSS
-     * link element to document.head, document.body, and
-     * finally document. If it fails, returns FALSE.
+     * Adds a CSS link to the page
      *
+     * @param {string} cssPath The path to the css
+     * @param {HTMLElement} root Optional. The root element. If no root
+     *    element is passed, it tries document.head, document.body, and
+     *    document. If it fails, it throws an error.
+     * @param {object|string} attributes Optional. Object containing
+     *   attributes for the element. If string, the id of the element
+     *
+     * @return {HTMLElement} The link element
      */
-    DOM.addCSS = function(root, css, id, attributes) {
+    DOM.addCSS = function(cssPath, root, attributes) {
+        if ('string' !== typeof cssPath || cssPath.trim() === '') {
+            throw new TypeError('DOM.addCSS: cssPath must be a non-empty ' +
+                                'string. Found: ' + cssPath);
+        }
         root = root || document.head || document.body || document;
-        if (!root) return false;
-
-        attributes = attributes || {};
-
-        attributes = JSUS.merge(attributes, {
+        if (!root) {
+            throw new Error('DOM.addCSS: root is undefined, and could not ' +
+                            'detect a valid root for css: ' + cssPath);
+        }
+        attributes = JSUS.mixin({
             rel : 'stylesheet',
             type: 'text/css',
-            href: css
-        });
-
-        return this.addElement('link', root, id, attributes);
+            href: cssPath
+        }, attributes);
+        return this.add('link', root, attributes);
     };
 
     /**
      * ### DOM.addJS
      *
+     * Adds a JavaScript script to the page
+     *
+     * @param {string} cssPath The path to the css
+     * @param {HTMLElement} root Optional. The root element. If no root
+     *    element is passed, it tries document.head, document.body, and
+     *    document. If it fails, it throws an error.
+     * @param {object|string} attributes Optional. Object containing
+     *   attributes for the element. If string, the id of the element
+     *
+     * @return {HTMLElement} The link element
+     *
      */
-    DOM.addJS = function(root, js, id, attributes) {
+    DOM.addJS = function(jsPath, root, attributes) {
+        if ('string' !== typeof jsPath || jsPath.trim() === '') {
+            throw new TypeError('DOM.addCSS: jsPath must be a non-empty ' +
+                                'string. Found: ' + jsPath);
+        }
         root = root || document.head || document.body || document;
-        if (!root) return false;
-
-        attributes = attributes || {};
-
-        attributes = JSUS.merge(attributes, {charset : 'utf-8',
-                                             type: 'text/javascript',
-                                             src: js
-                                            });
-
-        return this.addElement('script', root, id, attributes);
+        if (!root) {
+            throw new Error('DOM.addCSS: root is undefined, and could not ' +
+                            'detect a valid root for css: ' + jsPath);
+        }
+        attributes = JSUS.mixin({
+            charset : 'utf-8',
+            type: 'text/javascript',
+            src: jsPath
+        }, attributes);
+        return this.add('script', root, attributes);
     };
+
+    // ## STYLE
 
     /**
      * ### DOM.highlight
      *
-     * Provides a simple way to highlight an HTML element
-     * by adding a colored border around it.
+     * Highlights an element by adding a custom border around it
      *
      * Three pre-defined modes are implemented:
      *
@@ -1664,9 +1582,9 @@
      * color as HEX value. Examples:
      *
      * ```javascript
-     * highlight(myDiv, 'WARN'); // yellow border
+     * highlight(myDiv, 'WARN');  // yellow border
      * highlight(myDiv);          // red border
-     * highlight(myDiv, '#CCC'); // grey border
+     * highlight(myDiv, '#CCC');  // grey border
      * ```
      *
      * @param {HTMLElement} elem The element to highlight
@@ -1679,9 +1597,7 @@
      */
     DOM.highlight = function(elem, code) {
         var color;
-        if (!elem) return;
-
-        // default value is ERR
+        // Default value is ERR.
         switch (code) {
         case 'OK':
             color =  'green';
@@ -1693,32 +1609,29 @@
             color = 'red';
             break;
         default:
-            if (code.charAt(0) === '#') {
-                color = code;
-            }
-            else {
-                color = 'red';
-            }
+            if (code.charAt(0) === '#') color = code;
+            else color = 'red';
         }
-
         return this.addBorder(elem, color);
     };
 
     /**
      * ### DOM.addBorder
      *
-     * Adds a border around the specified element. Color,
-     * width, and type can be specified.
+     * Adds a border around the specified element
      *
+     * @param {HTMLElement} elem The element to which adding the borders
+     * @param {string} color Optional. The color of border. Default: 'red'.
+     * @param {string} width Optional. The width of border. Default: '5px'.
+     * @param {string} type Optional. The type of border. Default: 'solid'.
+     *
+     * @return {HTMLElement} The element to which a border has been added
      */
     DOM.addBorder = function(elem, color, width, type) {
         var properties;
-        if (!elem) return;
-
         color = color || 'red';
         width = width || '5px';
         type = type || 'solid';
-
         properties = { border: width + ' ' + type + ' ' + color };
         return DOM.style(elem, properties);
     };
@@ -1737,16 +1650,101 @@
      */
     DOM.style = function(elem, properties) {
         var i;
-        if (!elem || !properties) return;
-        if (!DOM.isElement(elem)) return;
-
-        for (i in properties) {
-            if (properties.hasOwnProperty(i)) {
-                elem.style[i] = properties[i];
+        if (!DOM.isElement(elem)) {
+            throw new TypeError('DOM.style: elem must be HTMLElement. ' +
+                                'Found: ' + elem);
+        }
+        if (properties) {
+            if ('object' !== typeof properties) {
+                throw new TypeError('DOM.style: properties must be object or ' +
+                                    'undefined. Found: ' + properties);
+            }
+            for (i in properties) {
+                if (properties.hasOwnProperty(i)) {
+                    elem.style[i] = properties[i];
+                }
             }
         }
         return elem;
     };
+
+    // ## ID
+
+    /**
+     * ### DOM.generateUniqueId
+     *
+     * Generates a unique id for the whole page, frames included
+     *
+     * The resulting id is of the type: prefix_randomdigits.
+     *
+     * @param {string} prefix Optional. A given prefix. Default: a random
+     *   string of 8 characters.
+     * @param {boolean} checkFrames Optional. If TRUE, the id will be unique
+     *   all frames as well. Default: TRUE
+     *
+     * @return {string} id The unique id
+     */
+    DOM.generateUniqueId = (function() {
+        var limit;
+        limit = 100;
+
+        // Returns TRUE if id is NOT found in all docs (optimized).
+        function scanDocuments(docs, id) {
+            var i, len;
+            len = docs.length;
+            if (len === 1) {
+                return !docs[0].document.getElementById(id);
+            }
+            if (len === 2) {
+                return !!(docs[0].document.getElementById(id) &&
+                          docs[1].document.getElementById(id));
+            }
+            i = -1;
+            for ( ; ++i < len ; ) {
+                if (docs[i].document.getElementById(id)) return false;
+            }
+            return true;
+        }
+
+        return function(prefix, checkFrames) {
+            var id, windows;
+            var found, counter;
+
+            if (prefix) {
+                if ('string' !== typeof prefix && 'number' !== typeof prefix) {
+                    throw new TypeError('DOM.generateUniqueId: prefix must ' +
+                                        'be string or number. Found: ' +
+                                        prefix);
+                }
+            }
+            else {
+                prefix = JSUS.randomString(8, 'a');
+            }
+            id = prefix + '_';
+
+            windows = [ window ];
+            if ((checkFrames || 'undefined' === typeof checkFrames) &&
+                window.frames) {
+
+                windows = windows.concat(window.frames);
+            }
+
+            found = true;
+            counter = -1;
+            while (found) {
+                id = prefix + '_' + JSUS.randomInt(1000);
+                found = scanDocuments(windows, id);
+                if (++counter > limit) {
+                    throw new Error('DOM.generateUniqueId: could not ' +
+                                    'find unique id within ' + limit +
+                                    ' trials.');
+                }
+            }
+            return id;
+        };
+    })();
+
+    // ## CLASSES
 
     /**
      * ### DOM.removeClass
@@ -1754,17 +1752,26 @@
      * Removes a specific class from the classNamex attribute of a given element
      *
      * @param {HTMLElement} el An HTML element
-     * @param {string} c The name of a CSS class already in the element
+     * @param {string} className The name of a CSS class already in the element
      *
      * @return {HTMLElement|undefined} The HTML element with the removed
      *   class, or undefined if the inputs are misspecified
      */
-    DOM.removeClass = function(el, c) {
+    DOM.removeClass = function(elem, className) {
         var regexpr, o;
-        if (!el || !c) return;
-        regexpr = new RegExp('(?:^|\\s)' + c + '(?!\\S)');
-        o = el.className = el.className.replace( regexpr, '' );
-        return el;
+        if (!DOM.isElement(elem)) {
+            throw new TypeError('DOM.removeClass: elem must be HTMLElement. ' +
+                                'Found: ' + elem);
+        }
+        if (className) {
+            if ('string' !== typeof className || className.trim() === '') {
+                throw new TypeError('DOM.removeClass: className must be ' +
+                                    'HTMLElement. Found: ' + className);
+            }
+            regexpr = new RegExp('(?:^|\\s)' + className + '(?!\\S)');
+            o = elem.className = elem.className.replace(regexpr, '' );
+        }
+        return elem;
     };
 
     /**
@@ -1774,19 +1781,27 @@
      *
      * Takes care not to overwrite already existing classes.
      *
-     * @param {HTMLElement} el An HTML element
-     * @param {string|array} c The name/s of CSS class/es
+     * @param {HTMLElement} elem An HTML element
+     * @param {string|array} className The name/s of CSS class/es
      *
-     * @return {HTMLElement|undefined} The HTML element with the additional
+     * @return {HTMLElement} The HTML element with the additional
      *   class, or undefined if the inputs are misspecified
      */
-    DOM.addClass = function(el, c) {
-        if (!el) return;
-        if (c instanceof Array) c = c.join(' ');
-        else if ('string' !== typeof c) return;
-        if (!el.className || el.className === '') el.className = c;
-        else el.className += (' ' + c);
-        return el;
+    DOM.addClass = function(elem, className) {
+        if (!DOM.isElement(elem)) {
+            throw new TypeError('DOM.addClass: elem must be HTMLElement. ' +
+                                'Found: ' + elem);
+        }
+        if (className) {
+            if (className instanceof Array) className = className.join(' ');
+            if ('string' !== typeof className || className.trim() === '') {
+                throw new TypeError('DOM.addClass: className must be ' +
+                                    'HTMLElement. Found: ' + className);
+            }
+            if (!elem.className) elem.className = className;
+            else elem.className += (' ' + className);
+        }
+        return elem;
     };
 
     /**
@@ -1861,67 +1876,13 @@
     DOM.getIFrameAnyChild = function(iframe) {
         var contentDocument;
         if (!iframe) return;
-        contentDocument = W.getIFrameDocument(iframe);
+        contentDocument = DOM.getIFrameDocument(iframe);
         return contentDocument.head || contentDocument.body ||
             contentDocument.lastChild ||
             contentDocument.getElementsByTagName('html')[0];
     };
 
-    // ## RIGHT-CLICK
-
-    /**
-     * ### DOM.disableRightClick
-     *
-     * Disables the popup of the context menu by right clicking with the mouse
-     *
-     * @param {Document} Optional. A target document object. Defaults, document
-     *
-     * @see DOM.enableRightClick
-     */
-    DOM.disableRightClick = function(doc) {
-        doc = doc || document;
-        if (doc.layers) {
-            doc.captureEvents(Event.MOUSEDOWN);
-            doc.onmousedown = function clickNS4(e) {
-                if (doc.layers || doc.getElementById && !doc.all) {
-                    if (e.which == 2 || e.which == 3) {
-                        return false;
-                    }
-                }
-            };
-        }
-        else if (doc.all && !doc.getElementById) {
-            doc.onmousedown = function clickIE4() {
-                if (event.button == 2) {
-                    return false;
-                }
-            };
-        }
-        doc.oncontextmenu = new Function("return false");
-    };
-
-    /**
-     * ### DOM.enableRightClick
-     *
-     * Enables the popup of the context menu by right clicking with the mouse
-     *
-     * It unregisters the event handlers created by `DOM.disableRightClick`
-     *
-     * @param {Document} Optional. A target document object. Defaults, document
-     *
-     * @see DOM.disableRightClick
-     */
-    DOM.enableRightClick = function(doc) {
-        doc = doc || document;
-        if (doc.layers) {
-            doc.releaseEvents(Event.MOUSEDOWN);
-            doc.onmousedown = null;
-        }
-        else if (doc.all && !doc.getElementById) {
-            doc.onmousedown = null;
-        }
-        doc.oncontextmenu = null;
-    };
+    // ## EVENTS
 
     /**
      * ### DOM.addEvent
@@ -1968,72 +1929,6 @@
         capture = !!capture;
         if (element.detachEvent) return element.detachEvent('on' + event, func);
         else return element.removeEventListener(event, func, capture);
-    };
-
-    /**
-     * ### DOM.disableBackButton
-     *
-     * Disables/re-enables backward navigation in history of browsed pages
-     *
-     * When disabling, it inserts twice the current url.
-     *
-     * It will still be possible to manually select the uri in the
-     * history pane and nagivate to it.
-     *
-     * @param {boolean} disable Optional. If TRUE disables back button,
-     *   if FALSE, re-enables it. Default: TRUE.
-     *
-     * @return {boolean} The state of the back button (TRUE = disabled),
-     *   or NULL if the method is not supported by browser.
-     */
-    DOM.disableBackButton = (function(isDisabled) {
-        return function(disable) {
-            disable = 'undefined' === typeof disable ? true : disable;
-            if (disable && !isDisabled) {
-                if (!history.pushState || !history.go) {
-                    node.warn('DOM.disableBackButton: method not ' +
-                              'supported by browser.');
-                    return null;
-                }
-                history.pushState(null, null, location.href);
-                window.onpopstate = function(event) {
-                    history.go(1);
-                };
-            }
-            else if (isDisabled) {
-                window.onpopstate = null;
-            }
-            isDisabled = disable;
-            return disable;
-        };
-    })(false);
-
-    /**
-     * ### DOM.playSound
-     *
-     * Plays a sound
-     *
-     * @param {various} sound Audio tag or path to audio file to be played
-     */
-    DOM.playSound = 'undefined' === typeof Audio ?
-        function() {
-            console.log('JSUS.playSound: Audio tag not supported in your' +
-                    ' browser. Cannot play sound.');
-        } :
-        function(sound) {
-        var audio;
-        if ('string' === typeof sound) {
-            audio = new Audio(sound);
-        }
-        else if ('object' === typeof sound &&
-            'function' === typeof sound.play) {
-            audio = sound;
-        }
-        else {
-            throw new TypeError('JSUS.playSound: sound must be string' +
-               ' or audio element.');
-        }
-        audio.play();
     };
 
     /**
@@ -2092,6 +1987,129 @@
         onFocusChange(undefined, cb);
     };
 
+    // ## UI
+
+    /**
+     * ### DOM.disableRightClick
+     *
+     * Disables the popup of the context menu by right clicking with the mouse
+     *
+     * @param {Document} Optional. A target document object. Defaults, document
+     *
+     * @see DOM.enableRightClick
+     */
+    DOM.disableRightClick = function(doc) {
+        doc = doc || document;
+        if (doc.layers) {
+            doc.captureEvents(Event.MOUSEDOWN);
+            doc.onmousedown = function clickNS4(e) {
+                if (doc.layers || doc.getElementById && !doc.all) {
+                    if (e.which == 2 || e.which == 3) {
+                        return false;
+                    }
+                }
+            };
+        }
+        else if (doc.all && !doc.getElementById) {
+            doc.onmousedown = function clickIE4() {
+                if (event.button == 2) {
+                    return false;
+                }
+            };
+        }
+        doc.oncontextmenu = function() { return false; };
+    };
+
+    /**
+     * ### DOM.enableRightClick
+     *
+     * Enables the popup of the context menu by right clicking with the mouse
+     *
+     * It unregisters the event handlers created by `DOM.disableRightClick`
+     *
+     * @param {Document} Optional. A target document object. Defaults, document
+     *
+     * @see DOM.disableRightClick
+     */
+    DOM.enableRightClick = function(doc) {
+        doc = doc || document;
+        if (doc.layers) {
+            doc.releaseEvents(Event.MOUSEDOWN);
+            doc.onmousedown = null;
+        }
+        else if (doc.all && !doc.getElementById) {
+            doc.onmousedown = null;
+        }
+        doc.oncontextmenu = null;
+    };
+
+    /**
+     * ### DOM.disableBackButton
+     *
+     * Disables/re-enables backward navigation in history of browsed pages
+     *
+     * When disabling, it inserts twice the current url.
+     *
+     * It will still be possible to manually select the uri in the
+     * history pane and nagivate to it.
+     *
+     * @param {boolean} disable Optional. If TRUE disables back button,
+     *   if FALSE, re-enables it. Default: TRUE.
+     *
+     * @return {boolean} The state of the back button (TRUE = disabled),
+     *   or NULL if the method is not supported by browser.
+     */
+    DOM.disableBackButton = (function(isDisabled) {
+        return function(disable) {
+            disable = 'undefined' === typeof disable ? true : disable;
+            if (disable && !isDisabled) {
+                if (!history.pushState || !history.go) {
+                    JSUS.log('DOM.disableBackButton: method not ' +
+                             'supported by browser.');
+                    return null;
+                }
+                history.pushState(null, null, location.href);
+                window.onpopstate = function(event) {
+                    history.go(1);
+                };
+            }
+            else if (isDisabled) {
+                window.onpopstate = null;
+            }
+            isDisabled = disable;
+            return disable;
+        };
+    })(false);
+
+    // ## EXTRA
+
+    /**
+     * ### DOM.playSound
+     *
+     * Plays a sound
+     *
+     * @param {various} sound Audio tag or path to audio file to be played
+     */
+    DOM.playSound = 'undefined' === typeof Audio ?
+        function() {
+            console.log('JSUS.playSound: Audio tag not supported in your' +
+                    ' browser. Cannot play sound.');
+        } :
+        function(sound) {
+        var audio;
+        if ('string' === typeof sound) {
+            audio = new Audio(sound);
+        }
+        else if ('object' === typeof sound &&
+            'function' === typeof sound.play) {
+            audio = sound;
+        }
+        else {
+            throw new TypeError('JSUS.playSound: sound must be string' +
+               ' or audio element.');
+        }
+        audio.play();
+    };
 
     /**
      * ### DOM.blinkTitle
@@ -2289,9 +2307,9 @@
         d = document;
         e = d.documentElement;
         g = d.getElementsByTagName('body')[0];
-        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        x = w.innerWidth || e.clientWidth || g.clientWidth;
         y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-        return !dim ? {x: x, y: y} : dim === 'x' ? x : y;
+        return !dim ? { x: x, y: y } : dim === 'x' ? x : y;
     };
 
     // ## Helper methods
@@ -2375,8 +2393,8 @@
             }
             // All others.
             else {
-                window.onpageshow = window.onpagehide
-                    = window.onfocus = window.onblur = onchangeCb;
+                window.onpageshow = window.onpagehide =
+                    window.onfocus = window.onblur = onchangeCb;
             }
         };
     })('undefined' !== typeof document ? document : null);
@@ -4316,7 +4334,7 @@
 
 /**
  * # OBJ
- * Copyright(c) 2017 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects

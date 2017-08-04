@@ -17,6 +17,27 @@ Collection of general purpose javascript functions. JSUS helps!
 9. COMPATIBILITY
 10. QUEUE
 
+
+All methods of all libraries are available directly as
+JSUS.[methodName].
+
+```javascript
+JSUS.seq(1,10,2); // [ 1, 3, 5, 7, 9 ];
+```
+
+To get a copy of one of the registered JSUS libraries do:
+
+```javascript
+var ARRAY = JSUS.require('ARRAY');
+ARRAY.seq(1,10,2); // [ 1, 3, 5, 7, 9 ];
+```
+
+## Browser
+
+In the browser, two objects are exported: `JSUS` and its shorthand `J`.
+
+## Full Documentation.
+
 Full API description available [here](http://nodegame.github.io/JSUS/docs/jsus.js.html).
 
 ## Build
@@ -28,36 +49,6 @@ node make.js build -a // Full build
 node make.js build -l obj,array -o jsus-oa.js // Only object and array libs.
 ```
 
-## Extend
-
-JSUS is designed to be modular and easy to extend.
-
-Just use:
-
-```javascript
-JSUS.extend(myClass);
-```
-
-to extend the functionalities of JSUS. All the methods of myClass
-are immediately added to JSUS, and a reference to myClass is stored
-in `JSUS._classes`.
-
-`MyClass` can be either of type Object or Function.
-
-JSUS can also extend other objects. Just pass a second parameter:
-
-```javascript
-JSUS.extend(myClass, mySecondClass);
-```
-
-and `mySecondClass` will receive all the methods of `myClass`. In this case,
-no reference of myClass is stored.
-
-To get a copy of one of the registered JSUS libraries do:
-
-```javascript
-var myClass = JSUS.require('myClass');
-```
 
 ## API Documentation
 

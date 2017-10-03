@@ -97,28 +97,35 @@
     /**
      * ## JSUS.require
      *
-     * Returns a copy of one / all the objects extending JSUS
+     * Returns a copy/reference of one/all the JSUS components
      *
-     * The first parameter is a string representation of the name of
-     * the requested extending object. If no parameter is passed a copy
-     * of all the extending objects is returned.
+     * @param {string} component The name of the requested JSUS library.
+     *   If undefined, all JSUS components are returned. Default: undefined.
+     * @param {boolean} clone If TRUE, the requested component is cloned
+     *   before being returned. Default: FALSE
      *
-     * @param {string} className The name of the requested JSUS library
-     *
-     * @return {function|boolean} The copy of the JSUS library, or
-     *   FALSE if the library does not exist
+     * @return {function|boolean} The copy of the JSUS component, or
+     *   FALSE if the library does not exist, or cloning is not possible
      */
-    JSUS.require = function(className) {
-        if ('undefined' === typeof JSUS.clone) {
-            JSUS.log('JSUS.clone not found. Cannot continue.');
+    JSUS.require = function(component, clone) {
+        var out;
+        clone = 'undefined' === typeof clone ? true : clone;
+        if (clone && 'undefined' === typeof JSUS.clone) {
+            JSUS.log('JSUS.require: JSUS.clone not found, but clone ' +
+                     'requested. Cannot continue.');
             return false;
         }
-        if ('undefined' === typeof className) return JSUS.clone(JSUS._classes);
-        if ('undefined' === typeof JSUS._classes[className]) {
-            JSUS.log('Could not find class ' + className);
-            return false;
+        if ('undefined' === typeof component) {
+            out = JSUS._classes;
         }
-        return JSUS.clone(JSUS._classes[className]);
+        else {
+            out = JSUS._classes[component]
+            if ('undefined' === typeof out) {
+                JSUS.log('JSUS.require: could not find component ' + component);
+                return false;
+            }
+        }
+        return clone ? JSUS.clone(out) : out;
     };
 
     /**
@@ -159,7 +166,7 @@
 
 /**
  * # ARRAY
- * Copyright(c) 2016 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions to manipulate arrays
@@ -291,20 +298,27 @@
      * If an error occurs returns FALSE.
      *
      * @param {array} array The array to loop in
-     * @param {Function} func The callback for each element in the array
+     * @param {Function} cb The callback for each element in the array
      * @param {object} context Optional. The context of execution of the
      *   callback. Defaults ARRAY.each
      *
      * @return {boolean} TRUE, if execution was successful
      */
-    ARRAY.each = function(array, func, context) {
-        if ('object' !== typeof array) return false;
-        if (!func) return false;
+    ARRAY.each = function(array, cb, context) {
+        var i, len;
+        if ('object' !== typeof array) {
+            throw new TypeError('ARRAY.each: array must be object. Found: ' +
+                                array);
+        }
+        if ('function' !== typeof cb) {
+            throw new TypeError('ARRAY.each: cb must be function. Found: ' +
+                                cb);
+        }
 
         context = context || this;
-        var i, len = array.length;
+        len = array.length;
         for (i = 0 ; i < len; i++) {
-            func.call(context, array[i]);
+            cb.call(context, array[i]);
         }
         return true;
     };
@@ -340,8 +354,8 @@
         }
 
         len = arguments.length;
-        if (len === 3) args = [null, arguments[2]];
-        else if (len === 4) args = [null, arguments[2], arguments[3]];
+        if (len === 3) args = [ null, arguments[2] ];
+        else if (len === 4) args = [ null, arguments[2], arguments[3] ];
         else {
             len = len - 1;
             args = new Array(len);
@@ -5631,7 +5645,7 @@
 
 /**
  * # PARSE
- * Copyright(c) 2016 Stefano Balietti
+ * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions related to parsing strings
@@ -5681,7 +5695,7 @@
         var regex, results;
         if (referer && 'string' !== typeof referer) {
             throw new TypeError('JSUS.getQueryString: referer must be string ' +
-                                'or undefined.');
+                                'or undefined. Found: ' + referer);
         }
         referer = referer || window.location.search;
         if ('undefined' === typeof name) return referer;
@@ -6049,7 +6063,7 @@
         if ('number' === typeof expr) expr = '' + expr;
         else if ('string' !== typeof expr) {
             throw new TypeError('PARSE.range: expr must be string, number, ' +
-                                'undefined.');
+                                'undefined. Found: ' + expr);
         }
         // If no available numbers defined, assumes all possible are allowed.
         if ('undefined' === typeof available) {
@@ -6063,19 +6077,20 @@
         else if ('object' === typeof available) {
             if ('function' !== typeof available.next) {
                 throw new TypeError('PARSE.range: available.next must be ' +
-                                    'function.');
+                                    'function. Found: ' + available.next);
             }
             if ('function' !== typeof available.isFinished) {
                 throw new TypeError('PARSE.range: available.isFinished must ' +
-                                    'be function.');
+                                    'be function. Found: ' +
+                                    available.isFinished);
             }
             if ('number' !== typeof available.begin) {
                 throw new TypeError('PARSE.range: available.begin must be ' +
-                                    'number.');
+                                    'number. Found: ' + available.begin);
             }
             if ('number' !== typeof available.end) {
                 throw new TypeError('PARSE.range: available.end must be ' +
-                                    'number.');
+                                    'number. Found: ' + available.end);
             }
 
             begin = available.begin;
@@ -6088,8 +6103,8 @@
 
             numbers = available.match(/([-+]?\d+)/g);
             if (numbers === null) {
-                throw new Error(
-                    'PARSE.range: no numbers in available: ' + available);
+                throw new Error('PARSE.range: no numbers in available: ' +
+                                available);
             }
             lowerBound = Math.min.apply(null, numbers);
 
@@ -6109,7 +6124,8 @@
         }
         else {
             throw new TypeError('PARSE.range: available must be string, ' +
-                                'array, object or undefined.');
+                                'array, object or undefined. Found: ' +
+                                available);
         }
 
         // end -> maximal available value.
@@ -6273,7 +6289,8 @@
     if ('undefined' !== typeof Function.prototype.name) {
         PARSE.funcName = function(func) {
             if ('function' !== typeof func) {
-                throw new TypeError('PARSE.funcName: func must be function.');
+                throw new TypeError('PARSE.funcName: func must be function. ' +
+                                    'Found: ' + func);
             }
             return func.name;
         };
@@ -6282,7 +6299,8 @@
         PARSE.funcName = function(func) {
             var funcNameRegex, res;
             if ('function' !== typeof func) {
-                throw new TypeError('PARSE.funcName: func must be function.');
+                throw new TypeError('PARSE.funcName: func must be function. ' +
+                                   'Found: ' + func);
             }
             funcNameRegex = /function\s([^(]{1,})\(/;
             res = (funcNameRegex).exec(func.toString());

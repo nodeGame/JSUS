@@ -97,28 +97,35 @@
     /**
      * ## JSUS.require
      *
-     * Returns a copy of one / all the objects extending JSUS
+     * Returns a copy/reference of one/all the JSUS components
      *
-     * The first parameter is a string representation of the name of
-     * the requested extending object. If no parameter is passed a copy
-     * of all the extending objects is returned.
+     * @param {string} component The name of the requested JSUS library.
+     *   If undefined, all JSUS components are returned. Default: undefined.
+     * @param {boolean} clone Optional. If TRUE, the requested component
+     *   is cloned before being returned. Default: TRUE
      *
-     * @param {string} className The name of the requested JSUS library
-     *
-     * @return {function|boolean} The copy of the JSUS library, or
-     *   FALSE if the library does not exist
+     * @return {function|boolean} The copy of the JSUS component, or
+     *   FALSE if the library does not exist, or cloning is not possible
      */
-    JSUS.require = function(className) {
-        if ('undefined' === typeof JSUS.clone) {
-            JSUS.log('JSUS.clone not found. Cannot continue.');
+    JSUS.require = function(component, clone) {
+        var out;
+        clone = 'undefined' === typeof clone ? true : clone;
+        if (clone && 'undefined' === typeof JSUS.clone) {
+            JSUS.log('JSUS.require: JSUS.clone not found, but clone ' +
+                     'requested. Cannot continue.');
             return false;
         }
-        if ('undefined' === typeof className) return JSUS.clone(JSUS._classes);
-        if ('undefined' === typeof JSUS._classes[className]) {
-            JSUS.log('Could not find class ' + className);
-            return false;
+        if ('undefined' === typeof component) {
+            out = JSUS._classes;
         }
-        return JSUS.clone(JSUS._classes[className]);
+        else {
+            out = JSUS._classes[component]
+            if ('undefined' === typeof out) {
+                JSUS.log('JSUS.require: could not find component ' + component);
+                return false;
+            }
+        }
+        return clone ? JSUS.clone(out) : out;
     };
 
     /**

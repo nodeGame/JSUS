@@ -101,8 +101,8 @@
      *
      * @param {string} component The name of the requested JSUS library.
      *   If undefined, all JSUS components are returned. Default: undefined.
-     * @param {boolean} clone If TRUE, the requested component is cloned
-     *   before being returned. Default: FALSE
+     * @param {boolean} clone Optional. If TRUE, the requested component
+     *   is cloned before being returned. Default: TRUE
      *
      * @return {function|boolean} The copy of the JSUS component, or
      *   FALSE if the library does not exist, or cloning is not possible
@@ -1016,7 +1016,9 @@
      *
      * @param {string} elem The name of the tag
      * @param {object|string} attributes Optional. Object containing
-     *   attributes for the element. If string, the id of the element
+     *   attributes for the element. If string, the id of the element. If
+     *   the request element is an 'iframe', the `name` attribute is set
+     *   equal to the `id` attribute.
      *
      * @return {HTMLElement} The newly created HTML element
      *
@@ -1390,11 +1392,18 @@
      *
      * @param {Node} parent The parent node
      * @param {array} order Optional. A pre-specified order. Defaults, random
+     * @param {function} cb Optional. A callback to execute one each shuffled
+     *   element (after re-positioning). This is always the last parameter, 
+     *   so if order is omitted, it goes second. The callback takes as input:
+     *     - the element
+     *     - the new order
+     *     - the old order
+     *
      *
      * @return {array} The order used to shuffle the nodes
      */
-    DOM.shuffleElements = function(parent, order) {
-        var i, len, idOrder, children, child;
+    DOM.shuffleElements = function(parent, order, cb) {
+        var i, len, numOrder, idOrder, children, child;
         var id;
         if (!JSUS.isNode(parent)) {
             throw new TypeError('DOM.shuffleElements: parent must be a node. ' +
@@ -1405,16 +1414,25 @@
             return false;
         }
         if (order) {
-            if (!JSUS.isArray(order)) {
-                throw new TypeError('DOM.shuffleElements: order must array.' +
-                                   'Found: ' + order);
+            if ('undefined' === typeof cb && 'function' === typeof order) {
+                cb = order;
             }
-            if (order.length !== parent.children.length) {
-                throw new Error('DOM.shuffleElements: order length must ' +
-                                'match the number of children nodes.');
+            else {
+                if (!JSUS.isArray(order)) {
+                    throw new TypeError('DOM.shuffleElements: order must be ' +
+                                        'array. Found: ' + order);
+                }
+                if (order.length !== parent.children.length) {
+                    throw new Error('DOM.shuffleElements: order length must ' +
+                                    'match the number of children nodes.');
+                }
             }
         }
-
+        if (cb && 'function' !== typeof cb) {
+            throw new TypeError('DOM.shuffleElements: order must be ' +
+                                'array. Found: ' + order);
+        }
+        
         // DOM4 compliant browsers.
         children = parent.children;
 
@@ -1428,16 +1446,19 @@
             }
         }
 
+        // Get all ids.
         len = children.length;
         idOrder = new Array(len);
+        if (cb) numOrder = new Array(len);
         if (!order) order = JSUS.sample(0, (len-1));
         for (i = 0 ; i < len; i++) {
             id = children[order[i]].id;
             if ('string' !== typeof id || id === "") {
                 throw new Error('DOM.shuffleElements: no id found on ' +
-                                'child n. ' + order[i] + '.');
+                                'child n. ' + order[i]);
             }
             idOrder[i] = id;
+            if (cb) numOrder[i] = order[i];
         }
 
         // Two fors are necessary to follow the real sequence (Live List).
@@ -1445,6 +1466,7 @@
         // could be unreliable.
         for (i = 0 ; i < len; i++) {
             parent.appendChild(children[idOrder[i]]);
+            if (cb) cb(children[idOrder[i]], i, numOrder[i]);
         }
         return idOrder;
     };
@@ -4069,7 +4091,9 @@
  * Copyright(c) 2016 Stefano Balietti
  * MIT Licensed
  *
- * Collection of static functions related to file system operations
+ * Collection of static functions related to file system operations.
+ *
+ * TODO: see if we need to keep this file at all.
  *
  * @see http://nodejs.org/api/fs.html
  * @see https://github.com/jprichardson/node-fs-extra
@@ -4123,11 +4147,12 @@
     FS.resolveModuleDir = function(module, basedir) {
         var str, stop;
         if ('string' !== typeof module) {
-            throw new TypeError('FS.resolveModuleDir: module must be string.');
+            throw new TypeError('FS.resolveModuleDir: module must be ' +
+                                'string. Found: ' + module);
         }
         if (basedir && 'string' !== typeof basedir) {
             throw new TypeError('FS.resolveModuleDir: basedir must be ' +
-                                'string or undefined.');
+                                'string or undefined. Found: ' + basedir);
         }
         // Added this line because it might fail.
         if (module === 'JSUS') return path.resolve(__dirname, '..') + '/';

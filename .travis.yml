@@ -12,10 +12,13 @@ before_install:
 
 install:
   - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --branch v4
+  - npm install -g should
+  - npm install -g mocha
 
 script:
 # Add JSUS tests here.
   - npm test
+
 # Test Ultimatum game.
   - cd node_modules/nodegame-test/games/ultimatum-game
   - ./bin/run-standalone-test-v4.sh

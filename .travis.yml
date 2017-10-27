@@ -11,9 +11,8 @@ before_install:
   - chmod a+x nodegame-installer.js
 
 install:
-  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --branch v4
-  - npm install -g should
-  - npm install -g mocha
+  - npm install --only=dev
+  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --branch v4 --yes
 
 script:
 # Add JSUS tests here.

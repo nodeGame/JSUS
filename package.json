@@ -15,7 +15,8 @@
   "devDependencies": {
     "mocha": ">= 0.3.0",
     "should": ">= 0.5.1",
-    "fs-extra": "*"
+    "fs-extra": "*",
+    "resolve": "*"  
   },
   "engines": { "node":  ">=0.10.0" },
   "repository": {

@@ -1,8 +1,6 @@
 sudo: false
 language: node_js
 node_js:
-  - 6
-  - 7
   - 8
 
 before_install:
@@ -13,9 +11,13 @@ before_install:
 install:
   - npm install --only=dev
   - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --branch v4 --yes
+  - mv node_modules/JSUS/node_modules/resolve node_modules/
+  
 
 script:
 # Add JSUS tests here.
+  - ls -la node_modules/JSUS/node_modules/
+  - ls -la node_modules/
   - npm test
 
 # Test Ultimatum game.

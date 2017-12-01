@@ -518,17 +518,45 @@ describe('OBJ: ', function() {
 
         it('should returns all the first level keys with negative number',
            function() {
-
                JSUS.keys(obj_complex, -1).should.be.eql(['a','b','c']);
            });
 
         it('should returns all first and second level keys ("nested option")',
            function() {
-
                JSUS.keys(obj_complex, 1)
                    .should.be.eql([ 'a', 'b', 'a', 'b', 'c', 'c' ]);
            });
 
+        
+        it('should returns all first and second level keys ("nested option")',
+           function() {
+               var obj;
+               obj = {
+                   a1: { a2: { a3: "a", b3: { b4: { b5: "b" }  } } }
+               };
+               JSUS.keys(obj, 2)
+                   .should.be.eql([ 'a1', 'a2', 'a3', 'b3' ]);
+           });
+        
+        it('should returns up to level 3 keys ("nested option")',
+           function() {
+               var obj;
+               obj = {
+                   a1: { a2: { a3: "a", b3: { b4: { b5: "b" }  } } }
+               };
+               JSUS.keys(obj, 3)
+                   .should.be.eql([ 'a1', 'a2', 'a3', 'b3', 'b4' ]);
+           });
+        
+        it('should returns up to level 4 keys ("nested option")',
+           function() {
+               var obj;
+               obj = {
+                   a1: { a2: { a3: "a", b3: { b4: { b5: "b" }  } } }
+               };
+               JSUS.keys(obj, 4)
+                   .should.be.eql([ 'a1', 'a2', 'a3', 'b3', 'b4', 'b5' ]);
+           });
     });
 
     describe('#equals()', function() {

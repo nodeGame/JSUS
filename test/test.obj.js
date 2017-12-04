@@ -850,6 +850,49 @@ describe('OBJ: ', function() {
                    'parent-a1-a2-b3-b4-b5'
                ]);
            });
+
+        // Shortcut syntax.
+
+        
+        it('should return all keys up to level 4  (shortcut syntax)',
+           function() {
+               var myarr = [ 1, 2 ];
+               JSUS.keys(obj, {
+                   level: 4,
+                   concat: true,
+                   separator: '-',
+                   array: myarr,
+                   curParent: 'parent'
+               });
+
+               myarr.should.be.eql([
+                   1, 2,
+                   'parent-a1',
+                   'parent-a1-a2',
+                   'parent-a1-a2-a3',
+                   'parent-a1-a2-b3',
+                   'parent-a1-a2-b3-b4',
+                   'parent-a1-a2-b3-b4-b5'
+               ]);
+           });
+        
+        it('should return all keys up to level 4  (shortcut syntax)',
+           function() {
+               var myarr = [ 1, 2 ];
+               JSUS.keys(obj, {
+                   concat: true,
+                   separator: '-',
+                   array: myarr,
+                   curParent: 'parent'
+               });
+
+               myarr.should.be.eql([
+                   1, 2,
+                   'parent-a1'
+               ]);
+           });
+        
+        
     });
 
 

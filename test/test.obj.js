@@ -778,7 +778,7 @@ describe('OBJ: ', function() {
         
         // Cb Option.
         
-        it('should return all keys up to level 4  (distinct option)',
+        it('should return all keys up to level 4 (cb+distinct option)',
            function() {
                var obj2;
                obj2 = {
@@ -793,7 +793,7 @@ describe('OBJ: ', function() {
            });
         
         
-        it('should return all keys up to level 4  (with duplicates)',
+        it('should return all keys up to level 4 (cb+with duplicates)',
            function() {
                var obj2;
                obj2 = {
@@ -805,6 +805,27 @@ describe('OBJ: ', function() {
                    '_a1', '_a2', '_a3', '_a2', '_b4', '_a3'
                ]);
            });
+        
+
+        it('should return all keys up to level 4 (cb advanced)',
+           function() {
+               var obj2;
+               obj2 = {
+                   a1: { a2: { a3: "a", a2: { b4: { a3: "b" }  } } }
+               };
+               JSUS.keys(obj2, 4, {
+                   cb: function(key) {
+                       // Key as it is.
+                       if (key === 'a3') return;
+                       if (key === 'b4') return null;
+                       if (key === 'a2') return [ 'ah', 'ah2' ];
+                       return '_' + key;
+                   }
+               }).should.be.eql([
+                   '_a1', 'ah', 'ah2', 'a3',  'ah', 'ah2', 'a3'
+               ]);
+           });
+
         
         // Array Option.
         
@@ -837,7 +858,7 @@ describe('OBJ: ', function() {
                    concat: true,
                    separator: '-',
                    array: myarr,
-                   curParent: 'parent'
+                   parent: 'parent'
                });
 
                myarr.should.be.eql([
@@ -862,7 +883,7 @@ describe('OBJ: ', function() {
                    concat: true,
                    separator: '-',
                    array: myarr,
-                   curParent: 'parent'
+                   parent: 'parent'
                });
 
                myarr.should.be.eql([
@@ -883,7 +904,7 @@ describe('OBJ: ', function() {
                    concat: true,
                    separator: '-',
                    array: myarr,
-                   curParent: 'parent'
+                   parent: 'parent'
                });
 
                myarr.should.be.eql([
@@ -891,8 +912,33 @@ describe('OBJ: ', function() {
                    'parent-a1'
                ]);
            });
+
+        // Skip option.
         
-        
+        it('should return all keys up to level 4  (skip + shortcut)',
+           function() {
+               var myarr = [ 1, 2 ];
+               JSUS.keys(obj, {
+                   concat: true,
+                   separator: '-',
+                   array: myarr,
+                   skip: { a1: true }
+               });
+
+               myarr.should.be.eql([
+                   1, 2
+               ]);
+           });
+                
+        it('should return all keys up to level 4  (skip + shortcut)',
+           function() {
+               JSUS.keys(obj, {
+                   level: 4,
+                   skip: { a1: true, a2: true, a3: true }
+               }).should.be.eql([
+                   'b3', 'b4', 'b5'
+               ]);
+           });
     });
 
 

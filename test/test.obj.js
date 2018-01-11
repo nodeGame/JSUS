@@ -531,7 +531,7 @@ describe('OBJ: ', function() {
            function() {
                JSUS.keys(obj_complex, 0).should.be.eql(['a','b','c']);
            });
-        
+
         it('should return all first and second level keys ("level option")',
            function() {
                JSUS.keys(obj_complex, 1)
@@ -543,13 +543,13 @@ describe('OBJ: ', function() {
                JSUS.keys(obj, 2)
                    .should.be.eql([ 'a1', 'a2', 'a3', 'b3' ]);
            });
-        
+
         it('should return up to level 3 keys ("level option")',
            function() {
                JSUS.keys(obj, 3)
                    .should.be.eql([ 'a1', 'a2', 'a3', 'b3', 'b4' ]);
            });
-        
+
         it('should return up to level 4 keys ("level option")',
            function() {
                JSUS.keys(obj, 4)
@@ -583,7 +583,7 @@ describe('OBJ: ', function() {
                    type: 'all'
                }).should.be.eql(['a','b','c']);
            });
-        
+
         it('should return all first and second level keys ("level option")',
            function() {
                JSUS.keys(obj_complex, 1, {
@@ -597,14 +597,14 @@ describe('OBJ: ', function() {
                    type: 'all'
                }).should.be.eql([ 'a1', 'a2', 'a3', 'b3' ]);
            });
-        
+
         it('should return up to level 3 keys ("level option")',
            function() {
                JSUS.keys(obj, 3, {
                    type: 'all'
                }).should.be.eql([ 'a1', 'a2', 'a3', 'b3', 'b4' ]);
            });
-        
+
         it('should return up to level 4 keys ("level option")',
            function() {
                JSUS.keys(obj, 4, {
@@ -618,40 +618,40 @@ describe('OBJ: ', function() {
                    type: 'all'
                }).should.be.eql([ 'a1', 'a2', 'a3', 'b3', 'b4', 'b5' ]);
            });
-        
+
         // Level Option.
-        
+
         it('should return level 0 keys only (type="level" option)',
            function() {
                JSUS.keys(obj, 0, { type: 'level' })
                    .should.be.eql([ 'a1' ]);
            });
-        
+
         it('should return level 1 keys only (type="level" option)',
            function() {
                JSUS.keys(obj, 1, { type: 'level' })
                    .should.be.eql([ 'a2' ]);
            });
-        
+
         it('should return level 2 keys only (type="level" option)',
            function() {
                JSUS.keys(obj, 2, { type: 'level' })
                    .should.be.eql([ 'a3', 'b3' ]);
            });
-        
+
         it('should return level 3 keys only (type="level" option)',
            function() {
                JSUS.keys(obj, 3, { type: 'level' })
                    .should.be.eql([ 'b4' ]);
            });
 
-        
+
         it('should return level 4 keys only (type="level" option)',
            function() {
                JSUS.keys(obj, 4, { type: 'level' })
                    .should.be.eql([ 'b5' ]);
            });
-        
+
         it('should return level 5 keys only (no keys) (type="level" option)',
            function() {
                JSUS.keys(obj, 5, { type: 'level' })
@@ -659,13 +659,13 @@ describe('OBJ: ', function() {
            });
 
         // Leaf Option.
-        
+
         it('should return level 4 leaf-keys (type="level" option)',
            function() {
                JSUS.keys(obj, 4, { type: 'leaf' })
                    .should.be.eql([  'a3', 'b5' ]);
            });
-        
+
         it('should return level 3 leaf-keys (type="level" option)',
            function() {
                JSUS.keys(obj, 3, { type: 'leaf' })
@@ -677,19 +677,19 @@ describe('OBJ: ', function() {
                JSUS.keys(obj, 2, { type: 'level' })
                    .should.be.eql([ 'a3', 'b3' ]);
            });
-        
+
         it('should return level 1 keys only (type="leaf" option)',
            function() {
                JSUS.keys(obj, 1, { type: 'level' })
                    .should.be.eql([ 'a2' ]);
            });
-        
+
         it('should return level 0 keys only (type="leaf" option)',
            function() {
                JSUS.keys(obj, 0, { type: 'level' })
                    .should.be.eql([ 'a1' ]);
            });
-        
+
         it('should return level -1 keys only (type="leaf" option)',
            function() {
                JSUS.keys(obj, -1, { type: 'level' })
@@ -697,7 +697,7 @@ describe('OBJ: ', function() {
            });
 
         // Concat Leaf Option.
-        
+
         it('should return level 4 leaf-keys (concat option)',
            function() {
                JSUS.keys(obj, 4, { type: 'leaf', concat: true })
@@ -706,7 +706,7 @@ describe('OBJ: ', function() {
 
 
         // Concat Leaf Option + separator.
-        
+
         it('should return level 4 leaf-keys (concat+separator option)',
            function() {
                JSUS.keys(obj, 4, {
@@ -715,13 +715,13 @@ describe('OBJ: ', function() {
                    separator: '-'
                }).should.be.eql([ 'a1-a2-a3', 'a1-a2-b3-b4-b5' ]);
            });
-        
+
         // Concat All Option.
-        
+
         it('should return  all keys up to level 4 (concat option)',
            function() {
                JSUS.keys(obj, 4, { concat: true })
-                   .should.be.eql([                       
+                   .should.be.eql([
                        'a1',
                        'a1.a2',
                        'a1.a2.a3',
@@ -733,13 +733,13 @@ describe('OBJ: ', function() {
 
 
         // Concat All Option + separator.
-        
+
         it('should return all keys up to level 4  (concat+separator option)',
            function() {
                JSUS.keys(obj, 4, {
                    concat: true,
                    separator: '-'
-               }).should.be.eql([                       
+               }).should.be.eql([
                    'a1',
                    'a1-a2',
                    'a1-a2-a3',
@@ -750,7 +750,7 @@ describe('OBJ: ', function() {
            });
 
         // Distinct Option.
-        
+
         it('should return all keys up to level 4  (distinct option)',
            function() {
                var obj2;
@@ -763,8 +763,8 @@ describe('OBJ: ', function() {
                    'a1', 'a2', 'a3', 'b4'
                ]);
            });
-        
-        
+
+
         it('should return all keys up to level 4  (with duplicates)',
            function() {
                var obj2;
@@ -775,9 +775,9 @@ describe('OBJ: ', function() {
                    'a1', 'a2', 'a3', 'a2', 'b4', 'a3'
                ]);
            });
-        
+
         // Cb Option.
-        
+
         it('should return all keys up to level 4 (cb+distinct option)',
            function() {
                var obj2;
@@ -791,8 +791,8 @@ describe('OBJ: ', function() {
                    '_a1', '_a2', '_a3', '_b4'
                ]);
            });
-        
-        
+
+
         it('should return all keys up to level 4 (cb+with duplicates)',
            function() {
                var obj2;
@@ -805,7 +805,7 @@ describe('OBJ: ', function() {
                    '_a1', '_a2', '_a3', '_a2', '_b4', '_a3'
                ]);
            });
-        
+
 
         it('should return all keys up to level 4 (cb advanced)',
            function() {
@@ -826,9 +826,9 @@ describe('OBJ: ', function() {
                ]);
            });
 
-        
+
         // Array Option.
-        
+
         it('should return all keys up to level 4  (concat+sep+array option)',
            function() {
                var myarr = [ 1, 2 ];
@@ -848,9 +848,9 @@ describe('OBJ: ', function() {
                    'a1-a2-b3-b4-b5'
                ]);
            });
-        
+
         // Array Option.
-        
+
         it('should return all keys up to level 4  (concat+sep+array option)',
            function() {
                var myarr = [ 1, 2 ];
@@ -874,7 +874,7 @@ describe('OBJ: ', function() {
 
         // Shortcut syntax.
 
-        
+
         it('should return all keys up to level 4  (shortcut syntax)',
            function() {
                var myarr = [ 1, 2 ];
@@ -896,7 +896,7 @@ describe('OBJ: ', function() {
                    'parent-a1-a2-b3-b4-b5'
                ]);
            });
-        
+
         it('should return all keys up to level 4  (shortcut syntax)',
            function() {
                var myarr = [ 1, 2 ];
@@ -914,7 +914,7 @@ describe('OBJ: ', function() {
            });
 
         // Skip option.
-        
+
         it('should return all keys up to level 4  (skip + shortcut)',
            function() {
                var myarr = [ 1, 2 ];
@@ -929,7 +929,7 @@ describe('OBJ: ', function() {
                    1, 2
                ]);
            });
-                
+
         it('should return all keys up to level 4  (skip + shortcut)',
            function() {
                JSUS.keys(obj, {
@@ -939,11 +939,31 @@ describe('OBJ: ', function() {
                    'b3', 'b4', 'b5'
                ]);
            });
+
+        // Shadowing names.
+
+        it('Shadow names at top level should return all keys: type LEAF',
+           function() {
+               var myobj = { a: 1, b: { a: 2, b: 3, c: 4 } };
+               var res = JSUS.keys(myobj, {
+                   concat: true,
+                   separator: '.',
+                   type: 'leaf',
+                   level: 2
+               });
+
+               res.should.be.eql([
+                   'a', 'b.a', 'b.b', 'b.c'
+               ]);
+           });
+
+
+
     });
 
 
 
-    
+
     describe('#equals()', function() {
 
         it('should say that 1 and 1 are equal', function() {

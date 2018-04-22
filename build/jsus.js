@@ -301,8 +301,6 @@
      * @param {Function} cb The callback for each element in the array
      * @param {object} context Optional. The context of execution of the
      *   callback. Defaults ARRAY.each
-     *
-     * @return {boolean} TRUE, if execution was successful
      */
     ARRAY.each = function(array, cb, context) {
         var i, len;
@@ -318,9 +316,8 @@
         context = context || this;
         len = array.length;
         for (i = 0 ; i < len; i++) {
-            cb.call(context, array[i]);
+            cb.call(context, array[i], i);
         }
-        return true;
     };
 
     /**
@@ -1393,7 +1390,7 @@
      * @param {Node} parent The parent node
      * @param {array} order Optional. A pre-specified order. Defaults, random
      * @param {function} cb Optional. A callback to execute one each shuffled
-     *   element (after re-positioning). This is always the last parameter, 
+     *   element (after re-positioning). This is always the last parameter,
      *   so if order is omitted, it goes second. The callback takes as input:
      *     - the element
      *     - the new order
@@ -1432,7 +1429,7 @@
             throw new TypeError('DOM.shuffleElements: order must be ' +
                                 'array. Found: ' + order);
         }
-        
+
         // DOM4 compliant browsers.
         children = parent.children;
 
@@ -2259,7 +2256,8 @@
             }
             else if (!JSUS.isArray(titles)) {
                 throw new TypeError(where + 'titles must be string, ' +
-                                    'array of strings or undefined.');
+                                    'array of strings or undefined. Found: ' +
+                                    titles);
             }
             rotationId = 0;
             period = options.period || 1000;
@@ -4706,38 +4704,167 @@
     /**
      * ## OBJ.keys
      *
-     * Scans an object an returns all the keys of the properties,
-     * into an array.
+     * Returns all the keys of an object until desired level of nestedness
      *
-     * The second paramter controls the level of nested objects
-     * to be evaluated. Defaults 0 (nested properties are skipped).
+     * The second parameter can be omitted, and the level can be specified
+     * inside the options object passed as second parameter.
      *
      * @param {object} obj The object from which extract the keys
-     * @param {number} level Optional. The level of recursion. Defaults 0
+     * @param {number} level Optional. How many nested levels to scan.
+     *   Default: 0, meaning 0 recursion, i.e., only first level keys.
+     * @param {object} options Optional. Configuration options:
+     *
+     *   - type: 'all':   all keys (default),
+     *           'level': keys of the specified level,
+     *           'leaf':  keys that are leaves, i.e., keys that are at the
+     *                    the desired level or that do not point to an object
+     *   - concat: true/false: If TRUE, keys are prefixed by parent keys
+     *   - separator: a character to inter between parent and children keys;
+     *                 (default: '.')
+     *   - distinct: if TRUE, only unique keys are returned  (default: false)
+     *   - parent: the name of initial parent key (default: '')
+     *   - array: an array to which the keys will be appended (default: [])
+     *   - skip: an object containing keys to skip
+     *   - cb: a callback to be applied to every key before adding to results.
+     *         The return value of the callback is interpreted as follows:
+     *         - string|number: inserted as it is
+     *         - array: concatenated
+     *         - undefined: the original key is inserted
+     *         - null: nothing is inserted
      *
      * @return {array} The array containing the extracted keys
      *
      * @see Object.keys
      */
-    OBJ.keys = OBJ.objGetAllKeys = function(obj, level, curLevel) {
-        var result, key;
-        if (!obj) return [];
-        level = 'number' === typeof level && level >= 0 ? level : 0;
-        curLevel = 'number' === typeof curLevel && curLevel >= 0 ? curLevel : 0;
-        result = [];
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                result.push(key);
-                if (curLevel < level) {
-                    if ('object' === typeof obj[key]) {
-                        result = result.concat(OBJ.objGetAllKeys(obj[key],
-                                                                 (curLevel+1)));
+    OBJ.keys = (function() {
+        return function(obj, level, options) {
+            var keys, type, allKeys, leafKeys, levelKeys;
+            var separator, myLevel, curParent;
+
+            if (arguments.length === 2 && 'object' === typeof level) {
+                options = level;
+                level = options.level;
+            }
+
+            options = options || {};
+
+            type = options.type ? options.type.toLowerCase() : 'all';
+            if (type === 'all') allKeys = true;
+            else if (type === 'leaf') leafKeys = true;
+            else if (type === 'level') levelKeys = true;
+            else throw new Error('keys: unknown type option: ' + type);
+
+            if (options.cb && 'function' !== typeof options.cb) {
+                throw new TypeError('JSUS.keys: options.cb must be function ' +
+                                    'or undefined. Found: ' + options.cb);
+            }
+
+            if ('undefined' === typeof level) myLevel = 0;
+            else if ('number' === typeof level) myLevel = level;
+            else if ('string' === typeof level) myLevel = parseInt(level, 10);
+            if ('number' !== typeof myLevel || isNaN(myLevel)) {
+                throw new Error('JSUS.keys: level must be number, undefined ' +
+                                'or a parsable string. Found: ' + level);
+            }
+            // No keys at level -1;
+            if (level < 0) return [];
+
+            if (options.concat) {
+                if ('undefined' === typeof options.separator) separator = '.';
+                else separator = options.separator;
+            }
+
+            if (options.parent) curParent = options.parent + separator;
+            else curParent = '';
+
+            if (!options.concat && options.distinct) keys = {};
+
+            return _keys(obj, myLevel, 0, curParent, options.concat,
+                         allKeys, leafKeys, levelKeys, separator,
+                         options.array || [], keys, options.skip || {},
+                         options.cb);
+        }
+
+        function _keys(obj, level, curLevel, curParent,
+                       concatKeys, allKeys, leafKeys, levelKeys,
+                       separator, res, uniqueKeys, skipKeys, cb) {
+
+            var key, isLevel, isObj, tmp;
+            isLevel = curLevel === level;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+
+                    isObj = 'object' === typeof obj[key];
+                    if (allKeys ||
+                        (leafKeys && (isLevel || !isObj)) ||
+                        (levelKeys && isLevel)) {
+
+                        if (concatKeys) {
+                            tmp = curParent + key;
+                            if (!skipKeys[tmp]) {
+                                if (cb) _doCb(tmp, res, cb);
+                                else res.push(tmp);
+                            }
+                        }
+                        else if (!skipKeys[key]) {
+                            if (uniqueKeys){
+                                if (!uniqueKeys[key]) {
+                                    if (cb) _doCb(key, res, cb);
+                                    else res.push(key);
+                                    uniqueKeys[key] = true;
+                                }
+                            }
+                            else {
+                                if (cb) _doCb(key, res, cb);
+                                else res.push(key);
+                            }
+                        }
+                    }
+                    if (isObj && (curLevel < level)) {
+                        _keys(obj[key], level, (curLevel+1),
+                              concatKeys ? curParent + key + separator : key,
+                              concatKeys, allKeys, leafKeys, levelKeys,
+                              separator, res, uniqueKeys, skipKeys, cb);
                     }
                 }
             }
+            return res;
         }
-        return result;
-    };
+
+        function _doCb(key, res, cb) {
+            var tmp;
+            tmp = cb(key);
+            // If string, substitute it.
+            if ('string' === typeof tmp || 'number' === typeof tmp) {
+                res.push(tmp);
+            }
+            // If array, expand it.
+            else if (JSUS.isArray(tmp) && tmp.length) {
+                if (tmp.length < 4) {
+                    res.push(tmp[0]);
+                    if (tmp.length > 1) {
+                        res.push(tmp[1]);
+                        if (tmp.length > 2) {
+                            res.push(tmp[2]);
+                        }
+                    }
+                }
+                else {
+                    (function() {
+                        var i = -1, len = tmp.length;
+                        for ( ; ++i < len ; ) {
+                            res.push(tmp[i]);
+                        }
+                    })(tmp, res);
+                }
+            }
+            else if ('undefined' === typeof tmp) {
+                res.push(key);
+            }
+            // Else, e.g. null, ignore it.
+        }
+    })();
+
 
     /**
      * ## OBJ.implode
@@ -5111,7 +5238,7 @@
     };
 
     /**
-     * ## OBJ.subobj
+     * ## OBJ.subobj | subObj
      *
      * Creates a copy of an object containing only the properties
      * passed as second parameter
@@ -5129,7 +5256,7 @@
      *
      * @see OBJ.getNestedValue
      */
-    OBJ.subobj = function(o, select) {
+    OBJ.subobj = OBJ.subObj = function(o, select) {
         var out, i, key;
         if (!o) return false;
         out = {};

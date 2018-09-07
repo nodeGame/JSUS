@@ -13,15 +13,16 @@ before_install:
 
 install:
   - npm install --only=dev
-  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --branch v4 --yes
+  # --branch v4
+  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --yes
   - mv node_modules/JSUS/node_modules/resolve node_modules/
   - mv node_modules/JSUS/node_modules/fs-extra node_modules/
   
 
 script:
 # Add JSUS tests here.
-  - ls -la node_modules/JSUS/node_modules/
-  - ls -la node_modules/
+  # - ls -la node_modules/JSUS/node_modules/
+  # - ls -la node_modules/
   - npm test
 
 # Test Ultimatum game.

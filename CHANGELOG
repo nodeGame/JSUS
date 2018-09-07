@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.0.1
+- `#FS` is using path.sep.
+
 ## 1.0.0
 - `J` is exported as a top level object in the browser's window.
 - `#JSUS.get` alias of `JSUS.require` removed. `#JSUS.get` is now a method of the DOM library.

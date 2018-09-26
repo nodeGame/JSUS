@@ -318,8 +318,20 @@ describe('PARSE: ', function() {
         it('should parse and return float number (interval ok)', function() {
             JSUS.isNumber('1.1', 0, 2).should.be.eql(1.1);
         });
-        it('should parse and return  int number (interval bad)', function() {
+        it('should parse and return int number (interval bad)', function() {
             JSUS.isNumber('1.1', 4, 5).should.be.false;
+        });
+        it('should parse and return int (interval minEq ok)', function() {
+            JSUS.isNumber('1', 1, 5, true, true).should.be.eql(1);
+        });
+        it('should parse and return int (interval minEq bad)', function() {
+            JSUS.isNumber('2', 2.001, 5, true, true).should.be.false;
+        });
+        it('should parse and return int (interval maxEq ok)', function() {
+            JSUS.isNumber('5', 1, 5, true, true).should.be.eql(5);
+        });
+        it('should parse and return int (interval maxEq bad)', function() {
+            JSUS.isNumber('5', 2, 4.999, true, true).should.be.false;
         });
 
     });

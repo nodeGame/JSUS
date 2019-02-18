@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.0
+- `#PARSE.isMobileAgent` returns TRUE if a user agent is for a mobile device. 
+
 ## 1.0.1
 - `#FS` is using path.sep.
 

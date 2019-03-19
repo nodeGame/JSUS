@@ -321,6 +321,36 @@ describe('PARSE: ', function() {
         it('should parse and return  int number (interval bad)', function() {
             JSUS.isNumber('1.1', 4, 5).should.be.false;
         });
+    });
+
+    describe('#isNumber() with ueq and leg', function() {
+        it('should parse and return the float number', function() {
+            JSUS.isNumber('1.1', 1).should.be.eql(1.1);
+        });
+        it('should parse and return false (<lower)', function() {
+            JSUS.isNumber('1.1', 2).should.be.eql(false);
+        });
+        it('should parse and return false (==lower)', function() {
+            JSUS.isNumber('1', 1).should.be.eql(false);
+        });
+        it('should parse and return 1 (==lower ueq)', function() {
+            JSUS.isNumber('1', 1, undefined, true).should.be.eql(1);
+        });
+        it('should parse and return 3', function() {
+            JSUS.isNumber('3', 1, 10).should.be.eql(3);
+        });
+        it('should parse and return false (>upper)', function() {
+            JSUS.isNumber('3', 0, 2).should.be.eql(false);
+        });
+        it('should parse and return false (>upper leq)', function() {
+            JSUS.isNumber('3', 0, 2, true).should.be.eql(false);
+        });
+        it('should parse and return 3 (==upper ueq), ', function() {
+            JSUS.isNumber('3', 0, 3, true, true).should.be.eql(3);
+        });
+        it('should parse and return 3 (==upper ueq 2)', function() {
+            JSUS.isNumber('3', undefined, 3, undefined, true).should.be.eql(3);
+        });
 
     });
 });

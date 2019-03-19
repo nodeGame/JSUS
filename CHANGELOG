@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.1
+- `#PARSE.isNumber` fixed bug when ueq and leq params were set.
+
 ## 1.1.0
 - `#PARSE.isMobileAgent` returns TRUE if a user agent is for a mobile device. 
 

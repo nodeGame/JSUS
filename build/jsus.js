@@ -4086,7 +4086,7 @@
 
 /**
  * # FS
- * Copyright(c) 2016 Stefano Balietti
+ * Copyright(c) 2018 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations.
@@ -4107,8 +4107,8 @@
     }
 
     var resolve = require('resolve'),
-    path = require('path'),
-    fs = require('fs')
+        path = require('path'),
+        fs = require('fs');
 
 
     function FS() {}
@@ -4153,10 +4153,10 @@
                                 'string or undefined. Found: ' + basedir);
         }
         // Added this line because it might fail.
-        if (module === 'JSUS') return path.resolve(__dirname, '..') + '/';
+        if (module === 'JSUS') return path.resolve(__dirname, '..') + path.sep;
         str = resolve.sync(module, {basedir: basedir || __dirname});
         stop = str.indexOf(module) + module.length;
-        return str.substr(0, stop) + '/';
+        return str.substr(0, stop) + path.sep;
     };
 
     /**
@@ -4233,7 +4233,7 @@
             };
         }
 
-        if (dir[dir.length] !== '/') dir = dir + '/';
+        if (dir[dir.length] !== path.sep) dir = dir + path.sep;
 
         fs.readdir(dir, function(err, files) {
             var asq, mycb;
@@ -4295,7 +4295,7 @@
             return false;
         }
 
-        dirOut = path.resolve(dirOut) + '/';
+        dirOut = path.resolve(dirOut) + path.sep;
         dirs = [dirIn, dirOut];
 
         for (i = 0; i < 2; i++) {
@@ -4371,7 +4371,7 @@
 
 /**
  * # OBJ
- * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2019 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects
@@ -5591,14 +5591,13 @@
     /**
      * ## OBJ.melt
      *
-     * Creates a new object with the specified combination of
-     * properties - values
+     * Creates a new object with specific combination of properties - values
      *
      * The values are assigned cyclically to the properties, so that
      * they do not need to have the same length. E.g.
      *
      * ```javascript
-     *  J.createObj(['a','b','c'], [1,2]); // { a: 1, b: 2, c: 1 }
+     *  J.melt(['a','b','c'], [1,2]); // { a: 1, b: 2, c: 1 }
      * ```
      * @param {array} keys The names of the keys to add to the object
      * @param {array} values The values to associate to the keys
@@ -5791,6 +5790,27 @@
         return out;
     };
 
+    /**
+     * ## OBJ.reverseObj
+     *
+     * Returns a new object where they keys and values are switched
+     *
+     * @param {object} obj The object to reverse
+     *
+     * @return {object} The reversed object 
+     */
+    OBJ.reverseObj = function(o) {
+        var k, res;
+        res = {};
+        if (!o) return res;
+        for (k in o) {
+            if (o.hasOwnProperty(k)) {
+                res[o[k]] = k;
+            }
+        }
+        return res;
+    };
+
     JSUS.extend(OBJ);
 
 })('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
@@ -5856,6 +5876,35 @@
         results = regex.exec(referer);
         return results === null ? false :
             decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+    /**
+     * ## PARSE.isMobileAgent
+     *
+     * Returns TRUE if a user agent is for a mobile device
+     *
+     * @param {string} agent Optional. The user agent to check. Default:
+     *   navigator.userAgent
+     *
+     * @return {boolean} TRUE if a user agent is for a mobile device
+     */
+    PARSE.isMobileAgent = function(agent) {
+        var rx;
+        if (!agent){
+            if (!navigator) {
+                throw new Error('JSUS.isMobileAgent: agent undefined and ' +
+                                'no navigator. Are you in the browser?');
+            }
+            agent = navigator.userAgent;
+        }
+        else if ('string' !== typeof agent) {
+            throw new TypeError('JSUS.isMobileAgent: agent must be undefined ' +
+                                'or string. Found: ' + agent);
+        }
+        rx = new RegExp('Android|webOS|iPhone|iPad|BlackBerry|' +
+                        'Windows Phone|Opera Mini|IEMobile|Mobile', 'i');
+
+        return rx.test(agent);
     };
 
     /**
@@ -6051,19 +6100,21 @@
      * @param {mixed} n The value to check
      * @param {number} lower Optional. If set, n must be greater than lower
      * @param {number} upper Optional. If set, n must be smaller than upper
+     * @param {boolean} leq Optional. If TRUE, n can also be equal to lower
+     * @param {boolean} ueq Optional. If TRUE, n can also be equal to upper
      *
      * @return {boolean|number} The parsed integer, or FALSE if none was found
      *
      * @see PARSE.isFloat
      * @see PARSE.isNumber
      */
-    PARSE.isInt = function(n, lower, upper) {
+    PARSE.isInt = function(n, lower, upper, leq, ueq) {
         var regex, i;
         regex = /^-?\d+$/;
         if (!regex.test(n)) return false;
         i = parseInt(n, 10);
         if (i !== parseFloat(n)) return false;
-        return PARSE.isNumber(i, lower, upper);
+        return PARSE.isNumber(i, lower, upper, leq, ueq);
     };
 
     /**
@@ -6076,18 +6127,20 @@
      * @param {mixed} n The value to check
      * @param {number} lower Optional. If set, n must be greater than lower
      * @param {number} upper Optional. If set, n must be smaller than upper
+     * @param {boolean} leq Optional. If TRUE, n can also be equal to lower
+     * @param {boolean} ueq Optional. If TRUE, n can also be equal to upper
      *
      * @return {boolean|number} The parsed float, or FALSE if none was found
      *
      * @see PARSE.isInt
      * @see PARSE.isNumber
      */
-    PARSE.isFloat = function(n, lower, upper) {
+    PARSE.isFloat = function(n, lower, upper, leq, ueq) {
         var regex;
         regex = /^-?\d*(\.\d+)?$/;
         if (!regex.test(n)) return false;
         if (n.toString().indexOf('.') === -1) return false;
-        return PARSE.isNumber(n, lower, upper);
+        return PARSE.isNumber(n, lower, upper, leq, ueq);
     };
 
     /**
@@ -6100,17 +6153,23 @@
      * @param {mixed} n The value to check
      * @param {number} lower Optional. If set, n must be greater than lower
      * @param {number} upper Optional. If set, n must be smaller than upper
+     * @param {boolean} leq Optional. If TRUE, n can also be equal to lower
+     * @param {boolean} ueq Optional. If TRUE, n can also be equal to upper
      *
      * @return {boolean|number} The parsed number, or FALSE if none was found
      *
      * @see PARSE.isInt
      * @see PARSE.isFloat
      */
-    PARSE.isNumber = function(n, lower, upper) {
+    PARSE.isNumber = function(n, lower, upper, leq, ueq) {
         if (isNaN(n) || !isFinite(n)) return false;
         n = parseFloat(n);
-        if ('number' === typeof lower && n < lower) return false;
-        if ('number' === typeof upper && n > upper) return false;
+        if ('number' === typeof lower && (leq ? n < lower : n <= lower)) {
+            return false;
+        }
+        if ('number' === typeof upper && (ueq ? n > upper : n >= upper)) {
+            return false;
+        }
         return n;
     };
 

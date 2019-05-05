@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.4.0
+- `#OBJ.randomKey` picks a random key from object.
+- `#RANDOM.randomDate` creates a random date object within interval.
+
 ## 1.3.0
 - `#OBJ.reverseObj` accepts a callback to edit keys and values.
 

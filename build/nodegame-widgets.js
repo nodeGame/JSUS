@@ -1494,9 +1494,9 @@
      *
      * @param {string|object} w The name of the widget to load or a loaded
      *   widget object
-     * @param {object} root Optional. The HTML element under which the widget
-     *   will be appended. Default: the `document.body` element of the main
-     *   frame (if one is defined), or `document.body` elment of the page
+     * @param {object|string} root Optional. The HTML element (or its id) under
+     *   which the widget will be appended. Default: `document.body` of the
+     *   frame (if one is defined) or of the page
      * @param {options} options Optional. Configuration options to be passed
      *   to the widget
      *
@@ -1513,17 +1513,6 @@
             throw new TypeError('Widgets.append: w must be string or object. ' +
                                'Found: ' + w);
         }
-        if (root && !J.isElement(root)) {
-            throw new TypeError('Widgets.append: root must be HTMLElement ' +
-                                'or undefined. Found: ' + root);
-        }
-        if (options && 'object' !== typeof options) {
-            throw new TypeError('Widgets.append: options must be object or ' +
-                                'undefined. Found: ' + options);
-        }
-
-        // Init default values.
-        options = options || {};
 
         // If no root is defined, use the body element of the main frame,
         // if none is found, use the document.body.
@@ -1532,7 +1521,26 @@
             if (root) root = root.body;
             if (!root) root = document.body;
         }
+        else if ('string' === typeof root) {
+            tmp = W.gid(root);
+            if (!tmp) {
+                throw new Error('Widgets.append: element with id "' + root +
+                                '" not found');
+            }
+            root = tmp;
+        }
+        if (!J.isElement(root)) {
+            throw new TypeError('Widgets.append: root must be HTMLElement, ' +
+                                'string or undefined. Found: ' + root);
+        }
 
+        if (options && 'object' !== typeof options) {
+            throw new TypeError('Widgets.append: options must be object or ' +
+                                'undefined. Found: ' + options);
+        }
+
+        // Init default values.
+        options = options || {};
         if ('undefined' === typeof options.panel) {
             if (root === W.getHeader()) options.panel = false;
         }
@@ -1925,7 +1933,7 @@
         /**
          * ### BackButton.acrossStages
          *
-         * If TRUE, the Back button allows to go back within the same stage only
+         * If TRUE, it allows to go back to previous stages
          *
          * Default: FALSE
          */
@@ -1934,7 +1942,7 @@
         /**
          * ### BackButton.acrossRounds
          *
-         * If TRUE, the Back button allows to go back within the same stage only
+         * If TRUE, it allows to go back previous rounds in the same stage
          *
          * Default: TRUE
          */
@@ -5183,6 +5191,22 @@
     };
 
     /**
+     * ### ChoiceManager.reset
+     *
+     * Resets all forms
+     *
+     * @param {object} opts Optional. Reset options to pass each form
+     */
+    ChoiceManager.prototype.reset = function(opts) {
+        var i, len;
+        i = -1;
+        len = this.forms.length;
+        for ( ; ++i < len ; ) {
+            this.forms[i].reset(opts);
+        }
+    };
+
+    /**
      * ### ChoiceManager.getValues
      *
      * Returns the values for current selection and other paradata
@@ -5195,7 +5219,7 @@
      *   - markAttempt: If TRUE, getting the value counts as an attempt
      *      to find the correct answer. Default: TRUE.
      *   - highlight:   If TRUE, forms that do not have a correct value
-     *      will be highlighted. Default: FALSE.
+     *      will be highlighted. Default: TRUE.
      *
      * @return {object} Object containing the choice and paradata
      *
@@ -5210,22 +5234,36 @@
             missValues: []
         };
         opts = opts || {};
+        if ('undefined' === typeof opts.markAttempt) opts.markAttempt = true;
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
         if (opts.markAttempt) obj.isCorrect = true;
-        opts = opts || {};
         i = -1, len = this.forms.length;
         for ( ; ++i < len ; ) {
             form = this.forms[i];
-            obj.forms[form.id] = form.getValues(opts);
-            if (obj.forms[form.id].requiredChoice &&
-                (obj.forms[form.id].choice === null ||
-                 (form.selectMultiple && !obj.forms[form.id].choice.length))) {
-
-                obj.missValues.push(form.id);
+            // If it is hidden or disabled we do not do validation.
+            if (form.isHidden() || form.isDisabled()) {
+                obj.forms[form.id] = form.getValues({
+                    markAttempt: false,
+                    highlight: false
+                });
             }
-            if (opts.markAttempt && obj.forms[form.id].isCorrect === false) {
-                obj.isCorrect = false;
+            else {
+                obj.forms[form.id] = form.getValues(opts);
+                if (form.requiredChoice &&
+                    (obj.forms[form.id].choice === null ||
+                     (form.selectMultiple &&
+                      !obj.forms[form.id].choice.length))) {
+
+                    obj.missValues.push(form.id);
+                }
+                if (opts.markAttempt &&
+                    obj.forms[form.id].isCorrect === false) {
+
+                    obj.isCorrect = false;
+                }
             }
         }
+        if (obj.missValues.length) obj.isCorrect = false;
         if (this.textarea) obj.freetext = this.textarea.value;
         return obj;
     };
@@ -5277,7 +5315,7 @@
 
     // ## Meta-data
 
-    ChoiceTable.version = '1.5.1';
+    ChoiceTable.version = '1.6.0';
     ChoiceTable.description = 'Creates a configurable table where ' +
         'each cell is a selectable choice.';
 
@@ -5287,11 +5325,28 @@
     ChoiceTable.texts.autoHint = function(w) {
         var res;
         if (!w.requiredChoice && !w.selectMultiple) return false;
-        if (!w.selectMultiple) return '*'
-        res = '(pick ';
-        res += !w.requiredChoice ? 'up to ' + w.selectMultiple :
-            'between ' + w.requiredChoice + ' and ' + w.selectMultiple;
-        return res + ')';
+        if (!w.selectMultiple) return '*';
+        res = '(';
+        if (!w.requiredChoice) {
+            if ('number' === typeof w.selectMultiple) {
+                res += 'select up to ' + w.selectMultiple;
+            }
+            else {
+                res += 'multiple selection allowed';
+            }
+        }
+        else {
+            if ('number' === typeof w.selectMultiple) {
+                res += 'select between ' + w.requiredChoice + ' and ' +
+                    w.selectMultiple;
+            }
+            else {
+                res += 'select at least ' + w.requiredChoice;
+            }
+        }
+        res += ')';
+        if (w.requiredChoice) res += ' *';
+        return res;
     };
 
     ChoiceTable.separator = '::';
@@ -5355,7 +5410,6 @@
 
             // Not a clickable choice.
             if ('undefined' === typeof that.choicesIds[td.id]) return;
-
 
             // Relative time.
             if ('string' === typeof that.timeFrom) {
@@ -5423,7 +5477,12 @@
             if (that.isHighlighted()) that.unhighlight();
 
             // Call onclick, if any.
-            if (that.onclick) that.onclick.call(that, value, td, removed);
+            if (that.onclick) {
+                // TODO: Should we parseInt it anyway when we store
+                // the current choice?
+                value = parseInt(value, 10);
+                that.onclick.call(that, value, removed, td);
+            }
         };
 
         /**
@@ -5549,23 +5608,9 @@
          *
          * The current order of display of choices
          *
-         * May differ from `originalOrder` if shuffled.
-         *
          * @see ChoiceTable.originalOrder
          */
         this.order = null;
-
-        /**
-         * ### ChoiceTable.originalOrder
-         *
-         * The initial order of display of choices
-         *
-         * TODO: Do we need this? originalOrder is always 0,1,2,3...
-         * ChoiceManager does not have it.
-         *
-         * @see ChoiceTable.order
-         */
-        this.originalOrder = null;
 
         /**
          * ### ChoiceTable.correctChoice
@@ -5626,7 +5671,7 @@
         /**
          * ### ChoiceTable.selectMultiple
          *
-         * If TRUE, it allows to select multiple cells
+         * The number of maximum simulataneous selection (>1), or false
          */
         this.selectMultiple = null;
 
@@ -5883,6 +5928,7 @@
         // Set the hint, if any.
         if ('string' === typeof options.hint || false === options.hint) {
             this.hint = options.hint;
+            if (this.requiredChoice) this.hint += ' *';
         }
         else if ('undefined' !== typeof options.hint) {
             throw new TypeError('ChoiceTable.init: options.hint must ' +
@@ -6059,10 +6105,7 @@
 
         // Save the order in which the choices will be added.
         this.order = J.seq(0, len-1);
-        if (this.shuffleChoices) {
-            this.originalOrder = this.order;
-            this.order = J.shuffle(this.order);
-        }
+        if (this.shuffleChoices) this.order = J.shuffle(this.order);
 
         // Build the table and choices at once (faster).
         if (this.table) this.buildTableAndChoices();
@@ -6668,6 +6711,24 @@
     };
 
     /**
+     * ### ChoiceTable.getChoiceAtPosition
+     *
+     * Returns a choice displayed at a given position
+     *
+     * @param {string|number} i The numeric position of a choice in display
+     *
+     * @return {string|undefined} The value associated the numeric position.
+     *   If no value is found, returns undefined
+     *
+     * @see ChoiceTable.order
+     * @see ChoiceTable.choices
+     */
+    ChoiceTable.prototype.getChoiceAtPosition = function(i) {
+        if (!this.choices || !this.order) return;
+        return this.choices[this.order[parseInt(i, 10)]];
+    };
+
+    /**
      * ### ChoiceTable.getValues
      *
      * Returns the values for current selection and other paradata
@@ -6680,7 +6741,7 @@
      *   - markAttempt: If TRUE, getting the value counts as an attempt
      *       to find the correct answer. Default: TRUE.
      *   - highlight:   If TRUE, if current value is not the correct
-     *       value, widget will be highlighted. Default: FALSE.
+     *       value, widget will be highlighted. Default: TRUE.
      *   - reset:       If TRUTHY and a correct choice is selected (or not
      *       specified), then it resets the state of the widgets before
      *       returning it. Default: FALSE.
@@ -6691,7 +6752,7 @@
      * @see ChoiceTable.reset
      */
     ChoiceTable.prototype.getValues = function(opts) {
-        var obj, resetOpts;
+        var obj, resetOpts, i, len;
         opts = opts || {};
         obj = {
             id: this.id,
@@ -6700,13 +6761,31 @@
             time: this.timeCurrentChoice,
             nClicks: this.numberOfClicks
         };
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
         if (opts.processChoice) {
             obj.choice = opts.processChoice.call(this, obj.choice);
         }
-        if (this.shuffleChoices) {
-            obj.originalOrder = this.originalOrder;
-            obj.order = this.order;
+        if (this.shuffleChoices) obj.order = this.order;
+
+        if (opts.getValue !== false) {
+            if (!this.selectMultiple) {
+                obj.value = this.choices[obj.choice];
+            }
+            else {
+                len = obj.choice.length;
+                obj.value = new Array(len);
+                if (len === 1) {
+                    obj.value[0] = this.choices[obj.choice[0]];
+                }
+                else {
+                    i = -1;
+                    for ( ; ++i < len ; ) {
+                        obj.value[i] = this.choices[obj.choice[i]];
+                    }
+                }
+            }
         }
+
         if (this.group === 0 || this.group) {
             obj.group = this.group;
         }
@@ -6738,7 +6817,7 @@
      * @experimental
      */
     ChoiceTable.prototype.setValues = function(options) {
-        var choice, correctChoice, cell;
+        var choice, correctChoice, cell, tmp;
         var i, len, j, lenJ;
 
         if (!this.choices || !this.choices.length) {
@@ -6750,6 +6829,7 @@
         // Use options.visual.
 
         // TODO: allow it to set random or fixed values, or correct values
+        // TODO: set freetext or not.
 
         if (!this.choicesCells || !this.choicesCells.length) {
             throw new Error('Choicetable.setValues: table was not ' +
@@ -6784,16 +6864,48 @@
             return;
         }
 
-        // How many random choices?
-        if (!this.selectMultiple) len = 1;
-        else len = J.randomInt(0, this.choicesCells.length);
-
+        // Set values, random or pre-set.
         i = -1;
-        for ( ; ++i < len ; ) {
-            choice = J.randomInt(0, this.choicesCells.length)-1;
-            // Do not click it again if it is already selected.
-            if (!this.isChoiceCurrent(choice)) {
+        if ('undefined' !== typeof options.values) {
+            if (this.selectMultiple) {
+                if (!J.isArray(options.values)) {
+                    throw new Error('ChoiceTable.setValues: values must be ' +
+                                    'array or undefined if selectMultiple is ' +
+                                    'truthy. Found: ' + options.values);
+                }
+                len = options.values.length;
+                if (len > this.selectMultiple) {
+                    throw new Error('ChoiceTable.setValues: values array ' +
+                                    'cannot be larger than selectMultiple: ' +
+                                    len +  ' > ' +  this.selectMultiple);
+                }
+                tmp = options.values;
+            }
+            else {
+                tmp = [options.values];
+            }
+            // Validate value.
+            for ( ; ++i < len ; ) {
+                choice = J.isInt(tmp[i], 0, this.choices.length, 1, 1);
+                if (false === choice) {
+                    throw new Error('ChoiceTable.setValues: invalid ' +
+                                    'choice value. Found: ' +
+                                    tmp[i]);
+                }
                 this.choicesCells[choice].click();
+            }
+        }
+        else {
+            // How many random choices?
+            if (!this.selectMultiple) len = 1;
+            else len = J.randomInt(0, this.choicesCells.length);
+
+            for ( ; ++i < len ; ) {
+                choice = J.randomInt(0, this.choicesCells.length)-1;
+                // Do not click it again if it is already selected.
+                if (!this.isChoiceCurrent(choice)) {
+                    this.choicesCells[choice].click();
+                }
             }
         }
 
@@ -6964,7 +7076,7 @@
 
     // ## Meta-data
 
-    ChoiceTableGroup.version = '1.5.0';
+    ChoiceTableGroup.version = '1.6.0';
     ChoiceTableGroup.description = 'Groups together and manages sets of ' +
         'ChoiceTable widgets.';
 
@@ -7890,7 +8002,7 @@
      *   - markAttempt: If TRUE, getting the value counts as an attempt
      *      to find the correct answer. Default: TRUE.
      *   - highlight:   If TRUE, if current value is not the correct
-     *      value, widget will be highlighted. Default: FALSE.
+     *      value, widget will be highlighted. Default: TRUE.
      *   - reset:    If TRUTHY and no item raises an error,
      *       then it resets the state of all items before
      *       returning it. Default: FALSE.
@@ -7909,6 +8021,7 @@
             isCorrect: true
         };
         opts = opts || {};
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
         // Make sure reset is done only at the end.
         toReset = opts.reset;
         opts.reset = false;
@@ -7927,9 +8040,9 @@
                 toHighlight = true;
             }
         }
-
-        if (toHighlight) this.highlight();
+        if (opts.highlight && toHighlight) this.highlight();
         else if (toReset) this.reset(toReset);
+        opts.reset = toReset;
         if (this.textarea) obj.freetext = this.textarea.value;
         return obj;
     };
@@ -8613,7 +8726,7 @@
 
     // ## Meta-data
 
-    CustomInput.version = '0.7.0';
+    CustomInput.version = '0.9.0';
     CustomInput.description = 'Creates a configurable input form';
 
     CustomInput.title = false;
@@ -8627,7 +8740,9 @@
         'int': true,
         date: true,
         list: true,
-        us_city_state_zip: true
+        us_city_state_zip: true,
+        us_state: true,
+        us_zip: true
     };
 
     var sepNames = {
@@ -8706,52 +8821,98 @@
     var usStatesByAbbr;
     var usStatesTerr;
     var usStatesTerrByAbbr;
+    // Lower case keys.
+    var usStatesLow;
+    var usTerrLow;
+    var usStatesTerrLow;
+    var usTerrByAbbrLow;
+    var usStatesByAbbrLow;
+    var usStatesTerrLow;
+    var usStatesTerrByAbbrLow;
 
     CustomInput.texts = {
-        listErr: function(w, param) {
+        listErr: 'Check that there are no empty items; do not end with ' +
+            'the separator',
+        listSizeErr: function(w, param) {
+            if (w.params.fixedSize) {
+                return w.params.minItems + ' items required';
+            }
             if (param === 'min') {
                 return 'Too few items. Min: ' + w.params.minItems;
             }
-            if (param === 'max') {
-                return 'Too many items. Max: ' + w.params.maxItems;
-            }
-            return 'Check that there are no empty items; do not end with ' +
-                'the separator';
+            return 'Too many items. Max: ' + w.params.maxItems;
+
         },
+        usStateAbbrErr: 'Not a valid state abbreviation (must be 2 characters)',
+        usStateErr: 'Not a valid state (full name required)',
+        usZipErr: 'Not a valid ZIP code (must be 5 digits)',
         autoHint: function(w) {
             var res, sep;
             if (w.type === 'list') {
                 sep = sepNames[w.params.listSep] || w.params.listSep;
                 res = '(if more than one, separate with ' + sep + ')';
             }
-            return w.requiredChoice ? (res + '*') : (res || false);
+            else if (w.type === 'us_state') {
+                res = w.params.abbr ? '(Use 2-letter abbreviation)' :
+                    '(Type the full name of the state)';
+            }
+            else if (w.type === 'us_zip') {
+                res = '(Use 5-digit ZIP code)';
+            }
+            else if (w.type === 'us_city_state_zip') {
+                sep = w.params.listSep;
+                res = '(Format: Town' + sep + ' State' + sep + ' ZIP code)';
+            }
+            else if (w.type === 'date') {
+                if (w.params.minDate && w.params.maxDate) {
+                    res = '(Must be between ' + w.params.minDate.str + ' and ' +
+                        w.params.maxDate.str + ')';
+                }
+                else if (w.params.minDate) {
+                    res = '(Must be after ' + w.params.minDate.str + ')';
+                }
+                else if (w.params.maxDate) {
+                    res = '(Must be before ' + w.params.maxDate.str + ')';
+                }
+                else {
+                    res = '(Format: ' + w.params.format + ')';
+                }
+            }
+            else if (w.type === 'number' || w.type === 'int' ||
+                     w.type === 'float') {
+
+                if (w.params.min && w.params.max) {
+                    res = '(Must be between ' + w.params.min + ' and ' +
+                        w.params.max + ')';
+                }
+                else if (w.params.min) {
+                    res = '(Must be after ' + w.params.min + ')';
+                }
+                else if (w.params.max) {
+                    res = '(Must be before ' + w.params.max + ')';
+                }
+            }
+            return w.requiredChoice ? ((res || '') + ' *') : (res || false);
         },
         numericErr: function(w) {
-            var str, p, inc;
+            var str, p;
             p = w.params;
             // Weird, but valid, case.
             if (p.exactly) return 'Must enter ' + p.lower;
             // Others.
-            inc = '(inclusive)';
-            str = 'Must be a';
-            if (w.type === 'float') str += 'floating point';
-            else if (w.type === 'int') str += 'n integer';
-            str += ' number ';
+            str = 'Must be ';
+            if (w.type === 'float') str += 'a floating point number ';
+            else if (w.type === 'int') str += 'an integer ';
             if (p.between) {
-                str += 'between ' + p.lower;
-                if (p.leq) str += inc;
-                str += ' and ' + p.upper;
-                if (p.ueq) str += inc;
+                str += (p.leq ? '&ge; ' : '<' ) + p.lower;
+                str += ' and ';
+                str += (p.ueq ? '&le; ' : '> ') + p.upper;
             }
             else if ('undefined' !== typeof p.lower) {
-                str += 'greater than ';
-                if (p.leq) str += 'or equal to ';
-                str += p.lower;
+                str += (p.leq ? '&ge; ' : '< ') + p.lower;
             }
             else {
-                str += 'less than ';
-                if (p.leq) str += 'or equal to ';
-                str += p.upper;
+                str += (p.ueq ? '&le; ' : '> ') + p.upper;
             }
             return str;
         },
@@ -8776,12 +8937,18 @@
             str += '. Current length: ' + len;
             return str;
         },
-        dateErr: function(w, invalid) {
-            return invalid ? 'Date is invalid' : 'Must follow format ' +
-                w.params.format;
+        dateErr: function(w, param) {
+            if (param === 'invalid') return 'Date is invalid';
+            if (param === 'min') {
+                return 'Date must be after ' + w.params.minDate.str;
+            }
+            if (param === 'max') {
+                return 'Date must be before ' + w.params.maxDate.str;
+            }
+            return 'Must follow format ' + w.params.format;
         },
         emptyErr: function(w) {
-            return 'Cannot be empty'
+            return 'Cannot be empty';
         }
     };
 
@@ -8929,6 +9096,27 @@
          * When the last character was inserted
          */
         this.timeEnd = null;
+
+        /**
+         * ### CustomInput.checkbox
+         *
+         * A checkbox element for an additional action
+         */
+        this.checkbox = null;
+
+        /**
+         * ### CustomInput.checkboxText
+         *
+         * The text next to the checkbox
+         */
+        this.checkboxText = null;
+
+        /**
+         * ### CustomInput.checkboxCb
+         *
+         * The callback executed when the checkbox is clicked
+         */
+        this.checkboxCb = null;
     }
 
     // ## CustomInput methods
@@ -8941,11 +9129,10 @@
      * @param {object} opts Configuration options
      */
     CustomInput.prototype.init = function(opts) {
-        var tmp, that, e, isText;
+        var tmp, that, e, isText, setValues;
         that = this;
         e = 'CustomInput.init: ';
 
-        // TODO: this becomes false later on. Why???
         this.requiredChoice = !!opts.requiredChoice;
 
         if (opts.type) {
@@ -9076,6 +9263,15 @@
                         if (err) out.err = that.getText('textErr', len);
                         return out;
                     };
+
+                    setValues = function(opts) {
+                        var a, b;
+                        a = 'undefined' !== typeof that.params.lower ?
+                            (that.params.lower + 1) : 5;
+                        b = 'undefined' !== typeof that.params.upper ?
+                            that.params.upper : (a + 5);
+                        return J.randomString(J.randomInt(a, b));
+                    };
                 }
                 else {
                     tmp = (function() {
@@ -9094,6 +9290,21 @@
                             };
                         };
                     })();
+
+                    setValues = function(opts) {
+                        var p, a, b;
+                        p = that.params;
+                        if (that.type === 'float') return J.random();
+                        a = 0;
+                        b = 10;
+                        if ('undefined' !== typeof p.lower) {
+                            a = p.leq ? (p.lower - 1) : p.lower;
+                        }
+                        if ('undefined' !== typeof p.upper) {
+                            b = p.ueq ? p.upper : (p.upper - 1);
+                        }
+                        return J.randomInt(a, b);
+                    };
                 }
 
                 // Preset inputWidth.
@@ -9134,7 +9345,29 @@
                 this.params.dayPos = tmp[0].charAt(0) === 'd' ? 0 : 1;
                 this.params.monthPos =  this.params.dayPos ? 0 : 1;
                 this.params.dateLen = tmp[2].length + 6;
+                if (opts.minDate) {
+                    tmp = getParsedDate(opts.minDate, this.params);
+                    if (!tmp) {
+                        throw new Error(e + 'minDate must be a Date object. ' +
+                                        'Found: ' + opts.minDate);
+                    }
+                    this.params.minDate = tmp;
+                }
+                if (opts.maxDate) {
+                    tmp = getParsedDate(opts.maxDate, this.params);
+                    if (!tmp) {
+                        throw new Error(e + 'maxDate must be a Date object. ' +
+                                        'Found: ' + opts.maxDate);
+                    }
+                    if (this.params.minDate &&
+                        this.params.minDate.obj > tmp.obj) {
 
+                        throw new Error(e + 'maxDate cannot be prior to ' +
+                                        'minDate. Found: ' + tmp.str +
+                                        ' < ' + this.params.minDate.str);
+                    }
+                    this.params.maxDate = tmp;
+                }
 
                 // Preset inputWidth.
                 if (this.params.yearDigits === 2) this.inputWidth = '100px';
@@ -9144,7 +9377,7 @@
                 this.placeholder = this.params.format;
 
                 tmp = function(value) {
-                    var p, tokens, tmp, err, res, dayNum, l1, l2;
+                    var p, tokens, tmp, res, dayNum, l1, l2;
                     p = that.params;
 
                     // Is the format valid.
@@ -9167,17 +9400,16 @@
                         l2 = 100;
                     }
                     else {
-                        l1 = -1
+                        l1 = -1;
                         l2 = 10000;
                     }
                     tmp = J.isInt(tokens[2], l1, l2);
                     if (tmp !== false) res.year = tmp;
-                    else err = true;
-
+                    else res.err = true;
 
                     // Month.
                     tmp = J.isInt(tokens[p.monthPos], 1, 12, 1, 1);
-                    if (!tmp) err = true;
+                    if (!tmp) res.err = true;
                     else res.month = tmp;
                     // 31 or 30 days?
                     if (tmp === 1 || tmp === 3 || tmp === 5 || tmp === 7 ||
@@ -9196,19 +9428,105 @@
                     res.month = tmp;
                     // Day.
                     tmp = J.isInt(tokens[p.dayPos], 1, dayNum, 1, 1);
-                    if (!tmp) err = true;
+                    if (!tmp) res.err = true;
                     else res.day = tmp;
 
-                    //
-                    if (err) res.err = that.getText('dateErr', true);
+                    if (res.err) {
+                        res.err = that.getText('dateErr', 'invalid');
+                    }
+                    else if (p.minDate || p.maxDate) {
+                        tmp = new Date(value);
+                        if (p.minDate.obj && p.minDate.obj > tmp) {
+                            res.err = that.getText('dateErr', 'min');
+                        }
+                        else if (p.maxDate.obj && p.maxDate.obj < tmp) {
+                            res.err = that.getText('dateErr', 'max');
+                        }
+                    }
+                    if (!res.err) {
+                        res.value = value;
+                        res = { value: res };
+                    }
                     return res;
                 };
+
+                setValues = function(opts) {
+                    var p, minD, maxD, d, day, month, year;
+                    p = that.params;
+                    minD = p.minDate ? p.minDate.obj : new Date('01/01/1900');
+                    maxD = p.maxDate ? p.maxDate.obj : undefined;
+                    d = J.randomDate(minD, maxD);
+                    day = d.getDate();
+                    month = (d.getMonth() + 1);
+                    year = d.getFullYear();
+                    if (p.yearDigits === 2) year = ('' + year).substr(2);
+                    if (p.monthPos === 0) d = month + p.sep + day;
+                    else d = day + p.sep + month;
+                    d += p.sep + year;
+                    return d;
+                };
             }
-            // List, subtypes.
+            else if (this.type === 'us_state') {
+                if (opts.abbreviation) {
+                    this.params.abbr = true;
+                    this.inputWidth = '100px';
+                }
+                else {
+                    this.inputWidth = '200px';
+                }
+                if (opts.territories !== false) {
+                    this.terr = true;
+                    if (this.params.abbr) {
+                        tmp = getUsStatesList('usStatesTerrByAbbrLow');
+                    }
+                    else {
+                        tmp = getUsStatesList('usStatesTerrLow');
+                    }
+                }
+                else {
+                    if (this.params.abbr) {
+                        tmp = getUsStatesList('usStatesByAbbrLow');
+                    }
+                    else {
+                        tmp = getUsStatesList('usStatesLow');
+                    }
+                }
+                this.params.usStateVal = tmp;
+
+                tmp = function(value) {
+                    var res;
+                    res = { value: value };
+                    if (!that.params.usStateVal[value.toLowerCase()]) {
+                        res.err = that.getText('usStateErr');
+                    }
+                    return res;
+                };
+
+                setValues = function(opts) {
+                    return J.randomKey(that.params.usStateVal);
+                };
+                
+            }
+            else if (this.type === 'us_zip') {
+                tmp = function(value) {
+                    var res;
+                    res = { value: value };
+                    if (!isValidUSZip(value)) {
+                        res.err = that.getText('usZipErr');
+                    }
+                    return res;
+                };
+
+                setValues = function(opts) {
+                    return Math.floor(Math.random()*90000) + 10000;
+                };
+            }
+
+            // Lists.
 
             else if (this.type === 'list' ||
                      this.type === 'us_city_state_zip') {
-
+                
                 if (opts.listSeparator) {
                     if ('string' !== typeof opts.listSeparator) {
                         throw new TypeError(e + 'listSeparator must be ' +
@@ -9222,17 +9540,25 @@
                 }
 
                 if (this.type === 'us_city_state_zip') {
-                    // Create validation abbr.
-                    if (!usStatesTerrByAbbr) {
-                        usStatesTerr = J.mixin(usStates, usTerr);
-                        usStatesTerrByAbbr = J.reverseObj(usStatesTerr);
-                    }
+
+                    getUsStatesList('usStatesTerrByAbbr');
                     this.params.minItems = this.params.maxItems = 3;
+                    this.params.fixedSize = true;
                     this.params.itemValidation = function(item, idx) {
-                        if (idx === 2 && !usStatesTerrByAbbr[item]) {
-                            return { err: that.getText('usStateErr') };
+                        if (idx === 2) {
+                            if (!usStatesTerrByAbbr[item.toUpperCase()]) {
+                                return { err: that.getText('usStateAbbrErr') };
+                            }
+                        }
+                        else if (idx === 3) {
+                            if (!isValidUSZip(item)) {
+                                return { err: that.getText('usZipErr') };
+                            }
                         }
                     };
+
+                    this.placeholder = 'Town' + this.params.listSep +
+                        ' State' + this.params.listSep + ' ZIP';
                 }
                 else {
                     if ('undefined' !== typeof opts.minItems) {
@@ -9267,12 +9593,6 @@
                     var i, len, v, iVal, err;
                     value = value.split(that.params.listSep);
                     len = value.length;
-                    if (that.params.minItems && len < that.params.minItems) {
-                        return { err: that.getText('listErr', 'min') };
-                    }
-                    if (that.params.maxItems && len > that.params.maxItems) {
-                        return { err: that.getText('listErr', 'max') };
-                    }
                     if (!len) return value;
                     iVal = that.params.itemValidation;
                     i = 0;
@@ -9312,8 +9632,39 @@
                             value[i++] = v;
                         }
                     }
+                    // Need to do it here, because some elements might be empty.
+                    if (that.params.minItems && i < that.params.minItems) {
+                        return { err: that.getText('listSizeErr', 'min') };
+                    }
+                    if (that.params.maxItems && i > that.params.maxItems) {
+                        return { err: that.getText('listSizeErr', 'max') };
+                    }
                     return { value: value };
+                };
+
+                if (this.type === 'us_city_state_zip') {
+                    setValues = function(opts) {
+                        var p;
+                        p = that.params;
+                        return J.randomString(8) + p.listSep +
+                            J.randomKey(p.usStateVal) + p.listSep +
+                            Math.floor(Math.random()*90000) + 10000;
+                    };
                 }
+                else {
+                    setValues = function(opts) {
+                        var p, nItems, i, str;
+                        p = that.params;
+                        nItems = J.randomInt(p.minItems, p.maxItems) + 1;
+                        str = '';
+                        for (i = 0; i < nItems; i++) {
+                            if (i !== 0) str += p.listSep + ' ';
+                            str += J.randomString(J.randomInt(3,10));
+                        }
+                        return str;
+                    };
+                }
+                
             }
 
             // US_Town,State, Zip Code
@@ -9336,7 +9687,7 @@
             return res;
         };
 
-
+        this._setValues = setValues;
 
         // Preprocess
 
@@ -9376,7 +9727,9 @@
                     }
                 };
             }
-            else if (this.type === 'list') {
+            else if (this.type === 'list' ||
+                     this.type === 'us_city_state_zip') {
+
                 // Add a space after separator, if separator is not space.
                 if (this.params.listSep.trim() !== '') {
                     this.preprocess = function(input) {
@@ -9405,17 +9758,7 @@
             this.postprocess = opts.postprocess;
         }
         else {
-            if (this.type === 'date') {
-                this.postprocess = function(value, valid) {
-                    if (!valid || !value) return value;
-                    return {
-                        value: value,
-                        day: value.substring(0,2),
-                        month: value.substring(3,5),
-                        year: value.subtring(6, value.length)
-                    };
-                };
-            }
+            // Add postprocess as needed.
         }
 
         // Validation Speed
@@ -9444,6 +9787,7 @@
                                     'undefined. Found: ' + opts.hint);
             }
             this.hint = opts.hint;
+            if (this.requiredChoice) this.hint += ' *';
         }
         else {
             this.hint = this.getText('autoHint');
@@ -9461,6 +9805,26 @@
                                     'undefined. Found: ' + opts.width);
             }
             this.inputWidth = opts.width;
+        }
+
+        if (opts.checkboxText) {
+            if ('string' !== typeof opts.checkboxText) {
+                throw new TypeError(e + 'checkboxText must be string or ' +
+                                    'undefined. Found: ' + opts.checkboxText);
+            }
+            this.checkboxText = opts.checkboxText;
+        }
+
+        if (opts.checkboxCb) {
+            if (!this.checkboxText) {
+                throw new TypeError(e + 'checkboxCb cannot be defined ' +
+                                    'if checkboxText is not defined');
+            }
+            if ('function' !== typeof opts.checkboxCb) {
+                throw new TypeError(e + 'checkboxCb must be function or ' +
+                                    'undefined. Found: ' + opts.checkboxCb);
+            }
+            this.checkboxCb = opts.checkboxCb;
         }
     };
 
@@ -9486,7 +9850,7 @@
         // Hint.
         if (this.hint) {
             W.append('span', this.spanMainText || this.bodyDiv, {
-                className: 'choicetable-hint',
+                className: 'custominput-hint',
                 innerHTML: this.hint
             });
         }
@@ -9518,6 +9882,25 @@
         this.input.onclick = function() {
             if (that.isHighlighted()) that.unhighlight();
         };
+
+
+        // Checkbox.
+        if (this.checkboxText) {
+            this.checkbox = W.append('input', this.bodyDiv, {
+                type: 'checkbox',
+                className: 'custominput-checkbox'
+            });
+            W.append('span', this.bodyDiv, {
+                className: 'custominput-checkbox-text',
+                innerHTML: this.checkboxText
+            });
+
+            if (this.checkboxCb) {
+                J.addEvent(this.checkbox, 'change', function() {
+                    that.checkboxCb(that.checkbox.checked, that);
+                });
+            }
+        }
     };
 
     /**
@@ -9538,7 +9921,7 @@
     /**
      * ### CustomInput.highlight
      *
-     * Highlights the choice table
+     * Highlights the input
      *
      * @param {string} The style for the table's border.
      *   Default '3px solid red'
@@ -9559,7 +9942,7 @@
     /**
      * ### CustomInput.unhighlight
      *
-     * Removes highlight from the choice table
+     * Removes highlight from the input
      *
      * @see CustomInput.highlighted
      */
@@ -9569,6 +9952,42 @@
         this.highlighted = false;
         this.errorBox.innerHTML = '';
         this.emit('unhighlighted');
+    };
+
+    /**
+     * ### CustomInput.disable
+     *
+     * Disables the widget
+     *
+     * @see CustomInput.disabled
+     */
+    CustomInput.prototype.disable = function(opts) {
+        if (this.disabled) return;
+        if (!this.isAppended()) return;
+        this.disabled = true;
+        this.input.disabled = true;
+        if (this.checkbox && (!opts || opts.checkbox !== false)) {
+            this.checkbox.disable = true;
+        }
+        this.emit('disabled');
+    };
+
+    /**
+     * ### CustomInput.enable
+     *
+     * Enables the widget
+     *
+     * @see CustomInput.disabled
+     */
+    CustomInput.prototype.enable = function(opts) {
+        if (this.disabled !== true) return;
+        if (!this.isAppended()) return;
+        this.disabled = false;
+        this.input.disabled = false;
+        if (this.checkbox && (!opts || opts.checkbox !== false)) {
+            this.checkbox.disable = false;
+        }
+        this.emit('enabled');
     };
 
     /**
@@ -9590,6 +10009,15 @@
      * The postprocess function is called if specified
      *
      * @param {object} opts Optional. Configures the return value.
+     *   Available options:
+     *
+     *   - markAttempt: If TRUE, getting the value counts as an attempt
+     *       to find the correct answer. Default: TRUE.
+     *   - highlight:   If TRUE, if current value is not the correct
+     *       value, widget will be highlighted. Default: TRUE.
+     *   - reset:       If TRUTHY and a correct choice is selected (or not
+     *       specified), then it resets the state of the widgets before
+     *       returning it. Default: FALSE.
      *
      * @return {mixed} The value in the input
      *
@@ -9599,22 +10027,185 @@
     CustomInput.prototype.getValues = function(opts) {
         var res, valid;
         opts = opts || {};
+        if ('undefined' === typeof opts.markAttempt) opts.markAttempt = true;
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
         res = this.input.value;
         res = this.validation ? this.validation(res) : { value: res };
-        res.isCorrect = valid = !res.err;
+        valid = !res.err;
         res.timeBegin = this.timeBegin;
         res.timeEnd = this.timeEnd;
         if (this.postprocess) res.value = this.postprocess(res.value, valid);
         if (!valid) {
-            this.setError(res.err);
-            res.isCorrect = false;
+            if (opts.highlight) this.setError(res.err);
+            if (opts.markAttempt) res.isCorrect = false;
         }
-        else if (opts.reset) {
-            this.reset();
+        else {
+            if (opts.markAttempt) res.isCorrect = true;
+            if (opts.reset) this.reset();
         }
+        if (this.checkbox) res.checked = this.checkbox.checked;
         res.id = this.id;
         return res;
     };
+
+    /**
+     * ### CustomInput.setValues
+     *
+     * Set the value of the input form
+     *
+     * @param {object} opts An object containing values or info about how
+     *   how to set values.
+     *
+     * @experimental
+     */
+    CustomInput.prototype.setValues = function(opts) {
+        var value, tmp;
+        if (opts && 'undefined' !== typeof opts.value) {
+            value = opts.value;
+        }
+        else {
+            value = this._setValues(opts);
+        }
+        this.input.value = value;
+        if (this.preprocess) this.preprocess(this.input)
+    };
+
+    // ## Helper functions.
+
+    // ### getParsedDate
+    //
+    // Tries to parse a date object, catches exceptions
+    //
+    // @param {string|Date} d The date object
+    // @param {object} p The configuration object for date format
+    //
+    // @return {object|boolean} An object with the parsed date or false
+    //   if an error occurred
+    //
+    function getParsedDate(d, p) {
+        var res, day;
+        if ('string' === typeof d) {
+            d = d === 'today' ? new Date() : new Date(d);
+            // If invalid  date it return NaN.
+            day = d.getDate();
+            if (!day) return false;
+        }
+        try {
+            res = {
+                day: day || d.getDate(),
+                month: d.getMonth() + 1,
+                year: d.getFullYear(),
+                obj: d
+            };
+        }
+        catch(e) {
+            return false;
+        }
+        res.str = (p.dayPos ? res.day + p.sep + res.month :
+                   res.month + p.sep + res.day) + p.sep;
+        res.str += p.yearDigits === 2 ? res.year.substring(3,4) : res.year;
+        return res;
+    }
+
+
+
+    // ### getUsStatesList
+    //
+    // Sets the value of a global variable and returns it.
+    //
+    // @param {string} s A string specifying the type of list
+    //
+    // @return {object} The requested list
+    //
+    function getUsStatesList(s) {
+        var p;
+        switch(s) {
+
+        case 'usStatesTerrByAbbrLow':
+            if (!usStatesTerrByAbbrLow) {
+                getUsStatesList('usStatesTerrLow');
+                usStatesTerrByAbbrLow = J.reverseObj(usStatesTerr, toLK);
+            }
+            return usStatesTerrByAbbrLow;
+        case 'usStatesTerrByAbbr':
+            if (!usStatesTerrByAbbr) {
+                getUsStatesList('usStatesTerr');
+                usStatesTerrByAbbr = J.reverseObj(usStatesTerr);
+            }
+            return usStatesTerrByAbbr;
+
+        case 'usTerrByAbbrLow':
+            if (!usTerrByAbbrLow) usTerrByAbbrLow = J.reverseObj(usTerr, toLK);
+            return usTerrByAbbrLow;
+        case 'usTerrByAbbr':
+            if (!usTerrByAbbr) usTerrByAbbr = J.reverseObj(usTerr);
+            return usTerrByAbbr;
+
+        case 'usStatesByAbbrLow':
+            if (!usStatesByAbbrLow) {
+                usStatesByAbbrLow = J.reverseObj(usStates, toLK);
+            }
+            return usStatesByAbbrLow;
+        case 'usStatesByAbbr':
+            if (!usStatesByAbbr) usStatesByAbbr = J.reverseObj(usStates);
+            return usStatesByAbbr;
+
+        case 'usStatesTerrLow':
+            if (!usStatesTerrLow) {
+                if (!usStatesLow) usStatesLow = objToLK(usStates);
+                if (!usTerrLow) usTerrLow = objToLK(usTerr);
+                usStatesTerrLow = J.merge(usStatesLow, usTerrLow);
+            }
+            return usStatesTerrLow;
+        case 'usStatesTerr':
+            if (!usStatesTerr) usStatesTerr = J.merge(usStates, usTerr);
+            return usStatesTerr;
+
+        case 'usStatesLow':
+            if (!usStatesLow) usStatesLow = objToLow(usStates, toLK);
+            return usStatesLow;
+        case 'usStates':
+            return usStates;
+
+        case 'usTerrLow':
+            if (!usTerrLow) usTerrLow = objToLow(usTerr, toLK);
+            return usTerrLow;
+        case 'usTerr':
+            return usTerr;
+
+        default:
+            throw new Error('getUsStatesList: unknown request: ' + s);
+        }
+    }
+
+    // Helper function for getUsStatesList
+    // @see OBJ.reverseObj
+    function toLK(key, value) {
+        return [ key.toLowerCase(), value ];
+    }
+    // Helper function for getUsStatesList
+    function objToLK(obj) {
+        var p, objLow;
+        objLow = {};
+        for (p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                objLow[p.toLowerCase()] = obj[p];
+            }
+        }
+        return objLow;
+    }
+
+    // ### isValidUSZip
+    //
+    // Trivial validation of a US ZIP code
+    //
+    // @param {string} z
+    //
+    // @return {boolean} TRUE if valid
+    //
+    function isValidUSZip(z) {
+        return z.length === 5 && J.isInt(z, 0);
+    }
 
 })(node);
 
@@ -10614,7 +11205,7 @@
 
     // ## Meta-data
 
-    EmailForm.version = '0.10.0';
+    EmailForm.version = '0.12.0';
     EmailForm.description = 'Displays a configurable email form.';
 
     EmailForm.title = 'Email';
@@ -10622,7 +11213,7 @@
 
     EmailForm.texts.label = 'Enter your email:';
     EmailForm.texts.errString = 'Not a valid email address, ' +
-                                'please correct it and submit it again.';
+        'please correct it and submit it again.';
 
     // ## Dependencies
 
@@ -10645,7 +11236,11 @@
          * @see Feedback.getValues
          */
         if (!options.onsubmit) {
-            this.onsubmit = { emailOnly: true, say: true, updateUI: true };
+            this.onsubmit = {
+                emailOnly: true,
+                send: true,
+                updateUI: true
+            };
         }
         else if ('object' === typeof options.onsubmit) {
             this.onsubmit = options.onsubmit;
@@ -10701,6 +11296,15 @@
          * The email's HTML submit button
          */
         this.buttonElement = null;
+
+        /**
+         * ### EmailForm.setMsg
+         *
+         * If TRUE, a set message is sent instead of a data msg
+         *
+         * Default: FALSE
+         */
+        this.setMsg = !!options.setMsg || false;
     }
 
     // ## EmailForm methods
@@ -10837,10 +11441,12 @@
      *                  Default: FALSE.
      *   - highlight:   If TRUE, if email is not the valid, widget is
      *                  is highlighted. Default: (updateUI || FALSE).
-     *   - say:         If TRUE, and the email is valid, then it sends
-     *                  a data msg. Default: FALSE.
-     *   - sayAnyway:   If TRUE, it sends a data msg regardless of the
-     *                  validity of the email. Default: FALSE.
+     *   - send:        If TRUE, and the email is valid, then it sends
+     *                  a data or set msg. Default: FALSE.
+     *   - sendAnyway:  If TRUE, it sends a data or set msg regardless of
+     *                  the validity of the email. Default: FALSE.
+     *   - say:         same as send, but deprecated.
+     *   - sayAnyway:   same as sendAnyway, but deprecated
      *
      * @return {string|object} The email, and optional paradata
      *
@@ -10851,6 +11457,20 @@
     EmailForm.prototype.getValues = function(opts) {
         var email, res;
         opts = opts || {};
+
+        if ('undefined' !== typeof opts.say) {
+            console.log('***EmailForm.getValues: option say is deprecated, ' +
+                        ' use send.***');
+            opts.send = opts.say;
+        }
+        if ('undefined' !== typeof opts.sayAnyway) {
+            console.log('***EmailForm.getValues: option sayAnyway is ' +
+                        'deprecated, use sendAnyway.***');
+            opts.sendAnyway = opts.sayAnyway;
+        }
+
+        if ('undefined' === typeof opts.markAttempt) opts.markAttempt = true;
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
 
         email = getEmail.call(this);
 
@@ -10864,8 +11484,8 @@
                 time: this.timeInput,
                 email: email,
                 attempts: this.attempts,
-                valid: res
             };
+            if (opts.markAttempt) email.isCorrect = res;
         }
 
         if (res === false) {
@@ -10874,7 +11494,7 @@
         }
 
         // Send the message.
-        if ((opts.say && res) || opts.sayAnyway) {
+        if ((opts.send && res) || opts.sendAnyway) {
             this.sendValues({ values: email });
         }
 
@@ -10903,7 +11523,13 @@
         var values;
         opts = opts || { emailOnly: true };
         values = opts.values || this.getValues(opts);
-        node.say('email', opts.to || 'SERVER', values);
+        if (this.setMsg) {
+            if ('string' === typeof values) values = { email: values };
+            node.set(values, opts.to || 'SERVER');
+        }
+        else {
+            node.say('email', opts.to || 'SERVER', values);
+        }
         return values;
     };
 
@@ -11195,6 +11821,15 @@
          * null initially, element added on append()
          */
         this.endScreenHTML = null;
+
+        /**
+         * ### EndScreen.askServer
+         *
+         * If TRUE, after being appended it sends a 'WIN' message to server
+         *
+         * Default: FALSE
+         */
+        this.askServer = options.askServer || false;
     }
 
     EndScreen.prototype.init = function(options) {
@@ -11217,6 +11852,7 @@
     EndScreen.prototype.append = function() {
         this.endScreenHTML = this.makeEndScreen();
         this.bodyDiv.appendChild(this.endScreenHTML);
+        if (this.askServer) setTimeout(function() { node.say('WIN'); });
     };
 
     /**
@@ -11451,7 +12087,7 @@
 
     // ## Meta-data
 
-    Feedback.version = '1.4.0';
+    Feedback.version = '1.6.0';
     Feedback.description = 'Displays a configurable feedback form';
 
     Feedback.title = 'Feedback';
@@ -11461,7 +12097,7 @@
         autoHint: function(w) {
             var res, res2;
             if (w.minChars && w.maxChars) {
-                res = 'beetween ' + w.minChars + ' and ' + w.maxChars +
+                res = 'between ' + w.minChars + ' and ' + w.maxChars +
                     ' characters';
             }
             else if (w.minChars) {
@@ -11503,7 +12139,7 @@
             if (param.len !== 1) res += 's';
             if (param.needed) res += ' needed';
             else if (param.over) res += ' over';
-            else res += ' remaining';
+            else if (!param.justcount) res += ' remaining';
             return res;
         }
     };
@@ -11573,15 +12209,15 @@
          *
          * The maximum character length for feedback to be submitted
          *
-         * Default: 800
+         * Default: 0
          */
         if ('undefined' === typeof options.maxChars) {
-            this.maxChars = 800;
+            this.maxChars = 0;
         }
         else {
             tmp = J.isInt(options.maxChars, 0);
             if (tmp !== false) {
-                this.maxChars = options.maxChars;
+                this.maxChars = tmp;
             }
             else {
                 throw new TypeError('Feedback constructor: maxChars ' +
@@ -11597,15 +12233,21 @@
          *
          * If minChars = 0, then there is no minimum length checked.
          *
-         * Default: 1
+         * Default: 0
          */
         if ('undefined' === typeof options.minChars) {
-            this.minChars = 1;
+            this.minChars = 0;
         }
         else {
             tmp = J.isInt(options.minChars, 0, undefined, true);
             if (tmp !== false) {
-                this.minChars = options.minChars;
+                if (this.maxChars && tmp > this.maxChars) {
+                    throw new TypeError('Feedback constructor: minChars ' +
+                                        'cannot be greater than maxChars. ' +
+                                        'Found: ' + tmp + ' > ' +
+                                        this.maxChars);
+                }
+                this.minChars = tmp;
             }
             else {
                 throw new TypeError('Feedback constructor: minChars ' +
@@ -11643,7 +12285,7 @@
          *
          * The minimum number of words for feedback to be submitted
          *
-         * If minChars = 0, then there is no minimum checked.
+         * If minWords = 0, then there is no minimum checked.
          *
          * Default: 0
          */
@@ -11674,6 +12316,22 @@
             }
         }
 
+        // Extra checks.
+        if (this.maxWords) {
+            if (this.maxChars && this.maxChars < this.maxWords) {
+                throw new TypeError('Feedback constructor: maxChars ' +
+                                    'cannot be smaller than maxWords. ' +
+                                    'Found: ' + this.maxChars + ' > ' +
+                                    this.maxWords);
+            }
+            if (this.minChars > this.maxWords) {
+                throw new TypeError('Feedback constructor: minChars ' +
+                                    'cannot be greater than maxWords. ' +
+                                    'Found: ' + this.minChars + ' > ' +
+                                    this.maxWords);
+            }
+        }
+
         /**
          * ### Feedback.rows
          *
@@ -11698,23 +12356,27 @@
          *
          * The maximum character length for an attempt to submit feedback
          *
-         * Attempts are stored in the attempts array. This allows to store
-         * longer texts than accepts feedbacks
+         * Attempts are stored in the attempts array. You can store attempts
+         * longer than valid feedbacks.
          *
-         * Default: Max(2000, maxChars)
+         * Set to 0 for no limit.
+         *
+         * Default: 0
          */
         if ('undefined' === typeof options.maxAttemptLength) {
-            this.maxAttemptLength = 2000;
-        }
-        else if (J.isNumber(options.maxAttemptLength, 0) !== false) {
-            this.maxAttemptLength = Math.max(this.maxChars,
-                                             options.maxAttemptLength);
+            this.maxAttemptLength = 0;
         }
         else {
-            throw new TypeError('Feedback constructor: ' +
+            tmp = J.isNumber(options.maxAttemptLength, 0);
+            if (tmp !== false) {
+                this.maxAttemptLength = tmp;
+            }
+            else {
+                throw new TypeError('Feedback constructor: ' +
                                 'options.maxAttemptLength must be a number ' +
-                                '>= 0 or undefined. Found: ' +
+                                '> 0 or undefined. Found: ' +
                                 options.maxAttemptLength);
+            }
         }
 
         /**
@@ -11806,6 +12468,15 @@
          */
         this.submitButton = null;
 
+        /**
+         * ### Feedback.setMsg
+         *
+         * If TRUE, a set message is sent instead of a data msg
+         *
+         * Default: FALSE
+         */
+        this.setMsg = !!options.setMsg || false;
+
     }
 
     // ## Feedback methods
@@ -11854,6 +12525,7 @@
      * @return {boolean} TRUE, if the feedback is valid
      *
      * @see Feedback.getValues
+     * @see Feedback.maxAttemptLength
      * @see getFeedback
      */
     Feedback.prototype.verifyFeedback = function(markAttempt, updateUI) {
@@ -11891,10 +12563,11 @@
             updateCharColor = colOver;
         }
         else {
-            tmp = this.maxChars - length;
+            tmp = this.maxChars ? this.maxChars - length : length;
             updateCharCount = tmp + this.getText('counter', {
                 chars: true,
-                len: tmp
+                len: tmp,
+                justcount: !this.maxChars
             });
             updateCharColor = colRemain;
         }
@@ -11930,11 +12603,12 @@
                 updateWordColor = colOver;
             }
             else {
-                  tmp = this.maxWords - length;
-                  updateWordCount = tmp + this.getText('counter', {
-                      len: tmp
-                  });
-                  updateWordColor = colRemain;
+                tmp = this.maxWords ? this.maxWords - length : length;
+                updateWordCount = tmp + this.getText('counter', {
+                    len: tmp,
+                    justcount: !this.maxWords
+                });
+                updateWordColor = colRemain;
             }
         }
 
@@ -11951,7 +12625,7 @@
         }
 
         if (!res && ('undefined' === typeof markAttempt || markAttempt)) {
-            if (length > this.maxAttemptLength) {
+            if (this.maxAttemptLength && length > this.maxAttemptLength) {
                 feedback = feedback.substr(0, this.maxAttemptLength);
             }
             this.attempts.push(feedback);
@@ -11990,13 +12664,13 @@
         }
 
         this.textareaElement = W.append('textarea', this.feedbackForm, {
-            className: 'feedback-textarea form-control',
+            className: 'form-control feedback-textarea',
             type: 'text',
             rows: this.rows
         });
 
         if (this.showSubmit) {
-            this.submit = W.append('input', this.feedbackForm, {
+            this.submitButton = W.append('input', this.feedbackForm, {
                 className: 'btn btn-lg btn-primary',
                 type: 'submit',
                 value: this.getText('submit')
@@ -12029,11 +12703,16 @@
      * Set the value of the feedback
      */
     Feedback.prototype.setValues = function(options) {
-        var feedback;
+        var feedback, maxChars;
         options = options || {};
         if (!options.feedback) {
-            feedback = J.randomString(J.randomInt(0, this.maxChars),
-                                      'aA_1');
+            if (this.maxChars) {
+                maxChars = this.maxChars;
+            }
+            else if (this.maxWords) {
+                maxChars = this.maxWords * 4;
+            }
+            feedback = J.randomString(J.randomInt(0, maxChars), 'aA_1');
         }
         else {
             feedback = options.feedback;
@@ -12065,10 +12744,12 @@
      *                  Default: FALSE.
      *   - highlight:   If TRUE, if feedback is not the valid, widget is
      *                  is highlighted. Default: (updateUI || FALSE).
-     *   - say:         If TRUE, and the feedback is valid, then it sends
-     *                  a data msg. Default: FALSE.
-     *   - sayAnyway:   If TRUE, it sends a data msg regardless of the
-     *                  validity of the feedback. Default: FALSE.
+     *   - send:        If TRUE, and the email is valid, then it sends
+     *                  a data or set msg. Default: FALSE.
+     *   - sendAnyway:  If TRUE, it sends a data or set msg regardless of
+     *                  the validity of the email. Default: FALSE.
+     *   - say:         same as send, but deprecated.
+     *   - sayAnyway:   same as sendAnyway, but deprecated
      *
      * @return {string|object} The feedback, and optional paradata
      *
@@ -12080,6 +12761,20 @@
         var feedback, feedbackBr, res;
 
         opts = opts || {};
+
+        if ('undefined' !== typeof opts.say) {
+            console.log('***EmailForm.getValues: option say is deprecated, ' +
+                        ' use send.***');
+            opts.send = opts.say;
+        }
+        if ('undefined' !== typeof opts.sayAnyway) {
+            console.log('***EmailForm.getValues: option sayAnyway is ' +
+                        'deprecated, use sendAnyway.***');
+            opts.sendAnyway = opts.sayAnyway;
+        }
+
+        if ('undefined' === typeof opts.markAttempt) opts.markAttempt = true;
+        if ('undefined' === typeof opts.highlight) opts.highlight = true;
 
         feedback = getFeedback.call(this);
 
@@ -12097,13 +12792,13 @@
                 timeBegin: this.timeInputBegin,
                 feedback: feedback,
                 attempts: this.attempts,
-                valid: res,
-                isCorrect: res
+                valid: res
             };
+            if (opts.markAttempt) feedback.isCorrect = res;
         }
 
         // Send the message.
-        if ((opts.say && res) || opts.sayAnyway) {
+        if (feedback !== '' && ((opts.send && res) || opts.sendAnyway)) {
             this.sendValues({ values: feedback });
             if (opts.updateUI) {
                 this.submitButton.setAttribute('value', this.getText('sent'));
@@ -12137,7 +12832,13 @@
         var values;
         opts = opts || { feedbackOnly: true };
         values = opts.values || this.getValues(opts);
-        node.say('feedback', opts.to || 'SERVER', values);
+        if (this.setMsg) {
+            if ('string' === typeof values) values = { feedback: values };
+            node.set(values, opts.to || 'SERVER');
+        }
+        else {
+            node.say('feedback', opts.to || 'SERVER', values);
+        }
         return values;
     };
 

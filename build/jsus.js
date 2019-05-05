@@ -5654,6 +5654,25 @@
     };
 
     /**
+     * ## OBJ.randomKey
+     *
+     * Returns a random key from an existing object
+     *
+     * @param {object} obj The object from which the key will be extracted
+     *
+     * @return {string} The random key 
+     */
+    OBJ.randomKey = function(obj) {
+        var keys;
+        if ('object' !== typeof obj) {
+            throw new TypeError('OBJ.randomKey: obj must be object. ' +
+                                'Found: ' + obj);
+        }
+        keys = Object.keys(obj);
+        return keys[ keys.length * Math.random() << 0];
+    };
+    
+    /**
      * ## OBJ.augment
      *
      * Pushes the values of the properties of an object into another one
@@ -5776,7 +5795,8 @@
     OBJ.getKeyByValue = function(obj, value, allKeys) {
         var key, out;
         if ('object' !== typeof obj) {
-            throw new TypeError('OBJ.getKeyByValue: obj must be object.');
+            throw new TypeError('OBJ.getKeyByValue: obj must be object. ' +
+                                'Found: ' + obj);
         }
         if (allKeys) out = [];
         for (key in obj) {
@@ -5796,16 +5816,29 @@
      * Returns a new object where they keys and values are switched
      *
      * @param {object} obj The object to reverse
+     * @param {function} cb Optional. A callback processing a key-value pair.
+     *   Takes as inputs current key and value and must return an array with
+     *   updated key and value: [ newKey, newValue ].
      *
-     * @return {object} The reversed object 
+     * @return {object} The reversed object
      */
-    OBJ.reverseObj = function(o) {
+    OBJ.reverseObj = function(o, cb) {
         var k, res;
+        if (cb && 'function' !== typeof cb) {
+            throw new TypeError('OBJ.reverseObj: cb must be function or ' +
+                                'undefined. Found: ' + cb);
+        }
         res = {};
         if (!o) return res;
         for (k in o) {
             if (o.hasOwnProperty(k)) {
-                res[o[k]] = k;
+                if (cb) {
+                    k = cb(k, o[k]);
+                    res[k[1]] = res[k[0]];
+                }
+                else {
+                    res[o[k]] = k;
+                }
             }
         }
         return res;
@@ -6739,6 +6772,43 @@
         if (a === b) return a;
         return Math.floor(RANDOM.random(a, b) + 1);
     };
+
+    /**
+     * ## RANDOM.randomDate
+     *
+     * Generates a pseudo-random date between 
+     *
+     * @param {Date} startDate The lower date
+     * @param {Date} endDate Optional. The upper date. Default: today.
+     *
+     * @return {number} A random date in the chosen interval
+     *
+     * @see RANDOM.randomDate
+     */
+    RANDOM.randomDate = (function() {
+        function isValidDate(date) {
+            return date &&
+                Object.prototype.toString.call(date) === "[object Date]" &&
+                !isNaN(date);
+        }
+        return function(startDate, endDate) {
+            if (!isValidDate(startDate)) {
+                throw new TypeError('randomDate: startDate must be a valid ' +
+                                    'date. Found: ' + startDate);
+            }
+            if (endDate) {
+                if (!isValidDate(endDate)) {
+                    throw new TypeError('randomDate: endDate must be a valid ' +
+                                        'date or undefined. Found: ' + endDate);
+                }
+            }
+            else {
+                endDate = new Date();
+            }
+            return new Date(startDate.getTime() + Math.random() *
+                            (endDate.getTime() - startDate.getTime()));
+        };
+    })();
 
     /**
      * ## RANDOM.sample

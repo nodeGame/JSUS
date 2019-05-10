@@ -1814,14 +1814,17 @@
      *
      * Takes care not to overwrite already existing classes.
      *
-     * @param {HTMLElement} elem An HTML element
+     * @param {HTMLElement|object} elem An HTML element, or an object with 
+     *   a className property if force is TRUE 
      * @param {string|array} className The name/s of CSS class/es
+     * @param {boolean} force Optional. If TRUE, the method is applied also
+     *   to non HTMLElements
      *
      * @return {HTMLElement} The HTML element with the additional
      *   class, or undefined if the inputs are misspecified
      */
-    DOM.addClass = function(elem, className) {
-        if (!DOM.isElement(elem)) {
+    DOM.addClass = function(elem, className, force) {
+        if (!force && !DOM.isElement(elem)) {
             throw new TypeError('DOM.addClass: elem must be HTMLElement. ' +
                                 'Found: ' + elem);
         }
@@ -5660,7 +5663,7 @@
      *
      * @param {object} obj The object from which the key will be extracted
      *
-     * @return {string} The random key 
+     * @return {string} The random key
      */
     OBJ.randomKey = function(obj) {
         var keys;
@@ -5671,7 +5674,7 @@
         keys = Object.keys(obj);
         return keys[ keys.length * Math.random() << 0];
     };
-    
+
     /**
      * ## OBJ.augment
      *
@@ -6741,7 +6744,7 @@
             }
             else {
                 b = a;
-                a = 0;                
+                a = 0;
             }
         }
         if (a === b) return a;
@@ -6776,7 +6779,7 @@
     /**
      * ## RANDOM.randomDate
      *
-     * Generates a pseudo-random date between 
+     * Generates a pseudo-random date between
      *
      * @param {Date} startDate The lower date
      * @param {Date} endDate Optional. The upper date. Default: today.

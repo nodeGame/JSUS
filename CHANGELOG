@@ -1,4 +1,7 @@
-# ChangeLog
+# Change Log
+
+## 1.5.0
+- `#OBJ.add|removeClass` accept a force parameter to be applied to normal objects.
 
 ## 1.4.0
 - `#OBJ.randomKey` picks a random key from object.

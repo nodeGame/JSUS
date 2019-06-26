@@ -261,13 +261,15 @@
         if (start === Infinity) return false;
         if ('number' !== typeof end) return false;
         if (end === Infinity) return false;
-        if (start === end) return [start];
-
+        // TODO: increment zero might be fine if start=end. Check.
         if (increment === 0) return false;
         if (!JSUS.inArray(typeof increment, ['undefined', 'number'])) {
             return false;
         }
-
+        if (start === end) {
+            if (!func) return [ start ];
+            return [ func(start) ];
+        }
         increment = increment || 1;
         func = func || function(e) {return e;};
 
@@ -2372,7 +2374,6 @@
         return elem;
     };
 
-    
     /**
      * ### DOM.makeClickable
      *
@@ -2400,9 +2401,9 @@
             return elem;
         };
         cb.cb = clickCb;
-        return cb; 
+        return cb;
     })();
-    
+
     // ## Helper methods
 
     /**

@@ -991,7 +991,7 @@
 
 /**
  * # DOM
- * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2019 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Helper library to perform generic operation with DOM elements.
@@ -1782,17 +1782,20 @@
     /**
      * ### DOM.removeClass
      *
-     * Removes a specific class from the classNamex attribute of a given element
+     * Removes a specific class from the className attribute of a given element
      *
-     * @param {HTMLElement} el An HTML element
+     * @param {HTMLElement|object} elem An HTML element, or an object with
+     *   a className property if force is TRUE
      * @param {string} className The name of a CSS class already in the element
+     * @param {boolean} force Optional. If TRUE, the method is applied also
+     *   to non HTMLElements
      *
      * @return {HTMLElement|undefined} The HTML element with the removed
      *   class, or undefined if the inputs are misspecified
      */
-    DOM.removeClass = function(elem, className) {
+    DOM.removeClass = function(elem, className, force) {
         var regexpr, o;
-        if (!DOM.isElement(elem)) {
+        if (!force && !DOM.isElement(elem)) {
             throw new TypeError('DOM.removeClass: elem must be HTMLElement. ' +
                                 'Found: ' + elem);
         }
@@ -1814,8 +1817,8 @@
      *
      * Takes care not to overwrite already existing classes.
      *
-     * @param {HTMLElement|object} elem An HTML element, or an object with 
-     *   a className property if force is TRUE 
+     * @param {HTMLElement|object} elem An HTML element, or an object with
+     *   a className property if force is TRUE
      * @param {string|array} className The name/s of CSS class/es
      * @param {boolean} force Optional. If TRUE, the method is applied also
      *   to non HTMLElements
@@ -2349,6 +2352,57 @@
         return !dim ? { x: x, y: y } : dim === 'x' ? x : y;
     };
 
+    /**
+     * ### DOM.makeTabbable
+     *
+     * Adds the tabindex property to an HTML element
+     *
+     * @param {HTMLElement} elem The element to make tabbable
+     * @param {object} opts Optional. Configuration options, avalable:
+     *    - index: the tabindex, default 0
+     *    - clickable: if TRUE, calls DOM.makeClickable on the element.
+     *      Default: FALSE
+     *
+     * @return {HTMLElement} The tabbable element
+     */
+    DOM.makeTabbable =  function(elem, opts) {
+        opts = opts || {};
+        elem.setAttribute('tabindex', opts.index || 0);
+        if (opts.clicklable) DOM.makeClickable(elem);
+        return elem;
+    };
+
+    
+    /**
+     * ### DOM.makeClickable
+     *
+     * Adds a listener that clicks on the element if SPACE or ENTER are hit
+     *
+     * The kewydown event listener callback is available under `cb`.
+     *
+     * @param {HTMLElement} elem The element to make clickable
+     * @param {boolean} add If FALSE, the listener is removed. Default: TRUE
+     *
+     * @return {HTMLElement} The clickable element
+     */
+    DOM.makeClickable = (function() {
+        function clickCb(event) {
+            if (event.keyCode === 32 || event.keyCode === 13) {
+                event.preventDefault();
+                event.target.click();
+            }
+        }
+        var cb;
+        cb = function(elem, add) {
+            if ('undefined' === typeof add) add = true;
+            if (add) elem.addEventListener('keydown', clickCb);
+            else elem.removeEventListener('keydown', clickCb);
+            return elem;
+        };
+        cb.cb = clickCb;
+        return cb; 
+    })();
+    
     // ## Helper methods
 
     /**

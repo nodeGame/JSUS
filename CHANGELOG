@@ -1,5 +1,9 @@
 # Change Log
 
+## current
+- `#DOM.makeTabbable` to make divs and other HTML elements accessible via tab.
+- `#DOM.makeClickable` to make divs and other HTML elements clickable with by pressing SPACE or ENTER.
+
 ## 1.5.0
 - `#OBJ.add|removeClass` accept a force parameter to be applied to normal objects.
 
@@ -17,7 +21,7 @@
 - `#PARSE.isNumber` fixed bug when ueq and leq params were set.
 
 ## 1.1.0
-- `#PARSE.isMobileAgent` returns TRUE if a user agent is for a mobile device. 
+- `#PARSE.isMobileAgent` returns TRUE if a user agent is for a mobile device.
 
 ## 1.0.1
 - `#FS` is using path.sep.
@@ -25,7 +29,7 @@
 ## 1.0.0
 - `J` is exported as a top level object in the browser's window.
 - `#JSUS.get` alias of `JSUS.require` removed. `#JSUS.get` is now a method of the DOM library.
-- DOM library rewritten. Several methods removed and code optimized. Methods _added_: get, add|append, addAttributes. Methods _modified_: generateUniqueId, addCSS, addJS. Methods _removed_: getElement, addElement, addAttributes2Elem, getButton, addButton, getFieldset, addFieldset, getTextInput, addTextInput, getTextArea, addTextArea, getCanvas, addCanvas, getSlider, addSlider, getRadioButton, addRadioButton, getLabel, addLabel, getSelect, addSelect, getIFrame, addIFrame, addBreak, getDiv, addDiv. 
+- DOM library rewritten. Several methods removed and code optimized. Methods _added_: get, add|append, addAttributes. Methods _modified_: generateUniqueId, addCSS, addJS. Methods _removed_: getElement, addElement, addAttributes2Elem, getButton, addButton, getFieldset, addFieldset, getTextInput, addTextInput, getTextArea, addTextArea, getCanvas, addCanvas, getSlider, addSlider, getRadioButton, addRadioButton, getLabel, addLabel, getSelect, addSelect, getIFrame, addIFrame, addBreak, getDiv, addDiv.
 - `#DOM.shuffleElements` accepts a callback.
 - '#OBJ.keys` improved, read inline docs for new options.
 - `#OBJ.objGetAllKeys` removed.

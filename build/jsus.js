@@ -6836,7 +6836,7 @@
      *
      * Generates a pseudo-random date between
      *
-     * @param {Date} startDate The lower date
+     * @param {Date} startDate Optional. The lower date. Default: 01-01-1900.
      * @param {Date} endDate Optional. The upper date. Default: today.
      *
      * @return {number} A random date in the chosen interval
@@ -6850,18 +6850,19 @@
                 !isNaN(date);
         }
         return function(startDate, endDate) {
-            if (!isValidDate(startDate)) {
+            if ('undefined' === typeof startDate) {
+                startDate = new Date("1900");
+            }
+            else if (!isValidDate(startDate)) {
                 throw new TypeError('randomDate: startDate must be a valid ' +
                                     'date. Found: ' + startDate);
             }
-            if (endDate) {
-                if (!isValidDate(endDate)) {
-                    throw new TypeError('randomDate: endDate must be a valid ' +
-                                        'date or undefined. Found: ' + endDate);
-                }
-            }
-            else {
+            if ('undefined' === typeof endDate) {
                 endDate = new Date();
+            }
+            else if (!isValidDate(endDate)) {
+                throw new TypeError('randomDate: endDate must be a valid ' +
+                                    'date or undefined. Found: ' + endDate);
             }
             return new Date(startDate.getTime() + Math.random() *
                             (endDate.getTime() - startDate.getTime()));

@@ -1,9 +1,10 @@
 # Change Log
 
-## current
+## 1.6.0
 - `#DOM.makeTabbable` to make divs and other HTML elements accessible via tab.
 - `#DOM.makeClickable` to make divs and other HTML elements clickable with by pressing SPACE or ENTER.
 - `#ARRAY.seq` applies the callback function also when start equals end.
+- `#RANDOM.randomDate` has a default start date: 01/01/1900.
 
 ## 1.5.0
 - `#OBJ.add|removeClass` accept a force parameter to be applied to normal objects.

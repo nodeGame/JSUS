@@ -257,6 +257,9 @@ describe('ARRAY: ', function(){
             JSUS.rep(array, 3).should.eql([1,2,3,4,5,1,2,3,4,5,1,2,3,4,5]);
         });
 
+        it('should create the array and replicate it 3 times', function(){
+            JSUS.rep(1, 3).should.eql([1,1,1]);
+        });
     });
 
     describe('#distinct()', function() {

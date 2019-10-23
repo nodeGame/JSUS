@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.7.0
+- `#ARRAY.rep` works with non-array (it creates the array for you).
+
 ## 1.6.0
 - `#DOM.makeTabbable` to make divs and other HTML elements accessible via tab.
 - `#DOM.makeClickable` to make divs and other HTML elements clickable with by pressing SPACE or ENTER.

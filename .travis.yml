@@ -1,10 +1,8 @@
 sudo: false
 language: node_js
 node_js:
-  - 6
-  - 7
-  - 8
   - 10
+  - 12
 
 before_install:
 # Get installer script.
@@ -14,9 +12,9 @@ before_install:
 install:
   - npm install --only=dev
   # --branch v4
-  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --yes
-  - mv node_modules/JSUS/node_modules/resolve node_modules/
-  - mv node_modules/JSUS/node_modules/fs-extra node_modules/
+  - node nodegame-installer.js @dev --install-dir node_modules --no-spinner --yes --no-check-parent-dir
+  # - mv node_modules/JSUS/node_modules/resolve node_modules/
+  # - mv node_modules/JSUS/node_modules/fs-extra node_modules/
   
 
 script:

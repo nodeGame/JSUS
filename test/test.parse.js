@@ -321,6 +321,9 @@ describe('PARSE: ', function() {
         it('should parse and return  int number (interval bad)', function() {
             JSUS.isNumber('1.1', 4, 5).should.be.false;
         });
+        it('should parse and return  int number (interval bad)', function() {
+            JSUS.isNumber('').should.be.false;
+        });
     });
 
     describe('#isNumber() with ueq and leg', function() {

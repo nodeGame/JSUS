@@ -6253,7 +6253,7 @@
      * @see PARSE.isFloat
      */
     PARSE.isNumber = function(n, lower, upper, leq, ueq) {
-        if (isNaN(n) || !isFinite(n)) return false;
+        if (isNaN(n) || !isFinite(n) || n === "") return false;
         n = parseFloat(n);
         if ('number' === typeof lower && (leq ? n < lower : n <= lower)) {
             return false;

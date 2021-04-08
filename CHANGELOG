@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.7.1
+- Fixed `#PARSE.isNumber` receiving empty string returning NaN instead of
+false.
+
 ## 1.7.0
 - `#ARRAY.rep` works with non-array (it creates the array for you).
 

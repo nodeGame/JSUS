@@ -555,9 +555,7 @@
         var start = 0;
         var limit = S;
         var extracted = [];
-        if (!self) {
-            limit = S-1;
-        }
+        if (!self) limit = S-1;
 
         for (i=0; i < N; i++) {
             do {
@@ -6114,6 +6112,8 @@
      * encoded by `PARSE.stringify`
      *
      * @param {string} str The string to decode
+     * @param {function} cb Optional. A callback to apply to each decoded item
+     *
      * @return {mixed} The decoded value
      *
      * @see JSON.parse
@@ -6129,6 +6129,8 @@
             len_inf = PARSE.marker_inf.length,
             len_minus_inf = PARSE.marker_minus_inf.length;
 
+        var customCb;
+
         function walker(o) {
             var i;
             if ('object' !== typeof o) return reviver(o);
@@ -6138,6 +6140,8 @@
                     else o[i] = reviver(o[i]);
                 }
             }
+            // On the full object.
+            if (customCb) customCb(o);
             return o;
         }
 
@@ -6170,12 +6174,13 @@
 
                     return -Infinity;
                 }
-
             }
+
             return value;
         }
 
-        return function(str) {
+        return function(str, cb) {
+            customCb = cb;
             return walker(JSON.parse(str));
         };
 
@@ -7226,7 +7231,7 @@
 
 /**
  * # TIME
- * Copyright(c) 2017 Stefano Balietti
+ * Copyright(c) 2021 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the generation,
@@ -7238,28 +7243,34 @@
 
     function TIME() {}
 
+    function pad(number) {
+        return (number < 10) ? '0' + number : number;
+    }
+
+    function _getTime(ms) {
+        var d, res;
+        d = new Date();
+        res = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' +
+              pad(d.getSeconds());
+        if (ms) res += ':' + pad(d.getMilliseconds());
+        return res;
+    }
+
     // Polyfill for Date.toISOString (IE7, IE8, IE9)
     // Kudos: https://developer.mozilla.org/en-US/docs/Web/
     // JavaScript/Reference/Global_Objects/Date/toISOString
     if (!Date.prototype.toISOString) {
-        (function() {
 
-            function pad(number) {
-                return (number < 10) ? '0' + number : number;
-            }
-
-            Date.prototype.toISOString = function() {
-                var ms = (this.getUTCMilliseconds() / 1000).toFixed(3);
-                return this.getUTCFullYear() +
-                    '-' + pad(this.getUTCMonth() + 1) +
-                    '-' + pad(this.getUTCDate()) +
-                    'T' + pad(this.getUTCHours()) +
-                    ':' + pad(this.getUTCMinutes()) +
-                    ':' + pad(this.getUTCSeconds()) +
-                    '.' + ms.slice(2, 5) + 'Z';
-            };
-
-        }());
+        Date.prototype.toISOString = function() {
+            var ms = (this.getUTCMilliseconds() / 1000).toFixed(3);
+            return this.getUTCFullYear() +
+                '-' + pad(this.getUTCMonth() + 1) +
+                '-' + pad(this.getUTCDate()) +
+                'T' + pad(this.getUTCHours()) +
+                ':' + pad(this.getUTCMinutes()) +
+                ':' + pad(this.getUTCSeconds()) +
+                '.' + ms.slice(2, 5) + 'Z';
+        };
     }
 
     /**
@@ -7291,9 +7302,7 @@
      * @see TIME.getTimeM
      */
     TIME.getTime = function() {
-        var d;
-        d = new Date();
-        return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        return _getTime();
     };
 
     /**
@@ -7310,10 +7319,7 @@
      * @see TIME.getTime
      */
     TIME.getTimeM = function() {
-        var d;
-        d = new Date();
-        return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() +
-            ':' + d.getMilliseconds();
+        return _getTime(true);
     };
 
     /**
@@ -7346,7 +7352,6 @@
         result[1] = Math.floor(days);
         return result;
     };
-
 
     /**
      * ## TIME.now

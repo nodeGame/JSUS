@@ -1172,6 +1172,19 @@
     };
 
     /**
+     * ### DOM.write2
+     *
+     * Like `DOM.write` but with support for HTML in text (no return value)
+     *
+     * @see DOM.write
+     */
+    DOM.write2 = function(root, text) {
+        if ('undefined' === typeof text) text = "";
+        if (JSUS.isNode(text) || JSUS.isElement(text)) root.appendChild(text);
+        else root.innerHTML += text;
+    };
+
+    /**
      * ### DOM.writeln
      *
      * Write a text and a break into a root element
@@ -1192,6 +1205,18 @@
         content = DOM.write(root, text);
         this.add(rc || 'br', root);
         return content;
+    };
+
+    /**
+     * ### DOM.writeln2
+     *
+     * Like `DOM.writeln` but with support for HTML in text (no return value)
+     *
+     * @see DOM.writeln
+     */
+    DOM.writeln2 = function(root, text, rc) {
+        DOM.write2(root, text);
+        this.add(rc || 'br', root);
     };
 
     /**
@@ -1794,7 +1819,7 @@
      *   class, or undefined if the inputs are misspecified
      */
     DOM.removeClass = function(elem, className, force) {
-        var regexpr, o;
+        var regexpr;
         if (!force && !DOM.isElement(elem)) {
             throw new TypeError('DOM.removeClass: elem must be HTMLElement. ' +
                                 'Found: ' + elem);
@@ -1805,7 +1830,7 @@
                                     'HTMLElement. Found: ' + className);
             }
             regexpr = new RegExp('(?:^|\\s)' + className + '(?!\\S)');
-            o = elem.className = elem.className.replace(regexpr, '' );
+            elem.className = elem.className.replace(regexpr, '' );
         }
         return elem;
     };
@@ -2180,7 +2205,7 @@
      */
     DOM.blinkTitle = (function(id) {
         var clearBlinkInterval, finalTitle, elem;
-        clearBlinkInterval = function(opts) {
+        clearBlinkInterval = function() {
             clearInterval(id);
             id = null;
             if (elem) {

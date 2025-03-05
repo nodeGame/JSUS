@@ -9,6 +9,8 @@
  * ---
  */
 (function(exports) {
+    
+    var tmpClass;
 
     var JSUS = exports.JSUS = {};
 
@@ -143,17 +145,28 @@
 
     // ## Node.JS includes
     if (JSUS.isNodeJS()) {
-        require('./lib/compatibility');
-        require('./lib/obj');
-        require('./lib/array');
-        require('./lib/time');
-        require('./lib/eval');
-        require('./lib/dom');
-        require('./lib/random');
-        require('./lib/parse');
-        require('./lib/queue');
-        require('./lib/fs');
+        tmpClass = require('./lib/compatibility');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/obj');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/array');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/time');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/eval');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/dom');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/random');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/parse');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/queue');
+        JSUS.extend(tmpClass);
+        tmpClass = require('./lib/fs');
+        JSUS.extend(tmpClass);
     }
+
     else {
         // Exports J in the browser.
         exports.J = exports.JSUS;

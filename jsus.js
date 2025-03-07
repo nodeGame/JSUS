@@ -1,3 +1,5 @@
+const COMPATIBILITY = require('./lib/compatibility');
+
 /**
  * # JSUS: JavaScript UtilS.
  * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
@@ -10,8 +12,8 @@
  */
 (function(exports) {
     
-    var tmpClass;
-
+    var files, inits;
+    
     var JSUS = exports.JSUS = {};
 
     // ## JSUS._classes
@@ -145,26 +147,24 @@
 
     // ## Node.JS includes
     if (JSUS.isNodeJS()) {
-        tmpClass = require('./lib/compatibility');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/obj');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/array');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/time');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/eval');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/dom');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/random');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/parse');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/queue');
-        JSUS.extend(tmpClass);
-        tmpClass = require('./lib/fs');
-        JSUS.extend(tmpClass);
+        inits = [];
+        files = [
+            'compatibility', 'obj', 'array', 'time', 'eval', 'dom', 
+            'random', 'parse', 'queue', 'fs'
+        ];
+
+        // Load all files.
+        files.forEach(function(file) {
+            const [ FN, init ] = require('./lib/' + file);
+            JSUS.extend(FN);
+            inits.push(init);
+        });
+
+        // After all is loaded, JSUS is complete, initialize the libraries
+        // with cross-references (this approach avoids circular references).
+        inits.forEach(function(init) {
+            init(JSUS);
+        });
     }
 
     else {

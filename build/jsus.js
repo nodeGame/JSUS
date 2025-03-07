@@ -1,3 +1,5 @@
+const COMPATIBILITY = require('./lib/compatibility');
+
 /**
  * # JSUS: JavaScript UtilS.
  * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
@@ -9,7 +11,9 @@
  * ---
  */
 (function(exports) {
-
+    
+    var files, inits;
+    
     var JSUS = exports.JSUS = {};
 
     // ## JSUS._classes
@@ -143,17 +147,26 @@
 
     // ## Node.JS includes
     if (JSUS.isNodeJS()) {
-        require('./lib/compatibility');
-        require('./lib/obj');
-        require('./lib/array');
-        require('./lib/time');
-        require('./lib/eval');
-        require('./lib/dom');
-        require('./lib/random');
-        require('./lib/parse');
-        require('./lib/queue');
-        require('./lib/fs');
+        inits = [];
+        files = [
+            'compatibility', 'obj', 'array', 'time', 'eval', 'dom', 
+            'random', 'parse', 'queue', 'fs'
+        ];
+
+        // Load all files.
+        files.forEach(function(file) {
+            const [ FN, init ] = require('./lib/' + file);
+            JSUS.extend(FN);
+            inits.push(init);
+        });
+
+        // After all is loaded, JSUS is complete, initialize the libraries
+        // with cross-references (this approach avoids circular references).
+        inits.forEach(function(init) {
+            init(JSUS);
+        });
     }
+
     else {
         // Exports J in the browser.
         exports.J = exports.JSUS;
@@ -166,14 +179,16 @@
 
 /**
  * # ARRAY
- * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2025 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions to manipulate arrays
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     function ARRAY() {}
 
@@ -263,7 +278,7 @@
         if (end === Infinity) return false;
         // TODO: increment zero might be fine if start=end. Check.
         if (increment === 0) return false;
-        if (!JSUS.inArray(typeof increment, ['undefined', 'number'])) {
+        if (!ARRAY.inArray(typeof increment, ['undefined', 'number'])) {
             return false;
         }
         if (start === end) {
@@ -342,12 +357,12 @@
         func = arguments[1];
 
         if (!ARRAY.isArray(array)) {
-            JSUS.log('ARRAY.map: first parameter must be array. Found: ' +
+            console.log('ARRAY.map: first parameter must be array. Found: ' +
                      array);
             return;
         }
         if ('function' !== typeof func) {
-            JSUS.log('ARRAY.map: second parameter must be function. Found: ' +
+            console.log('ARRAY.map: second parameter must be function. Found: ' +
                      func);
             return;
         }
@@ -395,7 +410,7 @@
         if ('undefined' === typeof needle || !haystack) return false;
 
         if ('object' === typeof needle) {
-            func = JSUS.equals;
+            func = _J.equals;
         }
         else {
             func = function(a, b) {
@@ -430,7 +445,7 @@
     ARRAY.inArray = function(needle, haystack) {
         var func, i, len;
         if (!haystack) return false;
-        func = JSUS.equals;
+        func = _J.equals;
         len = haystack.length;
         for (i = 0; i < len; i++) {
             if (func.call(this, needle, haystack[i])) {
@@ -559,9 +574,9 @@
 
         for (i=0; i < N; i++) {
             do {
-                idx = JSUS.randomInt(start,limit);
+                idx = _J.randomInt(start,limit);
             }
-            while (JSUS.inArray(idx, extracted));
+            while (ARRAY.inArray(idx, extracted));
             extracted.push(idx);
 
             if (idx == 1) {
@@ -723,7 +738,7 @@
         if (!ARRAY.isArray(array)) array = [ array ];
         if (!times) return array.slice(0);
         if (times < 1) {
-            JSUS.log('times must be greater or equal 1', 'ERR');
+            console.log('times must be greater or equal 1', 'ERR');
             return;
         }
         i = 1;
@@ -770,7 +785,7 @@
         if (!times) return array.slice(0);
         if ('number' === typeof times) {
             if (times < 1) {
-                JSUS.log('times must be greater or equal 1', 'ERR');
+                console.log('times must be greater or equal 1', 'ERR');
                 return;
             }
             times = ARRAY.rep([times], array.length);
@@ -801,7 +816,7 @@
      */
     ARRAY.arrayIntersect = function(a1, a2) {
         return a1.filter( function(i) {
-            return JSUS.inArray(i, a2);
+            return ARRAY.inArray(i, a2);
         });
     };
 
@@ -819,7 +834,7 @@
      */
     ARRAY.arrayDiff = function(a1, a2) {
         return a1.filter( function(i) {
-            return !(JSUS.inArray(i, a2));
+            return !(ARRAY.inArray(i, a2));
         });
     };
 
@@ -921,22 +936,32 @@
         return t;
     };
 
-    JSUS.extend(ARRAY);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(ARRAY);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ ARRAY, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # COMPATIBILITY
  *
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2025 Stefano Balietti
  * MIT Licensed
  *
  * Tests browsers ECMAScript 5 compatibility
  *
  * For more information see http://kangax.github.com/es5-compat-table/
  */
-(function(JSUS) {
+(function() {
     "use strict";
+
+    var _J, init;
 
     function COMPATIBILITY() {}
 
@@ -985,23 +1010,32 @@
     };
 
 
-    JSUS.extend(COMPATIBILITY);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(COMPATIBILITY);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ COMPATIBILITY, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # DOM
- * Copyright(c) 2019 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2025 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Helper library to perform generic operation with DOM elements.
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
-
+    
+    var _J, init;
     var onFocusChange, changeTitle;
-
+        
     function DOM() {}
 
     // ## GET/ADD
@@ -1165,7 +1199,7 @@
     DOM.write = function(root, text) {
         var content;
         if ('undefined' === typeof text || text === null) text = "";
-        if (JSUS.isNode(text) || JSUS.isElement(text)) content = text;
+        if (DOM.isNode(text) || DOM.isElement(text)) content = text;
         else content = document.createTextNode(text);
         root.appendChild(content);
         return content;
@@ -1180,7 +1214,7 @@
      */
     DOM.write2 = function(root, text) {
         if ('undefined' === typeof text) text = "";
-        if (JSUS.isNode(text) || JSUS.isElement(text)) root.appendChild(text);
+        if (DOM.isNode(text) || DOM.isElement(text)) root.appendChild(text);
         else root.innerHTML += text;
     };
 
@@ -1289,7 +1323,7 @@
                     idx_finish = string.indexOf(key, idx_replace);
 
                     if (idx_finish === -1) {
-                        JSUS.log('Error. Could not find closing key: ' + key);
+                        console.log('Error. Could not find closing key: ' + key);
                         continue;
                     }
 
@@ -1307,20 +1341,20 @@
                     break;
 
                 default:
-                    JSUS.log('Identifier not in [!,@,%]: ' + key[0]);
+                    console.log('Identifier not in [!,@,%]: ' + key[0]);
 
                 }
             }
         }
 
         // No span to create, return what we have.
-        if (!JSUS.size(spans)) {
+        if (!_J.size(spans)) {
             return root.appendChild(document.createTextNode(string));
         }
 
         // Re-assamble the string.
 
-        idxs = JSUS.keys(spans).sort(function(a, b){ return a - b; });
+        idxs = _J.keys(spans).sort(function(a, b){ return a - b; });
         idx_finish = 0;
         for (i = 0; i < idxs.length; i++) {
 
@@ -1427,12 +1461,12 @@
     DOM.shuffleElements = function(parent, order, cb) {
         var i, len, numOrder, idOrder, children, child;
         var id;
-        if (!JSUS.isNode(parent)) {
+        if (!DOM.isNode(parent)) {
             throw new TypeError('DOM.shuffleElements: parent must be a node. ' +
                                'Found: ' + parent);
         }
         if (!parent.children || !parent.children.length) {
-            JSUS.log('DOM.shuffleElements: parent has no children.', 'ERR');
+            console.log('DOM.shuffleElements: parent has no children.', 'ERR');
             return false;
         }
         if (order) {
@@ -1440,7 +1474,7 @@
                 cb = order;
             }
             else {
-                if (!JSUS.isArray(order)) {
+                if (!_J.isArray(order)) {
                     throw new TypeError('DOM.shuffleElements: order must be ' +
                                         'array. Found: ' + order);
                 }
@@ -1472,7 +1506,7 @@
         len = children.length;
         idOrder = new Array(len);
         if (cb) numOrder = new Array(len);
-        if (!order) order = JSUS.sample(0, (len-1));
+        if (!order) order = _J.sample(0, (len-1));
         for (i = 0 ; i < len; i++) {
             id = children[order[i]].id;
             if ('string' !== typeof id || id === "") {
@@ -1582,7 +1616,7 @@
             throw new Error('DOM.addCSS: root is undefined, and could not ' +
                             'detect a valid root for css: ' + cssPath);
         }
-        attributes = JSUS.mixin({
+        attributes = _J.mixin({
             rel : 'stylesheet',
             type: 'text/css',
             href: cssPath
@@ -1615,7 +1649,7 @@
             throw new Error('DOM.addCSS: root is undefined, and could not ' +
                             'detect a valid root for css: ' + jsPath);
         }
-        attributes = JSUS.mixin({
+        attributes = _J.mixin({
             charset : 'utf-8',
             type: 'text/javascript',
             src: jsPath
@@ -1776,7 +1810,7 @@
                 }
             }
             else {
-                prefix = JSUS.randomString(8, 'a');
+                prefix = _J.randomString(8, 'a');
             }
             id = prefix + '_';
 
@@ -1790,7 +1824,7 @@
             found = true;
             counter = -1;
             while (found) {
-                id = prefix + '_' + JSUS.randomInt(1000);
+                id = prefix + '_' + _J.randomInt(1000);
                 found = scanDocuments(windows, id);
                 if (++counter > limit) {
                     throw new Error('DOM.generateUniqueId: could not ' +
@@ -2128,7 +2162,7 @@
             disable = 'undefined' === typeof disable ? true : disable;
             if (disable && !isDisabled) {
                 if (!history.pushState || !history.go) {
-                    JSUS.log('DOM.disableBackButton: method not ' +
+                    console.log('DOM.disableBackButton: method not ' +
                              'supported by browser.');
                     return null;
                 }
@@ -2242,7 +2276,7 @@
 
             // Option repeatFor.
             if ('undefined' !== typeof options.repeatFor) {
-                nRepeats = JSUS.isInt(options.repeatFor, 0);
+                nRepeats = _J.isInt(options.repeatFor, 0);
                 if (false === nRepeats) {
                     throw new TypeError(where + 'options.repeatFor must be ' +
                                         'a positive integer. Found: ' +
@@ -2252,7 +2286,7 @@
 
             // Option stopOnFocus.
             if (options.stopOnFocus) {
-                JSUS.onFocusIn(function() {
+                DOM.onFocusIn(function() {
                     clearBlinkInterval();
                     onFocusChange(null, null);
                 });
@@ -2275,8 +2309,8 @@
             // Option startOnBlur.
             if (options.startOnBlur) {
                 options.startOnBlur = null;
-                JSUS.onFocusOut(function() {
-                    JSUS.blinkTitle(titles, options);
+                DOM.onFocusOut(function() {
+                    DOM.blinkTitle(titles, options);
                 });
                 return null;
             }
@@ -2285,7 +2319,7 @@
             if ('string' === typeof titles) {
                 titles = [titles, '!!!'];
             }
-            else if (!JSUS.isArray(titles)) {
+            else if (!_J.isArray(titles)) {
                 throw new TypeError(where + 'titles must be string, ' +
                                     'array of strings or undefined. Found: ' +
                                     titles);
@@ -2451,7 +2485,7 @@
 
         if (!document) {
             return function() {
-                JSUS.log('onFocusChange: no document detected.');
+                console.log('onFocusChange: no document detected.');
                 return;
             };
         }
@@ -2531,9 +2565,16 @@
         }
     };
 
-    JSUS.extend(DOM);
-
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(DOM);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ DOM, init ];
+    }
+})();
 
 /**
  * # DOM
@@ -2564,7 +2605,7 @@
  * Only the methods which do not follow the above-mentioned syntax
  * will receive further explanation.
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
 
@@ -4105,20 +4146,29 @@
         }
     };
 
-    JSUS.extend(DOM);
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+    if ('undefined' !== typeof JSUS) {
+        JSUS.extend(DOM);
+    }
+    // Node.JS ESM or CJS
+    else {
+        module.exports = DOM;
+    }
+
+})();
 
 /**
  * # EVAL
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2025 Stefano Balietti
  * MIT Licensed
  *
  * Evaluation of strings as JavaScript commands
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     function EVAL() {}
 
@@ -4161,13 +4211,22 @@
         return func.call(context, str);
     };
 
-    JSUS.extend(EVAL);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(EVAL);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ EVAL, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+
+})();
 
 /**
  * # FS
- * Copyright(c) 2018 Stefano Balietti
+ * Copyright(c) 2025 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to file system operations.
@@ -4178,19 +4237,15 @@
  * @see https://github.com/jprichardson/node-fs-extra
  * @see https://github.com/substack/node-resolve
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
 
-    if (!JSUS.isNodeJS()){
-        JSUS.log('Cannot load JSUS.FS outside of Node.JS.');
-        return false;
-    }
+    const resolve = require('resolve');
+    const path = require('path');
+    const fs = require('fs');
 
-    var resolve = require('resolve'),
-        path = require('path'),
-        fs = require('fs');
-
+    let _J, init;
 
     function FS() {}
 
@@ -4300,7 +4355,7 @@
     FS.cleanDir = function(dir, ext, cb) {
         var filterFunc;
         if (!dir) {
-            JSUS.log('You must specify a directory to clean.');
+            console.log('You must specify a directory to clean.');
             return false;
         }
         if (ext) {
@@ -4319,11 +4374,11 @@
         fs.readdir(dir, function(err, files) {
             var asq, mycb;
             if (err) {
-                JSUS.log(err);
+                console.log(err);
                 return;
             }
             // Create async queue if a callback was specified.
-            if (cb) asq = JSUS.getQueue();
+            if (cb) asq = _J.getQueue();
             // Create a nested callback for the async queue, if necessary.
 
             files.filter(filterFunc).forEach(function(file) {
@@ -4331,7 +4386,7 @@
                     asq.add(file);
                     mycb = asq.getRemoveCb(file);
                 }
-                JSUS.deleteIfExists(dir + file, mycb);
+                FS.deleteIfExists(dir + file, mycb);
             });
 
             if (cb) {
@@ -4368,11 +4423,11 @@
     FS.copyFromDir = function(dirIn, dirOut, ext, cb) {
         var i, dir, dirs, stats;
         if (!dirIn) {
-            JSUS.log('You must specify a source directory.');
+            console.log('You must specify a source directory.');
             return false;
         }
         if (!dirOut) {
-            JSUS.log('You must specify a destination directory.');
+            console.log('You must specify a destination directory.');
             return false;
         }
 
@@ -4396,11 +4451,11 @@
         fs.readdir(dirIn, function(err, files) {
             var asq, i, mycb;
             if (err) {
-                JSUS.log(err);
+                console.log(err);
                 throw new Error();
             }
             // Create async queue if a callback was specified.
-            if (cb) asq = JSUS.getQueue();
+            if (cb) asq = _J.getQueue();
             for (i in files) {
                 if (ext && path.extname(files[i]) !== ext) {
                     continue;
@@ -4446,28 +4501,25 @@
         return fdr.pipe(fdw);
     };
 
-    JSUS.extend(FS);
+    init = function(J) { _J = J; };
+    module.exports = [ FS, init ];
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # OBJ
- * Copyright(c) 2019 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2025 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions to manipulate JavaScript objects
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
 
+    var _J, init, compatibility;
+
     function OBJ() {}
-
-    var compatibility = null;
-
-    if ('undefined' !== typeof JSUS.compatibility) {
-        compatibility = JSUS.compatibility();
-    }
 
     /**
      * ## OBJ.createObj
@@ -4920,7 +4972,7 @@
                 res.push(tmp);
             }
             // If array, expand it.
-            else if (JSUS.isArray(tmp) && tmp.length) {
+            else if (_J.isArray(tmp) && tmp.length) {
                 if (tmp.length < 4) {
                     res.push(tmp[0]);
                     if (tmp.length > 1) {
@@ -5087,12 +5139,12 @@
 
         if (obj && 'object' === typeof obj) {
             clone = Object.prototype.toString.call(obj) === '[object Array]' ?
-                [] : JSUS.createObj(obj.constructor.prototype);
+                [] : OBJ.createObj(obj.constructor.prototype);
 
             for (i in obj) {
                 if (obj.hasOwnProperty(i)) {
                     if (obj[i] && 'object' === typeof obj[i]) {
-                        clone[i] = JSUS.classClone(obj[i], depth - 1);
+                        clone[i] = OBJ.classClone(obj[i], depth - 1);
                     }
                     else {
                         clone[i] = obj[i];
@@ -5102,7 +5154,7 @@
             return clone;
         }
         else {
-            return JSUS.clone(obj);
+            return OBJ.clone(obj);
         }
     };
 
@@ -5415,7 +5467,7 @@
     OBJ.setNestedValue = function(str, value, obj) {
         var keys, k;
         if (!str) {
-            JSUS.log('Cannot set value of undefined property', 'ERR');
+            console.log('Cannot set value of undefined property', 'ERR');
             return false;
         }
         obj = ('object' === typeof obj) ? obj : {};
@@ -5579,18 +5631,18 @@
 
         makeClone = function(value, out, keys) {
             var i, len, tmp, copy;
-            copy = JSUS.clone(model);
+            copy = OBJ.clone(model);
 
             switch(keys.length) {
             case 0:
-                copy[_key] = JSUS.clone(value);
+                copy[_key] = OBJ.clone(value);
                 break;
             case 1:
-                copy[_key][keys[0]] = JSUS.clone(value);
+                copy[_key][keys[0]] = OBJ.clone(value);
                 break;
             case 2:
                 copy[_key][keys[0]] = {};
-                copy[_key][keys[0]][keys[1]] = JSUS.clone(value);
+                copy[_key][keys[0]][keys[1]] = OBJ.clone(value);
                 break;
             default:
                 i = -1, len = keys.length-1;
@@ -5599,7 +5651,7 @@
                     tmp[keys[i]] = {};
                     tmp = tmp[keys[i]];
                 }
-                tmp[keys[keys.length-1]] = JSUS.clone(value);
+                tmp[keys[keys.length-1]] = OBJ.clone(value);
             }
             out.push(copy);
             return;
@@ -5614,7 +5666,7 @@
             }
             else {
 
-                curPosAsKey = posAsKeys || !JSUS.isArray(value);
+                curPosAsKey = posAsKeys || !_J.isArray(value);
 
                 for (i in value) {
                     if (value.hasOwnProperty(i)) {
@@ -5649,7 +5701,7 @@
                 throw new TypeError('JSUS.split: l must a non-negative ' +
                                     'number or undefined. Found: ' + l);
             }
-            model = JSUS.clone(o);
+            model = OBJ.clone(o);
             if ('object' !== typeof o[key]) return [model];
             // Init.
             out = [];
@@ -5716,7 +5768,7 @@
     OBJ.uniqueKey = function(obj, prefixName, stop) {
         var name, duplicateCounter;
         if (!obj) {
-            JSUS.log('Cannot find unique name in undefined object', 'ERR');
+            console.log('Cannot find unique name in undefined object', 'ERR');
             return;
         }
         duplicateCounter = 1;
@@ -5925,20 +5977,33 @@
         return res;
     };
 
-    JSUS.extend(OBJ);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(OBJ);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { 
+            _J = J;
+            compatibility = _J.compatibility();
+        };
+        module.exports = [ OBJ, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # PARSE
- * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2025 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Collection of static functions related to parsing strings
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     function PARSE() {}
 
@@ -6045,7 +6110,7 @@
 
         pattern = '[';
 
-        JSUS.each(separators, function(s) {
+        separators.forEach(function(s) {
             if (s === ' ') s = '\\s';
 
             pattern += s;
@@ -6179,7 +6244,7 @@
                     return value;
                 }
                 else if (value.substring(0, len_func) === PARSE.marker_func) {
-                    return JSUS.eval(value.substring(len_prefix));
+                    return jsusEval(value.substring(len_prefix));
                 }
                 else if (value.substring(0, len_null) === PARSE.marker_null) {
                     return null;
@@ -6401,7 +6466,7 @@
         if ('undefined' === typeof available) {
             available = expr;
         }
-        else if (JSUS.isArray(available)) {
+        else if (_J.isArray(available)) {
             if (available.length === 0) return solution;
             begin = Math.min.apply(null, available);
             end = Math.max.apply(null, available);
@@ -6550,11 +6615,11 @@
             throw new Error('PARSE.range: invalid dot found: ' + expr);
         }
 
-        if (JSUS.isArray(available)) {
+        if (_J.isArray(available)) {
             i = -1, len = available.length;
             for ( ; ++i < len ; ) {
                 x = parseInt(available[i], 10);
-                if (JSUS.eval(expr.replace(/x/g, x))) {
+                if (jsusEval(expr.replace(/x/g, x))) {
                     solution.push(x);
                 }
             }
@@ -6562,7 +6627,7 @@
         else {
             while (!available.isFinished()) {
                 x = parseInt(available.next(), 10);
-                if (JSUS.eval(expr.replace(/x/g, x))) {
+                if (jsusEval(expr.replace(/x/g, x))) {
                     solution.push(x);
                 }
             }
@@ -6640,20 +6705,30 @@
         };
     }
 
-    JSUS.extend(PARSE);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(PARSE);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ PARSE, init ];    
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # QUEUE
- * Copyright(c) 2015 Stefano Balietti
+ * Copyright(c) 2025 Stefano Balietti
  * MIT Licensed
  *
  * Handles a simple queue of operations
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     var QUEUE = {};
 
@@ -6689,7 +6764,7 @@
      * @return {boolean} TRUE, if no operation is in progress
      */
     Queue.prototype.isReady = function() {
-        return JSUS.isEmpty(this.inProgress);
+        return _J.isEmpty(this.inProgress);
     };
 
     /**
@@ -6709,7 +6784,7 @@
             throw new TypeError('Queue.onReady: cb must be function. Found: ' +
                                cb);
         }
-        if (JSUS.isEmpty(this.inProgress)) cb();
+        if (_J.isEmpty(this.inProgress)) cb();
         else this.queue.push(cb);
     };
 
@@ -6726,7 +6801,7 @@
         if (key && 'string' !== typeof key) {
             throw new Error('Queue.add: key must be string.');
         }
-        key = JSUS.uniqueKey(this.inProgress, key);
+        key = _J.uniqueKey(this.inProgress, key);
         if ('string' !== typeof key) {
             throw new Error('Queue.add: an error occurred ' +
                             'generating unique key.');
@@ -6747,7 +6822,7 @@
             throw new Error('Queue.remove: key must be string.');
         }
         delete this.inProgress[key];
-        if (JSUS.isEmpty(this.inProgress)) {
+        if (_J.isEmpty(this.inProgress)) {
             this.executeAndClear();
         }
     };
@@ -6787,20 +6862,30 @@
         }
     };
 
-    JSUS.extend(QUEUE);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(QUEUE);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ QUEUE, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # RANDOM
- * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
+ * Copyright(c) 2025 Stefano Balietti <ste@nodegame.org>
  * MIT Licensed
  *
  * Generates pseudo-random numbers
  */
-(function(JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     function RANDOM() {}
 
@@ -6915,9 +7000,9 @@
      */
     RANDOM.sample = function(a, b) {
         var out;
-        out = JSUS.seq(a,b);
+        out = _J.seq(a,b);
         if (!out) return false;
-        return JSUS.shuffle(out);
+        return _J.shuffle(out);
     };
 
     /**
@@ -7212,7 +7297,7 @@
             if (nSpaces > -1) {
                 nSpaces = chars.charAt(nSpaces + 1);
                 // nSpaces is integer > 0 or 1.
-                nSpaces = JSUS.isInt(nSpaces, 0) || 1;
+                nSpaces = _J.isInt(nSpaces, 0) || 1;
                 if (nSpaces === 1) mask += ' ';
                 else if (nSpaces === 2) mask += '  ';
                 else if (nSpaces === 3) mask += '   ';
@@ -7250,21 +7335,31 @@
             RANDOM.randomString(RANDOM.randomInt(2,3));
     };
 
-    JSUS.extend(RANDOM);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(RANDOM);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ RANDOM, init ];    
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();
 
 /**
  * # TIME
- * Copyright(c) 2021 Stefano Balietti
+ * Copyright(c) 2025 Stefano Balietti
  * MIT Licensed
  *
  * Collection of static functions related to the generation,
  * manipulation, and formatting of time strings in JavaScript
  */
-(function (JSUS) {
+(function() {
 
     "use strict";
+
+    var _J, init;
 
     function TIME() {}
 
@@ -7388,6 +7483,14 @@
     TIME.now = 'function' === typeof Date.now ?
         Date.now : function() { return new Date().getTime(); }
 
-    JSUS.extend(TIME);
+    if ('undefined' !== typeof JSUS) {
+        _J = JSUS;
+        JSUS.extend(TIME);
+    }
+    // Node.JS ESM or CJS
+    else {
+        init = function(J) { _J = J; };
+        module.exports = [ TIME, init ];
+    }
 
-})('undefined' !== typeof JSUS ? JSUS : module.parent.exports.JSUS);
+})();

@@ -11,14 +11,14 @@ pkg = require('../package.json'),
 J = require('../jsus.js').JSUS,
 version = pkg.version;
 
-
+// console.log(J);
 
 function buildIt(options) {
 
     var out = options.output || "jsus";
 
     if (path.extname(out) === '.js') {
-	out = path.basename(out, '.js');
+		out = path.basename(out, '.js');
     }
 
     console.log('Building JSUS v.' + version + ' with:');
@@ -42,8 +42,8 @@ function buildIt(options) {
     console.log('  - JSUS core');
 
     if (options.all) {
-	files = files.concat(J.obj2Array(jsus_libs));
-	console.log('  - JSUS lib: all available libs included');
+		files = files.concat(J.obj2Array(jsus_libs));
+		console.log('  - JSUS lib: all available libs included');
     }
     else {
 	var selected = options.lib;

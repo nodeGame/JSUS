@@ -1,5 +1,3 @@
-const COMPATIBILITY = require('./lib/compatibility');
-
 /**
  * # JSUS: JavaScript UtilS.
  * Copyright(c) 2017 Stefano Balietti <ste@nodegame.org>
@@ -149,15 +147,25 @@ const COMPATIBILITY = require('./lib/compatibility');
     if (JSUS.isNodeJS()) {
         inits = [];
         files = [
-            'compatibility', 'obj', 'array', 'time', 'eval', 'dom', 
-            'random', 'parse', 'queue', 'fs'
+            'compatibility', 
+            'obj', 
+            'array',
+             'time',
+              'eval',
+               'dom', 
+            'random',
+             'parse',
+              'queue',
+               'fs'
         ];
+        // files = [ 'array' ]
 
         // Load all files.
         files.forEach(function(file) {
-            const [ FN, init ] = require('./lib/' + file);
-            JSUS.extend(FN);
-            inits.push(init);
+            const arr = require('./lib/' + file);
+            // destructuring does not work with Uglify JS [ FN, init ]
+            JSUS.extend(arr[0]);
+            inits.push(arr[1]);
         });
 
         // After all is loaded, JSUS is complete, initialize the libraries

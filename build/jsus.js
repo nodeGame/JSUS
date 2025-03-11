@@ -6252,7 +6252,7 @@
                     return value;
                 }
                 else if (value.substring(0, len_func) === PARSE.marker_func) {
-                    return jsusEval(value.substring(len_prefix));
+                    return _J.eval(value.substring(len_prefix));
                 }
                 else if (value.substring(0, len_null) === PARSE.marker_null) {
                     return null;
@@ -6627,7 +6627,7 @@
             i = -1, len = available.length;
             for ( ; ++i < len ; ) {
                 x = parseInt(available[i], 10);
-                if (jsusEval(expr.replace(/x/g, x))) {
+                if (_J.eval(expr.replace(/x/g, x))) {
                     solution.push(x);
                 }
             }
@@ -6635,7 +6635,7 @@
         else {
             while (!available.isFinished()) {
                 x = parseInt(available.next(), 10);
-                if (jsusEval(expr.replace(/x/g, x))) {
+                if (_J.eval(expr.replace(/x/g, x))) {
                     solution.push(x);
                 }
             }
